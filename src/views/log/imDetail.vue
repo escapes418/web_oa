@@ -1,0 +1,198 @@
+<template>
+    <div class="sjb-form-wrapper">
+        <div class="segment statistics">
+            <div class="segment-header">
+                基本信息
+            </div>
+            <div class="segment-area">
+                <el-row>
+                    <el-col :span="12" class="segment-brline">
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">提交人：</span>
+                            <span class="right-con">{{ detail.createBy }}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">提交时间：</span>
+                            <span class="right-con">{{ detail.createTime | stamp2TextDateFull}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">今日工作：</span>
+                            <span class="right-con" style="max-width:350px">
+                                {{ detail.todayWork }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">回访项目情况：</span>
+                            <span class="right-con" style="max-width:350px">
+                                {{ detail.revisitProjectStatus }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">今日感想：</span>
+                            <span class="right-con" style="max-width:350px">
+                                {{ detail.todayThought }}
+                            </span>
+                        </div>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">部门：</span>
+                            <span class="right-con">{{ detail.createByDept }}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">运力池建设：</span>
+                            <span class="right-con" style="max-width:350px">{{ detail.transportPoolBuild }}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">需要协助问题：</span>
+                            <span class="right-con" style="max-width:350px">{{ detail.needAssistProblem }}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">备注：</span>
+                            <span class="ignore-detail" style="max-width:350px">{{ detail.remarks }}</span>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="segment statistics">
+            <div class="segment-header">
+                项目情况
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper">
+                    <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark">
+                        <el-table-column align="center" label="项目名称" width="320px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.projectName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="节点" width="180px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.nodeName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="节点具体地址" width="400px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.nodeAddress}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="节点人数">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.nodeEmpNum}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="节点具体人员">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.nodeEmpNames}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="异常情况">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.hasAbnormalStatus}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="具体异常说明">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.anomalyDescription}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div class="pagination-container">
+                    <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+        <div class="segment statistics">
+            <div class="segment-header">
+                发送对象
+            </div>
+            <div class="segment-area">
+                <el-row>
+                    <el-col :span="12" class="segment-brline">
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">发送给：</span>
+                            <span class="right-con">
+                                {{detail.sendToUserList&&detail.sendToUserList.join('，')}}
+                            </span>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="segment statistics">
+            <div class="sjb-foot-button">
+                <el-button size="medium" @click="backBtn">返回</el-button>
+            </div>
+        </div>
+    </div>
+</template>
+<script lang="ts">
+import common from "@/utils/common";
+import { getImDetail } from "@/api/log";
+import { Vue, Component } from "vue-property-decorator";
+import { DETAIL_list} from "./interface";
+
+@Component({
+   
+})
+export default class imDetail extends Vue{
+    //data
+    detail:DETAIL_list={};
+
+    itemList:Array<DETAIL_list> = [];
+    pageNo:number = 1;
+    pageSize:number = 10;
+    total:number = 0;
+    //生命周期函数
+    created(){
+    
+    }
+    mounted() {
+        this.getList()
+    }
+    
+    backBtn():void{
+        this.$router.go(-1)
+    }
+    handleCurrentChange(val:number):void{
+        this.pageNo = val;
+        this.getList();
+    }
+    getList():void{
+        getImDetail({
+            dailyId:this.$route.query.key,
+            pageNo:this.pageNo,
+            pageSize:this.pageSize
+        }).then((res:Ajax.AjaxResponse)=>{
+            this.detail = res.data;
+            this.itemList = res.data.projectImplementStatusPage.list;
+            this.total = res.data.projectImplementStatusPage.count;
+        })
+    }
+}
+
+</script>
+<style scoped>
+.textArea{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 32px;
+    color: #343434;
+}
+.ignore-detail {
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    color: #343434;
+    font-size: 14px;
+}
+</style>
+
+
