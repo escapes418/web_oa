@@ -20,11 +20,11 @@ function detailInitData() {
         // 4项补充
         dayNum: 1,
         personNum: 1,
-        expenseAmt: 0,
+        expenseAmt: '',
         remarks: '',
 
         // 2项补充
-        billNum: 1,
+        billNum: '',
         subConfList: [],
 
         // 其他

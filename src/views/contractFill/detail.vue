@@ -335,6 +335,7 @@ export default {
 
             dialogCharge:false,
             chargeList:[],
+            total:0,
             pageNo:1,
             pageSize:10,
             listLoading:false,
@@ -356,7 +357,7 @@ export default {
                         res.data.contractHisDetailResponse.contractPartyList.forEach(item=>{
                             for (let key in item){
                                 if(i.columnName == key){
-                                    if(i.columnType=='select'){
+                                    if(i.columnType=='select' || i.columnType=='select-cust'){
                                         i.value = item['value']
                                     }else{
                                         i.value = item[key]

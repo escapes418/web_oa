@@ -28,7 +28,7 @@
             <el-input v-model.number="itemData.dayNum" type="number"></el-input>
         </td>
         <td>
-            <el-input style="width:120px" v-model.number="itemData.billNum" :disabled="canInputBillNum"></el-input>
+            <el-input style="width:120px" v-model.number="itemData.billNum" :disabled="canInputBillNum" type="number"></el-input>
         </td>
         <td>
             <el-input auto-complete="off" style="width:120px" v-model.number="itemData.expenseAmt" type="number"></el-input>

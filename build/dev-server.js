@@ -36,9 +36,9 @@ webpackConfig
             log: false,
             heartbeat: 2000
         });
-        
+        console.time('start')
         app.use(hotMiddleware);
-
+        
         Object.keys(proxyTable).forEach(function(context) {
             let options = proxyTable[context];
             if (typeof options === "string") {
@@ -58,7 +58,7 @@ webpackConfig
             config.dev.assetsSubDirectory
         );
         app.use(staticPath, express.static("./static"));
-
+        
         const uri = "http://localhost:" + port;
 
         var _resolve;
@@ -67,12 +67,13 @@ webpackConfig
             _resolve = resolve;
             _reject = reject;
         });
-
+        
         var server;
         var portfinder = require("portfinder");
         portfinder.basePort = port;
 
         console.log("> Starting dev server...");
+        
         devMiddleware.waitUntilValid(() => {
             portfinder.getPort((err, port) => {
                 if (err) {

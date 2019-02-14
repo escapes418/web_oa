@@ -22,7 +22,7 @@
                     
                     <RedStar label="客户名称：" :required="true">
                         <span class="right-con">
-                            <el-select clearable class="filter-item" v-model="filter.custInfoId" placeholder="请选择" filterable style="width:250px;" >
+                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请选择" style="width:250px;" :remote-method="searchCust">
                                 <el-option v-for="item in custArr" :label="item.custName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
@@ -38,7 +38,7 @@
                         </span>
                     </RedStar>
 
-                    <RedStar label="企业名称：" :required="false">
+                    <RedStar label="企业名称：" :required="true">
                         <span class="right-con">
                             <el-select 
                                 filterable
@@ -146,41 +146,30 @@
                 </table>
             </div>
         </div>
-        <!-- <el-dialog title="选择地图" :visible.sync="dialogMap" width="30%">
-            <el-amap-search-box class="search-box" :on-search-result="onSearchResult"></el-amap-search-box>
-            <el-amap vid="amapDemo" ref="map" :center="mapCenter" :zoom="12" class="amap-con" :events="mapEvent">
-                <el-amap-marker v-for="(marker,index) in markers" :position="marker.position" :events="marker.events" :key="index"></el-amap-marker>
-                <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible" :content="window.content"></el-amap-info-window>
-            </el-amap>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogMap = false">取消</el-button>
-                <el-button type="primary" @click="selectAddress">确认</el-button>
-            </div>
-        </el-dialog> -->
         <div class="segment-foot">
             <el-button type="primary" size="small" @click="add">新增</el-button>
             <el-button type="danger" size="small" @click="del">删除</el-button>
         </div>
     </div>
-    <el-dialog title="选择项目负责人" :visible.sync="dialogProVisible"  width="25%" :center="true" @close="closeProClick">
+    <el-dialog title="选择项目负责人" :visible.sync="dialogProVisible"  width="25%" :center="true">
         <el-input placeholder="输入关键字进行过滤" v-model="filterPro" style="margin-bottom:10px"></el-input>
-        <el-tree :data="treeData" :props="defaultProps" @node-click="handleProClick"  :filter-node-method="proNode" ref="proTee"></el-tree>
+        <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleProClick"  :filter-node-method="proNode" ref="proTree"></el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogProVisible = false">取消</el-button>
             <el-button type="primary" @click="selectPro">确认</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true" @close="closeMarketClick">
+    <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true">
         <el-input placeholder="输入关键字进行过滤" v-model="filterMarket" style="margin-bottom:10px"></el-input>
-        <el-tree :data="treeData" :props="defaultProps" @node-click="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
+        <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogMarketVisible = false">取消</el-button>
             <el-button type="primary" @click="selectMarket">确认</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="选择实施负责人" :visible.sync="dialogImpleVisible" width="25%" :center="true" @close="closeImpleClick">
+    <el-dialog title="选择实施负责人" :visible.sync="dialogImpleVisible" width="25%" :center="true">
         <el-input placeholder="输入关键字进行过滤" v-model="filterImple" style="margin-bottom:10px"></el-input>
-        <el-tree :data="treeData" :props="defaultProps" @node-click="handleImpleClick" :filter-node-method="impleNode" ref="impleTree"></el-tree>
+        <el-tree node-key="id" :data="treeData"  show-checkbox check-strictly :props="defaultProps" @check-change="handleImpleClick" :filter-node-method="impleNode" ref="impleTree"></el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogImpleVisible = false">取消</el-button>
             <el-button type="primary" @click="selectImple">确认</el-button>
@@ -272,22 +261,12 @@ export default {
                 holderCode:[]
             },
             custArr: [],
-            proTreeData: {},
-            marketTreeData: {},
-            impTreeData: {},
+            proData:[],
+            marketData:[],
+            impData:[],
             comList:[],
 
-            // dialogMap:false,
-            // mapCenter:[114.42158, 30.4549],
-            // mapEvent:{
-            //     init:(o)=>{}
-            // },
-            // markers: [],
-            // windows: [],
-            // window: '',
-            // position:{},
-            // tempId:''
-            tempList:[]
+            companyList:[]
         };
     },
     watch: {
@@ -295,7 +274,7 @@ export default {
             this.$refs.departTree.filter(val);
         },
         filterPro(val) {
-            this.$refs.proTee.filter(val);
+            this.$refs.proTree.filter(val);
         },
         filterMarket(val) {
             this.$refs.marketTree.filter(val);
@@ -313,6 +292,7 @@ export default {
             }).then(res => {
                 this.filter.id = res.data.id;
                 this.filter.custInfoId= res.data.custInfoId;
+                this.custArr.push({custName:res.data.custInfoName,id:res.data.custInfoId})
                 this.filter.officeId= res.data.officeId;
                 this.filter.impleLeaderId= res.data.impleLeaderId;
                 this.filter.marketLeaderId= res.data.marketLeaderId;
@@ -333,14 +313,9 @@ export default {
 
                 res.data.projectNodeDetailResponse = res.data.projectNodeDetailResponse || [];
                 this.$store.dispatch('fillItemList', res.data.projectNodeDetailResponse);
-                // this.itemList = res.data.projectNodeDetailResponse;
                 
             });
         }
-        //获取客户列表
-        custList({}).then(res => {
-            this.custArr = res.data;
-        });
     },
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -371,6 +346,16 @@ export default {
         this.treeData = newArr;
     },
     methods: {
+        searchCust(val){
+            if(val !==''){
+                custList({
+                    //还有项目名称
+                    custName:val,
+                }).then(res=>{
+                    this.custArr = res.data;
+                })
+            }
+        },
         selectAll(val) {
             this.$store.dispatch('fillItemListChecked', val);
         },
@@ -395,76 +380,7 @@ export default {
             }
             
         },
-        // showMap(row){
-        //     this.dialogMap = true;
-        //     this.tempId = row.index;
-        //     this.mapEvent.init()
-        // },
-        // onSearchResult(pois){
-        //     let latSum = 0;
-        //     let lngSum = 0;
-        //     let self = this;
-        //     let windows = [];
-        //     if (pois.length > 0) {
-        //         pois.forEach((poi,index) => {
-        //             let {lng, lat} = poi;
-        //             lngSum += lng;
-        //             latSum += lat;
-        //             this.markers.push({
-        //                 position:[poi.lng, poi.lat],
-        //                 events:{
-        //                     async click(){
-        //                         self.windows.forEach(window => {
-        //                             window.visible = false;
-        //                         });
-        //                         self.window = self.windows[index];
-        //                         self.$nextTick(() => {
-        //                             self.window.visible = true;
-        //                         });
-        //                         let res = await self.getAddress([poi.lng, poi.lat]);
-        //                         poi.formattedAddress = res.regeocode.formattedAddress;
-        //                         self.position = poi;
-        //                     }
-        //                 }
-        //             });
-        //             windows.push({
-        //                 position: [poi.lng, poi.lat],
-        //                 content: `<div class="prompt">${ poi.name }</div>`,
-        //                 visible: false
-        //             });
-        //             this.windows = windows;
-        //             let center = {
-        //                 lng: lngSum / pois.length,
-        //                 lat: latSum / pois.length
-        //             };
-        //             this.mapCenter = [center.lng, center.lat];
-        //         })
-        //     }
-        // },
-        // selectAddress(){
-        //     this.itemList.forEach(item=>{
-        //         if(item.index == this.tempId){
-        //             item.nodeAddress = this.position.formattedAddress;
-        //             item.lat = this.position.lat;
-        //             item.lng = this.position.lng;
-        //         }
-        //     })
-            
-        //     // console.log(map)
-        //     // this.$refs.map.$$getInstance().destroy();
-        //     this.dialogMap = false;
-        // },
-        // getAddress(lnglat){
-        //     return new Promise((resolve,reject)=>{
-        //         var geocoder = new AMap.Geocoder()  
-        //         geocoder.getAddress(lnglat, function(status, result) {
-        //             if (status === 'complete' && result.info === 'OK') {
-        //                 // result为对应的地理位置详细信
-        //                 resolve(result)
-        //             }
-        //         })
-        //     })
-        // },
+        
         searchCom(val){
             if(val !== ''){
                 getCompanyList({
@@ -496,46 +412,76 @@ export default {
             this.depart = data.name;
             this.filter.officeId = data.id;
         },
-        handleProClick(data) {
-            this.proTreeData = data;
-        },
-        closeProClick() {
-            if (this.proTreeData.userInfo) {
-                //有userInfo说明选中的是公司
-                this.proLeader = "";
-                this.filter.projectLeaderId = "";
+        handleProClick(data,select,childSelect) {
+            let index = this.proData.indexOf(data)
+            if(index<0&&this.proData.length ===1&&select){
                 this.$message({
-                    message: "请选择负责人而不是部门",
-                    type: "warning"
-                });
+                    message: "只能选择一个子节点作为项目负责人！",
+                    type: 'warning'
+                })
+                this.$refs.proTree.setChecked(data,false);
+            }else if(this.proData.length ===0&&select){
+                if(data.type =='2'&&data.status == '1'){
+                    this.proData = [];
+                    this.proData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.proTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.proData.length===1&&!select){
+                this.proData = []
             }
         },
-        handleMarketClick(data) {
-            this.marketTreeData = data;
-        },
-        closeMarketClick() {
-            if (this.marketTreeData.userInfo) {
-                //有userInfo说明选中的是公司
-                this.marketLeader = "";
-                this.filter.marketLeaderId = "";
+        handleMarketClick(data,select,childSelect) {
+            let index = this.marketData.indexOf(data)
+            if(index<0&&this.marketData.length ===1&&select){
                 this.$message({
-                    message: "请选择负责人而不是部门",
-                    type: "warning"
-                });
+                    message: "只能选择一个子节点作为市场负责人！",
+                    type: 'warning'
+                })
+                this.$refs.marketTree.setChecked(data,false);
+            }else if(this.marketData.length ===0&&select){
+                if(data.type =='2'&&data.status == '1'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.marketData.length===1&&!select){
+                this.marketData = []
             }
         },
-        handleImpleClick(data) {
-            this.impTreeData = data;
-        },
-        closeImpleClick() {
-            if (this.impTreeData.userInfo) {
-                //有userInfo说明选中的是公司
-                this.impleLeader = "";
-                this.filter.impleLeaderId = "";
+        handleImpleClick(data,select,childSelect) {
+            let index = this.impData.indexOf(data)
+            if(index<0&&this.impData.length ===1&&select){
                 this.$message({
-                    message: "请选择负责人而不是部门",
-                    type: "warning"
-                });
+                    message: "只能选择一个子节点作为实施负责人！",
+                    type: 'warning'
+                })
+                this.$refs.impleTree.setChecked(data,false);
+            }else if(this.impData.length ===0&&select){
+                if(data.type =='2'&&data.status == '1'){
+                    this.impData = [];
+                    this.impData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.impleTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.impData.length===1&&!select){
+                this.impData = []
             }
         },
         backStep() {
@@ -544,41 +490,43 @@ export default {
             });
         },
         selectPro() {
-            this.proLeader = this.proTreeData.name;
-            this.filter.projectLeaderId = this.proTreeData.id;
-            if (this.proLeader == "") {
+            if(this.proData.length){
+                this.proLeader = this.proData[0].name;
+                this.filter.projectLeaderId = this.proData[0].id;
+                this.dialogProVisible = false;
+            }else{
                 this.$message({
                     message: "请选择项目负责人",
                     type: "warning"
                 });
                 return;
             }
-            this.dialogProVisible = false;
         },
         selectMarket() {
-            this.marketLeader = this.marketTreeData.name;
-            this.filter.marketLeaderId = this.marketTreeData.id;
-            if (this.marketLeader == "") {
+            if(this.marketData.length){
+                this.marketLeader = this.marketData[0].name;
+                this.filter.marketLeaderId = this.marketData[0].id;
+                this.dialogMarketVisible = false;
+            }else{
                 this.$message({
                     message: "请选择市场负责人",
                     type: "warning"
                 });
                 return;
             }
-
-            this.dialogMarketVisible = false;
         },
         selectImple() {
-            this.impleLeader = this.impTreeData.name;
-            this.filter.impleLeaderId = this.impTreeData.id;
-            if (this.impleLeader == "") {
+            if(this.impData.length){
+                this.impleLeader = this.impData[0].name;
+                this.filter.impleLeaderId = this.impData[0].id;
+                this.dialogImpleVisible = false;
+            }else{
                 this.$message({
                     message: "请选择实施负责人",
                     type: "warning"
                 });
                 return;
             }
-            this.dialogImpleVisible = false;
         },
         saveProForm() {
             if (!this.filter.projectName) {
@@ -626,6 +574,13 @@ export default {
             if (!this.filter.marketLeaderId) {
                 this.$message({
                     message: "请选择市场负责人",
+                    type: "warning"
+                });
+                return;
+            }
+            if (this.filter.holderCode.length == 0) {
+                this.$message({
+                    message: "请输入企业名称",
                     type: "warning"
                 });
                 return;

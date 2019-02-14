@@ -10,8 +10,8 @@
                         <li class="base-li">
                             <RedStar label="合同名称：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.contractNameId" placeholder="请选择合同名称" style="width:260px;" @change="selectContract" @clear="clearContract">
-                                        <el-option v-for="item in conInfor" :label="item.contractName" :value="item.id" :key="item.id">
+                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.configCode" placeholder="请选择合同名称" style="width:260px;" @change="selectContract" @clear="clearContract">
+                                        <el-option v-for="item in conInfor" :label="item.contractName" :value="item.code" :key="item.code">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -298,6 +298,7 @@ export default {
                 contractEndTime : '',//合同结束日期 ,
                 contractLeaderId : '',//合同负责人ID ,
                 contractName : '',//合同名称 ,
+                configCode:'',
                 contractNameId : '',//合同名称模版ID ,
                 signLeaderId :'', //合同签约人ID ,
                 contractStartTime : '',//合同开始日期 ,
@@ -377,12 +378,15 @@ export default {
                             res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
                                 for (let key in item){
                                     if(i.columnName == key){
+                                        i.value = item[key]
                                         if(i.columnType == 'select'){
                                             //回填initData中的value数据
-                                            i.value = item[key].slice(0,item[key].indexOf('&'));
+                                            // i.value = item[key].slice(0,item[key].indexOf('&'));
                                             i.label = item[key].slice(item[key].indexOf('&')+1,item[key].length);
-                                        }else{
-                                            i.value = item[key]
+                                        }
+                                        if(i.columnType == 'select-cust'){
+                                            // i.value = item[key].slice(0,item[key].indexOf('&'));
+                                            i.label = item[key].slice(item[key].indexOf('&')+1,item[key].length);
                                         }
                                     }
                                 }
@@ -392,92 +396,8 @@ export default {
                     this.associationMain = respond.data.associationMain == 1;
                     this.$store.dispatch('setData',respond.data.contractPartyList);
                 })
-                
-                // //所有项目列表
-                // findAllProject({}).then(res=>{
-                //     res.data.list.forEach(item=>{
-                //         for(let key in this.postData.projectIds){
-                //             if(item.id == this.postData.projectIds[key]){
-                //                 this.projectList.push(item)
-                //             }
-                //         }
-                //     })
-                // })
-
             })
-        }
-        // if (this.$route.query.key) {
-        //     getDetail({
-        //         contractFlowId: this.$route.query.key
-        //         // contractFlowId:"9c0a072e6dc447b3954160ab0eee9ed2"
-        //     }).then(res => {
-        //         this.postData = res.data.contractFlowDetailInfoNewResponse;
-        //         this.postData.contractNameId = res.data.contractFlowDetailInfoNewResponse.configId;
-        //         this.contractStartTime = common.timeParseObj(res.data.contractFlowDetailInfoNewResponse.contractStartTime);
-        //         this.contractEndTime = common.timeParseObj(res.data.contractFlowDetailInfoNewResponse.contractEndTime);
-        //         getContractConfig({
-        //             id:res.data.contractFlowDetailInfoNewResponse.configId
-        //         }).then(respond=>{
-        //             respond.data.contractConfigAttachmentList.forEach(item=>{
-        //                 if(item.attachmentType == 1){
-        //                     this.contractMustCount = item.mustCount;
-        //                     this.contractMaxCount = item.maxCount;
-        //                 }
-        //                 if(item.attachmentType == 3){
-        //                     this.dataMustCount = item.mustCount;
-        //                     this.dataMaxCount = item.maxCount;
-        //                 }
-        //             })
-        //             respond.data.contractPartyList.forEach(item=>{
-        //                 item.contractPartyType.forEach(i=>{
-        //                     res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
-        //                         for (let key in item){
-        //                             if(i.columnName == key){
-        //                                 if(i.columnType == 'select'){
-        //                                     //回填initData中的value数据
-        //                                     i.value = item[key].slice(0,item[key].indexOf('&'));
-        //                                     i.label = item[key].slice(item[key].indexOf('&')+1,item[key].length);
-        //                                 }else{
-        //                                     i.value = item[key]
-        //                                 }
-        //                             }
-        //                         }
-        //                     })
-        //                 })
-        //             })
-        //             this.associationMain = respond.data.associationMain == 1;
-        //             this.$store.dispatch('setData',respond.data.contractPartyList);
-        //         })
-                
-        //         if (
-        //             res.data.contractFlowDetailInfoNewResponse.contractAttachmentList &&
-        //             res.data.contractFlowDetailInfoNewResponse.contractAttachmentList.length > 0
-        //         ) {
-        //             res.data.contractFlowDetailInfoNewResponse.contractAttachmentList.forEach(item => {
-        //                 let originUrl = item.contractAttachmentUrl;
-        //                 item.url = item.urlPrefix + item.url;
-        //                 if(item.fileType == 1){
-        //                     this.contractAttachment.push({
-        //                         url: item.url,
-        //                         name: item.name,
-        //                         contractAttachmentUrl: originUrl,
-        //                         fileType:item.fileType
-        //                     })
-        //                 }
-        //                 if(item.fileType == 3){
-        //                     this.dataAttachment.push({
-        //                         url: item.url,
-        //                         name: item.name,
-        //                         contractAttachmentUrl: originUrl,
-        //                         fileType:item.fileType
-        //                     })
-        //                 }
-                        
-        //             });
-        //         }
-                
-        //     })
-        // }
+        }   
     },
     computed: {
         ...mapState({
@@ -510,6 +430,7 @@ export default {
                 getDetail({
                     contractFlowId: this.$route.query.key
                 }).then(res=>{
+                    res.data.contractFlowDetailInfoNewResponse.contractCode = res.data.contractFlowDetailInfoNewResponse.configCode
                     this.postData = res.data.contractFlowDetailInfoNewResponse;
                     res.data.contractFlowDetailInfoNewResponse.projectList.forEach(item=>{
                         let temObj = {}
@@ -617,7 +538,12 @@ export default {
             this.dialogFormVisible = false;
         },
         selectContract(){
-            if(this.postData.contractNameId){
+            if(this.postData.configCode){
+                this.conInfor.forEach(item=>{
+                    if(item.code == this.postData.configCode){
+                        this.postData.contractNameId = item.id
+                    }
+                })
                 this.getConfig(this.postData.contractNameId);
             }
         },
@@ -717,18 +643,13 @@ export default {
             this.initData.forEach(item=>{
                 item.contractPartyType.forEach(i=>{
                     if(i.required == 1){
-                        if(i.label){
-                            temObj[i.columnName] = i.value+'&'+i.label;
-                        }else{
-                            temObj[i.columnName] = i.value;
-                        }
+                        temObj[i.columnName] = i.value;
                     }
                 })
             })
             this.postData.contractAttachmentList = [...this.dataAttachment,...this.contractAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
-            console.log({...temObj})
             if (contractFormVali(this)) {
                 conApply({...this.postData,...temObj}).then(res => {
                     if (res.status == 0) {

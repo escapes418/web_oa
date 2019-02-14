@@ -122,3 +122,19 @@ export function downFile(params){
 }
 
 
+export function getMember(params){
+    return request({
+      url:'/commonInfo/queryUserInfo',
+      method:'post',
+      data:params
+    })
+}
+
+
+export function moveContracts(params){
+    return request({
+      url:'/contractHis/contractHisBatchMove',
+      method:'post',
+      data:params
+    })
+}

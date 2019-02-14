@@ -5,13 +5,15 @@
         <slot v-if="item.columnType == 'text'">
             <el-input v-model.trim="item.value" size="medium" type="text" auto-complete="off" :placeholder="'请输入'+item.columnLabel" class="pr-5" style="width:260px;" :readonly="item.readonly=='1'"></el-input>
         </slot>
-        <slot v-else>
+        <slot v-if="item.columnType == 'select-cust'">
+            <el-select v-model="item.value" size="medium" filterable clearable remote :placeholder="'请选择'+ item.columnLabel" style="width:260px;" @change="selectCustItem" @clear="cleaCustItem" :remote-method="seachItem">
+                <el-option v-for="(i, index) in selectCust" :key="i.key" :label="i.value" :value="i.key"></el-option>
+            </el-select>
+        </slot>
+        <slot v-if="item.columnType == 'select'">
             <el-select v-model="item.value" size="medium" filterable clearable :placeholder="'请选择'+ item.columnLabel" style="width:260px;" @change="selectItem" @clear="cleaItem">
                 <el-option v-for="(i, index) in selectList" :key="i.key" :label="i.value" :value="i.key"></el-option>
             </el-select>
-            <!-- <el-select v-model="item.value" size="medium" filterable clearable remote placeholder="请选择" style="width:260px;" @change="selectItem" @clear="cleaItem" :remote-method="seachItem">
-                <el-option v-for="(i, index) in selectList" :key="i.key" :label="i.value" :value="i.key"></el-option>
-            </el-select> -->
         </slot>
     </el-form-item>
 </template>
@@ -26,7 +28,8 @@ export default {
 
     data() {
         return {
-            selectList:[]
+            selectList:[],
+            selectCust:[]
         }
     },
     props: {
@@ -36,22 +39,10 @@ export default {
     },
     watch:{
         'item.value':function(val){
-            if(/[`~!@$%^&*\+=?:"{}|\/;\\[\]·~！@￥%……&*\+={}|《》？：【】、；]/i.test(val)){
-                this.$message({
-                    message: "请输入正确字符！",
-                    type: 'error'
-                })
-                return;
-            }else{
-                this.$store.dispatch('changeItem',this.item);
-            }
-            // if(this.item.columnType == 'text'){
-            // 
-            // }
-            
+            this.$store.dispatch('changeItem',this.item);
         },
         'item.url':function(url){
-            if (url) {
+            if (this.item.columnType == 'select'&&url) {
                 // 根据项目自行修改
                 request({
                     url:url,
@@ -68,7 +59,7 @@ export default {
     },
     created() {
         const {url,memberType} = this.item
-        if (url) {
+        if (this.item.columnType == 'select') {
             // 根据项目自行修改
             request({
                 url:url,
@@ -81,6 +72,9 @@ export default {
                 this.selectList = res.data 
             })
         }
+        if(this.item.columnType == 'select-cust'&&this.item.value){
+            this.selectCust.push({key:this.item.value,value:this.item.label})
+        }
     },
     mounted() {
         // console.log(config.options)
@@ -89,7 +83,13 @@ export default {
         selectItem(){
             this.selectList.forEach(i => {
                 if(i.key == this.item.value){
-                    this.item.label = i.value
+                    this.$store.dispatch('dispatchItem',i);
+                }
+            });
+        },
+        selectCustItem(){
+            this.selectCust.forEach(i => {
+                if(i.key == this.item.value){
                     this.$store.dispatch('dispatchItem',i);
                 }
             });
@@ -97,10 +97,14 @@ export default {
         cleaItem(){
             this.$store.dispatch('cleanItem',this.item)
         },
+        cleaCustItem(){
+            this.$store.dispatch('cleanItem',this.item)
+            this.selectCust = []
+        },
         seachItem(val){
             if(val!==''){
                 if(this.item.url){
-                        request({
+                    request({
                         url:this.item.url,
                         method:'post',
                         data:{
@@ -108,7 +112,7 @@ export default {
                             memberType:this.item.memberType
                         }
                     },false).then(res => {
-                        this.selectList = res.data 
+                        this.selectCust = res.data 
                     })
                 }
                 

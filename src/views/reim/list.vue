@@ -34,6 +34,9 @@
                 <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">费用报销申请</el-button>
             </div>
             <div class="toolmore-control">
+                <div class="toolbar-item">
+                    <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="exportFile">导出Excel</el-button>
+                </div>
                 <el-button icon="el-icon-arrow-up" v-if="toolexpand" class="toolmore-control-btn" @click="toolexpand = false">收起</el-button>
                 <el-button icon="el-icon-arrow-down" v-else class="toolmore-control-btn" @click="toolexpand = true">展开</el-button>
             </div>
@@ -45,11 +48,11 @@
                             <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
                             </el-date-picker>
                         </div>
-                        <!-- <div class="toolbar-item">
+                        <div class="toolbar-item">
                             <span class="item-label">流程名称：</span>
                             <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程名称" v-model="listQuery.procName">
                             </el-input>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </el-collapse-transition>
@@ -116,7 +119,7 @@
 
 <script>
 import common from '@/utils/common'
-import { fetchList ,fetchProDic} from '@/api/reim'
+import { fetchList ,fetchProDic,downReim} from '@/api/reim'
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils'
@@ -205,7 +208,6 @@ export default {
         handleMarketClick(data) {
             this.marketLeader = data.name
             this.filter.marketLeaderId = data.id
-            console.log(data);
         },
         marketNode(value, data){
             if (!value) return true;
@@ -267,6 +269,21 @@ export default {
         },
         handleCreate() {
             this.$router.push({path: '/me/reimForm'})
+        },
+        exportFile(){
+            var postData = this.reduceParams(this.$$queryStub);
+            downReim({
+                ...postData
+            }).then(res=>{
+                if(res.status == 0){
+                    var url = `./OA${res.data}`;
+                    window.location.href = url;
+                    this.$message({
+                        message:res.message,
+                        type:'success'
+                    })
+                }
+            })
         }
     }
 }

@@ -78,7 +78,7 @@ export function contractFormVali(self) {
         let key = true
         item&&item.contractPartyType.some(i=>{
             if(i.required == 1){
-                if(i.value=='' || /[`~!@$%^&*\+=?:"{}|\/;\\[\]·~！@￥%……&*\+={}|《》？：【】、；]/i.test(i.value)){
+                if(i.value=='' || /[`~!@$%^*\+=?:"{}|\/;\\[\]·~！@￥%……*\+={}|《》？：【】、；]/i.test(i.value)){
                     key = false;
                     return true;
                 }

@@ -58,6 +58,12 @@
                 </div>
             </el-collapse-transition>
         </div>
+
+        <div class="filter-container">
+            <div class="toolbar-item">
+                <el-button v-if="ids.indexOf('oa-coopList-moveBtn') !== -1" class="filter-item" type="primary" @click="moveCoop">批量移动协作</el-button>
+            </div>
+        </div>
         <template>
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="我参与的" name="1"></el-tab-pane>
@@ -65,7 +71,11 @@
                 <el-tab-pane label="全部" name="3"></el-tab-pane>
             </el-tabs>
         </template>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
             <el-table-column align="center" label="标题">
                 <template slot-scope="scope">
                     <span style="color:#409EFF;cursor: Pointer;" :title="scope.row.title"  @click="showDetail(scope.row)">{{scope.row.title}}</span>
@@ -165,6 +175,39 @@
             <!-- </div> -->
         </el-dialog>
 
+        <el-dialog title="批量移动协作" :visible.sync="dialogMoveVisible" width="35%" :before-close="moveClose">
+            <div class="move-item">
+                <div>
+                    已选择：
+                </div>
+                <span v-for="item in selectCoop">
+                    <span class="select-item">{{item.title}}</span>
+                </span>
+            </div>
+            <div class="merge-item">
+                <el-checkbox v-model="coopChecked" label="协作负责人"></el-checkbox>
+            </div>
+            <div class="move-select">
+                <div class="move-item">
+                    <span class="item-label">协作负责人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="coopLeaderId"
+                        :disabled="!coopChecked"
+                        filterable
+                        placeholder="请选择协作负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmMove">确认</el-button>
+                <el-button @click="moveCancel">取消</el-button>
+            </span>
+        </el-dialog>
+
         <div class="pagination-container">
             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -177,7 +220,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import Department from "@/components/Department";
 import RedStar from '@/components/RedStar/RedStar.vue';
-import { fetchList ,addComment,editPart,selectcharge,getPart,getLabelList,getTypeList,downFile} from '@/api/cooprate';
+import { fetchList ,addComment,editPart,selectcharge,getPart,getLabelList,getTypeList,downFile,getMember,moveCoops} from '@/api/cooprate';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -201,6 +244,7 @@ export default {
         ...mapState({
             token: state => state.user.token,
             coopListPlace:state => state.coop.coopListPlace,
+            ids:state => state.permission.ids
         })
     },
     watch:{
@@ -269,7 +313,13 @@ export default {
             partList:[],
             defaultList:[],
 
-            dialogDown:false
+            dialogDown:false,
+
+            selectCoop:[],
+            coopChecked:false,
+            coopLeaderId:'',
+            memberList:[],
+            dialogMoveVisible:false
         }
     },
     created() {
@@ -307,7 +357,69 @@ export default {
         })
     },
     methods: {
+        handleSelectionChange(val){
+            this.selectCoop = val;
+        },
+        moveCoop(){
+            if(this.selectCoop.length<1){
+                this.$message({
+                    message:'请选择要移动的协作！',
+                    type:"warning"
+                })
+                return
+            }
+            this.dialogMoveVisible = true;
+            getMember({}).then(res=>{
+                if(res.status == 0){
+                    this.memberList = res.data
+                }
+            })
+        },
+        moveClose(){
+            this.dialogMoveVisible = false;
+            this.conopLeaderId = "";
+            this.coopChecked = false;
+        },
+        confirmMove(){
+            if(this.coopChecked){
+                if(!this.coopLeaderId){
+                    this.$message({
+                        message:'请选择合同负责人！',
+                        type:'warning'
+                    })
+                    return
+                }
 
+                let coopIds = [];
+                this.selectCoop.forEach(item=>{
+                    coopIds.push(item.id)
+                })
+                moveCoops({
+                    needFlowIds:coopIds,
+                    principal:this.coopLeaderId,
+                }).then(res=>{
+                    if(res.status == 0){
+                        this.moveClose();
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.getList()
+                    }
+                })
+            }else{
+                this.coopLeaderId = ""
+                this.$message({
+                    message:'请为移动合同勾选相关负责人！',
+                    type:'warning'
+                })
+            }
+        },
+        moveCancel(){
+            this.dialogMoveVisible = false;
+            this.coopLeaderId = "";
+            this.coopChecked = false;
+        },
         exportFile(type){
             var postData = this.reduceParams(this.$$queryStub);
             downFile({

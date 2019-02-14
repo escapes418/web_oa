@@ -36,7 +36,7 @@
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">企业名称：</span>
                                     <span class="right-con">
-                                        {{ detail.companyName }}
+                                        {{ companyList.join('，') }}
                                     </span>
                                 </div>
                             </el-col>
@@ -340,15 +340,9 @@ export default {
                 id: this.$route.query.key
             }).then(res => {
                 this.detail = res.data;
-                res.data.mainCompany.forEach(item=>{
+                res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
                     this.companyList.push(item.companyName)
                 })
-                // res.data.projectNodeDetailResponse = res.data.projectNodeDetailResponse || [];
-                // res.data.projectNodeDetailResponse.forEach((item,index)=>{
-                //     item.index = index + 1
-                // })
-                // this.itemList = res.data.projectNodeDetailResponse;
-                
             });
             this.$$queryStub = this.$$listQuery;
             this.getIm()

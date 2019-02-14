@@ -52,7 +52,6 @@
                 </div>
             </el-collapse-transition>
         </div>
-
         <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
             <el-table-column align="center" label="流程编号" width="150px">
                 <template slot-scope="scope">
@@ -100,7 +99,7 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        
         <div class="pagination-container">
             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -110,7 +109,7 @@
 
 <script>
 import common from '@/utils/common';
-import { fetchList ,getContractTemlist} from '@/api/contractCheck';
+import { fetchList ,getContractTemlist,} from '@/api/contractCheck';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -146,6 +145,12 @@ export default {
             },
             expStatuList:[],
             comInfor: [],
+
+            selectContract:[],
+            contractChecked:false,
+            contractLeaderId:'',
+            memberList:[],
+            dialogMoveVisible:false
         }
     },
     computed: {
@@ -154,7 +159,6 @@ export default {
         })
     },
     created() {
-        console.log(this.ids.indexOf('addContractCheck') == -1)
         this.$$queryStub = this.$$listQuery;
         this.getList();
         this.listLoading = false;
@@ -247,5 +251,25 @@ export default {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     word-break: break-all;
+}
+
+.merge-item{
+    margin: 5px;
+}
+.select-item{
+    margin-right: 5px
+}
+.move-item{
+    padding: 10px;
+    background: #f2f7fa;
+    color: #343434;
+    .item-label{
+        float: left;
+        width: 100px;
+    }
+    .filter-item{
+        display: inline-block;
+        margin-left: 30px
+    }
 }
 </style>

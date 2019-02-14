@@ -32,7 +32,7 @@
                                 </li>
                                 <li class="base-li" v-if="!associationMain">
                                     <span class="left-title font-gray">关联项目：</span>
-                                    <span class="right-con">{{ projectName.join(',') }}</span>
+                                    <span class="right-con" style="max-width:400px">{{ projectName.join(',') }}</span>
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同申请人：</span>
@@ -370,7 +370,7 @@ export default {
                     res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
                         for (let key in item){
                             if(i.columnName == key){
-                                if(i.columnType=='select'){
+                                if(i.columnType=='select' || i.columnType=='select-cust'){
                                     i.value = item['value']
                                 }else{
                                     i.value = item[key]
@@ -382,130 +382,7 @@ export default {
             })
             this.associationMain = respond.data.associationMain == 1
             this.detail.contractPartyList = respond.data.contractPartyList;
-            // getContractConfig({
-            //     id:res.data.contractFlowDetailInfoNewResponse.configId
-            // }).then(respond=>{
-            //     respond.data.contractConfigAttachmentList.forEach(item=>{
-            //         if(item.attachmentType == 2){
-            //             this.scanMustCount = item.mustCount;
-            //             this.scanMaxCount = item.maxCount;
-            //         }
-            //     })
-            //     respond.data.contractPartyList.forEach(item=>{
-            //         item.contractPartyType.forEach(i=>{
-            //             res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
-            //                 for (let key in item){
-            //                     if(i.columnName == key){
-            //                         if(i.columnType=='select'){
-            //                             i.value = item['value']
-            //                             console.log(item['value'])
-            //                         }else{
-            //                             i.value = item[key]
-            //                         }
-            //                     }
-            //                 }
-            //             })
-            //         })
-            //     })
-            //     this.associationMain = respond.data.associationMain == 1
-            //     this.detail.contractPartyList = respond.data.contractPartyList;
-            //     // this.detail
-            // })
-        
-            // let allProjectRes = await findAllProject({})
-            // allProjectRes.data.list.forEach(item=>{
-            //     for(let key in this.detail.projectIds){
-            //         if(item.id == this.detail.projectIds[key]){
-            //             this.projectName.push(item.projectName)
-            //         }
-            //     }
-            // })
-            // findAllProject({}).then(res=>{
-            //     res.data.list.forEach(item=>{
-            //         for(let key in this.detail.projectIds){
-            //             if(item.id == this.detail.projectIds[key]){
-            //                 this.projectName.push(item.projectName)
-            //             }
-            //         }
-            //     })
-            // })
-
         })
-        // getDetail({
-        //     contractFlowId: this.$route.query.key
-        // }).then(res => {
-        //     this.detail = res.data.contractFlowDetailInfoNewResponse;
-        //     getContractConfig({
-        //         id:res.data.contractFlowDetailInfoNewResponse.configId
-        //     }).then(respond=>{
-        //         respond.data.contractConfigAttachmentList.forEach(item=>{
-        //             if(item.attachmentType == 2){
-        //                 this.scanMustCount = item.mustCount;
-        //                 this.scanMaxCount = item.maxCount;
-        //             }
-        //         })
-        //         respond.data.contractPartyList.forEach(item=>{
-        //             item.contractPartyType.forEach(i=>{
-        //                 res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
-        //                     for (let key in item){
-        //                         if(i.columnName == key){
-        //                             if(i.columnType=='select'){
-        //                                 i.value = item['value']
-        //                                 console.log(item['value'])
-        //                             }else{
-        //                                 i.value = item[key]
-        //                             }
-        //                         }
-        //                     }
-        //                 })
-        //             })
-        //         })
-        //         this.associationMain = respond.data.associationMain == 1
-        //         this.detail.contractPartyList = respond.data.contractPartyList;
-        //         // this.detail
-        //     })
-        //     this.flowLoglist = res.data.flowLoglist;
-        //     if (
-        //         res.data.contractFlowDetailInfoNewResponse.contractAttachmentList &&
-        //         res.data.contractFlowDetailInfoNewResponse.contractAttachmentList.length > 0
-        //     ) {
-        //         res.data.contractFlowDetailInfoNewResponse.contractAttachmentList.forEach(item => {
-        //             let originUrl = item.contractAttachmentUrl;
-        //             item.url = item.urlPrefix + item.contractAttachmentUrl;
-        //             if(item.fileType == 1){
-        //                 this.contractAttachment.push({
-        //                     url: item.url,
-        //                     name: item.name,
-        //                     originUrl: originUrl,
-        //                     fileType:item.fileType,
-        //                     previewUrl: item.url,
-        //                     viewer: null
-        //                 })
-        //             }
-        //             if(item.fileType == 3){
-        //                 this.dataAttachment.push({
-        //                     url: item.url,
-        //                     name: item.name,
-        //                     originUrl: originUrl,
-        //                     fileType:item.fileType,
-        //                     previewUrl: item.url,
-        //                     viewer: null
-        //                 });
-        //             }
-        //             if(item.fileType == 2){
-        //                 this.scanConAttachment.push({
-        //                     url: item.url,
-        //                     name: item.name,
-        //                     originUrl: originUrl,
-        //                     fileType:item.fileType,
-        //                     previewUrl: item.url,
-        //                     viewer: null
-        //                 });
-        //             }
-                    
-        //         });
-        //     }
-        // });
     },
     methods: {
         detailPromise(){

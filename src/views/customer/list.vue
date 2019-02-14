@@ -66,7 +66,7 @@
         </div>
         <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true" @close="dialogMarketVisible = false">
             <el-input placeholder="输入关键字进行过滤" v-model="filterMarket" style="margin-bottom:10px"></el-input>
-            <el-tree :data="treeData" :props="defaultProps" @node-click="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
+            <el-tree :data="treeData" node-key="id" show-checkbox check-strictly :props="defaultProps" @check-change="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogMarketVisible = false">取消</el-button>
                 <el-button type="primary" @click="selectMarket">确认</el-button>
@@ -122,7 +122,7 @@ export default {
             marketLeader:'',
             treeData: [],
             filterMarket: "",
-            marketTreeData: {},
+            marketData: [],
             
             listQuery: {
                 timeRange: [],
@@ -192,26 +192,46 @@ export default {
         this.treeData = newArr;
     },
     methods: {
-        handleMarketClick(data) {
-            this.marketTreeData = data;
+        handleMarketClick(data,select,childSelect) {
+            let index = this.marketData.indexOf(data)
+            if(index<0&&this.marketData.length ===1&&select){
+                this.$message({
+                    message: "只能选择一个子节点作为市场负责人！",
+                    type: 'warning'
+                })
+                this.$refs.marketTree.setChecked(data,false);
+            }else if(this.marketData.length ===0&&select){
+                if(data.type =='2'&&data.status == '1'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.marketData.length===1&&!select){
+                this.marketData = []
+            }
         },
         marketNode(value, data) {
-            console.log(value)
             if (!value) return true;
             return data.name.indexOf(value) !== -1;
         },
         selectMarket() {
-            this.marketLeader = this.marketTreeData.name;
-            this.listQuery.marketLeaderId = this.marketTreeData.id;
-            if (this.marketLeader == "") {
+            if(this.marketData.length){
+                this.marketLeader = this.marketData[0].name;
+                this.listQuery.marketLeaderId = this.marketData[0].id;
+                this.dialogMarketVisible = false;
+            }else{
                 this.$message({
-                message: "请选择市场负责人",
-                type: "warning"
+                    message: "请选择市场负责人",
+                    type: "warning"
                 });
                 return;
             }
-
-            this.dialogMarketVisible = false;
         },
         handleClick(val){
             this.$store.dispatch('changeCust', val.name);

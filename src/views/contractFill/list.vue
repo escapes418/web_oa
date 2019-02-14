@@ -67,8 +67,16 @@
                 </div>
             </el-collapse-transition>
         </div>
-
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <div class="filter-container">
+            <div class="toolbar-item">
+                <el-button v-if="ids.indexOf('inforManage-projectList-moveBtn')!==-1" class="filter-item" type="primary" @click="moveContract">批量移动合同</el-button>
+            </div>
+        </div>
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
             <el-table-column align="center" label="合同编号" width="100px">
                 <template slot-scope="scope">
                     <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.contractCode}}</span>
@@ -227,6 +235,39 @@
             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
+
+        <el-dialog title="批量移动合同" :visible.sync="dialogMoveVisible" width="35%" :before-close="moveClose">
+            <div class="move-item">
+                <div>
+                    已选择：
+                </div>
+                <span v-for="item in selectContract">
+                    <span class="select-item">{{item.contractName}}</span>
+                </span>
+            </div>
+            <div class="merge-item">
+                <el-checkbox v-model="contractChecked" label="合同负责人"></el-checkbox>
+            </div>
+            <div class="move-select">
+                <div class="move-item">
+                    <span class="item-label">合同负责人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="contractLeaderId"
+                        :disabled="!contractChecked"
+                        filterable
+                        placeholder="请选择合同负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmMove">确认</el-button>
+                <el-button @click="moveCancel">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -235,7 +276,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 
 import RedStar from '@/components/RedStar/RedStar.vue';
-import { fetchList ,getContractTemlist,findAllProject,fetchMember,getProject,eidtList,renewList,abandonList,getDetail} from '@/api/contractFill';
+import { fetchList ,getContractTemlist,findAllProject,fetchMember,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember} from '@/api/contractFill';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -269,7 +310,7 @@ export default {
             },
             toolexpand:false,
             list: [],
-            total: null,
+            total: 0,
             pageNo: 1,
             pageSize: 20,
             listLoading: true,
@@ -307,7 +348,13 @@ export default {
             abandonId:'',
             abandonAttachment:[],
 
-            allProject:[]
+            allProject:[],
+
+            selectContract:[],
+            contractChecked:false,
+            contractLeaderId:'',
+            memberList:[],
+            dialogMoveVisible:false
         }
     },
     created() {
@@ -339,17 +386,73 @@ export default {
 
         findAllProject({}).then(res=>{
             this.allProject = res.data.list
-            // res.data.list.forEach(item=>{
-            //     for(let key in this.projectIds){
-            //         if(item.id == this.projectIds[key]){
-            //             this.projectList.push(item)
-            //         }
-            //     }
-            // })
         })
         
     },
     methods: {
+        handleSelectionChange(val){
+            this.selectContract = val;
+        },
+        moveContract(){
+            if(this.selectContract.length<1){
+                this.$message({
+                    message:'请选择要移动的合同！',
+                    type:"warning"
+                })
+                return
+            }
+            this.dialogMoveVisible = true;
+            getMember({}).then(res=>{
+                if(res.status == 0){
+                    this.memberList = res.data
+                }
+            })
+        },
+        moveClose(){
+            this.dialogMoveVisible = false;
+            this.contractLeaderId = "";
+            this.contractChecked = false;
+        },
+        confirmMove(){
+            if(this.contractChecked){
+                if(!this.contractLeaderId){
+                    this.$message({
+                        message:'请选择合同负责人！',
+                        type:'warning'
+                    })
+                    return
+                }
+
+                let contractIds = [];
+                this.selectContract.forEach(item=>{
+                    contractIds.push(item.id)
+                })
+                moveContracts({
+                    contractHisIds:contractIds,
+                    contractLeaderId:this.contractLeaderId,
+                }).then(res=>{
+                    if(res.status == 0){
+                        this.moveClose();
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.getList()
+                    }
+                })
+            }else{
+                this.impleLeaderId = ""
+                this.$message({
+                    message:'请为移动合同勾选相关负责人！',
+                    type:'warning'
+                })
+            }
+        },
+        moveCancel(){
+            this.dialogMoveVisible = false;
+            this.contractLeaderId = "";
+            this.contractChecked = false;
+        },
         searchProject(val){
             // this.projectList = [];
             if(val !==''){
@@ -592,5 +695,25 @@ export default {
     -webkit-box-orient: vertical;
     word-break: break-all;
     margin-top: -3px;
+}
+
+.merge-item{
+    margin: 5px;
+}
+.select-item{
+    margin-right: 5px
+}
+.move-item{
+    padding: 10px;
+    background: #f2f7fa;
+    color: #343434;
+    .item-label{
+        float: left;
+        width: 100px;
+    }
+    .filter-item{
+        display: inline-block;
+        margin-left: 30px
+    }
 }
 </style>

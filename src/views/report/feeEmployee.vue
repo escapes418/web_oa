@@ -55,72 +55,77 @@
                 <span class="ignore-detail">{{scope.row.employeeName}}</span>
             </template>
         </el-table-column>
-        <el-table-column width="120px" align="center" :label="year+'年1月'">
+        <!-- <el-table-column align="center" label="部门"  width="120px">
+            <template slot-scope="scope">
+                <span class="ignore-detail">{{scope.row.officeName}}</span>
+            </template>
+        </el-table-column> -->
+        <el-table-column width="100px" align="center" :label="year+'年1月'">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m1">{{scope.row.m1}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年2月'" width="120px" align="center">
+        <el-table-column :label="year+'年2月'" width="100px" align="center">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m2">{{scope.row.m2}}</span>
             </template>
         </el-table-column>
-        <el-table-column  align="center" :label="year+'年3月'" width="120px">
+        <el-table-column  align="center" :label="year+'年3月'" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m3">{{scope.row.m3}}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="year+'年4月'" align="center" width="120px">
+        <el-table-column  :label="year+'年4月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m4">{{scope.row.m4}}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="year+'年5月'" align="center" width="120px">
+        <el-table-column  :label="year+'年5月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m5">{{scope.row.m5 }}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="year+'年6月'" align="center" width="120px">
+        <el-table-column  :label="year+'年6月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m6">{{scope.row.m6}}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="year+'年7月'" align="center" width="120px">
+        <el-table-column  :label="year+'年7月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m7">{{scope.row.m7}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年8月'" align="center" width="120px">
+        <el-table-column :label="year+'年8月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m8">{{scope.row.m8}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年9月'" align="center" width="120px">
+        <el-table-column :label="year+'年9月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m10">{{scope.row.m9}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年10月'" align="center" width="120px">
+        <el-table-column :label="year+'年10月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m10">{{scope.row.m10}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年11月'" align="center" width="120px">
+        <el-table-column :label="year+'年11月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m11">{{scope.row.m11}}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="year+'年12月'" align="center" width="120px">
+        <el-table-column :label="year+'年12月'" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m12">{{scope.row.m12}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="总计（行）" align="center" width="120px">
+        <el-table-column label="总计（行）" align="center" width="100px">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.rowTotal">{{scope.row.rowTotal}}</span>
             </template>
         </el-table-column>
-        <el-table-column width="100px" align="center" label="操作" class-name="small-padding fixed-width">
+        <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
             <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" :disabled="scope.row.isDetail == 0">详情</el-button>
             </template>
@@ -288,12 +293,12 @@ export default {
                 year:this.listQuery.year
             }).then(res=>{
                 if(res.status == 0){
-                var url = `./OA${res.data}`;
-                window.location.href = url;
-                this.$message({
-                    message:res.message,
-                    type:'success'
-                })
+                    var url = `./OA${res.data}`;
+                    window.location.href = url;
+                    this.$message({
+                        message:res.message,
+                        type:'success'
+                    })
                 }
             })
         },

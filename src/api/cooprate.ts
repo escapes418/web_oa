@@ -116,10 +116,25 @@ export function getPlan(params){
 
 export function downFile(params){
     return request({
-        url:'/commonInfo/downFiles',
+        url:'/needFlow/exportProgressOrComment',
         method:'post',
         data:params
     })
 }
 
+export function getMember(params){
+    return request({
+      url:'/commonInfo/queryUserInfo',
+      method:'post',
+      data:params
+    })
+}
 
+
+export function moveCoops(params){
+    return request({
+      url:'/needFlow/needFlowBatchMove',
+      method:'post',
+      data:params
+    })
+}

@@ -13,9 +13,21 @@
                     </el-option>
                 </el-select>
             </div>
-            <div class="toolbar-item">
+            <!-- <div class="toolbar-item">
                 <span class="item-label">项目负责人：</span>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入项目负责人"  v-model.trim="listQuery.projectLeaderName">
+                </el-input>
+            </div> -->
+            <div class="toolbar-item">
+                <span class="item-label">负责人类型：</span>
+                <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.leaderType" placeholder="请选择">
+                    <el-option v-for="item in leaderTypeList" :key="item.value" :label="item.name" :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="toolbar-item">
+                <span class="item-label">负责人：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -53,8 +65,16 @@
                 </div>
             </el-collapse-transition>
         </div>
-
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <div class="filter-container">
+            <div class="toolbar-item">
+                <el-button v-if="ids.indexOf('inforManage-projectList-moveBtn')!==-1" class="filter-item" type="primary" @click="moveProject">批量移动项目</el-button>
+            </div>
+        </div>
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  @selection-change="handleSelectionChange">
+            <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
             <el-table-column align="center" label="项目名称"  width="220px">
                 <template slot-scope="scope">
                     <span class="ignore-detail" :title="scope.row.projectName">{{scope.row.projectName}}</span>
@@ -108,12 +128,72 @@
             <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
+
+        <el-dialog title="批量移动项目" :visible.sync="dialogMoveVisible" width="35%" :before-close="moveClose">
+            <div class="move-item">
+                <div>
+                    已选择：
+                </div>
+                <span v-for="item in selectProject">
+                    <span class="select-item">{{item.projectName}}</span>
+                </span>
+            </div>
+            <div class="merge-item">
+                <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox>
+                <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
+                <el-checkbox v-model="projectChecked" label="项目负责人"></el-checkbox>
+            </div>
+            <div class="move-select">
+                <div class="move-item">
+                    <span class="item-label">市场负责人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="marketLeaderId"
+                        :disabled="!marketChecked"
+                        filterable
+                        placeholder="请选择市场负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    <span class="item-label">实施负责人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="impleLeaderId"
+                        :disabled="!implyChecked"
+                        filterable
+                        placeholder="请选择实施负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    <span class="item-label">项目负责人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="projectLeaderId"
+                        :disabled="!projectChecked" 
+                        placeholder="请选择项目负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmMove">确认</el-button>
+                <el-button @click="moveCancel">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import common from "@/utils/common";
-import { fetchList } from "@/api/project";
+import { fetchList,getMember,moveProjects} from "@/api/project";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -174,108 +254,226 @@ export default {
                 projectType: "",
                 timeType: "2",//时间类型
                 projectState: "",//项目状态
-                projectLeaderName: "",//市场负责人
+                // projectLeaderName: "",//市场负责人
                 applyTimeStart: "",
                 applyTimeEnd: "",
+                leaderType:'',
+                leaderName:''
             },
             proTypeList: [],
             projectState: [],
+            leaderTypeList:[],
             treeData: [],
-            dialogFormVisible: false
-        };
-  },
-  created() {
-      this.$$queryStub = this.$$listQuery;
-      this.getList();
-      this.listLoading = false;
-  },
-  mounted() {
-    //获取字典
-    let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-    function selectDic(arr, type) {
-        let temp = [];
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i].type == type) {
-                temp.push(arr[i]);
-            }
-        }
-        return temp;
-    }
-    this.proTypeList = selectDic(dicList, "project_type");
-    this.projectState = selectDic(dicList, "project_state");
-    
-  },
-  methods: {
-    getList() {
-        this.listLoading = true;
-        var postData = this.reduceParams(this.$$queryStub);
-        fetchList({
-            ...postData,
-            pageNo:this.pageNo,
-            pageSize:this.pageSize,
-        }).then(res => {
-            this.list = res.data.list;
-            this.total = res.data.total;
-            this.listLoading = false;
-        });
-    },
-    reduceParams($$imData) {
-      if (!$$imData || $$imData.size == 0) return {};
-      const $$postData = $$imData
-          .set('applyTimeStart', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeStart)
-          .set('applyTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeEnd)
-          .delete('timeRange')
-      return $$postData.toJS();
-    },
-    restCallback(){
+            dialogFormVisible: false,
 
+            memberList:[],
+            selectProject:[],
+            dialogMoveVisible:false,
+            marketChecked:false,
+            implyChecked:false,
+            projectChecked:false,
+            marketLeaderId:'',
+            projectLeaderId:'',
+            impleLeaderId:''
+        };
     },
-    handleFilter() {
-        this.pageNo = 1;
-        if(!this.listQuery.timeRange){
-            this.listQuery.timeRange = []
+    created() {
+        this.$$queryStub = this.$$listQuery;
+        this.getList();
+        this.listLoading = false;
+    },
+    mounted() {
+        //获取字典
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                }
+            }
+            return temp;
         }
-        this.$$queryStub = fromJS(this.listQuery);
-        this.getList();
-        this.listLoading = false;
+        this.proTypeList = selectDic(dicList, "project_type");
+        this.projectState = selectDic(dicList, "project_state");
+        this.leaderTypeList = selectDic(dicList, "leader_type");
     },
-    handleCurrentChange(val) {
-        this.pageNo = val;
-        this.getList();
-        this.listLoading = false;
-    },
-    handleCreate() {
-        this.$router.push({ path: "/inforManage/projectForm" });
-    },
-    createData() {
-        if (this.treeObj.pId == "1" && this.treeObj.children.length != "0") {
-            this.$message({
-                message: "请选择归属部门！",
-                type: "warning"
+    methods: {
+        handleSelectionChange(val){
+            this.selectProject = val;
+        },
+        moveProject(){
+            if(this.selectProject.length<1){
+                this.$message({
+                    message:'请选择要移动的项目！',
+                    type:"warning"
+                })
+                return
+            }
+            this.dialogMoveVisible = true;
+            getMember({}).then(res=>{
+                if(res.status == 0){
+                    this.memberList = res.data
+                }
+            })
+        },
+        moveClose(){
+            this.dialogMoveVisible = false;
+            this.marketChecked=false;
+            this.projectChecked=false;
+            this.implyChecked=false;
+            this.marketLeaderId="";
+            this.projectLeaderId = "";
+            this.impleLeaderId= "";
+        },
+        confirmMove(){
+            if(this.marketChecked || this.projectChecked || this.implyChecked){
+                if(this.marketChecked){
+                    if(!this.marketLeaderId){
+                        this.$message({
+                            message:'请选择市场负责人！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.marketLeaderId = ""
+                }
+                if(this.implyChecked){
+                    if(!this.impleLeaderId){
+                        this.$message({
+                            message:'请选择实施负责人！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.impleLeaderId = ""
+                }
+                if(this.projectChecked){
+                    if(!this.projectLeaderId){
+                        this.$message({
+                            message:'请选择项目负责人！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.projectLeaderId = ""
+                }
+
+                let projectIds = [];
+                this.selectProject.forEach(item=>{
+                    projectIds.push(item.id)
+                })
+                moveProjects({
+                    projectIds:projectIds,
+                    marketLeaderId:this.marketLeaderId,
+                    projectLeaderId:this.projectLeaderId,
+                    impleLeaderId:this.impleLeaderId
+                }).then(res=>{
+                    if(res.status == 0){
+                        this.moveClose();
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.getList()
+                    }
+                })
+            }else{
+                this.$message({
+                    message:'请为移动项目勾选相关负责人！',
+                    type:'warning'
+                })
+            }
+        },
+        moveCancel(){
+            this.dialogMoveVisible = false;
+            this.marketChecked=false;
+            this.projectChecked=false;
+            this.implyChecked=false;
+            this.marketLeaderId="";
+            this.projectLeaderId = "";
+            this.impleLeaderId = "";
+        },
+        getList() {
+            this.listLoading = true;
+            var postData = this.reduceParams(this.$$queryStub);
+            fetchList({
+                ...postData,
+                pageNo:this.pageNo,
+                pageSize:this.pageSize,
+            }).then(res => {
+                this.list = res.data.list;
+                this.total = res.data.total;
+                this.listLoading = false;
             });
-            return;
+        },
+        reduceParams($$imData) {
+            if (!$$imData || $$imData.size == 0) return {};
+            const $$postData = $$imData
+                .set('applyTimeStart', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeStart)
+                .set('applyTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeEnd)
+                .delete('timeRange')
+            return $$postData.toJS();
+        },
+        restCallback(){
+
+        },
+        handleFilter() {
+            this.pageNo = 1;
+            if(!this.listQuery.timeRange){
+                this.listQuery.timeRange = []
+            }
+            if(!this.listQuery.leaderName&&this.listQuery.leaderType || this.listQuery.leaderName&&!this.listQuery.leaderType){
+                this.$message({
+                    message: "负责人类型和负责人名称需配合使用!!",
+                    type: "warning"
+                });
+                return
+            }
+            this.$$queryStub = fromJS(this.listQuery);
+            this.getList();
+            this.listLoading = false;
+        },
+        handleCurrentChange(val) {
+            this.pageNo = val;
+            this.getList();
+            this.listLoading = false;
+        },
+        handleCreate() {
+            this.$router.push({ path: "/inforManage/projectForm" });
+        },
+        createData() {
+            if (this.treeObj.pId == "1" && this.treeObj.children.length != "0") {
+                this.$message({
+                    message: "请选择归属部门！",
+                    type: "warning"
+                });
+                return;
+            }
+            this.dialogFormVisible = false;
+        },
+        handleUpdate(row) {
+            this.$router.push({
+                path: "/inforManage/projectForm",
+                query: { key: row.id }
+            });
+        },
+        handleDetail(row){
+            this.$router.push({
+                path: "/inforManage/projectDetail",
+                query: { key: row.id }
+            });
+        },
+        maintain(row){
+            this.$router.push({
+                path:"/inforManage/maintainProject",
+                query:{key:row.id}
+            })
         }
-        this.dialogFormVisible = false;
-    },
-    handleUpdate(row) {
-        this.$router.push({
-            path: "/inforManage/projectForm",
-            query: { key: row.id }
-        });
-    },
-    handleDetail(row){
-        this.$router.push({
-            path: "/inforManage/projectDetail",
-            query: { key: row.id }
-        });
-    },
-    maintain(row){
-        this.$router.push({
-            path:"/inforManage/maintainProject",
-            query:{key:row.id}
-        })
     }
-  }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -290,6 +488,25 @@ export default {
     padding-left: 7px;
     line-height: 30px;
     width: 250px;
+}
+.merge-item{
+    margin: 5px;
+}
+.select-item{
+    margin-right: 5px
+}
+.move-item{
+    padding: 10px;
+    background: #f2f7fa;
+    color: #343434;
+    .item-label{
+        float: left;
+        width: 100px;
+    }
+    .filter-item{
+        display: inline-block;
+        margin-left: 30px
+    }
 }
 
 .ignore-detail {

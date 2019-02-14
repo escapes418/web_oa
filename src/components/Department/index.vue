@@ -3,7 +3,7 @@
         <!-- 列表样式 -->
         <div class="toolbar-item list" v-if="type == 'list'">
             <span class="item-label">归属部门：</span>
-            <div class="item-value" @click="showDialog = true">
+            <div class="item-value" @click="showTree">
                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                 <span style="color:#606266">{{officeName}}</span>
             </div>
@@ -11,7 +11,7 @@
         <!-- 表单样式 -->
         <RedStar label="归属部门：" v-if="type == 'form'" class="clearfix  cominfoitem form" :required="true">
             <span class="right-con">
-                <div class="item-value" @click="showDialog = true">
+                <div class="item-value" @click="showTree">
                     <i class="el-icon-search" style="color:#bfbfbf"></i>
                     <span style="color:#606266">{{officeName}}</span>
                 </div>
@@ -29,7 +29,8 @@
         </div> -->
         <el-dialog title="选择归属部门" :visible.sync="showDialog" width="25%" :center="true">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="margin-bottom:10px"></el-input>
-            <el-tree node-key="id" :default-expanded-keys="officeId" :data="treeData" :props="defaultProps" @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree"></el-tree>
+            <!-- <el-tree node-key="id" :default-expanded-keys="officeId" :default-checked-keys="officeId" show-checkbox check-strictly @check-change=clickCharge :data="treeData" :props="defaultProps" :filter-node-method="filterNode" ref="tree"></el-tree> -->
+            <el-tree node-key="id" show-checkbox check-strictly @check-change=clickCharge :data="treeData" :props="defaultProps" :filter-node-method="filterNode" ref="tree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="showDialog = false">关闭</el-button>
                 <el-button type="primary" @click="confirmChoice">确认</el-button>
@@ -62,6 +63,9 @@ export default {
             tempChoice: "",
             officeName: "",
             officeId: [],
+
+            chargeData:[],
+            chargeName:"",
         };
     },
     computed: {},
@@ -82,17 +86,49 @@ export default {
         this.officeName = this.Dvalue;
     },
     methods: {
-        handleNodeClick(data) {
-            this.tempChoice = data;
+        showTree(){
+            this.showDialog = true;
+        },
+        clickCharge(data,select,childSelect){
+            let index = this.chargeData.indexOf(data)
+            if(index<0&&this.chargeData.length ===1&&select){
+                this.$message({
+                    message: "只能选择一个子节点作为归属部门！",
+                    type: 'warning'
+                })
+                this.$refs.tree.setChecked(data,false);
+            }else if(this.chargeData.length ===0&&select){
+                if(data.status == '0'){
+                    this.$message({
+                        message: "该部门节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.tree.setChecked(data,false);
+                    return
+                }else{
+                    this.chargeData = [];
+                    this.chargeData.push(data)
+                }
+            }else if(index>=0&&this.chargeData.length===1&&!select){
+                this.chargeData = []
+            }
         },
         filterNode(value, data) {
             if (!value) return true;
             return data.name.indexOf(value) !== -1;
         },
         confirmChoice() {
-            this.officeName = this.tempChoice.name;
-            this.showDialog = false;
-            this.$emit("on-confirm", this.tempChoice);
+            if(this.chargeData.length){
+                const [{id,name}] = this.chargeData;
+                this.officeName = name;
+                this.showDialog = false;
+                this.$emit("on-confirm", {id,name});
+            }else{
+                this.$message({
+                    message: "请选择一个子节点作为归属部门！",
+                    type: 'warning'
+                })
+            }
         }
     }
 };

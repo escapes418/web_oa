@@ -112,3 +112,11 @@ export function downFile(params){
     data:params
   })
 }
+
+export function downReim(params){
+  return request({
+    url:'/webExpenseFlow/exportMyExpenseList',
+    method:'post',
+    data:params
+  })
+}

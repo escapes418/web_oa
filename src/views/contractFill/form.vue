@@ -10,8 +10,8 @@
                         <li class="base-li">
                             <RedStar label="合同名称：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.contractNameId" placeholder="请选择合同名称" style="width:260px;" @change="selectContract" @clear="clearContract">
-                                        <el-option v-for="item in conInfor" :label="item.contractName" :value="item.id" :key="item.id">
+                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.configCode" placeholder="请选择合同名称" style="width:260px;" @change="selectContract" @clear="clearContract">
+                                        <el-option v-for="item in conInfor" :label="item.contractName" :value="item.code" :key="item.code">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -270,6 +270,7 @@ export default {
                 contractEndTime : '',//合同结束日期 ,
                 contractLeaderId : '',//合同负责人ID ,
                 // contractName : '',//合同名称 ,
+                configCode:'',
                 contractNameId: '',//合同名称模版ID ,
                 signLeaderId:'', //合同签约人ID ,
                 contractStartTime: '',//合同开始日期 ,
@@ -478,7 +479,12 @@ export default {
             this.dialogFormVisible = false;
         },
         selectContract(){
-            if(this.postData.contractNameId){
+            if(this.postData.configCode){
+                this.conInfor.forEach(item=>{
+                    if(item.code == this.postData.configCode){
+                        this.postData.contractNameId = item.id
+                    }
+                })
                 this.getConfig(this.postData.contractNameId);
             }
         },
@@ -603,18 +609,14 @@ export default {
             this.initData.forEach(item=>{
                 item.contractPartyType.forEach(i=>{
                     if(i.required == 1){
-                        if(i.label){
-                            tempObj[i.columnName] = i.value+'&'+i.label;
-                        }else{
-                            tempObj[i.columnName] = i.value;
-                        }
+                        tempObj[i.columnName] = i.value;
                     }
                 })
             })
+
             this.postData.contractAttachmentRequest = [...this.dataAttachment,...this.contractAttachment,...this.scanAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
-            
             if (contractFormVali(this)) {
                 conApply({...this.postData,...tempObj}).then(res => {
                     if (res.status == 0) {
