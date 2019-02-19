@@ -8,9 +8,9 @@ export function fetchList(params) {
   })
 }
 
-export function fetchMember(params){
+export function getMember(params){
   return request({
-    url:'/webRecpFlow/escortEmployee',
+    url:'/commonInfo/queryUserInfo',
     method:'post',
     data:params
   })

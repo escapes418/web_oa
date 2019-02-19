@@ -259,7 +259,7 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
 
 
-import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,fetchMember,conApply,findAllProject} from '@/api/contractCheck';
+import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,findAllProject} from '@/api/contractCheck';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -410,7 +410,7 @@ export default {
             this.conInfor = res.data;
         })
 
-        fetchMember({}).then(res => {
+        getMember({}).then(res => {
             this.memberList = res.data
         })
 

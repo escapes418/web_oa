@@ -158,7 +158,7 @@
 import common from '@/utils/common'
 import Approval from '@/components/Approval'
 import Project from '@/components/Project'
-import { fetchProList , getSubjects , recepApply , recepSave , getDetail , fetchList , fetchMember} from '@/api/reception'
+import { fetchProList , getSubjects , recepApply , recepSave , getDetail , fetchList , getMember} from '@/api/reception'
 import { mapState, mapGetters } from "vuex";
 import { parseTime } from '@/utils'
 import { recepFormVali } from './recep.util'
@@ -295,7 +295,7 @@ export default {
     this.expTypeList = selectDic(dicList,"oa_expense_type")
     this.taxList = selectDic(dicList,"tax_city")
 
-    fetchMember({}).then(res => {
+    getMember({}).then(res => {
         this.memberList = res.data
     })
   },

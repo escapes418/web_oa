@@ -276,7 +276,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 
 import RedStar from '@/components/RedStar/RedStar.vue';
-import { fetchList ,getContractTemlist,findAllProject,fetchMember,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember} from '@/api/contractFill';
+import { fetchList ,getContractTemlist,findAllProject,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember} from '@/api/contractFill';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -380,7 +380,7 @@ export default {
         this.conStatuList = selectDic(dicList,"contract_his_status")
         this.conTypeList = selectDic(dicList,"contract_type_s")
 
-        fetchMember({}).then(res => {
+        getMember({}).then(res => {
             this.memberList = res.data
         })
 

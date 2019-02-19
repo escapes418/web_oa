@@ -88,7 +88,7 @@
 
         <el-dialog title="选择审批人" :visible.sync="dialogFormVisible" width="25%" :center="true">
             <el-input placeholder="输入关键字进行过滤" v-model="filterAssign" style="margin-bottom:10px"></el-input>
-            <el-tree :data="treeData" :props="defaultProps" @node-click="handleAssignClick" :filter-node-method="assignNode" ref="assignTree"></el-tree>
+            <el-tree :data="treeData" :props="defaultProps" node-key="id" show-checkbox check-strictly @check-change="handleAssignClick" :filter-node-method="assignNode" ref="assignTree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
                 <el-button type="primary" @click="selectAssign">确认</el-button>
@@ -138,7 +138,7 @@ export default {
                 children: "children",
                 label: "name"
             },
-            assignData:{},
+            assignData:[],
             filterAssign:'',
             list: null,
             total: null,
@@ -197,20 +197,42 @@ export default {
             this.listQuery.officeId = data.id;
             this.listQuery.officeName = data.name;
         },
-        handleAssignClick(data){
-            this.assignData = data
+        handleAssignClick(data,select,childSelect){
+            let index = this.assignData.indexOf(data)
+            if(index<0&&this.assignData.length ===1&&select){
+                this.$message({
+                    message: "只能选择一个子节点作为审批人！",
+                    type: 'warning'
+                })
+                this.$refs.assignTree.setChecked(data,false);
+            }else if(this.assignData.length ===0&&select){
+                if(data.type =='2'&&data.status == '1'){
+                    this.assignData = [];
+                    this.assignData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.assignTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.assignData.length===1&&!select){
+                this.assignData = []
+            }
         },
         selectAssign(){
-            this.listQuery.approvalAssigneeId = this.assignData.id;
-            this.listQuery.approvalAssignName = this.assignData.name;
-            if (this.listQuery.approvalAssignName  == "") {
+            if(this.assignData.length){
+                this.listQuery.approvalAssignName = this.assignData[0].name;
+                this.listQuery.approvalAssigneeId = this.assignData[0].id;
+                this.dialogFormVisible = false;
+            }else{
                 this.$message({
                     message: "请选择审批人",
                     type: "warning"
                 });
                 return;
             }
-            this.dialogFormVisible = false
         },
         assignNode(value, data){
             if (!value) return true;

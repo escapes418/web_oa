@@ -34,14 +34,14 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="filter-container">
-        <div class="toolbar-item">
-            <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="exportFile">导出Excel</el-button>
+        <div class="filter-container">
+            <!-- <div class="toolbar-item">
+                <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="exportFile">导出Excel</el-button>
+            </div> -->
+            <div class="toolbar-item">
+                <el-button class="filter-item" v-if="!showSearch" v-waves icon="el-icon-back" @click="cleanrFilter">返回</el-button>
+            </div>
         </div>
-        <div class="toolbar-item">
-            <el-button class="filter-item" v-if="!showSearch" v-waves icon="el-icon-back" @click="cleanrFilter">返回</el-button>
-        </div>
-        </div> -->
         <el-alert
             title="备注：该表单位（元），所有显示费用为已审批完结费用。"
             class="remarkInfo"
@@ -55,11 +55,11 @@
                 <span class="ignore-detail">{{scope.row.employeeName}}</span>
             </template>
         </el-table-column>
-        <!-- <el-table-column align="center" label="部门"  width="120px">
+        <el-table-column align="center" label="部门"  width="120px">
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.officeName}}</span>
             </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column width="100px" align="center" :label="year+'年1月'">
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.m1">{{scope.row.m1}}</span>

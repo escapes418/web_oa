@@ -1,6 +1,11 @@
 <template>
   <div :class="$style['dashboard-container']">
     <div :class="$style['dashboard-text']">{{userInfo.name}},欢迎使用司机宝管理助手</div>
+    <!-- <div style="max-width:500px">
+      <sjb-input clearable></sjb-input>
+      <sjb-cascader :titles="['titleA','titleB']" class="cascader" :listData="cascaderData"></sjb-cascader>
+      <sjb-validate-input class="validate-input"/>
+    </div> -->
   </div>
 </template>
 
@@ -9,12 +14,18 @@ import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import ImplyNode from '@/components/ImplyNode'
 import RedStar from "./RedStar.vue";
+import sjbInput from "./sjb-input.vue";
+import sjbCascader from "./sjb-Cascader.vue";
+import sjbValidateInput from "./sjb-validate-input.vue";
 
 export default {
   name: 'dashboard',
   components: {
     ImplyNode,
-    RedStar
+    RedStar,
+    sjbInput,
+    sjbCascader,
+    sjbValidateInput
   },
   mixins: [mixin],
   computed:{
@@ -24,7 +35,48 @@ export default {
   },
   data() {
     return {
-     
+     cascaderData: [
+        {
+          id: 101,
+          name: "branch01",
+          parentid: 0
+        },
+        {
+          id: 102,
+          name: "branch02",
+          parentid: 0
+        },
+        {
+          id: 103,
+          name: "branch03",
+          parentid: 0
+        },
+        {
+          id: 201,
+          name: "termminalA",
+          parentid: 101
+        },
+        {
+          id: 202,
+          name: "termminalB",
+          parentid: 101
+        },
+        {
+          id: 203,
+          name: "termminalC",
+          parentid: 102
+        },
+        {
+          id: 204,
+          name: "termminalD",
+          parentid: 102
+        },
+        {
+          id: 205,
+          name: "termminalE",
+          parentid: 103
+        }
+      ]
     };
   },
   created() {
@@ -80,5 +132,12 @@ export default {
     flex: 1
   }
 }
-
+.cascader {
+  position: relative;
+  top: 100px;
+}
+.validate-input {
+  position: relative;
+  top: 200px;
+}
 </style>

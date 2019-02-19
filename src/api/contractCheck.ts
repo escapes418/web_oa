@@ -48,15 +48,6 @@ export function fetchProDic(parmas) {
     })
 }
 
-
-export function fetchMember(parmas) {
-    return request({
-        url: '/webRecpFlow/escortEmployee',
-        method: 'post',
-        data:parmas
-    },false)
-}
-
 export function conApply(params){
     return request({
         url: '/contractFlowNew/contractApplyNew',

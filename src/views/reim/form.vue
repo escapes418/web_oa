@@ -204,7 +204,7 @@ import common from '@/utils/common'
 import Approval from '@/components/Approval'
 import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
-import { fetchProList, expApply, expSave, getDetail, fetchThemeList, fetchMember } from '@/api/reim'
+import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember } from '@/api/reim'
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils'
@@ -373,7 +373,7 @@ export default {
         this.expTypeList = selectDic(dicList, "oa_expense_type");
         this.taxList = selectDic(dicList, "tax_city");
 
-        fetchMember({}).then(res => {
+        getMember({}).then(res => {
             this.memberList = res.data;
         })
 

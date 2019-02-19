@@ -40,12 +40,12 @@ export function getCustList(params){
   })
 }
 
-export function fetchMember(parmas) {
+export function getMember(params){
   return request({
-      url: '/webRecpFlow/escortEmployee',
-      method: 'post',
-      data:parmas
-  },false)
+    url:'/commonInfo/queryUserInfo',
+    method:'post',
+    data:params
+  })
 }
 
 export function exportFile(parmas) {

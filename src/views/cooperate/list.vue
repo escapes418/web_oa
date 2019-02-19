@@ -124,7 +124,7 @@
 
         <el-dialog title="选择人员/部门" :visible.sync="dialogDepartVisible" width="25%" :center="true" @close="dialogDepartVisible = false">
             <el-input placeholder="输入关键字进行过滤" v-model="filterDepart" style="margin-bottom:10px"></el-input>
-            <el-tree :data="treeData" :props="defaultProps" @node-click="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
+            <el-tree show-checkbox check-strictly node-key="id" :data="treeData" :props="defaultProps" @check-change="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogDepartVisible = false">取消</el-button>
                 <el-button type="primary" @click="selectDepart">确认</el-button>
@@ -295,7 +295,7 @@ export default {
             dialogDepartVisible:false,
             departName:'',
             filterDepart: "",
-            departTreeData: {},
+            departTreeData: [],
 
             //负责人
             dialogCharge:false,
@@ -438,25 +438,47 @@ export default {
             })
         },
 
-        handleDepartClick(data) {
-            this.departTreeData = data;
+        handleDepartClick(data,select,childSelect) {
+            let index = this.departTreeData.indexOf(data)
+            if(index<0&&this.departTreeData.length ===1&&select){
+                this.$message({
+                    message: "只能选择一个子节点作为部门/人员！",
+                    type: 'warning'
+                })
+
+                this.$refs.departTree.setChecked(data,false);
+            }else if(this.departTreeData.length ===0&&select){
+                if(data.status == '1'){
+                    this.departTreeData = [];
+                    this.departTreeData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.departTree.setChecked(data,false);
+                    return
+                }
+            }else if(index>=0&&this.departTreeData.length===1&&!select){
+                this.departTreeData = []
+            }
         },
         departNode(value, data) {
             if (!value) return true;
             return data.name.indexOf(value) !== -1;
         },
         selectDepart() {
-            this.departName = this.departTreeData.name;
-            this.listQuery.deptOrUserId = this.departTreeData.id;
-            if (this.departLeader == "") {
+            if(this.departTreeData.length){
+                this.departName = this.departTreeData[0].name;
+                this.listQuery.deptOrUserId  = this.departTreeData[0].id;
+                this.dialogDepartVisible = false;
+            }else{
                 this.$message({
-                message: "请选择人员/部门",
-                type: "warning"
+                    message: "请选择人员/部门",
+                    type: "warning"
                 });
                 return;
             }
-
-            this.dialogDepartVisible = false;
         },
         handleCreate(){
             this.$router.push({

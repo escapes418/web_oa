@@ -163,11 +163,12 @@ export default {
                 })
 
                 geolocation.getCurrentPosition((status, result) => {
+                    console.log(result)
                     if (result && result.position) {
                         self.mapCenter = [result.position.lng, result.position.lat];
-                        resolve()
                     }
                 });
+                resolve()
             })
         }
     }

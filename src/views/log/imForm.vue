@@ -191,7 +191,7 @@
                                 style="width: 300px" 
                                 class="filter-item" 
                                 v-model="postData.sendToUserList" 
-                                placeholder="请输入客户名称">
+                                placeholder="请选择发送对象">
                                 <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
@@ -214,7 +214,7 @@
 
 <script lang="ts">
 import common from "@/utils/common";
-import { saveImLog,fetchMember,getProject,getNode} from "@/api/log";
+import { saveImLog,getMember,getProject,getNode} from "@/api/log";
 import { parseTime } from "@/utils/index";
 import { imFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";
@@ -261,7 +261,7 @@ export default class imForm extends Vue {
         }
         this.nodeList = selectDic(dicList,"node_has_abnormal_status");
 
-        fetchMember({}).then((res:Ajax.AjaxResponse)=> {
+        getMember({}).then((res:Ajax.AjaxResponse)=> {
             this.memberList = res.data;
             if(localStorage.getItem("web_oa_sendToUserList")){
                 this.postData.sendToUserList = JSON.parse(localStorage.getItem("web_oa_sendToUserList"));
