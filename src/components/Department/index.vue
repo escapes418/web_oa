@@ -98,7 +98,7 @@ export default {
                 })
                 this.$refs.tree.setChecked(data,false);
             }else if(this.chargeData.length ===0&&select){
-                if(data.status == '0'){
+                if(this.type =='form'&&data.status == '0'){
                     this.$message({
                         message: "该部门节点不可选！",
                         type: 'warning'

@@ -406,7 +406,8 @@ export default {
                 })
                 this.$refs.marketTree.setChecked(data,false);
             }else if(this.marketData.length ===0&&select){
-                if(data.type =='2'&&data.status == '1'){
+                // if(data.type =='2'&&data.status == '1'){
+                if(data.type =='2'){
                     this.marketData = [];
                     this.marketData.push(data)
                 }else{
@@ -493,12 +494,17 @@ export default {
             //获取当前登陆人的部门和区域
             getMember({}).then(res=>{
                 if(res.status ==0){
-                    this.memberList = res.data
+                    this.memberList = res.data.filter(item=>{
+                        return item.userStatus == 1
+                    })
                 }
             })
             getMarket({queryType:"1"}).then(res=>{
                 if(res.status == 0){
                     var newArr = [];
+                    res.data = res.data.filter(item=>{
+                        return item.status == 1
+                    })
                     common.transToTree(res.data, newArr);
                     // common.mapAndAddChildren(newArr);
                     this.marketList = newArr

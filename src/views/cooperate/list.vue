@@ -371,7 +371,10 @@ export default {
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
                 if(res.status == 0){
-                    this.memberList = res.data
+                    //列表是非离职人员
+                    this.memberList = res.data.filter((item)=>{
+                        return item.userStatus == '1'
+                    })
                 }
             })
         },
@@ -448,17 +451,17 @@ export default {
 
                 this.$refs.departTree.setChecked(data,false);
             }else if(this.departTreeData.length ===0&&select){
-                if(data.status == '1'){
+                // if(data.status == '1'){
                     this.departTreeData = [];
                     this.departTreeData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.departTree.setChecked(data,false);
-                    return
-                }
+                // }else{
+                //     this.$message({
+                //         message: "该节点不可选！",
+                //         type: 'warning'
+                //     })
+                //     this.$refs.departTree.setChecked(data,false);
+                //     return
+                // }
             }else if(index>=0&&this.departTreeData.length===1&&!select){
                 this.departTreeData = []
             }

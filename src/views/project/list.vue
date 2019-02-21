@@ -176,7 +176,8 @@
                         style="width: 300px" 
                         class="filter-item" 
                         v-model="projectLeaderId"
-                        :disabled="!projectChecked" 
+                        :disabled="!projectChecked"
+                        filterable
                         placeholder="请选择项目负责人">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
@@ -313,7 +314,10 @@ export default {
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
                 if(res.status == 0){
-                    this.memberList = res.data
+                    //列表是非离职人员
+                    this.memberList = res.data.filter((item)=>{
+                        return item.userStatus == '1'
+                    })
                 }
             })
         },

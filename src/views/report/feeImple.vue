@@ -282,17 +282,17 @@ export default {
                 })
                 this.$refs.assignTree.setChecked(data,false);
             }else if(this.assignData.length ===0&&select){
-                if(data.status == '1'){
+                // if(data.status == '1'){
                     this.assignData = [];
                     this.assignData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.assignTree.setChecked(data,false);
-                    return
-                }
+                // }else{
+                //     this.$message({
+                //         message: "该节点不可选！",
+                //         type: 'warning'
+                //     })
+                //     this.$refs.assignTree.setChecked(data,false);
+                //     return
+                // }
             }else if(index>=0&&this.assignData.length===1&&!select){
                 this.assignData = []
             }

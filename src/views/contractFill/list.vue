@@ -151,11 +151,16 @@
         </el-table>
 
         <el-dialog title="编辑归档" :visible.sync="dialogEdit" width="25%">
-            <el-form ref='form' label-width="120px" label-position="left">
+            <el-form ref='form' label-width="130px" label-position="left">
+                <RedStar :required ="false">
+                    <el-form-item label="当前合同负责人：">
+                        {{contractLeaderName}}
+                    </el-form-item>
+                </RedStar>
                 <RedStar :required ="true">
-                    <el-form-item label="合同负责人：">
+                    <el-form-item label="变更合同负责人：">
                         <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
-                            <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
+                            <el-option v-for="item in memberPartList" :label="item.name" :value="item.id" :key="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -258,7 +263,7 @@
                         :disabled="!contractChecked"
                         filterable
                         placeholder="请选择合同负责人">
-                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        <el-option v-for="item in memberPartList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -329,7 +334,7 @@ export default {
             //编辑
             dialogEdit:false,
             projectIds:[],
-            contractLeaderId:'',
+            contractLeaderName:'',
             editId:'',
             memberList:[],
             projectList:[],
@@ -354,6 +359,7 @@ export default {
             contractChecked:false,
             contractLeaderId:'',
             memberList:[],
+            memberPartList:[],
             dialogMoveVisible:false
         }
     },
@@ -365,7 +371,7 @@ export default {
             this.comInfor = res.data;
         })
     },
-    mounted(){
+    async mounted(){
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr,type){
             let temp = [];
@@ -381,15 +387,28 @@ export default {
         this.conTypeList = selectDic(dicList,"contract_type_s")
 
         getMember({}).then(res => {
-            this.memberList = res.data
+            if(res.status == 0){
+                this.memberList = res.data;
+                //列表是非离职人员
+                this.memberPartList = res.data.filter((item)=>{
+                    return item.userStatus == '1'
+                })
+            }
         })
 
+        // this.allProject = await this.getAllProject();
         findAllProject({}).then(res=>{
             this.allProject = res.data.list
         })
-        
     },
     methods: {
+        // getAllProject(){
+        //     return new Promise((resolve)=>{
+        //         findAllProject({}).then(res=>{
+        //             resolve(res.data.list)
+        //         })
+        //     })
+        // },
         handleSelectionChange(val){
             this.selectContract = val;
         },
@@ -402,11 +421,6 @@ export default {
                 return
             }
             this.dialogMoveVisible = true;
-            getMember({}).then(res=>{
-                if(res.status == 0){
-                    this.memberList = res.data
-                }
-            })
         },
         moveClose(){
             this.dialogMoveVisible = false;
@@ -597,22 +611,30 @@ export default {
             this.listLoading = false;
         },
         showEdit(row){
-            this.dialogEdit = true;
-            this.editId = row.id;
-            this.projectList = [];
-            getDetail({
-                id:this.editId
-            }).then(res=>{
-                this.contractLeaderId = res.data.contractHisDetailResponse.contractLeaderId;
-                this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
-                this.allProject.forEach(item=>{
-                    for(let key in this.projectIds){
-                        if(item.id == this.projectIds[key]){
-                            this.projectList.push(item)
+            if(this.allProject.length){
+                this.dialogEdit = true;
+                this.editId = row.id;
+                this.projectList = [];
+                getDetail({
+                    id:this.editId
+                }).then(res=>{
+                    this.contractLeaderName = res.data.contractHisDetailResponse.contractLeaderName;
+                    this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
+                    this.allProject.forEach(item=>{
+                        for(let key in this.projectIds){
+                            if(item.id == this.projectIds[key]){
+                                this.projectList.push(item)
+                            }
                         }
-                    }
+                    })
                 })
-            })
+            }else{
+                this.$message({
+                    message: '请求还没加载完，请稍后重试！',
+                    type: 'warning'
+                })
+            }
+            
         },
         showDetail(row){
         // if(row.expenseStatus == 2){

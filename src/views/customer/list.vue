@@ -201,7 +201,8 @@ export default {
                 })
                 this.$refs.marketTree.setChecked(data,false);
             }else if(this.marketData.length ===0&&select){
-                if(data.type =='2'&&data.status == '1'){
+                // if(data.type =='2'&&data.status == '1'){
+                if(data.type =='2'){
                     this.marketData = [];
                     this.marketData.push(data)
                 }else{

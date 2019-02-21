@@ -206,7 +206,8 @@ export default {
                 })
                 this.$refs.assignTree.setChecked(data,false);
             }else if(this.assignData.length ===0&&select){
-                if(data.type =='2'&&data.status == '1'){
+                // if(data.type =='2'&&data.status == '1'){
+                if(data.type =='2'){
                     this.assignData = [];
                     this.assignData.push(data)
                 }else{
