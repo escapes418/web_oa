@@ -55,18 +55,18 @@
             show-icon
             type="info">
         </el-alert> -->
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-        <el-table-column align="center" label="部门"  width="120px">
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  max-height="660">
+        <el-table-column align="center" label="部门"  width="120px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.officeName}}</span>
             </template>
         </el-table-column>
-        <el-table-column align="center" label="岗位名称"  width="120px">
+        <el-table-column align="center" label="岗位名称"  width="120px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.postName}}</span>
             </template>
         </el-table-column>
-        <el-table-column width="120px" align="center" label="姓名">
+        <el-table-column width="120px" align="center" label="姓名" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail" :title="scope.row.userName">{{scope.row.userName}}</span>
             </template>
@@ -401,12 +401,12 @@ export default {
   width: 230px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>

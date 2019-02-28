@@ -22,20 +22,25 @@
                             <span class="left-title font-gray">所属部门：</span>
                             <span class="right-con">{{ detail.officeName }}</span>
                         </div>
-                        <div class="clearfix  cominfo-item">
+                        <div class="clearfix  cominfo-item" v-if="detail.relType != 3">
                             <span class="left-title font-gray">项目名称：</span>
                             <span class="right-con">
                                 {{ detail.projectName }}
                             </span>
                         </div>
-                        
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">报销类型：</span>
+                            <span class="right-con">
+                                {{ detail.travelExpenseTypeListName&&detail.travelExpenseTypeListName.join(',') }}
+                            </span>
+                        </div>
                     </el-col>
                     <el-col :span="12">
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">申请日期：</span>
                             <span class="right-con">{{ detail.applyTime }}</span>
                         </div>
-                        <div class="clearfix  cominfo-item">
+                        <div class="clearfix  cominfo-item" v-if="detail.relType != 3">
                             <span class="left-title font-gray">项目负责人：</span>
                             <span class="right-con">{{ detail.projectPersonel }}</span>
                         </div>
@@ -50,6 +55,18 @@
                             <span class="left-title font-gray">主题名称：</span>
                             <span class="right-con">
                                 {{ detail.relationThemeName }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">随行人员：</span>
+                            <span class="right-con">
+                                {{ detail.entourageListName&&detail.entourageListName.join(',') }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">备注：</span>
+                            <span class="right-con">
+                                {{ detail.remarks }}
                             </span>
                         </div>
                     </el-col>

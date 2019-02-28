@@ -23,15 +23,27 @@
                                 <span style="color:#606266;font-size:14px;">{{relationTheme}}</span>
                             </div>
                         </RedStar>
+                        <RedStar label="报销分类：" :required="true">
+                            <span class="right-con">
+                                <el-select class="filter-item" multiple filterable v-model="filter.travelExpenseTypeList" placeholder="请选择" style="width:280px;">
+                                    <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="随行人员：" :required="false">
+                            <span class="right-con">
+                                <el-select class="filter-item" multiple filterable v-model="filter.entourageList" placeholder="请选择" style="width:280px;" >
+                                    <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
                     </el-col>
+                    
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="申请日期：">
                             <span class="right-con">{{ filter.applyTime }}</span>
-                        </RedStar>
-                        <RedStar label="项目负责人：">
-                            <span class="right-con">
-                                {{projectLeaderName}}
-                            </span>
                         </RedStar>
                         <RedStar label="关联类型：" :required="true">
                             <span class="right-con">
@@ -41,10 +53,26 @@
                                 </el-select>
                             </span>
                         </RedStar>
+                        <RedStar label="项目负责人：" v-if="relType!=3">
+                            <span class="right-con">
+                                {{projectLeaderName}}
+                            </span>
+                        </RedStar>
+                        
                         <RedStar label="费用合计：">
                             <div class="item-value" style="height:32px">
                                 <span style="color:#606266;font-size:14px;">{{budgetTotal || ""}}</span>
                             </div>
+                        </RedStar>
+                        <RedStar label="备注：">
+                            <span class="right-con">
+                                <el-input placeholder="请输入"
+                                type="textarea"
+                                style="width:280px;"
+                                :rows="3"
+                                :maxlength="2000"
+                                v-model.trim="filter.remarks"></el-input>
+                            </span>
                         </RedStar>
                     </el-col>
                 </el-row>
@@ -152,6 +180,7 @@ import {
     saveTravelFlowInfo, // Web端出差申请-单据保存草稿.
     retravelFlowDetail,//Web出差申请-查询审批流程详情
     resourcesRelationHandleFlowList, //Web端资源申请办理-关联列表
+    getMember
 } from "@/api/traveling";
 import {getList} from '@/api/getRegion'
 import { mapState, mapGetters } from "vuex";
@@ -192,6 +221,9 @@ export default {
                 procCode: "", //流程编码
                 procName: "", //流程名称 
                 relationTheme: "",
+                remarks:"",
+                travelExpenseTypeList:[],
+                entourageList:[]
             },
             total: null,
             recepTotal: null,
@@ -207,12 +239,10 @@ export default {
             },
             expTypeList: [],
             expenseAttachment: [],
-            taxList: [],
             fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
             listLoading: false,
             list: [],
             recep: [],
-            // memberList: [],
             recepName: "",
             projectName: "",
             projectLeaderName: "",
@@ -232,8 +262,12 @@ export default {
                 },{
                     name:"关联项目",
                     value:"2"
+                },{
+                    name:"不关联",
+                    value:"3"
                 }
             ],
+            memberList:[]
         };
     },
     created() {
@@ -253,17 +287,22 @@ export default {
                 this.filter.projectId = res.data.travelFlowresponse.projectId;
                 this.filter.employees = res.data.travelFlowresponse.employees;
                 // this.filter.recpNum = res.data.recpFlowresponse.recpNum + "";
+
+                this.filter.remarks = res.data.travelFlowresponse.remarks;
+                res.data.travelFlowresponse.travelExpenseTypeList =  res.data.travelFlowresponse.travelExpenseTypeList ||[]
+                this.filter.travelExpenseTypeList = res.data.travelFlowresponse.travelExpenseTypeList
+                res.data.travelFlowresponse.entourageList = res.data.travelFlowresponse.entourageList || []
+                this.filter.entourageList = res.data.travelFlowresponse.entourageList
+
                 this.filter.recpTheme = res.data.travelFlowresponse.recpTheme;
                 this.filter.procInsId = res.data.travelFlowresponse.procInsId;
-                if(res.data.travelFlowresponse.relationTheme) {
-                    this.relType = '1';
+                this.relType = res.data.travelFlowresponse.relType;
+                if(res.data.travelFlowresponse.relType == 1) {
                     this.filter.relationTheme = res.data.travelFlowresponse.relationTheme;
                     this.relationTheme = res.data.travelFlowresponse.relationThemeName.substring(0, 20) + "...";
                     this.fullName = res.data.travelFlowresponse.relationThemeName;
-                } else {
-                    this.relType = '2';
-                }
-               
+                } 
+                
                 var itemDatas = res.data.budgetDetailList || [];
                 var newItemDatas = common.ObjToStamp(itemDatas,['startDate','endDate'])
                 this.$store.dispatch('fillDetailCollection', this.transDetailData(newItemDatas));
@@ -302,26 +341,17 @@ export default {
             }
             return temp;
         }
-        this.expTypeList = selectDic(dicList, "oa_expense_type");
-        this.taxList = selectDic(dicList, "tax_city");
+        this.expTypeList = selectDic(dicList, "travel_expense_type");
         this.getTheme()
-        // let promise = new Promise((resolve, reject) => {
-        //     resourcesRelationHandleFlowList(_this.themeFilter).then(res => {
-        //         _this.ThemeData = res.data.list || [];
-        //         _this.themeTotal = res.data.total;
-        //         resolve();
-        //     });
-            
-        // })
-        // promise.then(()=>{
-        //     if(_this.ThemeData.length == 0) {
-        //         console.log(_this.ThemeData)
-        //         _this.ThemeFormType = false
-        //     }
-        // });
-
-        
-        
+        getMember({}).then(res => {
+            if(res.status == 0){
+                this.memberList = res.data;
+                // // //列表是非离职人员
+                // this.memberPartList = res.data.filter((item)=>{
+                //     return item.userStatus == '1'
+                // })
+            }
+        })
     },
     methods: {
         // handleProFilter(){

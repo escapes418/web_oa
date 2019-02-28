@@ -18,6 +18,9 @@ export function travelFormVali(self) {
             toast('请选择项目名称！');
             flag = false;
         }
+    } else if (self.filter.travelExpenseTypeList.length<1) {
+        toast('请选择报销分类！');
+        flag = false;
     } else if (self.filter.demandBudgetList.length < 1) {
         toast('请填写出差明细！');
         flag = false;

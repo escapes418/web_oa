@@ -134,10 +134,16 @@
                                     {{ detail.relationThemeName }}
                                 </span>
                             </div>
-                            <div class="clearfix  cominfo-item">
+                            <div class="clearfix  cominfo-item" v-if="detail.applyType == 3">
+                                <span class="left-title font-gray">报销分类：</span>
+                                <span class="right-con">
+                                    {{ detail.travelExpenseTypeListName&&detail.travelExpenseTypeListName.join(',') }}
+                                </span>
+                            </div>
+                            <div class="clearfix  cominfo-item" v-if="detail.relType !=3">
                                 <span class="left-title font-gray">项目名称：</span>
                                 <span class="right-con">
-                                    {{ detail.projectLabel }}
+                                    {{ detail.projectLabel}}
                                 </span>
                             </div>
                             <div class="clearfix  cominfo-item">
@@ -172,16 +178,28 @@
                                     {{ detail.employeesName }}
                                 </span>
                             </div>
-                            <div class="clearfix  cominfo-item">
+                            <div class="clearfix  cominfo-item" v-if="detail.relType !=3">
                                 <span class="left-title font-gray">项目负责人：</span>
                                 <span class="right-con">
                                     {{ detail.projectPersonel }}
+                                </span>
+                            </div>
+                            <div class="clearfix  cominfo-item" v-if="detail.applyType == 3">
+                                <span class="left-title font-gray">随行人员：</span>
+                                <span class="right-con">
+                                    {{ detail.entourageListName&&detail.entourageListName.join(',') }}
                                 </span>
                             </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">费用合计：</span>
                                 <span class="right-con">
                                     {{ detail.expenseTotal | thousands(2) }}
+                                </span>
+                            </div>
+                            <div class="clearfix  cominfo-item">
+                                <span class="left-title font-gray">备注：</span>
+                                <span class="right-con">
+                                    {{ detail.remarks }}
                                 </span>
                             </div>
                         </el-col>
@@ -493,6 +511,7 @@ export default {
             if (this.detail.applyType == 2 || this.detail.applyType == 3) {
                 this.detail.procName = res.data.detail.procName;
             }
+            
         });
   },
   methods: {

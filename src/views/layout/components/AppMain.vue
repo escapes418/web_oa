@@ -20,7 +20,7 @@ export default {
     data(){
         return {
             // 被缓存的列表页
-            alivePathName:['doneList','todoList','custPool','reimDoc']
+            alivePathName:['doneList','todoList','custPool','customerList','reimDoc']
         }
     }
 }

@@ -32,10 +32,21 @@
                                 <span style="color:#606266;font-size:14px;">{{filter.relationName}}</span>
                             </div>
                         </RedStar>
-                        <RedStar label="项目名称：" v-if="filter.applyType == 2 || filter.applyType == 3">
+                        <RedStar label="项目名称：" v-if="filter.applyType == 2 || filter.applyType == 3&&filter.relType !=3">
                             <span class="right-con">{{relatThemProName}}</span>
                         </RedStar>
-                        <Project @on-select="proSelect" :Pvalue="projectName" v-else></Project>
+                        
+                        <Project @on-select="proSelect" :Pvalue="projectName" v-if="filter.applyType == 1"></Project>
+                        <RedStar label="项目负责人：" v-if="filter.relType !=3">
+                            <span class="right-con">
+                                {{filter.projectPersonel}}
+                            </span>
+                        </RedStar>
+                        <RedStar label="报销分类：" v-if="filter.applyType == 3">
+                            <span class="right-con">
+                                {{filter.travelExpenseTypeListName&&filter.travelExpenseTypeListName.join(',')}}
+                            </span>
+                        </RedStar>
                         <RedStar label="票据数量：">
                             <div class="item-value" style="height:32px">
                                 <span style="color:#606266;font-size:14px;">{{ billNum || "" }}</span>
@@ -61,9 +72,19 @@
                                 </el-option>
                             </el-select>
                         </RedStar>
-                        <RedStar label="项目负责人：">
+                        <RedStar label="随行人员：" v-if="filter.applyType == 3">
                             <span class="right-con">
-                                {{filter.projectPersonel}}
+                                {{filter.entourageListName&&filter.entourageListName.join(',')}}
+                            </span>
+                        </RedStar>
+                        <RedStar label="备注：">
+                            <span class="right-con">
+                                <el-input placeholder="请输入"
+                                type="textarea"
+                                style="width:280px;"
+                                :rows="3"
+                                :maxlength="2000"
+                                v-model.trim="filter.remarks"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="费用合计：">
@@ -248,6 +269,10 @@ export default {
                 relationName: "", //  // 关联名称
                 employees: [], //陪客人员
                 // expenseAttachment:[],
+                remarks:"",
+                travelExpenseTypeListName:[],
+                entourageListName:[],
+                relType:''
             },
             expenseAttachment: [], // 读取和提交时均做转换
             total: null,
@@ -290,13 +315,16 @@ export default {
                 this.filter.applyType = res.data.detail.applyType;
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
-                
+                this.filter.remarks = res.data.detail.remarks
 
                 this.filter.id = res.data.detail.id;
                 this.filter.projectId = res.data.detail.projectId;
                 this.filter.employees = res.data.detail.employees;
                 this.filter.procInsId = res.data.detail.procInsId;
                 //处理报销明细的数据
+                this.filter.entourageListName =  res.data.detail.entourageListName;
+                this.filter.travelExpenseTypeListName = res.data.detail.travelExpenseTypeListName;
+                this.filter.relType =  res.data.detail.relType;
 
                 var itemDatas = res.data.flowDetailList || [];
                 itemDatas.forEach((item,index)=>{
@@ -386,15 +414,18 @@ export default {
             this.projectName = "";
             this.filter.relationName = ""
             this.filter.relationTheme = ""
-            this.filter.employees = []
+            this.filter.employees = [];
+            this.filter.entourageListName = [];
+            this.filter.travelExpenseTypeListName =[];
+            this.filter.relType ="";
         },
         handleThemeFilter(){
             this.pageNo = 1
-            if(this.listQuery.projectName){
+            // if(this.listQuery.projectName){
                 this.$$queryStub = fromJS(this.listQuery);
                 this.getRecep()
                 this.listLoading = false
-            }
+            // }
         },
         // handleProFilter(){
         //     this.listQuery.pageNo = 1
@@ -442,10 +473,11 @@ export default {
         // },
         showRelat() {
             this.dialogRelatVisible = true;
-            this.restListQuery()
-            this.recep = []
-            // this.listLoading = false;
-            // this.getRecep()
+            this.restListQuery();
+            this.recep = [];
+            
+            this.getRecep();
+            this.listLoading = false;
         },
         // 选择项目
         // selectProject(row) {
@@ -455,12 +487,16 @@ export default {
         //     this.dialogFormVisible = false
         // },
         selectRelat(row) {
-            this.fullName = row.procName
-            this.filter.relationName = row.procName.substring(0,20)+'...'
-            this.filter.relationTheme = row.procCode
-            this.relatThemProName = row.projectName
-            this.filter.projectId = row.projectId
-            this.filter.projectPersonel = row.projectPersonel
+            this.fullName = row.procName;
+            this.filter.relationName = row.procName.substring(0,20)+'...';
+            this.filter.relationTheme = row.procCode;
+            this.relatThemProName = row.projectName;
+            this.filter.projectId = row.projectId;
+            this.filter.projectPersonel = row.projectPersonel;
+
+            this.filter.entourageListName = row.entourageListName;
+            this.filter.travelExpenseTypeListName =row.travelExpenseTypeListName;
+            this.filter.relType = row.relType;
             this.dialogRelatVisible = false
         },
         // getList() {

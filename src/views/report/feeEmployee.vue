@@ -49,13 +49,13 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-        <el-table-column align="center" label="员工名称"  width="120px">
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="620">
+        <el-table-column align="center" label="员工名称"  width="120px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.employeeName}}</span>
             </template>
         </el-table-column>
-        <el-table-column align="center" label="部门"  width="120px">
+        <el-table-column align="center" label="部门"  width="130px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.officeName}}</span>
             </template>
@@ -333,12 +333,12 @@ export default {
     width: 200px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>

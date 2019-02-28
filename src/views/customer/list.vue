@@ -50,13 +50,13 @@
             </el-tabs>
         </template>
         <template v-if="ISPERSON">
-            <PersonTable :list="list" :listLoading="listLoading"></PersonTable>
+            <PersonTable :list="list"></PersonTable>
         </template>
         <template v-if="ISSEA">
-            <SeaTable :list="list" :listLoading="listLoading"></SeaTable>
+            <SeaTable :list="list"></SeaTable>
         </template>
         <template v-if="ISOTHER">
-            <OtherTable :list="list" :listLoading="listLoading"></OtherTable>
+            <OtherTable :list="list"></OtherTable>
         </template>
             
 
@@ -89,6 +89,7 @@ import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix'
 
 export default {
+    name:'customerList',
     directives: {
         waves
     },
@@ -166,8 +167,12 @@ export default {
     created() {
         this.$$queryStub = this.$$listQuery;
         this.activeName = this.custListPlace
+        // this.getListData();
+        // this.listLoading = false;
+    },
+    activated() {
+        console.log(11111)
         this.getListData();
-        this.listLoading = false;
     },
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));

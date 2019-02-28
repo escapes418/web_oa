@@ -36,8 +36,8 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="科目名称"  width="120px">
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  max-height="660">
+            <el-table-column align="center" label="科目名称"  width="120px" fixed>
                 <template slot-scope="scope">
                     <span class="ignore-detail">{{scope.row.subjectName}}</span>
                 </template>
@@ -239,12 +239,12 @@ export default {
                 year:this.listQuery.year
             }).then(res=>{
                 if(res.status == 0){
-                var url = `./OA${res.data}`;
-                window.location.href = url;
-                this.$message({
-                    message:res.message,
-                    type:'success'
-                })
+                    var url = `./OA${res.data}`;
+                    window.location.href = url;
+                    this.$message({
+                        message:res.message,
+                        type:'success'
+                    })
                 }
             })
         }

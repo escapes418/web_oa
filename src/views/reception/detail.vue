@@ -58,6 +58,12 @@
                           {{ detail.budgetTotal | thousands(2) }}
                         </span>
                     </div>
+                    <div class="clearfix  cominfo-item">
+                        <span class="left-title font-gray">备注：</span>
+                        <span class="right-con">
+                          {{ detail.remarks }}
+                        </span>
+                    </div>
                 </el-col>
             </el-row>
         </div>

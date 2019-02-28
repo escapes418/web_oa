@@ -27,6 +27,11 @@
                             </el-select>
                         </span>
                     </RedStar>
+                    <RedStar label="费用合计：">
+                        <div class="item-value" style="height:32px">
+                            <span style="color:#606266;font-size:14px;">{{budgetTotal || ""}}</span>
+                        </div>
+                    </RedStar>
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="申请日期：">
@@ -52,10 +57,16 @@
                             </el-date-picker>
                         </span>
                     </RedStar>
-                    <RedStar label="费用合计：">
-                        <div class="item-value" style="height:32px">
-                            <span style="color:#606266;font-size:14px;">{{budgetTotal || ""}}</span>
-                        </div>
+                    
+                    <RedStar label="备注：">
+                        <span class="right-con">
+                            <el-input placeholder="请输入"
+                            type="textarea"
+                            style="width:280px;"
+                            :rows="3"
+                            :maxlength="2000"
+                            v-model.trim="filter.remarks"></el-input>
+                        </span>
                     </RedStar>
                 </el-col>
             </el-row>

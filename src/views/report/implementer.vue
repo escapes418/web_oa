@@ -29,18 +29,18 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="部门">
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="660">
+            <el-table-column align="center" label="部门" fixed>
                 <template slot-scope="scope">
                     <span class="ignore-detail">{{scope.row.officeName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="岗位名称">
+            <el-table-column align="center" label="岗位名称" fixed>
                 <template slot-scope="scope">
                     <span class="ignore-detail">{{scope.row.postName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="姓名">
+            <el-table-column align="center" label="姓名" fixed>
                 <template slot-scope="scope">
                     <span class="ignore-detail" :title="scope.row.userName">{{scope.row.userName}}</span>
                 </template>
