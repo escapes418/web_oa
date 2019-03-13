@@ -196,7 +196,7 @@
                         <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="scanRemove" :before-upload = "beforeUpload" :on-success="scanSuccess" :file-list="scanAttachment">
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">
-                                只能上传pdf格式文件!
+                                只能上传pdf、png、gif、jpeg、jpg格式文件!
                                 <span v-if='scanMustCount' slot="tip" class="el-upload__tip">且最少上传{{scanMustCount }}张！</span>
                             </div>
                         </el-upload>

@@ -111,7 +111,7 @@
                             <template slot-scope="scope">
                                 <el-select 
                                     filterable
-                                    style="width: 150px" 
+                                    style="width:150px" 
                                     class="filter-item" 
                                     v-model="scope.row.nodeId" 
                                     placeholder="请输入节点"

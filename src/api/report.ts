@@ -156,6 +156,22 @@ export function reimDocList(params){
   })
 }
 
+export function overdueList(params){
+  return request({
+    url:'/webReport/contractOverdueList',
+    method:'post',
+    data:params
+  })
+}
+
+export function exportOverdue(params){
+  return request({
+    url:'/webReport/contractOverdueExport',
+    method:'post',
+    data:params
+  })
+}
+
 export function fetchProDic(parmas) {
   return request({
     url: '/commonInfo/queryDictInfo',

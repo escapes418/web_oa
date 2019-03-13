@@ -119,6 +119,18 @@ export default [
                     icon: 'iconfont icon-renyuanpaiban'
                 },
                 hidden: false
+            },
+            {
+                path: 'overdue',
+                id: 'report-overdue',
+                show: false,
+                name: 'Overdue',
+                component: () => import('@/views/report/overdue.vue'),
+                meta: {
+                    title: '合同逾期报表',
+                    icon: 'iconfont icon-renyuanpaiban'
+                },
+                hidden: false
             }
         ]
     }

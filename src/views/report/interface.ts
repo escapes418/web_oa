@@ -82,3 +82,16 @@ export interface REIMDOC_list {
     taxCityName: string,
     updateDate: string,
 }
+
+export interface OVERDUE_list {
+    officeName:string,		// 所属部门名称
+    applyPerName:string,	// 申请人名称
+    openAccountTime:string,//开户时间
+    procCode:string,		// 流程编号
+    contractName:string,	// 合同名称
+    firstPartyName:string,// 甲方名称
+    secondPartyName:string,	// 乙方名称
+    thirdMemberName:string,	//丙方名称
+    contractFlowStatus:string,	// 合同状态
+    overdueDays:string,
+}
