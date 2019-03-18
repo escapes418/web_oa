@@ -3,23 +3,23 @@
         <td style="padding: 0 10px 0 10px;">
             <el-checkbox v-model="itemData.checked"></el-checkbox>
         </td>
-        <td style="padding: 0 10px 0 10px;">
-            <span>{{itemData.goodName}}</span>
+        <td class="tableTitle" style="padding: 0 10px 0 10px;">
+            <span class="tableTitle">{{itemData.goodName}}</span>
         </td>
-        <td style="padding: 0 10px 0 10px;">
+        <td class="tableTitle" style="padding: 0 10px 0 10px;">
             <span>{{itemData.goodCode}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodTypeName}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodUnit}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodSpec}}</span>
         </td>
         <td style="width:240px">
-             <el-date-picker v-model="itemData.buyTime" type="date" placeholder="选择日期">
+             <el-date-picker v-model="itemData.buyTime" type="date" :picker-options="pickerOptions" placeholder="选择日期">
             </el-date-picker>
         </td>
         <td>
@@ -28,8 +28,8 @@
         <td>
             <el-input v-model.number="itemData.inPrice" type="number"></el-input>
         </td>
-        <td>
-            <span class="tableTitle">{{inTotal}}</span>
+        <td class="tableTitle">
+            <span>{{inTotal}}</span>
         </td>
         <td>
             <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import common from '@/utils/common';
 export default {
     props: {
         itemData: Object,
@@ -45,7 +46,11 @@ export default {
     },
     data() {
         return {
-            
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
         }
     },
     computed: {
@@ -56,7 +61,10 @@ export default {
     watch:{
         inTotal:function(val){
             this.itemData.inTotal = val 
-        }
+        },
+        // buyTime:function(val){
+        //     this.itemData.buyTime = common.timeParse(val)
+        // }
     },
     created() {
 

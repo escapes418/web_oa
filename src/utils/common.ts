@@ -56,7 +56,7 @@ var common = {
     clearCookie: function(name) {
         // WUYI.setCookie(name, '', -1);
     },
-    transToTree: function(dataArr, newArr) {
+    transToTree: function(dataArr, newArr, root="null") {
         function find_insert(arr, key, data) {
             // 待完善，value不是自定义
             var flag = false;
@@ -83,7 +83,7 @@ var common = {
         }
         // 待完善，pId，空值不是自定义
         for (var i = dataArr.length - 1; i >= 0; i--) {
-            if (dataArr[i].pId == 'null') {
+            if (dataArr[i].pId == root) {
                 newArr.push(dataArr[i]);
                 dataArr.splice(i, 1);
             }
@@ -94,7 +94,7 @@ var common = {
         }
         // 递归断点
         if (dataArr.length != 0) {
-            common.transToTree(dataArr, newArr);
+            common.transToTree(dataArr, newArr,root="null");
         }
     },
     //

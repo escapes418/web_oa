@@ -5,7 +5,7 @@ import inforManage from '@/router/inforManage';
 import task from '@/router/task';
 import process from '@/router/process';
 import oa from '@/router/oa';
-import goods from '@/router/goods';
+import publicGoods from '@/router/publicGoods';
 
 export default [
     {
@@ -77,5 +77,5 @@ export default [
     ...report,
     ...process,
     ...oa,
-    ...goods
+    ...publicGoods
 ];

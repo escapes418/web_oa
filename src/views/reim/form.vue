@@ -548,6 +548,7 @@ export default {
         },
         // 附件上传成功
         handleSuccess(res, file, fileList) {
+            console.log(res, file, fileList)
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
                 this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url})

@@ -37,7 +37,7 @@
                         <li class="base-li">
                             <RedStar label="备注：">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.description"></el-input>
+                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.remarks"></el-input>
                                 </span>
                             </RedStar>
                         </li>
@@ -47,8 +47,8 @@
         </div>
         <div class="segment statistics">
             <div class="segment-header">
-                <!-- <span class="left-red">*</span> -->
-                项目情况
+                <span class="left-red">*</span>
+                选择物品
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
@@ -107,13 +107,13 @@
             <div class="filter-container" style="margin-bottom:10px">
                 <div class="toolbar-item" >
                     <span class="item-label">物品编号/名称/备注：</span>
-                    <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="物品编号/名称/备注" v-model.trim="listQuery.titleOrDescOrProgress">
+                    <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="物品编号/名称/备注" v-model.trim="listQuery.goodInfo">
                     </el-input>
                 </div>
                 <div class="toolbar-item">
                     <span class="item-label">放置地：</span>
-                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.personType" placeholder="请选择人员类型">
-                        <el-option v-for="item in memberType" :key="item.value" :label="item.name" :value="item.value">
+                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择人员类型">
+                        <el-option v-for="item in placeArr" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -130,48 +130,47 @@
                 </el-table-column>
                 <el-table-column align="center" label="物品编号" width="100px">
                     <template slot-scope="scope">
-                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.contractCode}}</span>
+                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.goodCode}}</span>
                     </template>
                 </el-table-column>
-                
                 <el-table-column width="100px" align="center" label="物品名称">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.contractName">{{scope.row.contractName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodName">{{scope.row.goodName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="物品类别" width="100px">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractHisMethodName}}</span>
+                        <span>{{scope.row.goodType}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="单位">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.firstMemberName">{{scope.row.firstMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodUnit">{{scope.row.goodUnit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="规格型号">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.secondMemberName">{{scope.row.secondMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodSpec">{{scope.row.goodSpec}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="库存数量">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.thirdMemberName">{{scope.row.thirdMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodCount">{{scope.row.goodCount}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="100px" align="center" label="单价">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
+                        <span>{{scope.row.goodPrice}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="120px" align="center" label="总金额" prop="contractEndTime" sortable>
+                <el-table-column width="120px" align="center" label="总金额">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractEndTime | stamp2TextDate}}</span>
+                        <span>{{scope.row.goodTotal}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="80px" align="center" label="备注">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractLeaderName}}</span>
+                        <span>{{scope.row.remarks}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -199,11 +198,12 @@ import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import goodItem from './goodItem'
 
-import {getLabelList,getTypeList,addgood,getSubjectsNew,getList} from '@/api/goods';
+import {getPlaceList,getSubjectsNew,fetchList,addReceive} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
-
+import { toJS, fromJS, Map, List } from 'immutable';
+import listQueryMix from '../../mixins/listQuery.mix';
 import { parseTime } from '@/utils';
-import { coopFormVali } from './coop.util';
+import { goodReceiveVali } from './good.util';
 import config from '@/utils/config';
 import utils from '@/utils/utils';
 export default {
@@ -212,6 +212,7 @@ export default {
         RedStar,
         goodItem
     },
+    mixins: [listQueryMix],
     watch:{
         filterName(val) {
             this.$refs.departTree.filter(val);
@@ -223,13 +224,14 @@ export default {
     data() {
         return {
             listQuery:{
-
+                goodInfo:"",// 标题 ,
+                placeId:"",// 放置地
             },
             list: [],
             total: null,
             pageNo: 1,
             pageSize: 10,
-            memberType:[],
+            placeArr:[],
 
             outTime:"",
             postData: {//提交数据
@@ -237,6 +239,8 @@ export default {
                 officeId:"",
                 outUserId:"",
                 outUserName:"",
+                outTime:"",
+                remarks:""
             },
 
 
@@ -261,10 +265,9 @@ export default {
         }
     },
     created() {
-
-    },
-    computed: {
-       
+        getPlaceList({}).then(res=>{
+            this.placeArr =  res.data;
+        })
     },
     mounted() {
         let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
@@ -303,10 +306,9 @@ export default {
                         goodTypeName:item.goodTypeName,
                         goodUnit:item.goodUnit,
                         goodSpec:item.goodSpec,
-                        buyTime:'',
-                        inCount:0,
-                        inPrice:item.inPrice,
-                        inTotal:0,
+                        outCount:0,
+                        outPrice:item.goodPrice,
+                        outTotal:0,
                         remarks:'',
                         outPlace:'',
                         placeCount:0,
@@ -409,54 +411,32 @@ export default {
         cancelBtn(){
             this.dialogReceive = false
             this.receiveList = []
-
-            // if(this.stockList.length>0){
-            //     this.stockList.forEach(item=>{
-            //         this.itemList.push({
-            //             consumablesId:item.id,
-            //             goodName:item.goodName,
-            //             goodCode:item.goodCode,
-            //             goodTypeName:item.goodTypeName,
-            //             goodUnit:item.goodUnit,
-            //             goodSpec:item.goodSpec,
-            //             buyTime:'',
-            //             inCount:0,
-            //             inPrice:0,
-            //             inTotal:0,
-            //             remarks:''
-            //         })
-            //     })
-            // }else{
-            //     this.$message({
-            //         message: "请选择相应的物品！",
-            //         type: "warning"
-            //     })
-            // }
         },
         handleFilter(){
-            this.dialogReceive = false
-            this.receiveList = []
+            this.pageNo = 1;
+            this.$$queryStub = fromJS(this.listQuery);
+            this.getList()
         },
-        handleCurrentChange(){
-
+        handleCurrentChange(val){
+            this.pageNo = val
+            this.getList()
         },
         getList(){
+            var postData = this.$$queryStub.toJS();
             fetchList({
-                // ...postData,
+                ...postData,
                 withOutZero:0,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize,
-                tab:this.coopListPlace
             }).then(response => {
                 this.list = response.data.list
                 this.total = response.data.total
-                this.listLoading = false
             })
         },
         selectReceive(val) {
             this.receiveList = val;
         },
-        selectDele(val){
+        restCallback(){
 
         },
         backStep() {
@@ -464,16 +444,18 @@ export default {
         },
         // 提交
         submit() {
-            if(coopFormVali(this)){
-                addCoop({
-                    ...this.postData
+            this.postData.outTime = common.timeParse(this.outTime)
+            if(goodReceiveVali(this)){
+                addReceive({
+                    ...this.postData,
+                    detail:this.itemList
                 }).then(res=>{
                     if (res.status == 0) {
                         this.$message({
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/oa/coopList' });
+                        this.$router.push({path:'/publicGoods/consumList' });
                     }
                 })
             }
@@ -515,7 +497,7 @@ export default {
 }
 .left-red{
     color: red;
-    position: absolute;
+    // position: absolute;
     left: 50px;
 }
 .remark{

@@ -9,7 +9,7 @@
             </div>
         </div>
         <!-- 表单样式 -->
-        <RedStar label="归属部门：" v-if="type == 'form'" class="clearfix  cominfoitem form" :required="true">
+        <RedStar :label="Dlabel" v-if="type == 'form'" class="clearfix  cominfoitem form" :required="true">
             <span class="right-con">
                 <div class="item-value" @click="showTree">
                     <i class="el-icon-search" style="color:#bfbfbf"></i>
@@ -27,7 +27,7 @@
                 </div>
             </span>
         </div> -->
-        <el-dialog title="选择归属部门" :visible.sync="showDialog" width="25%" :center="true">
+        <el-dialog title="选择部门" :visible.sync="showDialog" width="25%" :center="true">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="margin-bottom:10px"></el-input>
             <!-- <el-tree node-key="id" :default-expanded-keys="officeId" :default-checked-keys="officeId" show-checkbox check-strictly @check-change=clickCharge :data="treeData" :props="defaultProps" :filter-node-method="filterNode" ref="tree"></el-tree> -->
             <el-tree node-key="id" show-checkbox check-strictly @check-change=clickCharge :data="treeData" :props="defaultProps" :filter-node-method="filterNode" ref="tree"></el-tree>
@@ -49,7 +49,11 @@ export default {
     props: {
         Dvalue: String,
         DId: [String,Number],
-        type: String
+        type: String,
+        Dlabel: {
+            type: String,
+            default: "归属部门："
+        },
     },
     data() {
         return {

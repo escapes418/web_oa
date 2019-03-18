@@ -33,94 +33,29 @@ export function getPlaceList(params){
     })
 }
 
-export function getTypeList(params){
+export function addStore(params){
     return request({
-        url:'/needFlow/queryNeedType',
+        url:'/consumables/putinConsumables',
         method:'post',
         data:params
     })
 }
 
-export function addComment(params){
+export function addReceive(params){
     return request({
-        url:'/needFlow/addComment',
+        url:'/consumables/putoutConsumables',
         method:'post',
         data:params
     })
 }
 
-export function addProgress(params){
+export function addVerify(params){
     return request({
-        url:'/needFlow/promoteProgress',
+        url:'/consumables/offConsumables',
         method:'post',
         data:params
     })
 }
-
-export function editPart(params){
-    return request({
-        url:'/needFlow/editParticipantList',
-        method:'post',
-        data:params
-    })
-}
-
-export function getPart(params){
-    return request({
-        url:'/needFlow/queryCurParticipantList',
-        method:'post',
-        data:params
-    })
-}
-
-export function selectcharge(params){
-    return request({
-        url:'/needFlow/setNextPrincipal',
-        method:'post',
-        data:params
-    })
-}
-
-export function progressRecord(params){
-    return request({
-        url:'/needFlow/queryHisProgress',
-        method:'post',
-        data:params
-    })
-}
-
-export function getCommentList(params){
-    return request({
-        url:'/needFlow/queryCommentList',
-        method:'post',
-        data:params
-    })
-}
-
-export function chargeRecord(params){
-    return request({
-        url:'/needFlow/queryHisPrincipal',
-        method:'post',
-        data:params
-    })
-}
-
-export function getDetail(params){
-    return request({
-        url:'/needFlow/queryDetail',
-        method:'post',
-        data:params
-    })
-}
-
-export function getPlan(params){
-    return request({
-        url:'/needFlow/queryNeedProgress',
-        method:'post',
-        data:params
-    })
-}
-
 
 export function downFile(params){
     return request({
@@ -130,19 +65,43 @@ export function downFile(params){
     })
 }
 
-export function getMember(params){
+
+export function getTypes(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
-      method:'post',
-      data:params
+        url:'/consumables/queryGoodType',
+        method:'post',
+        data:params
     })
 }
 
-
-export function moveCoops(params){
+export function delConsum(params){
     return request({
-      url:'/needFlow/needFlowBatchMove',
-      method:'post',
-      data:params
+        url:'/consumables/deleteConsumables',
+        method:'post',
+        data:params
+    })
+}
+
+export function consumDetail(params){
+    return request({
+        url:'/consumables/detailConsumables',
+        method:'post',
+        data:params
+    })
+}
+
+export function exportGood(params){
+    return request({
+        url:'/consumables/consumablesExport',
+        method:'post',
+        data:params
+    })
+}
+
+export function importTemp(params){
+    return request({
+        url:'/consumables/assetImportMode',
+        method:'post',
+        data:params
     })
 }

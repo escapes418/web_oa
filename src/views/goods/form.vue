@@ -8,7 +8,7 @@
                 <base-temp>
                     <ul class="base-ul">
                         <li class="base-li">
-                            <RedStar label="物品编号：" :required="true">
+                            <RedStar label="物品编号：" :required="false">
                                 <span class="right-con">
                                     <el-input style="width: 260px;" class="filter-item" placeholder="请输入物品编号" v-model.trim="postData.goodCode">
                                     </el-input>
@@ -26,7 +26,7 @@
                         <li class="base-li">
                             <RedStar label="物品类别：" :required="true">
                                 <span class="right-con">
-                                    <el-cascader style="width: 260px;" :options="subsTree" v-model="postData.goodType" change-on-select label="value" :clearable="true"></el-cascader>
+                                    <el-cascader style="width: 260px;" :options="treeData" :props="props" v-model="postData.goodType" change-on-select :clearable="true"></el-cascader>
                                 </span>
                             </RedStar>
                         </li>
@@ -39,7 +39,7 @@
                             </RedStar>
                         </li>
                         <li class="base-li">
-                            <RedStar label="规格型号：" :required="true">
+                            <RedStar label="规格型号：" :required="false">
                                 <span class="right-con">
                                     <el-input style="width: 260px;" class="filter-item" placeholder="请输入规格型号" v-model.trim="postData.goodSpec">
                                     </el-input>
@@ -57,12 +57,12 @@
                         </li>
                     </ul>
                 </base-temp>
-                <base-temp title="入库信息">
+                <base-temp title="入库信息" v-if="showDetail">
                     <ul class="base-ul">
                         <li class="base-li">
                             <RedStar label="入库日期：" :required="true">
                                 <span class="right-con">
-                                    <el-date-picker style="width:260px" v-model="inTime" type="date" placeholder="选择日期"></el-date-picker>
+                                    <el-date-picker style="width:260px" v-model="inTime" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
                                 </span>
                             </RedStar>
                         </li>
@@ -70,7 +70,7 @@
                             <RedStar label="放置地：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.putinPlace" placeholder="请选择标签名称" style="width:260px;">
-                                        <el-option v-for="item in placeArr" :label="item.labelName" :value="item.id" :key="item.id">
+                                        <el-option v-for="item in placeArr" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -87,7 +87,7 @@
                         <li class="base-li">
                             <RedStar label="购入日期：" :required="true">
                                 <span class="right-con">
-                                    <el-date-picker style="width:260px" v-model="buyTime" type="date" placeholder="选择日期"></el-date-picker>
+                                    <el-date-picker style="width:260px" v-model="buyTime" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
                                 </span>
                             </RedStar>
                         </li>
@@ -102,7 +102,7 @@
                         <li class="base-li">
                             <RedStar label="金额：" :required="true">
                                 <span class="right-con">
-                                    {{totalCount}}
+                                    {{totalCount.toFixed(2)}}
                                 </span>
                             </RedStar>
                         </li>
@@ -125,12 +125,11 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 
-
-import {getPlaceList,addGood,getSubjectsNew} from '@/api/goods';
+import {getPlaceList,addGood,getTypes,consumDetail} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils';
-import { coopFormVali } from './coop.util';
+import { goodFormVali } from './good.util';
 import config from '@/utils/config';
 import utils from '@/utils/utils';
 export default {
@@ -138,9 +137,10 @@ export default {
         BaseTemp,
         RedStar,
     },
+    
     computed:{
         totalCount:function(){
-            return this.postData.inPrice*this.postData.inCount
+            return (this.postData.inPrice*100)*(this.postData.inCount*100)/10000
         }
     },
     watch:{
@@ -148,7 +148,12 @@ export default {
     },
     data() {
         return {
-            subsTree:[],
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            treeData:[],
             placeArr:[],
             postData: {//提交数据
                 goodCode:"",
@@ -165,18 +170,40 @@ export default {
             },
             inTime:"",
             buyTime:"",
+            props:{
+                value: 'id',
+                children: 'children',
+                label:'name'
+            },
+
+            showDetail:true
         }
     },
-    async created() {
-        let res = await getSubjectsNew({});
-        this.subsTree = res.data.list
+    created() {
+
+        if (this.$route.query.key) {
+            this.showDetail = false
+            consumDetail({
+                id: this.$route.query.key
+            }).then(res => {
+                this.postData = res.data;
+                // this.inTime = common.timeParseObj(res.data.inTime);
+                // this.buyTime = common.timeParseObj(res.data.buyTime);
+            });
+        }
     },
     mounted() {
-        
-        getLabelList({}).then(res=>{
-            this.labelList = res.data
+
+        getPlaceList({}).then(res=>{
+            this.placeArr =  res.data;
         })
-        
+
+        getTypes({}).then(res=>{
+            var newArr = [];
+            common.transToTree(res.data, newArr,"ROOT");
+            common.mapAndAddChildren(newArr);
+            this.treeData = newArr; 
+        })
     },
     methods: {
         
@@ -186,19 +213,20 @@ export default {
         // 提交
         submit() {
             this.postData.inTime = common.timeParse(this.inTime);
-            this.postData.buyTime = common.timeParse(this.buyTime)
-            console.log(this.postData)
-            return 
-            if(coopFormVali(this)){
+            this.postData.buyTime = common.timeParse(this.buyTime);
+            this.postData.inCount = Number(this.postData.inCount);
+            this.postData.inPrice = Number(this.postData.inPrice);
+            if(goodFormVali(this)){
                 addGood({
-                    ...this.postData
+                    ...this.postData,
+                    id:this.$route.query.key
                 }).then(res=>{
                     if (res.status == 0) {
                         this.$message({
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/oa/coopList' });
+                        this.$router.push({path:'/publicGoods/consumList' });
                     }
                 })
             }

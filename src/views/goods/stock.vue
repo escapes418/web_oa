@@ -8,17 +8,17 @@
                 <base-temp>
                     <ul class="base-ul">
                         <li class="base-li">
-                            <RedStar label="购物日期：" :required="true">
+                            <RedStar label="入库日期：" :required="true">
                                 <span class="right-con">
-                                    <el-date-picker style="width:260px" v-model="postData.endDate" type="date" placeholder="选择日期"></el-date-picker>
+                                    <el-date-picker style="width:260px" v-model="inTime" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
                                 </span>
                             </RedStar>
                         </li>
                         <li class="base-li">
                             <RedStar label="放置地：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.labelList" placeholder="请选择标签名称" style="width:260px;">
-                                        <el-option v-for="item in labelList" :label="item.labelName" :value="item.id" :key="item.id">
+                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.putinPlace" placeholder="请选择标签名称" style="width:260px;">
+                                        <el-option v-for="item in placeArr" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -27,14 +27,14 @@
                         <li class="base-li">
                             <RedStar label="金额：" :required="true">
                                 <span class="right-con">
-                                    {{"xxxxx"}}
+                                    {{putinTotal}}
                                 </span>
                             </RedStar>
                         </li>
                         <li class="base-li">
                             <RedStar label="备注：">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.description"></el-input>
+                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.remarks"></el-input>
                                 </span>
                             </RedStar>
                         </li>
@@ -44,8 +44,8 @@
         </div>
         <div class="segment statistics">
             <div class="segment-header">
-                <!-- <span class="left-red">*</span> -->
-                项目情况
+                <span class="left-red">*</span>
+                选择物品
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
@@ -60,11 +60,11 @@
                                 <td class="tableTitle">物品类别</td>
                                 <td class="tableTitle">单位</td>
                                 <td class="tableTitle">规格型号</td>
-                                <td class="tableTitle">购入日期</td>
+                                <td class="tableTitle">购入日期（必填）</td>
                                 <!-- <td class="tableTitle">放置地（必填）</td> -->
                                 <!-- <td class="tableTitle">库存数量</td> -->
-                                <td class="tableTitle">出库数量（必填）</td>
-                                <td class="tableTitle">单价</td>
+                                <td class="tableTitle">入库数量（必填）</td>
+                                <td class="tableTitle">单价（必填）</td>
                                 <td class="tableTitle">金额</td>
                                 <td class="tableTitle">备注</td>
                             </tr>
@@ -85,13 +85,13 @@
             <div class="filter-container" style="margin-bottom:10px">
                 <div class="toolbar-item" >
                     <span class="item-label">物品编号/名称/备注：</span>
-                    <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="物品编号/名称/备注" v-model.trim="listQuery.titleOrDescOrProgress">
+                    <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="物品编号/名称/备注" v-model.trim="listQuery.goodInfo">
                     </el-input>
                 </div>
                 <div class="toolbar-item">
                     <span class="item-label">放置地：</span>
-                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.personType" placeholder="请选择人员类型">
-                        <el-option v-for="item in memberType" :key="item.value" :label="item.name" :value="item.value">
+                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择放置地">
+                        <el-option v-for="item in placeArr" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -108,48 +108,47 @@
                 </el-table-column>
                 <el-table-column align="center" label="物品编号" width="100px">
                     <template slot-scope="scope">
-                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.contractCode}}</span>
+                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.goodCode}}</span>
                     </template>
                 </el-table-column>
-                
                 <el-table-column width="100px" align="center" label="物品名称">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.contractName">{{scope.row.contractName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodName">{{scope.row.goodName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="物品类别" width="100px">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractHisMethodName}}</span>
+                        <span>{{scope.row.goodType}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="单位">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.firstMemberName">{{scope.row.firstMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodUnit">{{scope.row.goodUnit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="规格型号">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.secondMemberName">{{scope.row.secondMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodSpec">{{scope.row.goodSpec}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="库存数量">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.thirdMemberName">{{scope.row.thirdMemberName}}</span>
+                        <span class="ignore-detail" :title="scope.row.goodCount">{{scope.row.goodCount}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="100px" align="center" label="单价">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
+                        <span>{{scope.row.goodPrice}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="120px" align="center" label="总金额" prop="contractEndTime" sortable>
+                <el-table-column width="120px" align="center" label="总金额">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractEndTime | stamp2TextDate}}</span>
+                        <span>{{scope.row.goodTotal}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="80px" align="center" label="备注">
                     <template slot-scope="scope">
-                        <span>{{scope.row.contractLeaderName}}</span>
+                        <span>{{scope.row.remarks}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -177,14 +176,17 @@ import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import stockItem from './stockItem'
 
-import {getPlaceList,getTypeList,addgood,getSubjectsNew,getList} from '@/api/goods';
+import {getPlaceList,getSubjectsNew,fetchList,addStore, consumDetail} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
+import { toJS, fromJS, Map, List } from 'immutable';
 
 import { parseTime } from '@/utils';
-import { coopFormVali } from './coop.util';
+import { goodStockVali } from './good.util';
 import config from '@/utils/config';
 import utils from '@/utils/utils';
+import listQueryMix from '../../mixins/listQuery.mix';
 export default {
+    mixins: [listQueryMix],
     components: {
         BaseTemp,
         RedStar,
@@ -195,28 +197,30 @@ export default {
     },
     data() {
         return {
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
             listQuery:{
-
+                goodInfo:"",// 标题 ,
+                placeId:"",// 放置地
             },
             list: [],
             total: null,
             pageNo: 1,
             pageSize: 10,
+
             subsTree:[],
-            memberType:[],
-            labelList:[],
-            projectList:[],
-            conInfor: [],
+            placeArr:[],
             postData: {//提交数据
-                description:"",
-
-                labelList:"",
-                participantList:[],
-                principal:"",
-                title:"",
-                type:"" ,
+                putinTotal:"",
+                remarks:"",
+                inTime :"",
+                // putinTotal:0,
+                // detail:[]
             },
-
+            inTime:"",
 
             itemList:[],
             dialogStock:false,
@@ -224,17 +228,20 @@ export default {
         }
     },
     async created() {
-        let res = await getSubjectsNew({});
-        this.subsTree = res.data.list
+        getPlaceList({}).then(res=>{
+            this.placeArr =  res.data;
+        })
     },
     computed: {
-       
+       putinTotal:function(){
+            let total = 0; 
+            this.itemList.forEach(item=>{
+                total += Number(item.inTotal)
+            })
+            return total
+       }
     },
     mounted() {
-        
-        getLabelList({}).then(res=>{
-            this.labelList = res.data
-        })
         
     },
     methods: {
@@ -245,6 +252,7 @@ export default {
         },
         add() {
             this.dialogStock = true;
+            this.$$queryStub = this.$$listQuery;
             this.getList()
         },
         del(){
@@ -281,70 +289,57 @@ export default {
         cancelBtn(){
             this.dialogStock = false
             this.stockList = []
-
-            // if(this.stockList.length>0){
-            //     this.stockList.forEach(item=>{
-            //         this.itemList.push({
-            //             consumablesId:item.id,
-            //             goodName:item.goodName,
-            //             goodCode:item.goodCode,
-            //             goodTypeName:item.goodTypeName,
-            //             goodUnit:item.goodUnit,
-            //             goodSpec:item.goodSpec,
-            //             buyTime:'',
-            //             inCount:0,
-            //             inPrice:0,
-            //             inTotal:0,
-            //             remarks:''
-            //         })
-            //     })
-            // }else{
-            //     this.$message({
-            //         message: "请选择相应的物品！",
-            //         type: "warning"
-            //     })
-            // }
         },
         handleFilter(){
-            this.dialogStock = false
-            this.stockList = []
+            this.pageNo = 1;
+            this.$$queryStub = fromJS(this.listQuery);
+            this.getList()
         },
-        handleCurrentChange(){
+        handleCurrentChange(val){
+            this.pageNo = val
+            this.getList()
+        },
+        restCallback(){
 
         },
         getList(){
+            var postData = this.$$queryStub.toJS();
             fetchList({
-                // ...postData,
+                ...postData,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize,
-                tab:this.coopListPlace
             }).then(response => {
                 this.list = response.data.list
                 this.total = response.data.total
-                this.listLoading = false
             })
         },
         selectStock(val) {
             this.stockList = val;
-        },
-        selectDele(val){
-
         },
         backStep() {
             this.$router.go(-1);
         },
         // 提交
         submit() {
-            if(coopFormVali(this)){
-                addCoop({
-                    ...this.postData
+            this.postData.inTime = common.timeParse(this.inTime);
+            this.itemList.map(item=>{
+                return{
+                    ...item,
+                    buyTime:common.timeParse(item.buyTime)
+                }
+            })
+            if(goodStockVali(this)){
+                addStore({
+                    ...this.postData,
+                    detail:this.itemList,
+                    putinTotal:this.putinTotal
                 }).then(res=>{
                     if (res.status == 0) {
                         this.$message({
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/oa/coopList' });
+                        this.$router.push({path:'/publicGoods/consumList' });
                     }
                 })
             }
@@ -386,7 +381,7 @@ export default {
 }
 .left-red{
     color: red;
-    position: absolute;
+    // position: absolute;
     left: 50px;
 }
 .remark{

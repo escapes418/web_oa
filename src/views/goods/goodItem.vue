@@ -3,38 +3,38 @@
         <td style="padding: 0 10px 0 10px;">
             <el-checkbox v-model="itemData.checked"></el-checkbox>
         </td>
-        <td style="padding: 0 10px 0 10px;">
+        <td class="tableTitle" style="padding: 0 10px 0 10px;">
             <span>{{itemData.goodName}}</span>
         </td>
-        <td style="padding: 0 10px 0 10px;">
+        <td class="tableTitle" style="padding: 0 10px 0 10px;">
             <span>{{itemData.goodCode}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodTypeName}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodUnit}}</span>
         </td>
-        <td>
+        <td class="tableTitle">
             <span>{{itemData.goodSpec}}</span>
         </td>
         <td style="width:240px">
-            <el-select clearable filterable class="filter-item" v-model="itemData.outPlace" placeholder="请选择放置地" @change="selectPlace">
+            <el-select clearable filterable class="filter-item" v-model="itemData.outPlace" placeholder="请选择放置地" @change="selectPlace" @clear=clearPlace>
                 <el-option v-for="item in itemData.places" :key="item.placeId" :label="item.placeName" :value="item.placeId">
                 </el-option>
             </el-select>
         </td>
-        <td>
+        <td class="tableTitle">
             <span class="tableTitle">{{itemData.placeCount}}</span>
         </td>
         <td>
-            <el-input v-model.number="itemData.inCount" type="number"></el-input>
+            <el-input v-model.number="itemData.outCount" type="number"></el-input>
         </td>
-        <td>
-            <span class="tableTitle">{{itemData.inPrice}}</span>
+        <td class="tableTitle">
+            <span>{{itemData.outPrice}}</span>
         </td>
-        <td>
-            <span class="tableTitle">{{inTotal || 0}}</span>
+        <td class="tableTitle">
+            <span>{{outTotal || 0}}</span>
         </td>
         <td>
             <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>
@@ -55,13 +55,13 @@ export default {
     },
     computed: {
         // 是否禁用上传图片
-        inTotal(){
-            return this.itemData.inCount*this.itemData.inPrice
+        outTotal(){
+            return this.itemData.outCount*this.itemData.outPrice
         }
     },
     watch:{
-        inTotal:function(val){
-            this.itemData.inTotal = val 
+        outTotal:function(val){
+            this.itemData.outTotal = val 
         }
     },
     created() {
@@ -74,6 +74,9 @@ export default {
                     this.itemData.placeCount = item.placeCount
                 }
             });
+        },
+        clearPlace(){
+            this.itemData.placeCount = 0
         }
     }
 }
