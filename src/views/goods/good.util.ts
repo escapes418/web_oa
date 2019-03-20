@@ -10,14 +10,13 @@ function toast(str) {
 }
 export function goodFormVali(self) {
     var flag = true;
-    // if (!self.postData.goodCode) {
-    //     toast('请填写物品编号！');
-    //     flag = false;
-    //     return;
-    // }
-    // else
-    if(!self.postData.goodName){
-        toast('请选择名称！');
+    if (self.postData.goodCode&&!/^[a-zA-Z0-9]{1,18}$/.test(self.postData.goodCode)) {
+        toast('物品编号只能是1-18位的大/小写字母和数字！');
+        flag = false;
+        return;
+    }
+    else if(!self.postData.goodName){
+        toast('请填写物品名称！');
         flag = false;
         return;
     }
@@ -35,11 +34,11 @@ export function goodFormVali(self) {
         flag = false;
         return;
     }
-    else if(!self.postData.goodSpec){
-        toast('请填写规格型号！');
-        flag = false;
-        return;
-    }
+    // else if(!self.postData.goodSpec){
+    //     toast('请填写规格型号！');
+    //     flag = false;
+    //     return;
+    // }
     else if(self.showDetail){
         if(!self.postData.inTime){
             toast('请选择入库时间！');
@@ -56,8 +55,8 @@ export function goodFormVali(self) {
             flag = false;
             return;
         }
-        else if(!self.postData.inCount){
-            toast('请填写入库数量！');
+        else if(self.postData.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(self.postData.inCount)){
+            toast('请正确填写入库数量！');
             flag = false;
             return;
         }
@@ -66,8 +65,8 @@ export function goodFormVali(self) {
             flag = false;
             return;
         }
-        else if(!self.postData.inPrice){
-            toast('请填写单价！');
+        else if(self.postData.inPrice<0|| !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(self.postData.inPrice)){
+            toast('请正确填写单价！');
             flag = false;
             return;
         }
@@ -106,13 +105,13 @@ export function goodStockVali(self) {
                 key = false;
                 return;
             }
-            if(item.inCount<0){
-                toast('请填写出库数量！');
+            if(item.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.inCount)){
+                toast('请正确填写入库数量！');
                 key = false;
                 return;
             }
-            if(item.inPrice<0){
-                toast('请填写单价！');
+            if(item.inPrice<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.inPrice)){
+                toast('请正确填写单价！');
                 key = false;
                 return;
             }
@@ -157,8 +156,8 @@ export function goodReceiveVali(self) {
                 key = false;
                 return;
             }
-            if(item.outCount<0){
-                toast('请填写出库数量！');
+            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.outCount)){
+                toast('请正确填写出库数量！');
                 key = false;
                 return;
             }
@@ -207,13 +206,13 @@ export function goodVerifyVali(self) {
                 key = false;
                 return;
             }
-            if(item.outCount<0){
-                toast('请填写出库数量！');
+            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.outCount)){
+                toast('请正确填写核销数量！');
                 key = false;
                 return;
             }
             if(item.outCount>item.placeCount){
-                toast('填写出库数量不能大于库存数量！');
+                toast('填写核销数量不能大于库存数量！');
                 key = false;
                 return;
             }

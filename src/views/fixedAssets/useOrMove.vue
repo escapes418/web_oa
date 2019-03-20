@@ -1,5 +1,12 @@
 <template>
   <div class="sjb-form-wrapper">
+        <el-alert
+            title="所有填写内容为领用/转移后的内容。"
+            class="remarkInfo"
+            :closable="false"
+            show-icon
+            type="info">
+        </el-alert>
         <div class="segment statistics">
             <div class="segment-header">
                 基本信息

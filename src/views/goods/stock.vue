@@ -27,7 +27,7 @@
                         <li class="base-li">
                             <RedStar label="金额：" :required="true">
                                 <span class="right-con">
-                                    {{putinTotal}}
+                                    {{putinTotal.toFixed(2)}}
                                 </span>
                             </RedStar>
                         </li>
@@ -118,7 +118,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="物品类别" width="100px">
                     <template slot-scope="scope">
-                        <span>{{scope.row.goodType}}</span>
+                        <span>{{scope.row.goodTypeName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="单位">

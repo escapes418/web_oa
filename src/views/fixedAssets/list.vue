@@ -44,7 +44,7 @@
                     <div class="toolbar-row">
                         <div class="toolbar-item">
                             <span class="item-label">入库时间：</span>
-                            <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
+                            <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围">
                             </el-date-picker>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                                 <span>{{scope.row.unit}}</span>
                             </el-form-item>
                             <el-form-item label="保修起始时间：">
-                                <span>{{scope.row.guaranteeBeginTime | stamp2TextDateFull}}</span>
+                                <span>{{scope.row.guaranteeBeginTime | stamp2TextDate}}</span>
                             </el-form-item>
                             <el-form-item label="供应商：">
                                 <span>{{scope.row.assetSupplierName}}</span>
@@ -76,10 +76,10 @@
                                 <span>{{scope.row.supplierContactWay}}</span>
                             </el-form-item>
                             <el-form-item label="过保时间：">
-                                <span >{{scope.row.guaranteeEndTime | stamp2TextDateFull}}</span>
+                                <span >{{scope.row.guaranteeEndTime | stamp2TextDate}}</span>
                             </el-form-item>
                             <el-form-item label="租用/购入时间：">
-                                <span>{{scope.row.buyTime | stamp2TextDateFull}}</span>
+                                <span>{{scope.row.buyTime | stamp2TextDate}}</span>
                             </el-form-item>
                             <el-form-item label="使用部门：">
                                 <span>{{scope.row.usingOffice}}</span>
@@ -91,7 +91,7 @@
                                 <span>{{scope.row.company}}</span>
                             </el-form-item>
                             <el-form-item label="领用日期：">
-                                <span>{{scope.row.pickDate | stamp2TextDateFull}}</span>
+                                <span>{{scope.row.pickDate | stamp2TextDate}}</span>
                             </el-form-item>
                             <el-form-item label="品牌：">
                                 <span>{{scope.row.brand}}</span>
@@ -102,6 +102,11 @@
                         </el-form>
                     </template>
                 </el-table-column>
+            <el-table-column width="80px" align="center" label="资产编号">
+                <template slot-scope="scope">
+                    <span>{{scope.row.code}}</span>
+                </template>
+            </el-table-column>
             <el-table-column width="120px" align="center" label="资产状态">
                 <template slot-scope="scope">
                     <span>{{scope.row.status}}</span>
@@ -119,7 +124,7 @@
             </el-table-column>
             <el-table-column width="140px" align="center" label="入库时间">
                 <template slot-scope="scope">
-                    <span>{{scope.row.entryTime | stamp2TextDateFull}}</span>
+                    <span>{{scope.row.entryTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="序列号">
@@ -142,9 +147,9 @@
                     <span>{{scope.row.money}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="150px" align="center" label="租赁到期时间">
+            <el-table-column width="150px" align="center" label="付费截止时间">
                 <template slot-scope="scope">
-                    <span>{{scope.row.dueTime | stamp2TextDateFull}}</span>
+                    <span>{{scope.row.dueTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="放置地">
@@ -169,7 +174,7 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" el-dialog>
+        <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible">
             <el-input placeholder="输入关键字进行过滤" v-model="filterMarket"></el-input>
             <el-tree :data="treeData" :props="defaultProps" @node-click="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
             <div slot="footer" class="dialog-footer">
@@ -177,9 +182,32 @@
                 <el-button type="primary" @click="selectMarket">确认</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="上传入库" width="300" :visible.sync="showStorage">
-            <span>请选择需要导入的excel文件：</span>
-            <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="handleRemove" :before-upload = "beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
+        <el-dialog title="上传入库" width="35%" :visible.sync="showStorage" @close="closeUpload">
+            <el-form ref='form' label-width="220px" label-position="left">
+                <RedStar :required ="true">
+                    <el-form-item label="请选择需要导入的excel文件：">
+                        <!-- <el-upload class="upload-img" :action="fileURL" :headers='{sessionid:token}' :on-remove="storeRemove" :before-upload = "beforeUpload" :http-request="upload" :on-success="storeSuccess" :file-list="attachment"> -->
+                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="expenseAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="1">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                            <div slot="tip" class="el-upload__tip">
+                                只能上传xls、xlsx格式文件！
+                            </div>
+                        </el-upload>
+                    </el-form-item>
+                </RedStar>
+                <RedStar :required ="true">
+                    <el-form-item label="批量入库模板：">
+                        <el-button size="small" @click="DLmodel">下载模版</el-button>
+                    </el-form-item>
+                </RedStar>
+                <el-form-item>
+                    <el-button type="primary" @click="confirmUpload">立即创建</el-button>
+                    <el-button @click="cancelBtn">取消</el-button>
+                </el-form-item>
+            </el-form>
+            <!-- <span>请选择需要导入的excel文件：</span>
+           
+            <el-upload class="upload-img" ref="upload" :action="fileURL" :headers='{ sessionid:token}' :before-upload="beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
                     只能上传xls格式文件!
@@ -190,7 +218,7 @@
             <el-button @click="DLmodel">下载模板</el-button>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="showStorage = false">取消</el-button>
-            </span>
+            </span> -->
         </el-dialog>
         <el-dialog title="是否删除" width="300px" :visible.sync="showDelete" el-dialog>
             <span>确认删除该条目？</span>
@@ -211,20 +239,18 @@ import config from '@/utils/config'
 import utils from '@/utils/utils'
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix'
-
+import RedStar from '@/components/RedStar/RedStar.vue';
 
 export default {
     directives: {
         waves
     },
+    components: {
+        RedStar,
+    },
     mixins: [listQueryMix],
     data() {
         return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                }
-            },
             toolexpand:false,
             list: null,
             total: null,
@@ -296,9 +322,6 @@ export default {
             }
             this.dialogMarketVisible = false
         },
-        confirmStorage(){
-
-        },
         DLmodel(){
             assetImportModel().then(res=>{
                 if(res.status == 0){
@@ -320,20 +343,45 @@ export default {
             })
         },
         handleSuccess(res, file, fileList) {
-            if(res.data.resCode == 1){
-                let url =res.data.storfiles.serverUrl + res.data.storfiles.url
-                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url})
+            this.expenseAttachment.push({ name:file.name})
+            if(res.status == 0){
+                this.$message({
+                    message:res.message,
+                    type:'success'
+                })
+                this.showStorage = false;
+            } else {
+                this.$message({
+                    duration: 10000,
+                    showClose: true,
+                    message: res.message || "网络异常",
+                    type: 'error'
+                })
             }
+            this.expenseAttachment.pop()
+        },
+        cancelBtn(){
+            this.showStorage = false;
+            this.expenseAttachment = []
         },
         beforeUpload(file) {
-            const isImage = ["application/vnd.ms-excel"].indexOf(file.type) !== -1
+            const isImage = ["application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"].indexOf(file.type) !== -1
             if(!isImage){
                  this.$message({
-                    message: "只能上传xls格式文件",
+                    message: "只能上传xls、xlsx格式文件",
                     type: 'error'
                 })
             }
             return isImage
+        },
+        handleExceed(){
+            this.$message({
+                message: "批量上传文件一次只能上传一个文件！",
+                type: 'error'
+            })
+        },
+        confirmUpload(){
+            this.$refs.upload.submit()
         },
         queryAssetTypeTree(){
             queryAssetTypeTree().then(res => {
@@ -442,6 +490,12 @@ export default {
         },
         goVerifyAssets(){
             this.$router.push({path:'/publicGoods/verifyAssets'})
+        },
+        confirmUpload(){
+            this.$refs.upload.submit()
+        },
+        closeUpload(){
+            this.getList()
         },
     }
 }

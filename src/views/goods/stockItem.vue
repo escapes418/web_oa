@@ -29,7 +29,7 @@
             <el-input v-model.number="itemData.inPrice" type="number"></el-input>
         </td>
         <td class="tableTitle">
-            <span>{{inTotal}}</span>
+            <span>{{inTotal.toFixed(2)}}</span>
         </td>
         <td>
             <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>
@@ -62,15 +62,12 @@ export default {
         inTotal:function(val){
             this.itemData.inTotal = val 
         },
-        // buyTime:function(val){
-        //     this.itemData.buyTime = common.timeParse(val)
-        // }
     },
     created() {
 
     },
     methods: {
-        
+     
     }
 }
 </script>

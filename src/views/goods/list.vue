@@ -13,7 +13,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">放置地：</span>
-                <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择人员类型">
+                <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择放置地">
                     <el-option v-for="item in placeArr" :key="item.id" :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
@@ -106,7 +106,7 @@
                     <span class="ignore-detail" :title="scope.row.remarks">{{scope.row.remarks}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+            <el-table-column align="center" label="操作" class-name="small-padding fixed-width" min-width="150px">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" @click="showDetail(scope.row)">编辑</el-button>
                     <el-button type="danger" @click="showDel(scope.row)" size="mini">删除</el-button>
@@ -114,12 +114,12 @@
             </el-table-column>
         </el-table>
 
-        <el-dialog title="上传入库" :visible.sync="dialogUpload" width="30%">
-            <el-form ref='form' label-width="200px" label-position="left">
+        <el-dialog title="上传入库" :visible.sync="dialogUpload" width="35%">
+            <el-form ref='form' label-width="220px" label-position="left">
                 <RedStar :required ="true">
                     <el-form-item label="批量导入的excel文件：">
                         <!-- <el-upload class="upload-img" :action="fileURL" :headers='{sessionid:token}' :on-remove="storeRemove" :before-upload = "beforeUpload" :http-request="upload" :on-success="storeSuccess" :file-list="attachment"> -->
-                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :action="fileURL" :auto-upload="false" :file-list="attachment" :on-success="storeSuccess" :limit="1">
+                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="attachment" :on-success="storeSuccess" :on-exceed="storeExceed" :limit="1">
                             <el-button size="small" type="primary">选取文件</el-button>
                             <div slot="tip" class="el-upload__tip">
                                 只能上传xls、xlsx格式文件！
@@ -210,6 +210,7 @@ export default {
                 label:'name'
             },
             toolexpand:false,
+            maxLimit:false,
             treeData:[],
             list: [],
             total: null,
@@ -300,7 +301,8 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    this.getList()
+                    this.dialogDelVisible = false;
+                    this.getList();
                 }
             })
         },
@@ -400,6 +402,12 @@ export default {
             }
             return isExcel&&utils.handleImgError(file)
         },
+        storeExceed(){
+            this.$message({
+                message: "批量上传文件一次只能上传一个文件！",
+                type: 'error'
+            })
+        },
         storeSuccess(res, file, fileList){
             this.attachment = fileList;
             if(res.status == 1){
@@ -408,7 +416,7 @@ export default {
                     type: 'error'
                 })
             }
-            if(res.statue == 0){
+            if(res.status == 0){
                 this.$message({
                     message: res.message,
                     type: 'success'

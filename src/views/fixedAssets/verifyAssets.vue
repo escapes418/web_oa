@@ -14,7 +14,7 @@
                                 </el-date-picker>
                             </span>
                         </RedStar>
-                        <RedStar label="清理原因："
+                        <RedStar label="详细清理原因："
                             :required="true">
                             <span class="right-con">
                                 <el-input placeholder="请输入"
@@ -68,7 +68,7 @@ import { queryAssetTypeTree,pickOrTransferAsset,saveAssetOut,saveAssetWriteOff} 
 import Utils from "./util";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import ChooseAssets from "@/components/ChooseAssets/index.vue";
-import { POST_data,CUST_list,MEMBER_list,POST_item,VA_postData} from "./interface";
+import {VA_postData} from "./interface";
 
 import { Vue, Component, Watch } from "vue-property-decorator";
 

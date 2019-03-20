@@ -112,7 +112,7 @@
                 </div>
                 <div class="toolbar-item">
                     <span class="item-label">放置地：</span>
-                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择人员类型">
+                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.placeId" placeholder="请选择放置地">
                         <el-option v-for="item in placeArr" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
@@ -140,7 +140,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="物品类别" width="100px">
                     <template slot-scope="scope">
-                        <span>{{scope.row.goodType}}</span>
+                        <span>{{scope.row.goodTypeName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="单位">
@@ -334,16 +334,16 @@ export default {
                 })
                 this.$refs.departTree.setChecked(data,false);
             }else if(this.chargeData.length ===0&&select){
-                if(this.type =='form'&&data.status == '0'){
+                if(data.type =='1'&&data.status == '1'){
+                    this.chargeData = [];
+                    this.chargeData.push(data)
+                }else{
                     this.$message({
                         message: "该部门节点不可选！",
                         type: 'warning'
                     })
                     this.$refs.departTree.setChecked(data,false);
                     return
-                }else{
-                    this.chargeData = [];
-                    this.chargeData.push(data)
                 }
             }else if(index>=0&&this.chargeData.length===1&&!select){
                 this.chargeData = []
@@ -358,16 +358,16 @@ export default {
                 })
                 this.$refs.userTree.setChecked(data,false);
             }else if(this.personData.length ===0&&select){
-                if(this.type =='form'&&data.status == '0'){
+                if(data.type =='2'&&data.status == '1'){
+                    this.personData = [];
+                    this.personData.push(data)
+                }else{
                     this.$message({
-                        message: "该人员节点不可选！",
+                        message: "该节点不可选！",
                         type: 'warning'
                     })
                     this.$refs.userTree.setChecked(data,false);
                     return
-                }else{
-                    this.personData = [];
-                    this.personData.push(data)
                 }
             }else if(index>=0&&this.personData.length===1&&!select){
                 this.personData = []

@@ -83,7 +83,7 @@ export function contractFormVali(self) {
         item&&item.contractPartyType.some(i=>{
             if(i.required == 1){
                 // /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]i.test("内蒙古自治区呼和浩特市呼准公路５７．６公里路西")
-                if(i.value==''|| /[`~!@$%^*\+=?:"{}|\/;\\[\]·~！@￥%……*\+={}|《》？：【】、；]/i.test(i.value)){
+                if(i.value==''|| /[`~!@$%^*\+=?:"{}|\/;\\[\]·~！@￥%……*\+={}|《》？：【】；]/i.test(i.value)){
                     key = false;
                     return true;
                 }

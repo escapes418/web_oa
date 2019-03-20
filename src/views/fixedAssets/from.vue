@@ -201,7 +201,7 @@
                 ></el-input>
               </span>
             </RedStar>
-            <RedStar label="租赁到期时间 ：" :required="true" v-if="postData.source == '3'">
+            <RedStar label="付费截止时间 ：" :required="true" v-if="postData.source == '3'">
               <span class="right-con">
                 <el-date-picker
                   v-model="time.dueTime"
@@ -322,7 +322,7 @@ export default class maForm extends Vue {
             this.postData.id = this.$route.params.id;
             this.getDetail().then(rtn=>{
                 this.postData = rtn;
-                this.postData = rtn.assetTypeIdList.splice(0, 1)
+                // this.postData.assetTypeIdList = rtn.assetTypeIdList.splice(0, 1)
                 this.time.buyTime = common.timeParseObj(rtn.buyTime)
                 this.time.dueTime = common.timeParseObj(rtn.dueTime)
                 this.time.entryTime = common.timeParseObj(rtn.entryTime)

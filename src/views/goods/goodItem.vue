@@ -34,7 +34,7 @@
             <span>{{itemData.outPrice}}</span>
         </td>
         <td class="tableTitle">
-            <span>{{outTotal || 0}}</span>
+            <span>{{outTotal.toFixed(2) || 0}}</span>
         </td>
         <td>
             <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>

@@ -39,7 +39,15 @@ export default {
     },
     watch:{
         'item.value':function(val){
-            this.$store.dispatch('changeItem',this.item);
+            if(/[`~!@$%^*\+=?:"{}|\/;\\[\]·~！@￥%……*\+={}|《》？：【】；]/i.test(val)){
+                this.$message({
+                    message: "请输入正确字符！",
+                    type: 'error'
+                })
+                return;
+            }else{
+                this.$store.dispatch('changeItem',this.item);
+            }
         },
         'item.url':function(url){
             if (this.item.columnType == 'select'&&url) {

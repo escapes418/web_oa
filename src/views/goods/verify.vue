@@ -91,8 +91,8 @@
                 </div>
                 <div class="toolbar-item">
                     <span class="item-label">放置地：</span>
-                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.personType" placeholder="请选择人员类型">
-                        <el-option v-for="item in placeArr" :key="item.value" :label="item.name" :value="item.value">
+                    <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.personType" placeholder="请选择放置地">
+                        <el-option v-for="item in placeArr" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -119,7 +119,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="物品类别" width="100px">
                     <template slot-scope="scope">
-                        <span>{{scope.row.goodType}}</span>
+                        <span>{{scope.row.goodTypeName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="单位">

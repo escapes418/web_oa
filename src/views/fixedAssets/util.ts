@@ -22,7 +22,7 @@ export default {
             toast('请选择入库时间！');
             return (flag = false);
         }
-        if (_this.postData.assetTypeId == "") {
+        if (_this.postData.assetTypeIdList == "") {
             toast('请选择资产类别！');
             return (flag = false);
         }
@@ -106,7 +106,7 @@ export default {
             return (flag = false);
         }
         if (_this.postData.cleanReason == "") {
-            toast('请输入清理原因！');
+            toast('请输入详细清理原因！');
             return (flag = false);
         }
         if (_this.postData.assetCode.length == 0) {
