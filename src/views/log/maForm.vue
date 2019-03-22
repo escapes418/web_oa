@@ -36,6 +36,7 @@
                                 <el-input type="textarea"
                                 :rows="3"
                                 style="width:250px;"
+                                :maxlength="1000"
                                 placeholder="请输入内容"
                                 v-model.trim="postData.afterDailyPlan">
                                 </el-input>
@@ -64,7 +65,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.remarks"></el-input>
                             </span>
                         </RedStar>

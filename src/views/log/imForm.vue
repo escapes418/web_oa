@@ -14,7 +14,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.todayWork"></el-input>
                             </span>
                         </RedStar>
@@ -25,7 +25,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.revisitProjectStatus"></el-input>
                             </span>
                         </RedStar>
@@ -36,7 +36,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.todayThought"></el-input>
                             </span>
                         </RedStar>
@@ -50,7 +50,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.transportPoolBuild"></el-input>
                             </span>
                         </RedStar>
@@ -61,7 +61,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.needAssistProblem"></el-input>
                             </span>
                         </RedStar>
@@ -71,7 +71,7 @@
                                 type="textarea"
                                 style="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 v-model.trim="postData.remarks"></el-input>
                             </span>
                         </RedStar>
@@ -162,7 +162,7 @@
                                 <el-input placeholder="请输入"
                                 type="text"
                                 style="width:180px;"
-                                :maxlength="250"
+                                :maxlength="1000"
                                 :disabled="scope.row.hasAbnormalStatus == 0"
                                 v-model.trim="scope.row.anomalyDescription"></el-input>
                             </template>

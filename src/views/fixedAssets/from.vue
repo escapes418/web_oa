@@ -12,7 +12,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.company"
+                  v-model.trim="postData.company"
                 ></el-input>
               </span>
             </RedStar>
@@ -21,7 +21,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model.number="postData.code"
+                  v-model.trim="postData.code"
                 ></el-input>
               </span>
             </RedStar>
@@ -38,6 +38,11 @@
                   @change="changeAssetType"
                 >
                 </el-cascader>
+              </span>
+            </RedStar>
+            <RedStar label="计量单位：">
+              <span class="right-con">
+                {{ postData.unit }}
               </span>
             </RedStar>
             <RedStar label="放置地：" :required="true">
@@ -59,11 +64,7 @@
                 </el-select>
               </span>
             </RedStar>
-            <RedStar label="计量单位：">
-              <span class="right-con">
-                {{ postData.unit }}
-              </span>
-            </RedStar>
+            
             <RedStar label="供应商：">
               <span class="right-con">
                 <el-select
@@ -130,7 +131,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.name"
+                  v-model.trim="postData.name"
                 ></el-input>
               </span>
             </RedStar>
@@ -141,6 +142,7 @@
                   class="filter-item"
                   style="width:250px"
                   placeholder="请选择日期"
+                  :picker-options="pickerOptions"
                 >
                 </el-date-picker>
               </span>
@@ -150,7 +152,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.brand"
+                  v-model.trim="postData.brand"
                 ></el-input>
               </span>
             </RedStar>
@@ -159,7 +161,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.specificationType"
+                  v-model.trim="postData.specificationType"
                 ></el-input>
               </span>
             </RedStar>
@@ -168,7 +170,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.serialNo"
+                  v-model.trim="postData.serialNo"
                 ></el-input>
               </span>
             </RedStar>
@@ -196,7 +198,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
-                  v-model="postData.money"
+                  v-model.trim="postData.money"
                   type="number"
                 ></el-input>
               </span>
@@ -245,6 +247,7 @@ import RedStar from "@/components/RedStar/RedStar.vue";
 import { POST_data,CUST_list,MEMBER_list,POST_item,I_time} from "./interface";
 
 import { Vue, Component } from "vue-property-decorator";
+import { resolve } from "path";
 
 @Component({
     components: {
@@ -252,6 +255,11 @@ import { Vue, Component } from "vue-property-decorator";
     }
 })
 export default class maForm extends Vue {
+     pickerOptions= {
+        disabledDate(time) {
+            return time.getTime() > Date.now();
+        }
+    }
     assetType = [];
     assetPlaceList = [];
     assetSupplierList = [];
@@ -294,11 +302,33 @@ export default class maForm extends Vue {
         unit: ""//计量单位
     };
 
-    created() {
-        this.init()
-        this.queryAssetTypeTree()
-        this.getAssetPlaceList();
-        this.getAssetSupplierList()
+    async created() {
+        
+        let typeRes = await this.queryAssetTypeTree();
+        let placeRes = await this.getAssetPlaceList();
+        let supplyRes = await this.getAssetSupplierList()
+        if(this.$route.params.id == "0"){
+
+        }else{
+          let detailRes = await this.getDetail()
+          this.postData = detailRes;
+          this.time.entryTime = common.timeParseObj(detailRes.entryTime)
+          this.time.buyTime = common.timeParseObj(detailRes.buyTime)
+          if(detailRes.dueTime){
+            this.time.dueTime = common.timeParseObj(detailRes.dueTime)
+          }
+          if(detailRes.guaranteeBeginTime){
+            this.time.guaranteeBeginTime = common.timeParseObj(detailRes.guaranteeBeginTime)
+          }
+          if(detailRes.guaranteeEndTime){
+            this.time.guaranteeEndTime = common.timeParseObj(detailRes.guaranteeEndTime)
+          }
+          Promise.all([typeRes,placeRes,supplyRes]).then(()=>{
+              this.changeAssetType()
+              this.assetSupplierChange()
+          })
+        }
+        
     }
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -312,34 +342,46 @@ export default class maForm extends Vue {
             return temp;
         }
         this.dic.assetSource = selectDic(dicList,"asset_source")
-
     }
 
-    init() {
-        if(this.$route.params.id == "0"){
+    // init() {
+    //     if(this.$route.params.id == "0"){
 
-        } else {
-            this.postData.id = this.$route.params.id;
-            this.getDetail().then(rtn=>{
-                this.postData = rtn;
-                // this.postData.assetTypeIdList = rtn.assetTypeIdList.splice(0, 1)
-                this.time.buyTime = common.timeParseObj(rtn.buyTime)
-                this.time.dueTime = common.timeParseObj(rtn.dueTime)
-                this.time.entryTime = common.timeParseObj(rtn.entryTime)
-                this.time.guaranteeBeginTime = common.timeParseObj(rtn.guaranteeBeginTime)
-                this.time.guaranteeEndTime = common.timeParseObj(rtn.guaranteeEndTime)
-
-            })
-        }
-    };
+    //     } else {
+    //         this.postData.id = this.$route.params.id;
+    //         this.getDetail().then(rtn=>{
+    //             this.postData = rtn;
+    //             this.time.entryTime = common.timeParseObj(rtn.entryTime)
+    //             this.time.buyTime = common.timeParseObj(rtn.buyTime)
+    //             if(rtn.dueTime){
+    //               this.time.dueTime = common.timeParseObj(rtn.dueTime)
+    //             }
+    //             if(rtn.guaranteeBeginTime){
+    //               this.time.guaranteeBeginTime = common.timeParseObj(rtn.guaranteeBeginTime)
+    //             }
+    //             if(rtn.guaranteeEndTime){
+    //               this.time.guaranteeEndTime = common.timeParseObj(rtn.guaranteeEndTime)
+    //             }
+    //             // this.fetchContactWay()
+    //         })
+    //     }
+    // };
     getAssetPlaceList(){
-        queryAssetPlaceList().then((res:any) => {
-            this.assetPlaceList = res.data;
+        return new Promise((resolve,reject)=>{
+            queryAssetPlaceList().then((res:any) => {
+                resolve(res.data)
+                this.assetPlaceList = res.data;
+            })
         })
+        
     }
     getAssetSupplierList(){
-        queryAssetSupplierList().then((res:any) => {
+        return new Promise((resolve,reject)=>{
+          queryAssetSupplierList().then((res:any) => {
+            resolve(res.data)
             this.assetSupplierList = res.data;
+          })
+          
         })
     }
     getDetail():any {
@@ -368,7 +410,6 @@ export default class maForm extends Vue {
             this.postData.entryTime = common.timeParse(this.time.entryTime)
             this.postData.guaranteeBeginTime = common.timeParse(this.time.guaranteeBeginTime)
             this.postData.guaranteeEndTime = common.timeParse(this.time.guaranteeEndTime)
-
             saveOrUpdateAsset({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
@@ -379,6 +420,11 @@ export default class maForm extends Vue {
                     });
                     this.$router.go(-1);
 
+                } else{
+                  this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
                 }
             });
         }
@@ -395,16 +441,11 @@ export default class maForm extends Vue {
     }
     changeAssetType(){
         var len = this.postData.assetTypeIdList.length
-        if(len == 0){
-            this.postData.unit = ""
-        } else {
-            this.AssetType.forEach((item,index)=>{
-                if(item.id == this.postData.assetTypeIdList[len-1]){
-                    this.postData.unit = item.unit
-                }
-            })
-        }
-        
+        this.AssetType.forEach((item,index)=>{
+            if(item.id == this.postData.assetTypeIdList[len-1]){
+                this.postData.unit = item.unit
+            }
+        })
     }
 }
 </script>

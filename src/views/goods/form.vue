@@ -33,7 +33,7 @@
                         <li class="base-li">
                             <RedStar label="单位：" :required="true">
                                 <span class="right-con">
-                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入物品单位" v-model.trim="postData.goodUnit">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入物品单位" :maxlength="16" v-model.trim="postData.goodUnit">
                                     </el-input>
                                 </span>
                             </RedStar>
@@ -41,7 +41,7 @@
                         <li class="base-li">
                             <RedStar label="规格型号：" :required="false">
                                 <span class="right-con">
-                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入规格型号" v-model.trim="postData.goodSpec">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入规格型号" :maxlength="32" v-model.trim="postData.goodSpec">
                                     </el-input>
                                 </span>
                             </RedStar>

@@ -100,7 +100,7 @@ export function exportGood(params){
 
 export function importTemp(params){
     return request({
-        url:'/consumables/assetImportMode',
+        url:'/consumables/assetImportModel',
         method:'post',
         data:params
     })

@@ -282,17 +282,38 @@ export default class ChooseAssets extends Vue {
         this.listLoading = false;
     };
     fetchData():any {
+        if(this.itemList.length == 0){
+            this.$message({
+                message: "请选择资产",
+                type: 'warning'
+            })
+            return
+        }
         return this.itemList
     }
     dialogConfirm(){
         for(var i=0; i<this.selectItem.length; i++){
             var ele = this.selectItem[i];
-            if(this.itemList.indexOf(ele) == -1){
-                this.itemList.push(ele);
+            // if(this.itemList.indexOf(ele) == -1){
+            //     console.log(this.itemList.indexOf(ele))
+            //     this.itemList.push(ele);
+            // }
+            if(this.itemList.length){
+                this.itemList.forEach(item=>{
+                    if(item.id == ele.id){
+                        this.$message({
+                            message: "不能选择重复资产",
+                            type: 'warning'
+                        })
+                    }else{
+                        this.itemList.push(ele);
+                    }
+                })
+            }else{
+                this.itemList.push(ele)
             }
         }
         this.showDialog = false;
-
     }
 }
 </script>

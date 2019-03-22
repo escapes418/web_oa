@@ -106,13 +106,38 @@ export interface MEMBER_list {
 }
 
 export interface POST_item {
-    index:number,
-    custId:string,//客户id ,
-    custName:string,//客户名称
-    custMaintenanceContent :string, //维护内容 ,
-    custMaintenanceDate:number, // 维护时间:yyyy-MM-dd HH:mm:ss ,
-    visitTypeName :string,// 拜访名称,
-    visitType :string, // 拜访类型
+    // index:number,
+    // custId:string,//客户id ,
+    // custName:string,//客户名称
+    // custMaintenanceContent :string, //维护内容 ,
+    // custMaintenanceDate:number, // 维护时间:yyyy-MM-dd HH:mm:ss ,
+    // visitTypeName :string,// 拜访名称,
+    // visitType :string, // 拜访类型
+    assetPlaceName: string
+    assetSupplierName: string
+    assetTypeName: string
+    brand:string
+    buyTime: string
+    code: string
+    company: string
+    dueTime: string
+    entryTime: string
+    guaranteeBeginTime: string
+    guaranteeEndTime:string
+    id: string
+    money: string
+    name:string
+    pickDate:string
+    remarks:string
+    serialNo:string
+    source: string
+    specificationType:string
+    status: string
+    supplierContactWay:string
+    unit: string
+    usingOffice: string
+    usingPerson: string
+    usingWorkplace: string
 }
 
 

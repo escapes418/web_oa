@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <el-table :data="list" border fit highlight-current-row style="width: 100%">
             <el-table-column type="expand" label-class-name="progress__label"> 
                     <template slot-scope="scope">
                         <el-form label-position="left" inline class="progress-table-expand" style="font-size:12px;" >
@@ -142,7 +142,7 @@
                     <span>{{scope.row.source}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="金额">
+            <el-table-column width="80px" align="center" label="金额">
                 <template slot-scope="scope">
                     <span>{{scope.row.money}}</span>
                 </template>
@@ -272,7 +272,6 @@ export default {
             showUpload: false,
             pageNo: 1,
             pageSize: 20,
-            listLoading: true,
             showDelete:false,
             deleteRow: "",
             expenseAttachment: [], 
@@ -294,7 +293,6 @@ export default {
     },
     created() {
         this.getList()
-        this.listLoading = false;
         this.queryAssetTypeTree()
     },
     mounted(){
@@ -332,6 +330,11 @@ export default {
                         type:'success'
                     })
                     this.showStorage = false
+                } else{
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
                 }
             })
         },
@@ -367,7 +370,7 @@ export default {
         beforeUpload(file) {
             const isImage = ["application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"].indexOf(file.type) !== -1
             if(!isImage){
-                 this.$message({
+                this.$message({
                     message: "只能上传xls、xlsx格式文件",
                     type: 'error'
                 })
@@ -399,7 +402,6 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         getList() {
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             queryAssetList({
                 ...postData,
@@ -408,7 +410,6 @@ export default {
             }).then(response => {
                 this.list = response.data.list
                 this.total = response.data.total
-                this.listLoading = false
             })
         },
         restCallback() {
@@ -430,12 +431,10 @@ export default {
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getList()
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val
             this.getList()
-            this.listLoading = false;
         },
         showDetail(row){
             this.$router.push({ path: "/publicGoods/fixedAssetsFrom/" + row.id });
@@ -443,6 +442,7 @@ export default {
         deleteItem(row){
             this.deleteRow = row
             this.showDelete = true
+            
         },
         confirmDelete(){
             deleteAssetById({
@@ -454,6 +454,12 @@ export default {
                         message:res.message,
                         type:'success'
                     })
+                    this.getList()
+                } else {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
                 }
             })
         },
@@ -472,6 +478,11 @@ export default {
                         message:res.message,
                         type:'success'
                     })
+                } else {
+                    this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
                 }
             })
         },

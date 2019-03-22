@@ -114,6 +114,7 @@ export default class maForm extends Vue {
     submit(): void {
         let CA:any = this.$refs.chooseAssets;
         var list = CA.fetchData()
+        this.postData.assetCode = []
         list.forEach((item,index)=>{
             this.postData.assetCode.push(item.id)
         })
@@ -129,6 +130,11 @@ export default class maForm extends Vue {
                     });
                     this.$router.go(-1);
 
+                } else{
+                  this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
                 }
             });
         }

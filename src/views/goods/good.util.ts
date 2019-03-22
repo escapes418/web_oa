@@ -55,8 +55,8 @@ export function goodFormVali(self) {
             flag = false;
             return;
         }
-        else if(self.postData.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(self.postData.inCount)){
-            toast('请正确填写入库数量！');
+        else if(self.postData.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1})?$/.test(self.postData.inCount)){
+            toast('请正确填写入库数量！只能是最多保留1位小数的正数！');
             flag = false;
             return;
         }
@@ -66,7 +66,7 @@ export function goodFormVali(self) {
             return;
         }
         else if(self.postData.inPrice<0|| !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(self.postData.inPrice)){
-            toast('请正确填写单价！');
+            toast('请正确填写单价！只能是最多保留2位小数的正数');
             flag = false;
             return;
         }
@@ -105,13 +105,13 @@ export function goodStockVali(self) {
                 key = false;
                 return;
             }
-            if(item.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.inCount)){
-                toast('请正确填写入库数量！');
+            if(item.inCount<0 || !/^[0-9]+([.]{1}[0-9]{1})?$/.test(item.inCount)){
+                toast('请正确填写入库数量！只能是最多保留1位小数的正数');
                 key = false;
                 return;
             }
             if(item.inPrice<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.inPrice)){
-                toast('请正确填写单价！');
+                toast('请正确填写单价！只能是最多保留2位小数的正数');
                 key = false;
                 return;
             }
@@ -156,8 +156,8 @@ export function goodReceiveVali(self) {
                 key = false;
                 return;
             }
-            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.outCount)){
-                toast('请正确填写出库数量！');
+            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1})?$/.test(item.outCount)){
+                toast('请正确填写出库数量！只能是最多保留1位小数的正数');
                 key = false;
                 return;
             }
@@ -206,13 +206,13 @@ export function goodVerifyVali(self) {
                 key = false;
                 return;
             }
-            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(item.outCount)){
+            if(item.outCount<0 || !/^[0-9]+([.]{1}[0-9]{1})?$/.test(item.outCount)){
                 toast('请正确填写核销数量！');
                 key = false;
                 return;
             }
             if(item.outCount>item.placeCount){
-                toast('填写核销数量不能大于库存数量！');
+                toast('填写核销数量不能大于库存数量！只能是最多保留1位小数的正数');
                 key = false;
                 return;
             }

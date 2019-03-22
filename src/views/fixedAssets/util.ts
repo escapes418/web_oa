@@ -18,6 +18,10 @@ export default {
             toast('请填写资产编号！');
             return (flag = false);
         }
+        if (!/^[a-zA-Z0-9]{1,18}$/.test(_this.postData.code)) {
+            toast('资产编号只能是1-18位的大/小写字母和数字！');
+            return (flag = false);
+        }
         if (_this.time.entryTime == "" || _this.postData.entryTime == undefined) {
             toast('请选择入库时间！');
             return (flag = false);
@@ -42,6 +46,10 @@ export default {
             toast('请填写金额！');
             return (flag = false);
         }
+        if(_this.postData.money<0|| !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(_this.postData.money)){
+            toast('请正确填写金额！只能是最多保留2位小数的正数');
+            return (flag = false);
+        }
         if (_this.time.buyTime == "" || _this.time.buyTime == undefined) {
             toast('请选择租用/购入时间！');
             return (flag = false);
@@ -52,7 +60,18 @@ export default {
                 return (flag = false);
             }
         }
-        
+        if (_this.time.dueTime<_this.time.buyTime) {
+            toast('租赁到期时间不能小于购买时间！');
+            return (flag = false);
+        }
+        if (_this.time.guaranteeEndTime<_this.time.guaranteeBeginTime) {
+            toast('租赁到期时间不能小于购买时间！');
+            return (flag = false);
+        }
+        // if (_this.time.entryTime<_this.time.guaranteeBeginTime) {
+        //     toast('租赁到期时间不能小于购买时间！');
+        //     return (flag = false);
+        // }
         return flag;
     },
     useOrMove(_this){
