@@ -56,22 +56,26 @@ export default {
         }
         if(_this.postData.source == "3"){
             if (_this.time.dueTime == "" || _this.time.dueTime == undefined) {
-                toast('请选择租赁到期时间！');
+                toast('请选择付费截止时间！');
                 return (flag = false);
             }
         }
-        if (_this.time.dueTime<_this.time.buyTime) {
-            toast('租赁到期时间不能小于购买时间！');
-            return (flag = false);
+        if(_this.postData.source == "3"){
+            if (_this.time.dueTime<_this.time.buyTime) {
+                toast('付费截止时间不能小于购买时间！');
+                return (flag = false);
+            }
         }
         if (_this.time.guaranteeEndTime<_this.time.guaranteeBeginTime) {
-            toast('租赁到期时间不能小于购买时间！');
+            toast('过保时间不能小于保修起始时间！');
             return (flag = false);
         }
-        // if (_this.time.entryTime<_this.time.guaranteeBeginTime) {
-        //     toast('租赁到期时间不能小于购买时间！');
-        //     return (flag = false);
-        // }
+        if(_this.postData.source == "3"){
+            if (_this.time.dueTime<_this.time.buyTime) {
+                toast('付费截止时间不能小于租用/购入时间！');
+                return (flag = false);
+            }
+        }
         return flag;
     },
     useOrMove(_this){

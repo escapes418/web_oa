@@ -3,7 +3,7 @@
         <div class="filter-container">
             <div class="toolbar-item">
                 <span class="item-label">精确搜索：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 250px;" class="filter-item" placeholder="请输入资产编号/名称/规格型号/备注" v-model.trim="listQuery.keyword">
+                <el-input @keyup.enter.native="handleFilter" :maxlength="100" style="width: 250px;" class="filter-item" placeholder="请输入资产编号/名称/规格型号/备注" v-model.trim="listQuery.keyword">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -32,7 +32,7 @@
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command='1'>批量入库</el-dropdown-item>
-                            <el-dropdown-item command='2'>导出资产</el-dropdown-item>
+                            <el-dropdown-item command='2' v-if="list.length">导出资产</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
@@ -96,7 +96,7 @@
                             <el-form-item label="品牌：">
                                 <span>{{scope.row.brand}}</span>
                             </el-form-item>
-                            <el-form-item label="备注：">
+                            <el-form-item label="备注：" style="width:70%;">
                                 <span>{{scope.row.remarks}}</span>
                             </el-form-item>
                         </el-form>
@@ -165,7 +165,8 @@
             <el-table-column width="160px" align="center" label="操作" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" @click="showDetail(scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+                    <el-button v-if="scope.row.status == '闲置'" type="danger" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+                    <el-button v-if="scope.row.status == '在用'" type="danger" size="mini" @click="notDeleteItem(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -186,8 +187,7 @@
             <el-form ref='form' label-width="220px" label-position="left">
                 <RedStar :required ="true">
                     <el-form-item label="请选择需要导入的excel文件：">
-                        <!-- <el-upload class="upload-img" :action="fileURL" :headers='{sessionid:token}' :on-remove="storeRemove" :before-upload = "beforeUpload" :http-request="upload" :on-success="storeSuccess" :file-list="attachment"> -->
-                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="expenseAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="1">
+                        <el-upload ref="upload" class="upload-img" :before-upload="beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="expenseAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="1">
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">
                                 只能上传xls、xlsx格式文件！
@@ -205,26 +205,19 @@
                     <el-button @click="cancelBtn">取消</el-button>
                 </el-form-item>
             </el-form>
-            <!-- <span>请选择需要导入的excel文件：</span>
-           
-            <el-upload class="upload-img" ref="upload" :action="fileURL" :headers='{ sessionid:token}' :before-upload="beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">
-                    只能上传xls格式文件!
-                </div>
-            </el-upload>
-            <div style="height:10px"></div>
-            <span>批量入库模板：</span>
-            <el-button @click="DLmodel">下载模板</el-button>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="showStorage = false">取消</el-button>
-            </span> -->
         </el-dialog>
-        <el-dialog title="是否删除" width="300px" :visible.sync="showDelete" el-dialog>
-            <span>确认删除该条目？</span>
+        <el-dialog title="确认删除" width="300px" :visible.sync="showDelete" el-dialog>
+            <span>确认删除资产编号为：{{deleteRow.code}}的{{deleteRow.name}}？删除后，将不可找回！</span>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="showDelete = false">取消</el-button>
                 <el-button type="primary" @click="confirmDelete">确认</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="不可删除" width="300px" :visible.sync="notDelete" el-dialog>
+            <span>{{notDeleteRow.code}}正在使用中，不可删除！</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="notDelete = false">取消</el-button>
+                <el-button type="primary" @click="notDelete = false">确认</el-button>
             </div>
         </el-dialog>
     </div>
@@ -252,7 +245,7 @@ export default {
     data() {
         return {
             toolexpand:false,
-            list: null,
+            list: [],
             total: null,
             dialogMarketVisible:false,
             filterMarket:'',
@@ -273,7 +266,15 @@ export default {
             pageNo: 1,
             pageSize: 20,
             showDelete:false,
-            deleteRow: "",
+            notDelete:false,
+            deleteRow: {
+                id:"",
+                code:"",
+                name:"",
+            },
+            notDeleteRow:{
+                name:"",
+            },
             expenseAttachment: [], 
             listQuery: {
                 timeRange: [],
@@ -443,6 +444,10 @@ export default {
             this.deleteRow = row
             this.showDelete = true
             
+        },
+        notDeleteItem(row){
+            this.notDeleteRow = row
+            this.notDelete = true
         },
         confirmDelete(){
             deleteAssetById({

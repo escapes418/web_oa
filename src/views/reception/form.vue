@@ -60,12 +60,11 @@
                     
                     <RedStar label="备注：">
                         <span class="right-con">
-                            <el-input placeholder="请输入"
-                            type="textarea"
-                            style="width:280px;"
+                            <sjbtextarea placeholder="请输入"
+                            textStyle="width:280px;"
                             :rows="3"
-                            :maxlength="2000"
-                            v-model.trim="filter.remarks"></el-input>
+                            :max="2000"
+                            v-model.trim="filter.remarks"></sjbtextarea>
                         </span>
                     </RedStar>
                 </el-col>
@@ -166,20 +165,22 @@
 </template>
 
 <script>
-import common from '@/utils/common'
-import Approval from '@/components/Approval'
-import Project from '@/components/Project'
-import { fetchProList , getSubjects , recepApply , recepSave , getDetail , fetchList , getMember} from '@/api/reception'
+import common from '@/utils/common';
+import Approval from '@/components/Approval';
+import Project from '@/components/Project';
+import { fetchProList , getSubjects , recepApply , recepSave , getDetail , fetchList , getMember} from '@/api/reception';
 import { mapState, mapGetters } from "vuex";
-import { parseTime } from '@/utils'
-import { recepFormVali } from './recep.util'
-import RedStar from '@/components/RedStar/RedStar.vue'
+import { parseTime } from '@/utils';
+import { recepFormVali } from './recep.util';
+import RedStar from '@/components/RedStar/RedStar.vue';
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 
 export default {
     components:{
         Approval,
         Project,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         return {

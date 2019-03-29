@@ -74,15 +74,14 @@
                         备注：
                     </div>
                     <div class="segment-area">
-                        <el-input
-                            type="textarea"
+                        <sjbtextarea
                             :rows="3"
-                            style="margin-top:20px;margin-bottom:20px"
+                            textStyle="margin-top:20px;margin-bottom:20px"
                             placeholder="请输入内容"
-                            :maxlength="300"
-                            readonly
+                            :max="300"
+                            :readonly="true"
                             v-model.trim="detail.remarks">
-                        </el-input>
+                        </sjbtextarea>
                     </div>
                 </div>
                 <div class="segment statistics">
@@ -233,6 +232,7 @@
 import common from "@/utils/common";
 import Department from "@/components/Department";
 import RedStar from "@/components/RedStar/RedStar.vue";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import { fetchForm, custList, savePro , getCompanyList , getContractList ,getNodeList,getImList,downFile} from "@/api/project";
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -241,7 +241,8 @@ import listQueryMix from '../../mixins/listQuery.mix';
 export default {
     components: {
         Department,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     mixins: [listQueryMix],
     data() {

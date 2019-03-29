@@ -96,11 +96,13 @@ export default {
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为归属部门！",
-                    type: 'warning'
-                })
-                this.$refs.tree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为归属部门！",
+                //     type: 'warning'
+                // })
+                this.$refs.tree.setChecked(this.chargeData[0],false);
+                this.chargeData = []
+                this.chargeData.push(data)
             }else if(this.chargeData.length ===0&&select){
                 if(this.type =='form'&&data.status == '0'){
                     this.$message({

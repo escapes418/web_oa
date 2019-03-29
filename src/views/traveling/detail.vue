@@ -148,14 +148,13 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                <el-input
-                        type="textarea"
+                    <sjbtextarea
                         :rows="3"
-                        style="width:420px;margin-top:20px;margin-bottom:20px"
-                        :maxlength="300"
+                        textStyle="width:420px;margin-top:20px;margin-bottom:20px"
+                        :max="300"
                         placeholder="请输入内容"
                         v-model="comment">
-                    </el-input>
+                    </sjbtextarea>
                 </div>
             </div>
         </template>
@@ -203,10 +202,14 @@ import {
     travelFlowRepealApply, //Web端出差申请-删除单据
 } from "@/api/traveling";
 import { parseTime } from "@/utils";
-import { travelDetailVali } from './travel.util'
+import { travelDetailVali } from './travel.util';
+import sjbtextarea from '@/components/sjbTextarea';
 
 export default {
     name: "complexTable",
+    components: {
+        sjbtextarea
+    },
     data() {
         return {
             flowDetailList: [],

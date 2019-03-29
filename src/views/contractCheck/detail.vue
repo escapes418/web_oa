@@ -183,8 +183,8 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                    <el-input type="textarea" :rows="3" :maxlength="300" style="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model="comment">
-                    </el-input>
+                    <sjbtextarea :rows="3" :max="300" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model.trim="comment">
+                    </sjbtextarea>
                 </div>
             </div>
             <div class="segment statistics" v-if="detail.isUploadFile == 1">
@@ -253,6 +253,7 @@
 <script>
 import common from "@/utils/common";
 import BaseTemp from '@/components/BaseTemp';
+import sjbtextarea from '@/components/sjbTextarea'
 import {
     getContractConfig,
     getProject,
@@ -272,7 +273,8 @@ import Viewer from 'viewerjs';
 
 export default {
     components: {
-        BaseTemp
+        BaseTemp,
+        sjbtextarea
     },
     data() {
         return {

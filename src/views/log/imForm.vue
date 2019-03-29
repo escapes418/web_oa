@@ -10,34 +10,31 @@
                         <RedStar label="今日工作："
                             :required="true">
                             <span class="right-con long_area">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.todayWork"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.todayWork"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="回访项目情况："
                             :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.revisitProjectStatus"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.revisitProjectStatus"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="今日感想："
                             :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.todayThought"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.todayThought"></sjbtextarea>
                             </span>
                         </RedStar>
                         
@@ -46,33 +43,30 @@
                         <RedStar label="运力池建设："
                             :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.transportPoolBuild"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.transportPoolBuild"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="需要协助问题："
                             :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.needAssistProblem"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.needAssistProblem"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.remarks"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                     </el-col>
@@ -218,13 +212,15 @@ import { saveImLog,getMember,getProject,getNode} from "@/api/log";
 import { parseTime } from "@/utils/index";
 import { imFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import { POST_data,CUST_list,MEMBER_list,POST_imply,IMPLY_item,DIC_list,PROJECT_list} from "./interface";
 
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({
     components: {
-        RedStar: RedStar
+        RedStar: RedStar,
+        sjbtextarea
     }
 })
 export default class imForm extends Vue {

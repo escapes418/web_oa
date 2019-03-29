@@ -276,11 +276,13 @@ export default {
         handleAssignClick(data,select,childSelect){
             let index = this.assignData.indexOf(data)
             if(index<0&&this.assignData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为部门/人员！",
-                    type: 'warning'
-                })
-                this.$refs.assignTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为部门/人员！",
+                //     type: 'warning'
+                // })
+                this.$refs.assignTree.setChecked(this.assignData[0],false);
+                this.assignData = [];
+                this.assignData.push(data)
             }else if(this.assignData.length ===0&&select){
                 // if(data.status == '1'){
                     this.assignData = [];

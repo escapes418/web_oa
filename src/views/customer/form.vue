@@ -320,12 +320,12 @@
                 贸易结构
             </div>
             <div class="segment-area">
-                <div class="textarea-title">上游：</div>
-                <el-input type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.upstream"></el-input>
+                <div class="textStyle-title">上游：</div>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.upstream"></sjbtextarea>
             </div>
             <div class="segment-area" style="margin-bottom:15px">
-                <div class="textarea-title">下游：</div>
-                <el-input type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.downstream"></el-input>
+                <div class="textStyle-title">下游：</div>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.downstream"></sjbtextarea>
             </div>
         </div>
         <div class="segment statistics">
@@ -407,12 +407,14 @@
 import common from "@/utils/common";
 import { fetchForm, saveCust , custChange} from "@/api/customer";
 import { mapState } from "vuex";
-import RedStar from '@/components/RedStar/RedStar.vue'
+import RedStar from '@/components/RedStar/RedStar.vue';
+import sjbtextarea from '@/components/sjbTextarea';
 import { parseTime } from "@/utils";
 
 export default {
     components:{
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         const validatePass = (rule, value, callback) => {
@@ -820,7 +822,7 @@ export default {
     margin-bottom: 15px;
 }
 .segment-area {
-    .textarea-title {
+    .textStyle-title {
         // line-height: 20px;
         padding: 12px 0px;
         font-size: 14px;

@@ -72,19 +72,29 @@
                                 </el-option>
                             </el-select>
                         </RedStar>
+                        <RedStar label="接待客户情况：" v-if="filter.applyType == 2">
+                            <span class="right-con">
+                                <sjbtextarea 
+                                    v-model.trim="filter.customerSituation" 
+                                    placeholder="请输入" 
+                                    :row="3" 
+                                    :max="1000"
+                                    textStyle="width:280px"></sjbtextarea>
+                            </span>
+                        </RedStar>
                         <RedStar label="随行人员：" v-if="filter.applyType == 3">
                             <span class="right-con">
                                 {{filter.entourageListName&&filter.entourageListName.join(',')}}
                             </span>
                         </RedStar>
+                        
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:280px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:280px;"
                                 :rows="3"
-                                :maxlength="2000"
-                                v-model.trim="filter.remarks"></el-input>
+                                :max="2000"
+                                v-model.trim="filter.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="费用合计：">
@@ -225,6 +235,7 @@ import common from '@/utils/common'
 import Approval from '@/components/Approval'
 import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
+import sjbtextarea from '@/components/sjbTextarea'
 import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember } from '@/api/reim'
 import { mapState, mapGetters } from "vuex";
 
@@ -239,7 +250,8 @@ export default {
     components: {
         Approval,
         Project,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     mixins: [listQueryMix],
     data() {
@@ -316,6 +328,7 @@ export default {
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
                 this.filter.remarks = res.data.detail.remarks
+                this.filter.customerSituation = res.data.detail.customerSituation
 
                 this.filter.id = res.data.detail.id;
                 this.filter.projectId = res.data.detail.projectId;
@@ -589,7 +602,6 @@ export default {
                 this.filter.expenseAttachmentWeb.push({ url: item.originUrl, name: item.name })
             })
             this.filter.expenseDetail = this.getItemsInStore();
-            
             if (type == 'apply' && reimFormVali(this)) {
                 expApply(this.filter).then(res => {
                     if (res.status == 0) {

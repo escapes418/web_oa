@@ -10,17 +10,11 @@
                         <RedStar label="申请人员：">
                             <span class="right-con">{{userInfo.name}}</span>
                         </RedStar>
-                        <!-- <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">申请人员：</span>
-                            <span class="right-con">{{userInfo.name}}</span>
-                        </div> -->
+                        
                         <RedStar label="所属部门：">
                             <span class="right-con">{{userInfo.officeName}}</span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">所属部门：</span>
-                            <span class="right-con">{{ userInfo.officeName }}</span>
-                        </div> -->
+                        
                         <Project @on-select="proSelect" :Pvalue="projectName" :required="true"></Project>
                         <RedStar label="资源类型：" :required="true">
                             <span class="right-con">
@@ -30,16 +24,7 @@
                                 </el-select>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-red">*</span>
-                            <span class="left-title font-gray">资源类型：</span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" filterable v-model="filter.resourcesType" placeholder="请选择" style="width:280px;">
-                                    <el-option v-for="item in resourceList" :label="item.name" :value="item.value" :key="item.value">
-                                    </el-option>
-                                </el-select>
-                            </span>
-                        </div> -->
+                        
                         <RedStar label="期待抵达时间：" :required="true">
                             <span class="right-con">
                                 <el-date-picker
@@ -50,106 +35,52 @@
                                 </el-date-picker>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-red">*</span>
-                            <span class="left-title font-gray">期待抵达时间：</span>
-                            <span class="right-con">
-                                <el-date-picker
-                                    v-model="filter.expectDate"
-                                    type="datetime"
-                                    style="width:280px"
-                                    placeholder="选择日期时间">
-                                </el-date-picker>
-                            </span>
-                        </div> -->
+                        
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input
-                                    type="textarea"
+                                <sjbtextarea
                                     :rows="3"
-                                    style="width:280px;margin-top:2px;margin-bottom:20px"
+                                    textStyle="width:280px;margin-top:2px;margin-bottom:20px"
                                     placeholder="请输入内容"
-                                    :maxlength="300"
+                                    :max="300"
                                     v-model="filter.remarks">
-                                </el-input>
+                                </sjbtextarea>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">备注：</span>
-                            <span class="right-con">
-                                <el-input
-                                    type="textarea"
-                                    :rows="3"
-                                    style="width:280px;margin-top:2px;margin-bottom:20px"
-                                    placeholder="请输入内容"
-                                    :maxlength="300"
-                                    v-model="filter.remarks">
-                                </el-input>
-                            </span>
-                        </div> -->
                     </el-col>
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="申请日期：">
                             <span class="right-con">{{ filter.applyTime }}</span>
                         </RedStar>
-                        <!-- <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">申请日期：</span>
-                            <span class="right-con">{{ filter.applyTime }}</span>
-                        </div> -->
+                        
                         <RedStar label="岗位名称：">
                             <span class="right-con">{{ userInfo.postName }}</span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">岗位名称：</span>
-                            <span class="right-con">{{ userInfo.postName }}</span>
-                        </div> -->
+                       
                         <RedStar label="项目负责人：">
                             <span class="right-con">
                                 {{projectLeaderName}}
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">项目负责人：</span>
-                            <span class="right-con">
-                                {{projectLeaderName}}
-                            </span>
-                        </div> -->
+                        
                         <RedStar label="需求数量：" :required="true">
                             <span class="right-con">
                                 <el-input v-model.number="filter.demandPersonelNum"  type="number" style="width:280px"></el-input>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="right-red">*</span>
-                            <span class="left-title font-gray">需求数量：</span>
-                            <span class="right-con">
-                                <el-input v-model.number="filter.demandPersonelNum"  type="number" style="width:280px"></el-input>
-                            </span>
-                        </div> -->
+                        
                         <RedStar label="预计时长：" :required="true">
                             <span class="right-con">
                                 <el-input v-model.number="filter.timeLong" type="number" style="width:280px"></el-input>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="right-red">*</span>
-                            <span class="left-title font-gray">预计时长：</span>
-                            <span class="right-con">
-                                <el-input v-model.number="filter.timeLong" type="number" style="width:280px"></el-input>
-                            </span>
-                        </div> -->
+                        
                         <RedStar label="预算费用合计：" :required="true">
                             <span class="right-con">
                                 <el-input v-model.number="filter.amountSum" type="number" style="width:280px"></el-input>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="right-red">*</span>
-                            <span class="left-title font-gray">预算费用合计：</span>
-                            <span class="right-con">
-                                <el-input v-model.number="filter.amountSum" type="number" style="width:280px"></el-input>
-                            </span>
-                        </div> -->
+                        
                     </el-col>
                 </el-row>
             </div>
@@ -167,7 +98,8 @@
 import common from "@/utils/common";
 import Approval from "@/components/Approval";
 import Project from '@/components/Project';
-import RedStar from '@/components/RedStar/RedStar.vue'
+import RedStar from '@/components/RedStar/RedStar.vue';
+import sjbtextarea from '@/components/sjbTextarea';
 import {
     fetchProList, //项目管理-查询列表
     saveResource,
@@ -182,7 +114,8 @@ export default {
     components: {
         Approval,
         Project,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         return {

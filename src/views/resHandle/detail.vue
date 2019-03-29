@@ -153,14 +153,13 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                <el-input
-                        type="textarea"
+                    <sjbtextarea
                         :rows="3"
-                        :maxlength="300"
-                        style="width:420px;margin-top:20px;margin-bottom:20px"
+                        :max="300"
+                        textStyle="width:420px;margin-top:20px;margin-bottom:20px"
                         placeholder="请输入内容"
                         v-model="comment">
-                    </el-input>
+                    </sjbtextarea>
                 </div>
             </div>
         </template>
@@ -216,9 +215,13 @@ import {
 } from "@/api/resHandle";
 import { parseTime } from "@/utils";
 import Appoint from "@/components/Appoint";
+import sjbtextarea from '@/components/sjbTextarea'
 export default {
     name: "complexTable",
-    components: { Appoint },
+    components: { 
+        Appoint,
+        sjbtextarea
+    },
     data() {
         return {
             applyType: 2,//1被动发起，2主动发起

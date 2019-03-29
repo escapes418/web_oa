@@ -32,7 +32,7 @@
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command='1'>批量入库</el-dropdown-item>
-                            <el-dropdown-item command='2'>导出excel</el-dropdown-item>
+                            <el-dropdown-item command='2' v-if="list.length">导出excel</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
@@ -91,7 +91,7 @@
                     <span class="ignore-detail" style="color:#409EFF;cursor: Pointer;" @click="showStore(scope.row)">{{scope.row.placeName.join(',')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="150px" align="center" label="库存数量">
+            <el-table-column width="150px" align="center" label="总库存数量">
                 <template slot-scope="scope">
                     <span>{{scope.row.goodCount}}</span>
                 </template>
@@ -139,7 +139,7 @@
             </el-form>
         </el-dialog>
 
-        <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
+        <el-dialog title="确认删除" width="25%" :visible.sync="dialogDelVisible">
             <span>确认删除物品编号为：{{row.goodCode}}的{{row.goodName}}？删除后，将不可找回！</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="delBtn">确认</el-button>
@@ -413,7 +413,8 @@ export default {
             if(res.status == 1){
                 this.$message({
                     message: res.message,
-                    type: 'error'
+                    type: 'error',
+                    duration:10000
                 })
             }
             if(res.status == 0){

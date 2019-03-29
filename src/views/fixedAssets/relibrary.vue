@@ -18,12 +18,11 @@
                         </RedStar>
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
-                                v-model.trim="postData.remarks"></el-input>
+                                :max="4000"
+                                v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                         
@@ -59,6 +58,7 @@ import { queryAssetTypeTree,pickOrTransferAsset,saveAssetOut,queryAssetPlaceList
 import Utils from "./util";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import ChooseAssets from "@/components/ChooseAssets/index.vue";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import { POST_data,CUST_list,MEMBER_list,POST_item,RB_postData} from "./interface";
 
 import { Vue, Component, Watch } from "vue-property-decorator";
@@ -66,7 +66,8 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 @Component({
     components: {
         RedStar: RedStar,
-        ChooseAssets
+        ChooseAssets,
+        sjbtextarea
     }
 })
 export default class maForm extends Vue {

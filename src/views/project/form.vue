@@ -92,14 +92,13 @@
             备注：
         </div>
         <div class="segment-area">
-            <el-input
-                type="textarea"
+            <sjbtextarea
                 :rows="3"
-                style="margin-top:20px;margin-bottom:20px"
+                textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :maxlength="300"
+                :max="300"
                 v-model.trim="filter.remarks">
-            </el-input>
+            </sjbtextarea>
         </div>
     </div>
     <div class="segment statistics">
@@ -192,7 +191,7 @@ import RedStar from "@/components/RedStar/RedStar.vue";
 import { fetchForm, custList, savePro , getCompanyList , getContractList } from "@/api/project";
 import { parseTime } from "@/utils";
 import { mapState, mapGetters } from "vuex";
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 // import Vue from 'vue';
 // import VueAMap from 'vue-amap';
 
@@ -209,7 +208,8 @@ export default {
     components: {
         Department,
         RedStar,
-        ImplyNode
+        ImplyNode,
+        sjbtextarea
     },
      computed:{
         ...mapState({
@@ -415,11 +415,13 @@ export default {
         handleProClick(data,select,childSelect) {
             let index = this.proData.indexOf(data)
             if(index<0&&this.proData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为项目负责人！",
-                    type: 'warning'
-                })
-                this.$refs.proTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为项目负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.proTree.setChecked(this.proData[0],false);
+                this.proData = [];
+                this.proData.push(data)
             }else if(this.proData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.proData = [];
@@ -439,11 +441,13 @@ export default {
         handleMarketClick(data,select,childSelect) {
             let index = this.marketData.indexOf(data)
             if(index<0&&this.marketData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为市场负责人！",
-                    type: 'warning'
-                })
-                this.$refs.marketTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为市场负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.marketTree.setChecked(this.marketData[0],false);
+                this.marketData = [];
+                this.marketData.push(data)
             }else if(this.marketData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.marketData = [];
@@ -463,11 +467,13 @@ export default {
         handleImpleClick(data,select,childSelect) {
             let index = this.impData.indexOf(data)
             if(index<0&&this.impData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为实施负责人！",
-                    type: 'warning'
-                })
-                this.$refs.impleTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为实施负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.impleTree.setChecked(this.impData[0],false);
+                this.impData = [];
+                this.impData.push(data)
             }else if(this.impData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.impData = [];
@@ -616,39 +622,6 @@ export default {
             }
         
         },
-        // handleSelectionChange(val) {
-        //     this.multipleSelection = val;
-        // },
-        // add() {
-        //     this.itemList.push({ index: new Date().getTime(),nodeName:'',nodeAddress:'',lat:'',lng:''});
-        // },
-        // del(){
-        //     var _this = this
-        //     var newindex = [];
-        //     var newBox = [];
-        //     var flag = true
-        //     _this.multipleSelection.forEach((value,idx)=>{
-        //         if(!value.index)  {
-        //             flag = false
-        //         }
-        //         newindex.push(value.index)
-        //     })
-        //     if(flag){
-        //         var arrBox = JSON.parse(JSON.stringify(this.itemList||[]))
-        //         arrBox.forEach((val,num)=>{
-        //             if(newindex.indexOf(val.index) == -1){
-        //                 newBox.push(arrBox[num])
-        //             }
-        //         })
-        //         this.itemList = newBox
-        //     }else{
-        //         this.$message({
-        //             message: "不能删除已保存的地址节点！",
-        //             type: "warning"
-        //         })
-        //     }
-            
-        // },
     }
 };
 </script>

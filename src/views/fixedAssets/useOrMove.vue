@@ -33,12 +33,11 @@
                         </RedStar>
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="250"
-                                v-model.trim="postData.remarks"></el-input>
+                                :max="4000"
+                                v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                         
@@ -55,6 +54,7 @@
                         <RedStar label="工位：">
                             <span class="right-con">
                                 <el-input placeholder="请输入"
+                                :maxlength="100"
                                 style="width:250px;"
                                 v-model="postData.usingWorkplace"
                                 ></el-input>
@@ -92,6 +92,7 @@ import Department from "@/components/Department/index.vue";
 import Utils from "./util";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import ChooseAssets from "@/components/ChooseAssets/index.vue";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import { POST_data,CUST_list,MEMBER_list,POST_item,UM_postData} from "./interface";
 
 import { Vue, Component, Watch } from "vue-property-decorator";
@@ -101,6 +102,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
         RedStar: RedStar,
         ChooseAssets,
         Department,
+        sjbtextarea
     }
 })
 export default class maForm extends Vue {
@@ -183,12 +185,14 @@ export default class maForm extends Vue {
     handleProClick(data,select,childSelect) {
         let index = this.proData.indexOf(data)
         if(index<0&&this.proData.length ===1&&select){
-            this.$message({
-                message: "只能选择一个子节点作为项目负责人！",
-                type: 'warning'
-            })
+            // this.$message({
+            //     message: "只能选择一个子节点作为项目负责人！",
+            //     type: 'warning'
+            // })
             let VM:any = this.$refs.proTree;
-            VM.setChecked(data,false);
+            VM.setChecked(this.proData[0],false);
+            this.proData = [];
+            this.proData.push(data)
         }else if(this.proData.length ===0&&select){
             if(data.type =='2'&&data.status == '1'){
                 this.proData = [];

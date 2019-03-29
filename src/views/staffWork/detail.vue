@@ -56,7 +56,7 @@
                 今日工作内容
             </div>
             <div class="segment-area">
-                <div class="el-table__body-wrapper textArea">
+                <div class="el-table__body-wrapper textStyle">
                     <el-input readonly type="textarea" :rows="3" v-model="detail.dailyContent"></el-input>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 明日工作计划
             </div>
             <div class="segment-area">
-                <div class="el-table__body-wrapper textArea">
+                <div class="el-table__body-wrapper textStyle">
                     <el-input readonly type="textarea" :rows="3" v-model="detail.afterDailyPlan"></el-input>
                 </div>
             </div>
@@ -105,7 +105,7 @@ export default{
 
 </script>
 <style scoped>
-.textArea{
+.textStyle{
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 14px;

@@ -158,12 +158,12 @@
                 贸易结构
             </div>
             <div class="segment-area">
-                <div class="textarea-title">上游：</div>
-                <el-input readonly type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="upstream"></el-input>
+                <div class="textStyle-title">上游：</div>
+                <sjbtextarea :readonly="true" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="upstream"></sjbtextarea>
             </div>
             <div class="segment-area" style="margin-bottom:15px">
-                <div class="textarea-title">下游：</div>
-                <el-input readonly type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="downstream"></el-input>
+                <div class="textStyle-title">下游：</div>
+                <sjbtextarea readonly :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="downstream"></sjbtextarea>
             </div>
         </div>
         <div class="segment statistics">
@@ -280,10 +280,14 @@
 import common from "@/utils/common";
 import {getRegion} from '@/api/getRegion'
 import { fetchForm, saveCust , custChange,getMaintain} from "@/api/customer";
+import sjbtextarea from '@/components/sjbTextarea';
 import { parseTime } from "@/utils";
 
 export default {
     name: "complexTable",
+    components: {
+        sjbtextarea
+    },
     data() {
         return {
             upstream:"",
@@ -584,7 +588,7 @@ export default {
     margin-top: 15px;
 }
 .segment-area{
-    .textarea-title{
+    .textStyle-title{
         // line-height: 20px;
         padding: 12px 0px;
         font-size: 14px;

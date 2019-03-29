@@ -6,6 +6,23 @@
       <sjb-cascader :titles="['titleA','titleB']" class="cascader" :listData="cascaderData"></sjb-cascader>
       <sjb-validate-input class="validate-input"/>
     </div> -->
+    <RedStar label="备注：">
+        <span class="right-con">
+           <sjbtextarea 
+            v-model.trim="filter.customerSituation" 
+            placeholder="请输入" 
+            :rows="3" 
+            :max="10000" 
+            :showCounter="true" 
+            textStyle="width:280px;"></sjbtextarea>
+        </span>
+    </RedStar>
+
+    <el-input 
+        type="textarea"
+        :rows="3"
+        :maxlength="100"></el-input>
+    <el-button @click="backStep">返回</el-button>
   </div>
 </template>
 
@@ -13,11 +30,11 @@
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import ImplyNode from '@/components/ImplyNode'
-import RedStar from "./RedStar.vue";
+import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbInput from "./sjb-input.vue";
 import sjbCascader from "./sjb-Cascader.vue";
 import sjbValidateInput from "./sjb-validate-input.vue";
-
+import sjbtextarea from "./sjb-textarea.vue";
 export default {
   name: 'dashboard',
   components: {
@@ -25,7 +42,8 @@ export default {
     RedStar,
     sjbInput,
     sjbCascader,
-    sjbValidateInput
+    sjbValidateInput,
+    sjbtextarea
   },
   mixins: [mixin],
   computed:{
@@ -35,6 +53,10 @@ export default {
   },
   data() {
     return {
+      filter:{
+        customerSituation:""
+      },
+      a:{width:"280px"},
      cascaderData: [
         {
           id: 101,
@@ -107,6 +129,9 @@ export default {
     // del() {
     //     this.$store.dispatch('delItemListChecked');
     // },
+    backStep(){
+      console.log(this.filter)
+    },
   }
 };
 </script>

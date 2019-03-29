@@ -63,7 +63,7 @@
                                 <span class="red">*</span>：
                             </span>
                             <span class="right-con">
-                                <el-input placeholder="请输入"  type="textarea" :rows="3" style="width:250px;height:100%;overflow:auto;margin:0px" v-model.trim="filter.custMaintenanceContent" :maxlength="250"></el-input>
+                                <sjbtextarea placeholder="请输入" :rows="3" style="width:250px;height:100%;overflow:auto;margin:0px" v-model.trim="filter.custMaintenanceContent" :max="250"></sjbtextarea>
                             </span>
                         </div>
                     </el-col>
@@ -139,10 +139,14 @@
 import common from "@/utils/common";
 import { getMaintain, saveMaintain ,getLinkman} from "@/api/customer";
 import { parseTime } from "@/utils";
-import { custMaintainVali } from './cust.util'
+import { custMaintainVali } from './cust.util';
+import sjbtextarea from '@/components/sjbTextarea';
 
 export default {
     name: "complexTable",
+    components:{
+        sjbtextarea
+    },
     data() {
         return {
             dialogFormVisible: false,
@@ -293,7 +297,7 @@ export default {
     margin-bottom: 15px;
 }
 .segment-area {
-    .textarea-title {
+    .textStyle-title {
         // line-height: 20px;
         padding: 12px 0px;
         font-size: 14px;

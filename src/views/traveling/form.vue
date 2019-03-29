@@ -66,12 +66,11 @@
                         </RedStar>
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:280px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:280px;"
                                 :rows="3"
-                                :maxlength="2000"
-                                v-model.trim="filter.remarks"></el-input>
+                                :max="2000"
+                                v-model.trim="filter.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                     </el-col>
@@ -172,8 +171,9 @@
 <script>
 import common from "@/utils/common";
 import Approval from "@/components/Approval";
-import RedStar from '@/components/RedStar/RedStar.vue'
-import Project from '@/components/Project'
+import RedStar from '@/components/RedStar/RedStar.vue';
+import Project from '@/components/Project';
+import sjbtextarea from '@/components/sjbTextarea';
 import {
     fetchProList, //项目管理-查询列表
     travelApply, //Web端出差申请-发起申请
@@ -191,7 +191,8 @@ export default {
     components: {
         Approval,
         Project,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         return {

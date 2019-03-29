@@ -37,7 +37,7 @@
                         <li class="base-li">
                             <RedStar label="备注：">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.remarks"></el-input>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="1000" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -153,7 +153,7 @@
                         <span class="ignore-detail" :title="scope.row.goodSpec">{{scope.row.goodSpec}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="库存数量">
+                <el-table-column align="center" label="总库存数量">
                     <template slot-scope="scope">
                         <span class="ignore-detail" :title="scope.row.goodCount">{{scope.row.goodCount}}</span>
                     </template>
@@ -170,7 +170,7 @@
                 </el-table-column>
                 <el-table-column width="80px" align="center" label="备注">
                     <template slot-scope="scope">
-                        <span>{{scope.row.remarks}}</span>
+                        <span class="ignore-detail" :title="scope.row.remarks">{{scope.row.remarks}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -185,7 +185,7 @@
         </el-dialog>
         <div class="segment statistics">
             <div class="sjb-foot-button">
-                <el-button type="primary" size="small" @click="submit">提交申请</el-button>
+                <el-button type="primary" size="small" @click="submit">提交</el-button>
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
@@ -197,7 +197,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import goodItem from './goodItem'
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import {getPlaceList,getSubjectsNew,fetchList,addReceive} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -210,7 +210,8 @@ export default {
     components: {
         BaseTemp,
         RedStar,
-        goodItem
+        goodItem,
+        sjbtextarea
     },
     mixins: [listQueryMix],
     watch:{
@@ -328,11 +329,13 @@ export default {
         clickDepart(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为领用部门！",
-                    type: 'warning'
-                })
-                this.$refs.departTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为领用部门！",
+                //     type: 'warning'
+                // })
+                this.$refs.departTree.setChecked(this.chargeData[0],false);
+                this.chargeData = [];
+                this.chargeData.push(data)
             }else if(this.chargeData.length ===0&&select){
                 if(data.type =='1'&&data.status == '1'){
                     this.chargeData = [];
@@ -352,11 +355,13 @@ export default {
         clickUser(data,select,childSelect){
             let index = this.personData.indexOf(data)
             if(index<0&&this.personData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为领用人！",
-                    type: 'warning'
-                })
-                this.$refs.userTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为领用人！",
+                //     type: 'warning'
+                // })
+                this.$refs.userTree.setChecked(this.personData[0],false);
+                this.personData = [];
+                this.personData.push(data)
             }else if(this.personData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.personData = [];

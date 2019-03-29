@@ -206,12 +206,14 @@ export default class LogList extends Vue {
         let VM:any = this.$refs.departTree;
         let index = this.departData.indexOf(data)
         if(index<0&&this.departData.length ===1&&select){
-            this.$message({
-                message: "只能选择一个子节点作为部门/人员！",
-                type: 'warning'
-            })
+            // this.$message({
+            //     message: "只能选择一个子节点作为部门/人员！",
+            //     type: 'warning'
+            // })
 
-            VM.setChecked(data,false);
+            VM.setChecked(this.departData[0],false);
+            this.departData = [];
+            this.departData.push(data)
         }else if(this.departData.length ===0&&select){
             if(data.status == '1'){
                 this.departData = [];

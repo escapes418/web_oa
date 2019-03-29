@@ -400,11 +400,13 @@ export default {
         handleMarketClick(data,select,childSelect) {
             let index = this.marketData.indexOf(data)
             if(index<0&&this.marketData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为市场负责人！",
-                    type: 'warning'
-                })
-                this.$refs.marketTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为市场负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.marketTree.setChecked(this.marketData[0],false);
+                this.marketData = [];
+                this.marketData.push(data)
             }else if(this.marketData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){

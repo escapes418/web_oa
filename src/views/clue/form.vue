@@ -141,14 +141,13 @@
             客户现状
         </div>
         <div class="segment-area">
-            <el-input
-                type="textarea"
+            <sjbtextarea
                 :rows="3"
-                style="margin-top:20px;margin-bottom:20px"
+                textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :maxlength="1000"
+                :max="1000"
                 v-model.trim="filter.custActuality">
-            </el-input>
+            </sjbtextarea>
         </div>
     </div>
     <div class="segment statistics">
@@ -156,14 +155,13 @@
             业务概况
         </div>
         <div class="segment-area">
-            <el-input
-                type="textarea"
+            <sjbtextarea
                 :rows="3"
-                style="margin-top:20px;margin-bottom:20px"
+                textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :maxlength="1000"
+                :max="1000"
                 v-model.trim="filter.custBusinessProfile">
-            </el-input>
+            </sjbtextarea>
         </div>
     </div>
     <div class="segment statistics">
@@ -172,14 +170,13 @@
             线索说明
         </div>
         <div class="segment-area">
-            <el-input
-                type="textarea"
+            <sjbtextarea
                 :rows="3"
-                style="margin-top:20px;margin-bottom:20px"
+                textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :maxlength="1000"
+                :max="1000"
                 v-model.trim="filter.custClueExplain">
-            </el-input>
+            </sjbtextarea>
         </div>
     </div>
     <div class="segment statistics">
@@ -197,10 +194,12 @@ import { saveClue , getDetail } from '@/api/clue'
 import { parseTime } from '@/utils'
 import { clueFormVali } from './clue.util'
 import RedStar from '@/components/RedStar/RedStar.vue'
+import sjbtextarea from '@/components/sjbTextarea'
 
 export default {
     components:{
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         return {

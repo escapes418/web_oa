@@ -1,7 +1,7 @@
 <template>
   <div class="simplemde-container" :style="{height:height+'px',zIndex:zIndex}">
-    <textarea :id="id">
-    </textarea>
+    <textStyle :id="id">
+    </textStyle>
   </div>
 </template>
 
@@ -73,7 +73,7 @@ export default {
     })
   },
   destroyed() {
-    this.simplemde.toTextArea()
+    this.simplemde.totextStyle()
     this.simplemde = null
   }
 }

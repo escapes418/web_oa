@@ -90,15 +90,9 @@
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="备注：">
                         <span class="right-con">
-                            <el-input v-model.trim="filter.remarks" style="width:280px" type="textarea" :rows="1" autosize :maxlength="300"></el-input>
+                            <sjbtextarea v-model.trim="filter.remarks" textStyle="width:280px" :rows="3" :max="300"></sjbtextarea>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">备注：</span>
-                        <span class="right-con">
-                            <el-input v-model.trim="filter.remarks" style="width:280px" type="textarea" :rows="1" autosize :maxlength="300"></el-input>
-                        </span>
-                    </div> -->
                 </el-col>
             </el-row>
             <el-row v-if="filter.handleType == 1">
@@ -109,14 +103,6 @@
                             </el-date-picker>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-red">*</span>
-                        <span class="left-title font-gray">期望抵达时间：</span>
-                        <span class="right-con">
-                            <el-date-picker v-model="filter.expectDate" type="datetime" class="filter-item" style="width:280px" placeholder="选择日期范围">
-                            </el-date-picker>
-                        </span>
-                    </div> -->
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="预计时长：" :required="true">
@@ -124,13 +110,6 @@
                             <el-input v-model="filter.timeLong" type="number" style="width:280px"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="right-red">*</span>
-                        <span class="left-title font-gray">预计时长：</span>
-                        <span class="right-con">
-                            <el-input v-model="filter.timeLong" type="number" style="width:280px"></el-input>
-                        </span>
-                    </div> -->
                 </el-col>
             </el-row>
             <el-row v-if="filter.handleType == 1">
@@ -140,11 +119,6 @@
                             <el-input v-model="filter.amountSum" type="number" style="width:280px"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-red">*</span>
-                        <span class="left-title font-gray">预算费用合计：</span>
-                        <el-input v-model="filter.amountSum" type="number" style="width:280px"></el-input>
-                    </div> -->
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="资源类型：" :required="true">
@@ -155,70 +129,8 @@
                             </el-select>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="right-red">*</span>
-                        <span class="left-title font-gray">资源类型：</span>
-                        <span class="right-con">
-                            <el-select class="filter-item" v-model="filter.resourcesType" placeholder="请选择" style="width:280px;">
-                                <el-option v-for="item in dictionary.resourcesType" :label="item.name" :value="item.value" :key="item.value">
-                                </el-option>
-                            </el-select>
-                        </span>
-                    </div> -->
                 </el-col>
             </el-row>
-
-            <!-- <el-dialog title="关联项目" :visible.sync="misc.projectDialogShow" @open="dialogOpened">
-                <span class="toolbar-item">
-                    <span class="item-label">申请时间</span>
-                    <el-date-picker v-model="timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
-                    </el-date-picker>
-                </span>
-                <span class="toolbar-item">
-                    <span class="item-label">项目名称：</span>
-                    <el-input @keyup.enter.native="handleProFilter" style="width: 180px;" class="filter-item" placeholder="请输入项目名称" v-model="listQuery.projectName">
-                    </el-input>
-                </span>
-                <span class="toolbar-item">
-                    <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleProFilter">搜索</el-button>
-                </span>
-                <div class="dialog" style="margin-top:10px">
-                    <el-table :data="projectList" v-loading="misc.listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;" @current-change="selectProjectItem">
-                        <el-table-column align="center" label="项目名称">
-                            <template slot-scope="scope">
-                                <span class="ignore-detail" :title="scope.row.projectName">{{scope.row.projectName}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="项目类型">
-                            <template slot-scope="scope">
-                                <span>{{scope.row.projectTypeName}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="归属部门">
-                            <template slot-scope="scope">
-                                <span class="ignore-detail" :title="scope.row.officeName">{{scope.row.officeName}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="客户名称">
-                            <template slot-scope="scope">
-                                <span class="ignore-detail" :title="scope.row.custInfoName">{{scope.row.custInfoName}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="项目负责人">
-                            <template slot-scope="scope">
-                                <span>{{scope.row.projectLeaderName}}</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <div class="pagination-container" style="margin-top:20px">
-                    <el-pagination background @current-change="pageChange" :current-page="listQuery.pageNo" :page-size="misc.pageSize" layout="total, prev, pager, next, jumper" :total="misc.total">
-                    </el-pagination>
-                </div>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="misc.projectDialogShow = false">返回</el-button>
-                </div>
-            </el-dialog> -->
 
             <el-dialog title="关联主题" :visible.sync="showThemeForm" width="80%" :center="true" @open="ThemeDiaOpen">
                 <div class="dialog">
@@ -304,7 +216,8 @@ import common from "@/utils/common";
 import Appoint from "@/components/Appoint";
 import RedStar from '@/components/RedStar/RedStar.vue'
 import BaseElement from "@/components/BaseElement";
-import Project from '@/components/Project'
+import Project from '@/components/Project';
+import sjbtextarea from '@/components/sjbTextarea';
 import {
     fetchProList, //项目管理-查询列表
     queryRelationResourcesApplyFlowList, //Web端资源申请-查询关联列表
@@ -320,7 +233,8 @@ export default {
         Appoint,
         BaseElement,
         Project,
-        RedStar
+        RedStar,
+        sjbtextarea
     },
     data() {
         return {

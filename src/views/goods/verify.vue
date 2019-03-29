@@ -35,7 +35,7 @@
                         <li class="base-li">
                             <RedStar label="备注：">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.remarks"></el-input>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="1000" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -64,7 +64,7 @@
                                 <!-- <td class="tableTitle">购入日期</td> -->
                                 <td class="tableTitle">放置地（必填）</td>
                                 <td class="tableTitle">库存数量</td>
-                                <td class="tableTitle">出库数量（必填）</td>
+                                <td class="tableTitle">核销数量（必填）</td>
                                 <td class="tableTitle">单价</td>
                                 <td class="tableTitle">金额</td>
                                 <td class="tableTitle">备注</td>
@@ -132,7 +132,7 @@
                         <span class="ignore-detail" :title="scope.row.goodSpec">{{scope.row.goodSpec}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="库存数量">
+                <el-table-column align="center" label="总库存数量">
                     <template slot-scope="scope">
                         <span class="ignore-detail" :title="scope.row.goodCount">{{scope.row.goodCount}}</span>
                     </template>
@@ -149,7 +149,7 @@
                 </el-table-column>
                 <el-table-column width="80px" align="center" label="备注">
                     <template slot-scope="scope">
-                        <span>{{scope.row.remarks}}</span>
+                        <span class="ignore-detail" :title="scope.row.remarks">{{scope.row.remarks}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -164,7 +164,7 @@
         </el-dialog>
         <div class="segment statistics">
             <div class="sjb-foot-button">
-                <el-button type="primary" size="small" @click="submit">提交申请</el-button>
+                <el-button type="primary" size="small" @click="submit">提交</el-button>
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
@@ -176,7 +176,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import goodItem from './goodItem'
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import {getPlaceList,getSubjectsNew,fetchList,addVerify} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -190,7 +190,8 @@ export default {
     components: {
         BaseTemp,
         RedStar,
-        goodItem
+        goodItem,
+        sjbtextarea
     },
     mixins: [listQueryMix],
     watch:{

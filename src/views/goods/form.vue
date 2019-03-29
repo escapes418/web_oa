@@ -51,7 +51,7 @@
                         <li class="base-li">
                             <RedStar label="备注：">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.remarks"></el-input>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="1000" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -79,7 +79,7 @@
                         <li class="base-li">
                             <RedStar label="入库数量：" :required="true">
                                 <span class="right-con">
-                                    <el-input style="width: 260px;" type="number" class="filter-item" placeholder="请输入入库数量" v-model.trim="postData.inCount">
+                                    <el-input style="width: 260px;" type="number" class="filter-item" placeholder="请输入入库数量" v-model.trim="postData.inCount" :maxlength="10">
                                     </el-input>
                                 </span>
                             </RedStar>
@@ -113,7 +113,7 @@
 
         <div class="segment statistics">
             <div class="sjb-foot-button">
-                <el-button type="primary" size="small" @click="submit">提交申请</el-button>
+                <el-button type="primary" size="small" @click="submit">提交</el-button>
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
@@ -124,7 +124,7 @@
 import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import {getPlaceList,addGood,getTypes,consumDetail} from '@/api/goods';
 import { mapState, mapGetters } from "vuex";
 
@@ -136,6 +136,7 @@ export default {
     components: {
         BaseTemp,
         RedStar,
+        sjbtextarea
     },
     
     computed:{

@@ -167,14 +167,13 @@
                 审批意见
             </div>
             <div class="segment-area">
-            <el-input
-                    type="textarea"
+                <sjbtextarea
                     :rows="3"
-                    :maxlength="300"
-                    style="width:420px;margin-top:20px;margin-bottom:20px"
+                    :max="300"
+                    textStyle="width:420px;margin-top:20px;margin-bottom:20px"
                     placeholder="请输入内容"
                     v-model="comment">
-                </el-input>
+                </sjbtextarea>
             </div>
         </div>
     </template>
@@ -216,24 +215,27 @@ import common from '@/utils/common'
 import { getDetail , startRecep , recepFlow , recepCancel , recepDel , getSubjects} from '@/api/reception'
 import { parseTime } from '@/utils'
 import { mapState } from 'vuex';
-// import { recepDetailVali } from './recep.util'
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 
 export default {
-  name: 'complexTable',
-  data() {
-    return {
-      flowDetailList:[],
-      budgetDetailList:[],
-      flowLoglist:[],
-      detail:{},
-      comment:'',
-      taskId:0,
-      pathType:"",
-      dialogDelVisible:false,
-      finish:false
-    }
-  },
-  computed:{
+    name: 'complexTable',
+    components: {
+        sjbtextarea
+    },
+    data() {
+        return {
+            flowDetailList:[],
+            budgetDetailList:[],
+            flowLoglist:[],
+            detail:{},
+            comment:'',
+            taskId:0,
+            pathType:"",
+            dialogDelVisible:false,
+            finish:false
+        }
+    },
+    computed:{
         ...mapState({
             subsList: state => state.reim.subsList,
             subslistKeyVal:state => state.reim.subsListKeyVal,

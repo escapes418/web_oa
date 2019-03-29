@@ -176,7 +176,7 @@ export default class imDetail extends Vue{
 
 </script>
 <style scoped>
-.textArea{
+.textStyle{
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 14px;

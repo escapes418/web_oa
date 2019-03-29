@@ -25,12 +25,7 @@ Object.keys(filters).forEach(key=>{
     Vue.filter(key,filters[key])
 })
 
-/*
-ts报错：Expected 1 arguments, but got 2
-Vue.component('region', function(resolve) {
-    require(['@/components/Region/region.vue'], resolve);
-});
-*/
+
 
 Vue.use(ElementUI, { size: 'small' });
 

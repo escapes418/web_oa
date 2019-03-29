@@ -12,6 +12,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
+                  :maxlength="100"
                   v-model.trim="postData.company"
                 ></el-input>
               </span>
@@ -21,6 +22,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
+                  :maxlength="100"
                   v-model.trim="postData.code"
                 ></el-input>
               </span>
@@ -114,14 +116,13 @@
             </RedStar>
             <RedStar label="备注：">
               <span class="right-con">
-                <el-input
+                <sjbtextarea
                   placeholder="请输入"
-                  type="textarea"
-                  style="width:250px;"
+                  textStyle="width:250px;"
                   :rows="3"
-                  :maxlength="250"
+                  :max="4000"
                   v-model.trim="postData.remarks"
-                ></el-input>
+                ></sjbtextarea>
               </span>
             </RedStar>
           </el-col>
@@ -131,6 +132,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
+                  :maxlength="100"
                   v-model.trim="postData.name"
                 ></el-input>
               </span>
@@ -152,6 +154,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
+                  :maxlength="100"
                   v-model.trim="postData.brand"
                 ></el-input>
               </span>
@@ -160,6 +163,7 @@
               <span class="right-con">
                 <el-input
                   placeholder="请输入"
+                  :maxlength="100"
                   style="width:250px;"
                   v-model.trim="postData.specificationType"
                 ></el-input>
@@ -170,6 +174,7 @@
                 <el-input
                   placeholder="请输入"
                   style="width:250px;"
+                  :maxlength="100"
                   v-model.trim="postData.serialNo"
                 ></el-input>
               </span>
@@ -197,6 +202,7 @@
               <span class="right-con">
                 <el-input
                   placeholder="请输入"
+                  :maxlength="24"
                   style="width:250px;"
                   v-model.trim="postData.money"
                   type="number"
@@ -244,6 +250,8 @@ import { saveOrUpdateAsset,queryAssetTypeTree,queryAssetPlaceList,queryAssetSupp
 import { parseTime } from "@/utils/index";
 import Utils from "./util";
 import RedStar from "@/components/RedStar/RedStar.vue";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
+
 import { POST_data,CUST_list,MEMBER_list,POST_item,I_time} from "./interface";
 
 import { Vue, Component } from "vue-property-decorator";
@@ -251,7 +259,8 @@ import { resolve } from "path";
 
 @Component({
     components: {
-        RedStar: RedStar
+        RedStar: RedStar,
+        sjbtextarea
     }
 })
 export default class maForm extends Vue {
@@ -418,8 +427,7 @@ export default class maForm extends Vue {
                         message: res.message,
                         type: "success"
                     });
-                    this.$router.go(-1);
-
+                    this.$router.push({ path: "/publicGoods/fixedAssetsList"});
                 } else{
                   this.$message({
                         message: res.message,

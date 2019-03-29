@@ -176,7 +176,7 @@
 
 <script lang="ts">
 import common from "@/utils/common";
-import { saveLog, getDetail } from "@/api/log";
+// import { saveLog, getDetail } from "@/api/log";
 import { parseTime } from "@/utils/index";
 import { logFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";

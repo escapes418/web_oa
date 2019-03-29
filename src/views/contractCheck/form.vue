@@ -47,7 +47,7 @@
                         <li class="base-li">
                             <RedStar label="备注" :required="false">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="100" v-model.trim="postData.remarks"></el-input>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="100" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -257,7 +257,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
-
+import sjbtextarea from '@/components/sjbTextarea'
 
 import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,findAllProject} from '@/api/contractCheck';
 import { mapState, mapGetters } from "vuex";
@@ -272,7 +272,8 @@ export default {
     components: {
         BaseTemp,
         RedStar,
-        dynamicForm
+        dynamicForm,
+        sjbtextarea
     },
     mixins: [listQueryMix],
     data() {

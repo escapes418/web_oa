@@ -178,6 +178,12 @@
                                     {{ detail.employeesName }}
                                 </span>
                             </div>
+                            <div class="clearfix  cominfo-item" v-if="detail.applyType == 2 && detail.expenseStatus !== 1">
+                                <span class="left-title font-gray">接待客户情况：</span>
+                                <span class="right-con">
+                                    {{ detail.employeesName }}
+                                </span>
+                            </div>
                             <div class="clearfix  cominfo-item" v-if="detail.relType !=3">
                                 <span class="left-title font-gray">项目负责人：</span>
                                 <span class="right-con">
@@ -321,8 +327,8 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                    <el-input type="textarea" :rows="3" :maxlength="300" style="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model="comment">
-                    </el-input>
+                    <sjbtextarea :rows="3" :max="300" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model="comment">
+                    </sjbtextarea>
                 </div>
             </div>
         </template>
@@ -403,292 +409,236 @@ import { parseTime } from "@/utils";
 import { mapState } from "vuex";
 import "viewerjs/dist/viewer.css";
 import Viewer from "viewerjs";
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 
 import "./print.scss";
 
 export default {
-  name: "complexTable",
-  filters: {
-    specialTrim(value) {
-      return value.toString();
-    }
-  },
-  data() {
-    return {
-        fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
-        flowDetailList: [],
-        flowLoglist: [],
-        amtList: [],
-        urlArr: [],
-        expenseAttachment: [],
-        detail: {},
-        comment: "",
-        taskId: undefined,
-        dialogCanVisible: false,
-        dialogDelVisible: false,
-        dialogImg: false,
-        pathType: undefined,
-        finish: false
-    };
-  },
-  computed: {
-    ...mapState({
-        subsList: state => state.reim.subsList,
-        firstSub: state => state.reim.firstSub,
-        token: state => state.user.token
-    }),
-    ISME: function() {
-        let result =
-            this.userInfo.name == this.detail.applyPerName ? true : false;
-        return result;
+    name: "complexTable",
+    components:{
+        sjbtextarea
     },
-    ISDEL: function() {
-        let result =
-            this.detail.expenseStatus == 2 ||
-            this.detail.expenseStatus == 3 ||
-            this.detail.expenseStatus == 4
-            ? true
-            : false;
-        return result;
+    filters: {
+        specialTrim(value) {
+            return value.toString();
+        }
     },
-    ISEDIT: function() {
-        let result = this.detail.modify == "modify" ? true : false;
-        return result;
+    data() {
+        return {
+            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            flowDetailList: [],
+            flowLoglist: [],
+            amtList: [],
+            urlArr: [],
+            expenseAttachment: [],
+            detail: {},
+            comment: "",
+            taskId: undefined,
+            dialogCanVisible: false,
+            dialogDelVisible: false,
+            dialogImg: false,
+            pathType: undefined,
+            finish: false
+        };
     },
-    ISPUTIN: function() {
-        let result = this.detail.expenseStatus == 4 ? true : false;
-        return result;
+    computed: {
+        ...mapState({
+            subsList: state => state.reim.subsList,
+            firstSub: state => state.reim.firstSub,
+            token: state => state.user.token
+        }),
+        ISME: function() {
+            let result =
+                this.userInfo.name == this.detail.applyPerName ? true : false;
+            return result;
+        },
+        ISDEL: function() {
+            let result =
+                this.detail.expenseStatus == 2 ||
+                this.detail.expenseStatus == 3 ||
+                this.detail.expenseStatus == 4
+                ? true
+                : false;
+            return result;
+        },
+        ISEDIT: function() {
+            let result = this.detail.modify == "modify" ? true : false;
+            return result;
+        },
+        ISPUTIN: function() {
+            let result = this.detail.expenseStatus == 4 ? true : false;
+            return result;
+        },
+        ISCANCEL: function() {
+            let result = this.detail.expenseStatus == 2 ? true : false;
+            return result;
+        },
+        ISPRINT: function() {
+            let result =
+                this.detail.expenseStatus == 1 || this.detail.expenseStatus == 2
+                ? true
+                : false;
+            return result;
+        }
     },
-    ISCANCEL: function() {
-        let result = this.detail.expenseStatus == 2 ? true : false;
-        return result;
-    },
-    ISPRINT: function() {
-        let result =
-            this.detail.expenseStatus == 1 || this.detail.expenseStatus == 2
-            ? true
-            : false;
-        return result;
-    }
-  },
-  created() {
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-        if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
-        if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
+    created() {
+            this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+            if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
+            if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
 
-        getDetail({
-            expenseFlowId: this.$route.query.key
-        }).then(res => {
-            this.detail = res.data.detail;
-            res.data.flowDetailList = res.data.flowDetailList || [];
-            this.flowDetailList = res.data.flowDetailList;
-            this.flowLoglist = res.data.flowLoglist;
-            this.amtList = res.data.amtList;
-            if (
-                res.data.detail.expenseAttachmentWeb &&
-                res.data.detail.expenseAttachmentWeb.length > 0
-            ) {
-                res.data.detail.expenseAttachmentWeb.forEach(item => {
-                    let originUrl = item.url;
-                    item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                    this.expenseAttachment.push({
-                        url: item.url,
-                        name: item.fileName,
-                        originUrl: originUrl,
-                        previewUrl: item.url,
+            getDetail({
+                expenseFlowId: this.$route.query.key
+            }).then(res => {
+                this.detail = res.data.detail;
+                res.data.flowDetailList = res.data.flowDetailList || [];
+                this.flowDetailList = res.data.flowDetailList;
+                this.flowLoglist = res.data.flowLoglist;
+                this.amtList = res.data.amtList;
+                if (
+                    res.data.detail.expenseAttachmentWeb &&
+                    res.data.detail.expenseAttachmentWeb.length > 0
+                ) {
+                    res.data.detail.expenseAttachmentWeb.forEach(item => {
+                        let originUrl = item.url;
+                        item.url = res.data.detail.expenseAttachmentPrefix + item.url;
+                        this.expenseAttachment.push({
+                            url: item.url,
+                            name: item.fileName,
+                            originUrl: originUrl,
+                            previewUrl: item.url,
+                            viewer: null
+                        });
+                    });
+                }
+                if (this.detail.applyType == 2) {
+                    if (
+                        res.data.detail.employeesName &&
+                        res.data.detail.employeesName.length > 0
+                    ) {
+                        this.detail.employeesName = res.data.detail.employeesName.join(" , ");
+                    }
+                    this.detail.customerSituation = res.data.detail.customerSituation
+                }
+                if (this.detail.applyType == 2 || this.detail.applyType == 3) {
+                    this.detail.procName = res.data.detail.procName;
+                }
+                
+            });
+    },
+    methods: {
+        showImgDia(subConfList) {
+            this.urlArr = [];
+            if (subConfList) {
+                subConfList.forEach(item => {
+                    let url = "";
+                    url = item.urlPrefix + item.url;
+                    this.urlArr.push({
+                        url: url,
+                        name: item.confDesc,
+                        previewUrl: url,
                         viewer: null
                     });
                 });
+                this.dialogImg = true;
             }
-            if (this.detail.applyType == 2) {
-                if (
-                    res.data.detail.employeesName &&
-                    res.data.detail.employeesName.length > 0
-                ) {
-                    this.detail.employeesName = res.data.detail.employeesName.join(" , ");
+        },
+        createPartPdf() {
+            var partEle =  document.getElementById("partEle");
+            partEle.parentNode.removeChild(partEle);
+            var printHtml = document.getElementById("printWrapper").innerHTML;
+            var oldHtml = document.body.innerHTML;
+            document.body.innerHTML = printHtml;
+            window.print();
+            window.location.reload();
+            document.body.innerHTML = oldHtml;
+        },
+        createPdf() {
+            var pdfstr = document.getElementById("printWrapper");
+            // 2. 复制给body，并执行window.print打印功能
+            var newstr = pdfstr.innerHTML;
+            // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = newstr;
+            window.print();
+            window.location.reload();
+            document.body.innerHTML = oldstr;
+            return false;
+        },
+        showImg(index, type) {
+            if (type == 1) {
+                // 如果已初始化过 直接show出
+                if (this.expenseAttachment[index].viewer) {
+                    this.expenseAttachment[index].viewer.show();
+                    return;
+                    // this.clientimg[index].viewer.destroy();//也可以销毁后再重新初始化
                 }
-            }
-            if (this.detail.applyType == 2 || this.detail.applyType == 3) {
-                this.detail.procName = res.data.detail.procName;
-            }
-            
-        });
-  },
-  methods: {
-    showImgDia(subConfList) {
-        this.urlArr = [];
-        if (subConfList) {
-            subConfList.forEach(item => {
-                let url = "";
-                url = item.urlPrefix + item.url;
-                this.urlArr.push({
-                    url: url,
-                    name: item.confDesc,
-                    previewUrl: url,
-                    viewer: null
-                });
-            });
-            this.dialogImg = true;
-        }
-    },
-    createPartPdf() {
-        var partEle =  document.getElementById("partEle");
-        partEle.parentNode.removeChild(partEle);
-        var printHtml = document.getElementById("printWrapper").innerHTML;
-        var oldHtml = document.body.innerHTML;
-        document.body.innerHTML = printHtml;
-        window.print();
-        window.location.reload();
-        document.body.innerHTML = oldHtml;
-    },
-    createPdf() {
-        var pdfstr = document.getElementById("printWrapper");
-        // 2. 复制给body，并执行window.print打印功能
-        var newstr = pdfstr.innerHTML;
-        // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
-        var oldstr = document.body.innerHTML;
-        document.body.innerHTML = newstr;
-        window.print();
-        window.location.reload();
-        document.body.innerHTML = oldstr;
-        return false;
-    },
-    showImg(index, type) {
-        if (type == 1) {
-            // 如果已初始化过 直接show出
-            if (this.expenseAttachment[index].viewer) {
+                // 初始化
+                this.expenseAttachment[index].viewer = new Viewer(event.target, {});
+                // 调用show
                 this.expenseAttachment[index].viewer.show();
-                return;
-                // this.clientimg[index].viewer.destroy();//也可以销毁后再重新初始化
-            }
-            // 初始化
-            this.expenseAttachment[index].viewer = new Viewer(event.target, {});
-            // 调用show
-            this.expenseAttachment[index].viewer.show();
-        } else {
-            if (this.urlArr[index].viewer) {
+            } else {
+                if (this.urlArr[index].viewer) {
+                    this.urlArr[index].viewer.show();
+                    return;
+                }
+                this.urlArr[index].viewer = new Viewer(event.target, {});
                 this.urlArr[index].viewer.show();
-                return;
             }
-            this.urlArr[index].viewer = new Viewer(event.target, {});
-            this.urlArr[index].viewer.show();
-        }
-        // window.open(url);
-    },
-    backBtn() {
-      this.$router.go(-1);
-      //   this.$router.push({
-      //       path:'/me/reim'
-      //   })
-    },
-    downAttach(val) {
-        downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-            if (res.status == 0) {
-                var url = `./OA${res.data}`;
-                console.log("url", url);
-                window.location.href = url;
-            }
-        });
-    },
-    // expBtn(){
-    //     if(reimDetailVali(this)){
-    //         startExp({
-    //             expenseFlowId:this.$route.query.key,
-    //             procInsId:this.detail.procInsId
-    //         }).then(res =>{
-    //             if(res.status ==0){
-    //                 this.$message({
-    //                     message: res.message,
-    //                     type: 'success'
-    //                 })
-    //                 this.$router.go(-1)
-    //             }
-    //         })
-    //     }
+            // window.open(url);
+        },
+        backBtn() {
+        this.$router.go(-1);
+        //   this.$router.push({
+        //       path:'/me/reim'
+        //   })
+        },
+        downAttach(val) {
+            downFile({ url: val.originUrl, fileName: val.name }).then(res => {
+                if (res.status == 0) {
+                    var url = `./OA${res.data}`;
+                    console.log("url", url);
+                    window.location.href = url;
+                }
+            });
+        },
+        // expBtn(){
+        //     if(reimDetailVali(this)){
+        //         startExp({
+        //             expenseFlowId:this.$route.query.key,
+        //             procInsId:this.detail.procInsId
+        //         }).then(res =>{
+        //             if(res.status ==0){
+        //                 this.$message({
+        //                     message: res.message,
+        //                     type: 'success'
+        //                 })
+        //                 this.$router.go(-1)
+        //             }
+        //         })
+        //     }
 
-    // },
-    editBtn() {
-        this.$router.push({
-            path: "/me/reimForm",
-            query: { key: this.$route.query.key }
-        });
-    },
-    agreeBtn() {
-        if (this.comment.length > 100) {
-            this.$message({
-            message: "输入字符超出限额，请重新输入！",
-            type: "warning"
+        // },
+        editBtn() {
+            this.$router.push({
+                path: "/me/reimForm",
+                query: { key: this.$route.query.key }
             });
-            return;
-        }
-        expFlow({
-            expenseFlowId: this.$route.query.key,
-            comment: this.comment,
-            flag: "yes",
-            procInsId: this.detail.procInsId
-        }).then(res => {
-            if (res.status == 0) {
-            this.$message({
-                message: res.message,
-                type: "success"
-            });
-            // this.$router.push({
-            //     path:'/me/reim'
-            // })
-            this.$router.go(-1);
-            }
-        });
-    },
-    refuseBtn() {
-        if (this.comment == "") {
-            this.$message({
-                message: "审批意见不能为空！",
-                type: "warning"
-            });
-            return;
-        }
-        if (this.comment.length > 100) {
-            this.$message({
+        },
+        agreeBtn() {
+            if (this.comment.length > 100) {
+                this.$message({
                 message: "输入字符超出限额，请重新输入！",
                 type: "warning"
-            });
-            return;
-        }
-        expFlow({
-            expenseFlowId: this.$route.query.key,
-            comment: this.comment,
-            flag: "no",
-            procInsId: this.detail.procInsId
-        }).then(res => {
-            if (res.status == 0) {
-                this.$message({
-                    message: res.message,
-                    type: "success"
                 });
-                this.$router.go(-1);
+                return;
             }
-        });
-    },
-    cancelBtn() {
-        expCancel({
-            procInsId: this.detail.procInsId,
-            taskId: this.taskId || 0
-        }).then(res => {
-            if (res.status == 0) {
-                this.$message({
-                    message: res.message,
-                    type: "success"
-                });
-                this.$router.go(-1);
-            }
-        });
-        },
-    delBtn() {
-        expDel({
-            expenseFlowId: this.$route.query.key
-        }).then(res => {
-            if (res.status == 0) {
-                this.dialogDelVisible = false;
+            expFlow({
+                expenseFlowId: this.$route.query.key,
+                comment: this.comment,
+                flag: "yes",
+                procInsId: this.detail.procInsId
+            }).then(res => {
+                if (res.status == 0) {
                 this.$message({
                     message: res.message,
                     type: "success"
@@ -697,29 +647,90 @@ export default {
                 //     path:'/me/reim'
                 // })
                 this.$router.go(-1);
+                }
+            });
+        },
+        refuseBtn() {
+            if (this.comment == "") {
+                this.$message({
+                    message: "审批意见不能为空！",
+                    type: "warning"
+                });
+                return;
+            }
+            if (this.comment.length > 100) {
+                this.$message({
+                    message: "输入字符超出限额，请重新输入！",
+                    type: "warning"
+                });
+                return;
+            }
+            expFlow({
+                expenseFlowId: this.$route.query.key,
+                comment: this.comment,
+                flag: "no",
+                procInsId: this.detail.procInsId
+            }).then(res => {
+                if (res.status == 0) {
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.$router.go(-1);
+                }
+            });
+        },
+        cancelBtn() {
+            expCancel({
+                procInsId: this.detail.procInsId,
+                taskId: this.taskId || 0
+            }).then(res => {
+                if (res.status == 0) {
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.$router.go(-1);
+                }
+            });
+            },
+        delBtn() {
+            expDel({
+                expenseFlowId: this.$route.query.key
+            }).then(res => {
+                if (res.status == 0) {
+                    this.dialogDelVisible = false;
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    // this.$router.push({
+                    //     path:'/me/reim'
+                    // })
+                    this.$router.go(-1);
+                }
+            });
+        }
+    },
+    mounted() {
+        Viewer.setDefaults({
+            navbar: false,
+            toolbar: {
+                zoomIn: 4,
+                zoomOut: 4,
+                oneToOne: {
+                    show: 4,
+                    size: "large"
+                },
+                reset: {
+                    show: 4,
+                    size: "large"
+                },
+                rotateLeft: 4,
+                rotateRight: 4
             }
         });
     }
-  },
-  mounted() {
-    Viewer.setDefaults({
-        navbar: false,
-        toolbar: {
-            zoomIn: 4,
-            zoomOut: 4,
-            oneToOne: {
-                show: 4,
-                size: "large"
-            },
-            reset: {
-                show: 4,
-                size: "large"
-            },
-            rotateLeft: 4,
-            rotateRight: 4
-        }
-    });
-  }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

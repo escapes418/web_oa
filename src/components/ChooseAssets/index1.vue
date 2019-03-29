@@ -68,7 +68,7 @@
         <el-dialog title="选择资产" :visible.sync="showDialog" width="1100px" top="6vh" required="false">
             <span class="toolbar-item">
                 <span class="item-label">资产名称/编号：</span>
-                <el-input @keyup.enter.native="handleProFilter" :maxlength="100" style="width: 120px;" class="filter-item" placeholder="请输入" v-model.trim="listQuery.keywords">
+                <el-input @keyup.enter.native="handleProFilter" style="width: 120px;" class="filter-item" placeholder="请输入" v-model.trim="listQuery.keywords">
                 </el-input>
             </span>
             <span class="toolbar-item">
@@ -80,7 +80,7 @@
             </span>
             <span class="toolbar-item">
                 <span class="item-label">使用人：</span>
-                <el-input @keyup.enter.native="handleProFilter" :maxlength="100" style="width: 120px;" class="filter-item" placeholder="请输入" v-model.trim="listQuery.usingPersonName">
+                <el-input @keyup.enter.native="handleProFilter" style="width: 120px;" class="filter-item" placeholder="请输入" v-model.trim="listQuery.usingPersonName">
                 </el-input>
             </span>
             <span class="toolbar-item">
@@ -140,9 +140,7 @@
                     </el-table-column>
                     <el-table-column align="center"  width="100px" label="备注">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.remarks" placement="top" popper-class="tooltip">
-                                <span>{{scope.row.remark}}</span>
-                            </el-tooltip>
+                            <span>{{scope.row.remarks}}</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -187,6 +185,7 @@ export default class ChooseAssets extends Vue {
     total= null;
     name= "";
     
+    ids=[];
     pageNo= 1;
     pageSize= 10;
     $$queryStub:any;
@@ -232,8 +231,9 @@ export default class ChooseAssets extends Vue {
             }
         })
         this.itemList = newBox
-
-            
+        this.ids = this.ids.filter(id=>{
+            return newindex.indexOf(id) == -1
+        })
     };
     handleSelectionChange(val) {
         this.selectItem = val;
@@ -259,22 +259,9 @@ export default class ChooseAssets extends Vue {
             pageNo:this.pageNo,
             pageSize:this.pageSize
         }).then((res:any) => {
+            this.list = res.data.list;
             this.total = res.data.total;
             this.listLoading = false;
-            this.list = []
-            res.data.list.forEach((item,index)=>{
-                if(item.remarks.length>20){
-                    this.list.push({
-                        ...item,
-                        remark:item.remarks.substring(0,20)
-                    })
-                } else {
-                    this.list.push({
-                        ...item,
-                        remark:item.remarks
-                    })
-                }
-            })
         });
     };
     reduceParams($$imData) {
@@ -307,28 +294,26 @@ export default class ChooseAssets extends Vue {
         return this.itemList
     }
     dialogConfirm(){
-        this.itemList = this.MergeArray(this.selectItem,this.itemList)
+        // for(var i=0; i<this.selectItem.length; i++){
+        //     var ele = this.selectItem[i];
+        //     if(this.itemList.indexOf(ele) == -1){
+        //         this.itemList.push(ele);
+        //     }
+        // }
+        this.selectItem.forEach(item=>{
+            if(this.ids.indexOf(item.id) == -1){
+                this.ids.push(item.id);
+                this.itemList.push(item);
+            }else{
+                this.$message({
+                    message: "选择资产有重复!",
+                    type: 'warning'
+                })
+            }
+        })
+
         this.showDialog = false;
 
-    }
-    MergeArray(arr1,arr2){
-        var _arr = new Array();
-        for(var i=0;i<arr1.length;i++){
-        _arr.push(arr1[i]);
-        }
-        for(var i=0;i<arr2.length;i++){
-            var flag = true;
-            for(var j=0;j<arr1.length;j++){
-                if(arr2[i].id==arr1[j].id){
-                    flag=false;
-                    break;
-                }
-            }
-            if(flag){
-                _arr.push(arr2[i]);
-            }
-        }
-        return _arr;
     }
 }
 </script>
@@ -382,8 +367,5 @@ export default class ChooseAssets extends Vue {
 <style>
 .area .el-cascader {
   width: 250px !important;
-}
-.tooltip{
-    max-width: 50%;
 }
 </style>

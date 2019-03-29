@@ -32,14 +32,13 @@
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">备注：</span>
                             <span class="right-con">
-                                <el-input
-                                    type="textarea"
+                                <sjbtextarea
                                     :rows="3"
-                                    style="width:250px"
+                                    textStyle="width:250px"
                                     placeholder="请输入内容"
-                                    :maxlength="300"
+                                    :max="300"
                                     v-model.trim="filter.remarks">
-                                </el-input>
+                                </sjbtextarea>
                             </span>
                         </div>
                     </el-col>
@@ -105,9 +104,12 @@
 import common from "@/utils/common";
 import { fetchForm, getMaintain, saveMaintain } from "@/api/project";
 import { parseTime } from "@/utils";
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 
 export default {
+    components: {
+        sjbtextarea
+    },
     data() {
         return {
             proStateList:[],
@@ -126,6 +128,7 @@ export default {
             }
         };
     },
+
     methods: {
         handleCurrentChange(val) {
             this.listQuery.pageNo = val;
@@ -247,7 +250,7 @@ export default {
     margin-bottom: 15px;
 }
 .segment-area {
-    .textarea-title {
+    .textStyle-title {
         // line-height: 20px;
         padding: 12px 0px;
         font-size: 14px;

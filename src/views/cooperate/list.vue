@@ -132,7 +132,7 @@
         </el-dialog>
 
         <el-dialog title="新增评论" :visible.sync="dialogComment" width="25%">
-            <el-input type="textarea" placeholder="请输入" :rows="5" style="margin-bottom:10px" v-model.trim="comment" :maxlength="300"></el-input>
+            <sjbtextarea placeholder="请输入" :rows="5" textStyle="margin-bottom:10px" v-model.trim="comment" :max="300"></sjbtextarea>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogComment = false">取消</el-button>
                 <el-button type="primary" @click="selectComment">确认</el-button>
@@ -220,6 +220,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import Department from "@/components/Department";
 import RedStar from '@/components/RedStar/RedStar.vue';
+import sjbtextarea from '@/components/sjbTextarea'
 import { fetchList ,addComment,editPart,selectcharge,getPart,getLabelList,getTypeList,downFile,getMember,moveCoops} from '@/api/cooprate';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -238,7 +239,8 @@ export default {
     components: {
         BaseTemp,
         RedStar,
-        Department
+        Department,
+        sjbtextarea
     },
     computed: {
         ...mapState({
@@ -444,12 +446,14 @@ export default {
         handleDepartClick(data,select,childSelect) {
             let index = this.departTreeData.indexOf(data)
             if(index<0&&this.departTreeData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为部门/人员！",
-                    type: 'warning'
-                })
-
-                this.$refs.departTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为部门/人员！",
+                //     type: 'warning'
+                // })
+                this.$refs.departTree.setChecked(this.departTreeData[0],false);
+                this.departTreeData = [];
+                this.departTreeData.push(data)
+                
             }else if(this.departTreeData.length ===0&&select){
                 // if(data.status == '1'){
                     this.departTreeData = [];
@@ -648,11 +652,13 @@ export default {
             tempObj.name = data.name;
             let index = this.chargeData.findIndex(item=>item.id == tempObj.id)
             if(index<0&&this.chargeData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为下一级负责人！",
-                    type: 'warning'
-                })
-                this.$refs.chargeTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为下一级负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.chargeTree.setChecked(this.chargeData[0],false);
+                this.chargeData = [];
+                this.chargeData.push(tempObj)
             }else if(this.chargeData.length ===0&&select){
                 if(data.children&&data.children.length>0){
                     this.$message({

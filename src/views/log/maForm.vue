@@ -33,13 +33,13 @@
                         <RedStar label="明日工作计划："
                             :required="true">
                             <span class="right-con">
-                                <el-input type="textarea"
+                                <sjbtextarea
                                 :rows="3"
-                                style="width:250px;"
-                                :maxlength="1000"
+                                textStyle="width:250px;"
+                                :max="1000"
                                 placeholder="请输入内容"
                                 v-model.trim="postData.afterDailyPlan">
-                                </el-input>
+                                </sjbtextarea>
                             </span>
                         </RedStar>
                         
@@ -61,12 +61,11 @@
                         </RedStar>
                         <RedStar label="备注：">
                             <span class="right-con">
-                                <el-input placeholder="请输入"
-                                type="textarea"
-                                style="width:250px;"
+                                <sjbtextarea placeholder="请输入"
+                                textStyle="width:250px;"
                                 :rows="3"
-                                :maxlength="1000"
-                                v-model.trim="postData.remarks"></el-input>
+                                :max="1000"
+                                v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                     </el-col>
@@ -166,12 +165,13 @@ import { parseTime } from "@/utils/index";
 import { logFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import { POST_data,CUST_list,MEMBER_list,POST_item} from "./interface";
-
+import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({
     components: {
-        RedStar: RedStar
+        RedStar: RedStar,
+        sjbtextarea
     }
 })
 export default class maForm extends Vue {

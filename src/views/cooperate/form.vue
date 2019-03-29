@@ -41,7 +41,7 @@
                         <li class="base-li">
                             <RedStar label="描述：" :required="true">
                                 <span class="right-con">
-                                    <el-input type="textarea" :rows="3" placeholder="请输入" style="width:260px;" :maxlength="1000" v-model.trim="postData.description"></el-input>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="1000" v-model.trim="postData.description"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -119,6 +119,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
+import sjbtextarea from '@/components/sjbTextarea'
 
 import {getLabelList,getTypeList,addCoop } from '@/api/cooprate';
 import { mapState, mapGetters } from "vuex";
@@ -131,7 +132,8 @@ export default {
     components: {
         BaseTemp,
         RedStar,
-        dynamicForm
+        dynamicForm,
+        sjbtextarea
     },
     watch:{
         filterCharge(val){
@@ -233,11 +235,13 @@ export default {
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                this.$message({
-                    message: "只能选择一个子节点作为下一级负责人！",
-                    type: 'warning'
-                })
-                this.$refs.chargeTree.setChecked(data,false);
+                // this.$message({
+                //     message: "只能选择一个子节点作为下一级负责人！",
+                //     type: 'warning'
+                // })
+                this.$refs.chargeTree.setChecked(this.chargeData[0],false);
+                this.chargeData = [];
+                this.chargeData.push(data)
             }else if(this.chargeData.length ===0&&select){
                 if(data.children&&data.children.length>0){
                     this.$message({
