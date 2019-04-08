@@ -8,78 +8,78 @@ function toast(str) {
 }
 export function travelFormVali(self) {
     var flag = true;
-    if (self.relType == 1) {
-        if (!self.filter.relationTheme) {
-            toast('请关联主题！');
-            flag = false;
-        }
-    } else if (self.relType == 2) {
-        if (!self.filter.projectId) {
-            toast('请选择项目名称！');
-            flag = false;
-        }
-    } else if (self.filter.travelExpenseTypeList.length<1) {
+    // console.log(self.filter.travelExpenseTypeList.length<1)
+    // return
+    if (self.relType == 1&&!self.filter.relationTheme) {
+        toast('请关联主题！');
+        flag = false;
+    } 
+    else if (self.relType == 2&&!self.filter.projectId) {
+        toast('请选择项目名称！');
+        flag = false;
+    } 
+    else if (self.filter.travelExpenseTypeList.length <= 0){
         toast('请选择报销分类！');
         flag = false;
-    } else if (self.filter.demandBudgetList.length < 1) {
-        toast('请填写出差明细！');
-        flag = false;
-    } else if (!itemVali()) {
+    } 
+    // else if (self.filter.demandBudgetList.length <= 0){
+    //     toast('请填写出差明细！');
+    //     flag = false;
+    // } 
+    else if (!itemVali()) {
         flag = false;
     }
     function itemVali() {
+        let key = true;
         self.filter.demandBudgetList.forEach((item) => {
             if (!item.startDate) {
                 toast('请选择发生日期！');
-                flag = false;
-                return;
+                key = false;
             } else if (
                 item.startPoint.length == 0 ||
                 item.startPoint.indexOf('') != -1
             ) {
                 toast('请选择起点！');
-                flag = false;
-                return;
+                key = false;
+                
             } else if (!item.endDate) {
                 toast('请选择结束日期！');
-                flag = false;
-                return;
+                key = false;
+                
             } else if (
                 item.endPoint.length == 0 ||
                 item.endPoint.indexOf('') != -1
             ) {
                 toast('请选择终点！');
-                flag = false;
-                return;
+                key = false;
             } else if (
                 item.selectedSubject.length == 0 ||
                 item.selectedSubject[0] == ''
             ) {
                 toast('请选择科目');
-                flag = false;
-                return;
+                key = false;
+                
             } else if (typeof item.dayNum != 'number') {
                 toast('请正确填写出差天数！');
-                flag = false;
-                return;
+                key = false;
+               
             } else if (typeof item.personNum != 'number') {
                 toast('请正确填写出差人数！');
-                flag = false;
-                return;
+                key = false;
+                
             } else if (
                 typeof item.expenseAmt != 'number' ||
                 !(item.expenseAmt > 0)
             ) {
                 toast('请正确填写出差金额！');
-                flag = false;
-                return;
+                key = false;
+                
             } else if (item.startDate > item.endDate) {
                 toast('结束日期不能早于发生日期！');
-                flag = false;
-                return;
+                key = false;
             }
         });
-        return flag;
+        return key;
     }
 
     return flag;

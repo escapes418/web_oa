@@ -38,7 +38,7 @@
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">备注：</span>
                             <span class="right-con">
-                                <el-input placeholder="请输入"  type="textarea" :rows="3" style="width:250px;" v-model.trim="filter.remarks" :maxlength="250"></el-input>
+                                <el-input placeholder="请输入"  type="textarea" :rows="3" style="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></el-input>
                             </span>
                         </div>
                     </el-col>
@@ -63,7 +63,7 @@
                                 <span class="red">*</span>：
                             </span>
                             <span class="right-con">
-                                <sjbtextarea placeholder="请输入" :rows="3" style="width:250px;height:100%;overflow:auto;margin:0px" v-model.trim="filter.custMaintenanceContent" :max="250"></sjbtextarea>
+                                <sjbtextarea placeholder="请输入" :rows="3" style="width:250px;height:100%;overflow:auto;margin:0px" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
                             </span>
                         </div>
                     </el-col>

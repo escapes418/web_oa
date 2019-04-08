@@ -69,7 +69,7 @@
         </div>
         <div class="filter-container">
             <div class="toolbar-item">
-                <el-button v-if="ids.indexOf('inforManage-projectList-moveBtn')!==-1" class="filter-item" type="primary" @click="moveContract">批量移动合同</el-button>
+                <el-button v-if="ids.indexOf('inforManage-contractFillList-moveBtn')!==-1" class="filter-item" type="primary" @click="moveContract">批量移动合同</el-button>
             </div>
         </div>
         <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">

@@ -120,7 +120,7 @@
                   placeholder="请输入"
                   textStyle="width:250px;"
                   :rows="3"
-                  :max="4000"
+                  :max="200"
                   v-model.trim="postData.remarks"
                 ></sjbtextarea>
               </span>

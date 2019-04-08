@@ -123,3 +123,12 @@ export function moveContracts(params){
       data:params
     })
 }
+
+
+export function delContracts(params){
+    return request({
+      url:'/contractFlowNew/batchDeleteContractFlow',
+      method:'post',
+      data:params
+    })
+}

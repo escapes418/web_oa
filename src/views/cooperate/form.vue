@@ -10,7 +10,7 @@
                         <li class="base-li">
                             <RedStar label="标题：" :required="true">
                                 <span class="right-con">
-                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入标题" v-model.trim="postData.title">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入标题" v-model.trim="postData.title" :maxlength="50">
                                     </el-input>
                                 </span>
                             </RedStar>
@@ -41,7 +41,7 @@
                         <li class="base-li">
                             <RedStar label="描述：" :required="true">
                                 <span class="right-con">
-                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="1000" v-model.trim="postData.description"></sjbtextarea>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="200" v-model.trim="postData.description"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>

@@ -15,7 +15,7 @@
 
                     <RedStar label="项目名称：" :required="true">
                         <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName"></el-input>
+                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName" :maxlength="50"></el-input>
                         </span>
                     </RedStar>
                     
@@ -96,7 +96,7 @@
                 :rows="3"
                 textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :max="300"
+                :max="200"
                 v-model.trim="filter.remarks">
             </sjbtextarea>
         </div>
@@ -106,27 +106,6 @@
             实施节点
         </div>
         <div class="segment-area">
-            <!-- <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:800px" @selection-change="handleSelectionChange">
-                    <el-table-column
-                        type="selection"
-                        width="55px">
-                    </el-table-column>
-                    <el-table-column align="center" label="地点节点" width="320px">
-                        <template slot-scope="scope">
-                            <el-input auto-complete="off" v-model.trim="scope.row.nodeName" :maxlength="250"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="节点地址（选填）" width="400px">
-                        <template slot-scope="scope">
-                            <div class="map-value" @click="showMap(scope.row)">
-                                <i class="el-icon-search" style="color:#bfbfbf;float:left;line-height:30px;"></i>
-                                <span style="color:#606266;line-height:30px">{{scope.row.nodeAddress}}</span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div> -->
 
             <div class="el-table__body-wrapper">
                 <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="margin-bottom: 20px;">

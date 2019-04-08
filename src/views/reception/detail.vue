@@ -169,7 +169,7 @@
             <div class="segment-area">
                 <sjbtextarea
                     :rows="3"
-                    :max="300"
+                    :max="600"
                     textStyle="width:420px;margin-top:20px;margin-bottom:20px"
                     placeholder="请输入内容"
                     v-model="comment">
@@ -363,13 +363,13 @@ export default {
             })
         },
         agreeBtn(){
-            if(this.comment.length>100) {
-                this.$message({
-                    message:'输入字符超出限额，请重新输入！',
-                    type:'warning'
-                })
-                return 
-            }
+            // if(this.comment.length>100) {
+            //     this.$message({
+            //         message:'输入字符超出限额，请重新输入！',
+            //         type:'warning'
+            //     })
+            //     return 
+            // }
             recepFlow({
                 recpFlowId:this.$route.query.key,
                 comment:this.comment,
@@ -396,13 +396,13 @@ export default {
                 })
                 return 
             }
-            if(this.comment.length>100) {
-                this.$message({
-                    message:'输入字符超出限额，请重新输入！',
-                    type:'warning'
-                })
-                return 
-            }
+            // if(this.comment.length>300) {
+            //     this.$message({
+            //         message:'输入字符超出限额，请重新输入！',
+            //         type:'warning'
+            //     })
+            //     return 
+            // }
             recepFlow({
                 recpFlowId:this.$route.query.key,
                 comment:this.comment,

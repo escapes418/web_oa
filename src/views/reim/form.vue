@@ -78,7 +78,7 @@
                                     v-model.trim="filter.customerSituation" 
                                     placeholder="请输入" 
                                     :row="3" 
-                                    :max="1000"
+                                    :max="600"
                                     textStyle="width:280px"></sjbtextarea>
                             </span>
                         </RedStar>
@@ -93,7 +93,7 @@
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:280px;"
                                 :rows="3"
-                                :max="2000"
+                                :max="700"
                                 v-model.trim="filter.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
@@ -282,6 +282,7 @@ export default {
                 employees: [], //陪客人员
                 // expenseAttachment:[],
                 remarks:"",
+                customerSituation:"",
                 travelExpenseTypeListName:[],
                 entourageListName:[],
                 relType:''
@@ -310,7 +311,9 @@ export default {
                 beginApplyTime: "",
                 endApplyTime: "",
             },
-            uploadTips: config.tips
+            uploadTips: config.tips,
+
+            num1:""
         }
     },
     created() {
@@ -341,15 +344,29 @@ export default {
 
                 var itemDatas = res.data.flowDetailList || [];
                 itemDatas.forEach((item,index)=>{
-                    itemDatas[index].startDate = common.timeParseObj(item.startDate);
-                    itemDatas[index].endDate = common.timeParseObj(item.endDate);
+                    if(item.startDate){
+                        itemDatas[index].startDate = common.timeParseObj(item.startDate);
+                    }else{
+                        itemDatas[index].startDate = ""
+                    }
+                    if(item.endDate){
+                        itemDatas[index].endDate = common.timeParseObj(item.endDate);
+                    }else{
+                        itemDatas[index].endDate = ""
+                    }
+                    if(!item.expenseAmt){
+                        item.expenseAmt = ""
+                    }
+                    if(!item.billNum){
+                        item.billNum = ""
+                    }
                 })
                 this.$store.dispatch('fillDetailCollection', this.transDetailData(itemDatas));
 
                 // 接待报销/出差报销时填充关联主体
                 
                 if (res.data.detail.applyType == 2 || res.data.detail.applyType == 3) {
-                    this.filter.relationName = res.data.detail.relationThemeName.substring(0,20)+ '...';
+                    this.filter.relationName = res.data.detail.relationThemeName&&res.data.detail.relationThemeName.substring(0,20)+ '...';
                     this.fullName = res.data.detail.relationThemeName;
                     this.relatThemProName = res.data.detail.projectLabel;
                     this.filter.relationTheme = res.data.detail.relationTheme;
@@ -387,14 +404,18 @@ export default {
         expenseTotal() {
             let result = 0;
             for (let i = 0; i < this.detailCollection.length; i++) {
-                result += Number(this.detailCollection[i].expenseAmt*100);
+                if(this.detailCollection[i].expenseAmt){
+                    result += Number(this.detailCollection[i].expenseAmt*100);
+                }
             }
             return result/100;
         },
         billNum() {
             let result = 0;
             for (let i = 0; i < this.detailCollection.length; i++) {
-                result += Number(this.detailCollection[i].billNum);
+                if(this.detailCollection[i].billNum){
+                    result += Number(this.detailCollection[i].billNum);
+                }
             }
             return result;
         }

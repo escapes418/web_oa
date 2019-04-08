@@ -155,7 +155,7 @@
                 <div class="segment-area">
                     <sjbtextarea
                         :rows="3"
-                        :max="300"
+                        :max="600"
                         textStyle="width:420px;margin-top:20px;margin-bottom:20px"
                         placeholder="请输入内容"
                         v-model="comment">

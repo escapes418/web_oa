@@ -9,16 +9,9 @@
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="客户名称：" :required="true">
                         <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="250"></el-input>
+                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="100"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix cominfo-item">
-                        <span class="left-red">*</span>
-                        <span class="left-title font-gray">客户名称：</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="250"></el-input>
-                        </span>
-                    </div> -->
                     <RedStar label="客户分类：">
                         <span class="right-con">
                             <el-select clearable class="filter-item" v-model="filter.custClassify" placeholder="请选择" style="width:250px;">
@@ -27,48 +20,21 @@
                             </el-select>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">客户分类：</span>
-                        <span class="right-con">
-                            <el-select clearable class="filter-item" v-model="filter.custClassify" placeholder="请选择" style="width:250px;">
-                                <el-option v-for="item in custClassify" :label="item.name" :value="item.value" :key="item.value">
-                                </el-option>
-                            </el-select>
-                        </span>
-                    </div> -->
                     <RedStar label="规模（万吨/月）">
                         <span class="right-con">
                             <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custCompanySize" type="number"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix cominfo-item">
-                        <span class="left-title font-gray">规模（万吨/月）</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custCompanySize" type="number"></el-input>
-                        </span>
-                    </div> -->
                     <RedStar label="联系人：">
                         <span class="right-con">
                             <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="filter.custLinkmanName"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix cominfo-item">
-                        <span class="left-title font-gray">联系人：</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="filter.custLinkmanName"></el-input>
-                        </span>
-                    </div> -->
                     <RedStar label="联系方式：">
                         <span class="right-con">
                             <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.linkmanPhone"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">联系方式：</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.linkmanPhone"></el-input>
-                        </span>
-                    </div> -->
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="客户简称：">
@@ -76,23 +42,11 @@
                             <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="filter.custAbbreviation"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">客户简称：</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="filter.custAbbreviation"></el-input>
-                        </span>
-                    </div> -->
                     <RedStar label="所属区域：">
                         <span class="right-con long_area" >
                             <region class="area" style="width:250px" v-on:back-region="selectCode" :pointList="filter.areaId"></region>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix cominfo-item">
-                        <span class="left-title font-gray">所属区域：</span>
-                        <span class="right-con long_area" >
-                            <region class="area" style="width:250px" v-on:back-region="selectCode" :pointList="filter.areaId"></region>
-                        </span>
-                    </div> -->
                     <RedStar label="运输方式：">
                         <span class="right-con">
                             <el-select clearable multiple class="filter-item" v-model="filter.tranMethod" placeholder="请选择" style="width:250px;">
@@ -101,37 +55,16 @@
                             </el-select>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">运输方式：</span>
-                        <span class="right-con">
-                            <el-select clearable multiple class="filter-item" v-model="filter.tranMethod" placeholder="请选择" style="width:250px;">
-                                <el-option v-for="item in tranList" :label="item.name" :value="item.value" :key="item.value">
-                                </el-option>
-                            </el-select>
-                        </span>
-                    </div> -->
                     <RedStar label="联系人职位：">
                         <span class="right-con">
                             <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.linkmanPost" :maxlength="50"></el-input>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">联系人职位：</span>
-                        <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.linkmanPost" :maxlength="50"></el-input>
-                        </span>
-                    </div> -->
                     <RedStar label="市场负责人：">
                         <span class="right-con">
                             {{userInfo.name}}
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">市场负责人：</span>
-                        <span class="right-con">
-                            {{userInfo.name}}
-                        </span>
-                    </div> -->
                 </el-col>
             </el-row>
         </div>
@@ -145,7 +78,7 @@
                 :rows="3"
                 textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :max="1000"
+                :max="200"
                 v-model.trim="filter.custActuality">
             </sjbtextarea>
         </div>
@@ -159,7 +92,7 @@
                 :rows="3"
                 textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :max="1000"
+                :max="200"
                 v-model.trim="filter.custBusinessProfile">
             </sjbtextarea>
         </div>
@@ -174,7 +107,7 @@
                 :rows="3"
                 textStyle="margin-top:20px;margin-bottom:20px"
                 placeholder="请输入内容"
-                :max="1000"
+                :max="200"
                 v-model.trim="filter.custClueExplain">
             </sjbtextarea>
         </div>

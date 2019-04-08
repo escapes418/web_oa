@@ -32,7 +32,7 @@
             <span>{{inTotal.toFixed(2)}}</span>
         </td>
         <td>
-            <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>
+            <el-input auto-complete="off" :maxlength="200" v-model="itemData.remarks"></el-input>
         </td>
     </tr>
 </template>

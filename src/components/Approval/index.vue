@@ -34,7 +34,7 @@
             <el-input auto-complete="off" style="width:120px" v-model.number="itemData.expenseAmt" type="number"></el-input>
         </td>
         <td>
-            <el-input auto-complete="off" :maxlength="500" v-model="itemData.remarks"></el-input>
+            <el-input auto-complete="off" :maxlength="200" v-model="itemData.remarks"></el-input>
         </td>
         <td>
             <el-button icon='el-icon-upload' size="mini" @click="dialogVisible=true" type="primary" :disabled="canUpload">上传图片

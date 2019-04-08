@@ -26,6 +26,7 @@
                 <el-button icon="el-icon-arrow-up" v-if="toolexpand" class="toolmore-control-btn" @click="toolexpand = false">收起</el-button>
                 <el-button icon="el-icon-arrow-down" v-else class="toolmore-control-btn" @click="toolexpand = true">展开</el-button>
             </div>
+
             <el-collapse-transition>
                 <div v-show="toolexpand">
                     <div class="toolbar-row">
@@ -52,7 +53,16 @@
                 </div>
             </el-collapse-transition>
         </div>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+        <div class="filter-container">
+            <div class="toolbar-item">
+                <el-button v-if="ids.indexOf('me-contractCheckList-batchDeleteBtn')!==-1" class="filter-item" type="primary" @click="moveContract">批量删除合同</el-button>
+            </div>
+        </div>
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column
+                type="selection"
+                width="55px">
+            </el-table-column>
             <el-table-column align="center" label="流程编号" width="150px">
                 <template slot-scope="scope">
                     <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.procCode}}</span>
@@ -104,12 +114,19 @@
             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
+        <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
+            <span>确认批量删除合同申请吗？删除后，将不可恢复！</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="delBtn">确认</el-button>
+                <el-button @click="dialogDelVisible = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import common from '@/utils/common';
-import { fetchList ,getContractTemlist,} from '@/api/contractCheck';
+import { fetchList ,getContractTemlist,delContracts} from '@/api/contractCheck';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -150,7 +167,8 @@ export default {
             contractChecked:false,
             contractLeaderId:'',
             memberList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+            dialogDelVisible:false,
         }
     },
     computed: {
@@ -236,6 +254,45 @@ export default {
         },
         handleCreate() {
             this.$router.push({path: '/me/contractCheckForm'});
+        },
+        handleSelectionChange(val){
+            this.selectContract = val;
+        },
+        moveContract(){
+            
+            if(this.selectContract.length){
+                if(!this.selectContract.find(item=>{return item.contractFlowStatus=="0"||item.contractFlowStatus=="1"})){
+                    this.dialogDelVisible = true;
+                }else{
+                    this.$message({
+                        message: "批量删除的合同包含已删除的合同或已经结束的合同，请重新选择！",
+                        type: 'warning'
+                    })
+                }
+            }else{
+                this.$message({
+                    message: "请选择要批量删除的合同！",
+                    type: 'warning'
+                })
+            }
+        },
+        delBtn(){
+            let idList = []
+            this.selectContract.forEach(item => {
+                idList.push({contractFlowId:item.id,procInsId:item.procInsId})
+            });
+            delContracts({
+                idList:idList
+            }).then(res=>{
+                if (res.status == 0) {
+                    this.$message({
+                        message: res.message,
+                        type: 'success'
+                    })
+                    this.dialogDelVisible = false;
+                    this.getList()
+                }
+            })
         }
     }
 }

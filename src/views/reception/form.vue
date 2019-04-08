@@ -63,7 +63,7 @@
                             <sjbtextarea placeholder="请输入"
                             textStyle="width:280px;"
                             :rows="3"
-                            :max="2000"
+                            :max="200"
                             v-model.trim="filter.remarks"></sjbtextarea>
                         </span>
                     </RedStar>
@@ -209,7 +209,8 @@ export default {
                 projectPersonel: "",
                 recpTheme:"",
                 employees:[],
-                recpTime: ""
+                recpTime: "",
+                remarks:""
             },
             total: null,
             recepTotal:null,
@@ -256,16 +257,36 @@ export default {
                 res.data.recpFlowresponse.employees = res.data.recpFlowresponse.employees || []
                 this.filter.employees = res.data.recpFlowresponse.employees
                 //后台返回值兼容
+                this.filter.remarks = res.data.recpFlowresponse.remarks
                 res.data.recpFlowresponse.recpNum = res.data.recpFlowresponse.recpNum || ''
                 this.filter.recpNum = res.data.recpFlowresponse.recpNum 
 
                 this.filter.recpTheme = res.data.recpFlowresponse.recpTheme
-                this.filter.recpTime = common.timeParseObj(res.data.recpFlowresponse.recpTime)
+                if(res.data.recpFlowresponse.recpTime){
+                    this.filter.recpTime = common.timeParseObj(res.data.recpFlowresponse.recpTime)
+                }
+                
                 this.filter.procInsId = res.data.recpFlowresponse.procInsId
                 //明细时间格式转换
                 var itemDatas = res.data.budgetDetailList || [];
-                var newItemDatas = common.ObjToStamp(itemDatas,['startDate','endDate'])
-                this.$store.dispatch('fillDetailCollection', this.transDetailData(newItemDatas));
+                
+                // var newItemDatas = common.ObjToStamp(itemDatas,['startDate','endDate'])
+                itemDatas.forEach((item,index)=>{
+                    if(item.startDate){
+                        itemDatas[index].startDate = common.timeParseObj(item.startDate);
+                    }else{
+                        itemDatas[index].startDate = ""
+                    }
+                    if(item.endDate){
+                        itemDatas[index].endDate = common.timeParseObj(item.endDate);
+                    }else{
+                        itemDatas[index].endDate = ""
+                    }
+                    if(!item.expenseAmt){
+                        item.expenseAmt = ""
+                    }
+                })
+                this.$store.dispatch('fillDetailCollection', this.transDetailData(itemDatas));
             })
         }
 

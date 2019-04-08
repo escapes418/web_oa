@@ -36,7 +36,6 @@ export default {
     },
     created () {
         this.currentValue = this.value
-        console.log(this.textStyle)
     },
     watch:{
         value (val) {

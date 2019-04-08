@@ -42,7 +42,7 @@
                                     :rows="3"
                                     textStyle="width:280px;margin-top:2px;margin-bottom:20px"
                                     placeholder="请输入内容"
-                                    :max="300"
+                                    :max="200"
                                     v-model="filter.remarks">
                                 </sjbtextarea>
                             </span>

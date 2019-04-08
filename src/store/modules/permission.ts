@@ -80,7 +80,7 @@ const permission = {
             }
             compareIds(routeMaps); // 本地完整路由池
             commit('SET_ROUTERS', routeMaps);
-            commit('SET_IDS',ids)
+            commit('SET_IDS',ids);
         },
         async FetchMenu_old({ commit }) {
             function trans(dataArr) {

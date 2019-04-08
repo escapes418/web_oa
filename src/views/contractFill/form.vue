@@ -47,7 +47,7 @@
                         <li class="base-li">
                             <RedStar label="备注" :required="false">
                                 <span class="right-con">
-                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="100" v-model.trim="postData.remarks"></sjbtextarea>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="200" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -311,8 +311,8 @@ export default {
             pageNo: 1,
             pageSize: 10,
             listQuery: {
-                queryText: "",
-                contractPartyName:"",
+                // queryText: "",
+                // contractPartyName:"",
                 faint:"",
             },
 

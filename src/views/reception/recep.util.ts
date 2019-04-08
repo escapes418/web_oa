@@ -27,7 +27,7 @@ export function recepFormVali(self) {
         toast('请选择接待时间！');
         flag = false;
     } else if (self.filter.demandBudgetList.length < 1) {
-        toast('请填写报销明细！');
+        toast('请填写接待申请明细！');
         flag = false;
     } else if (!itemVali()) {
         flag = false;

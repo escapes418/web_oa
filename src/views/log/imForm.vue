@@ -125,7 +125,7 @@
                                 <el-input placeholder="请输入"
                                 type="number"
                                 style="width:150px;"
-                                :maxlength="250"
+                                :maxlength="200"
                                 v-model.trim="scope.row.nodeEmpNum"></el-input>
                             </template>
                         </el-table-column>
@@ -134,7 +134,7 @@
                                 <el-input placeholder="请输入"
                                 type="text"
                                 style="width:180px;"
-                                :maxlength="250"
+                                :maxlength="200"
                                 v-model.trim="scope.row.nodeEmpNames"></el-input>
                             </template>
                         </el-table-column>

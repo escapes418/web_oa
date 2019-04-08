@@ -47,7 +47,7 @@
                         <li class="base-li">
                             <RedStar label="备注" :required="false">
                                 <span class="right-con">
-                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="100" v-model.trim="postData.remarks"></sjbtextarea>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="200" v-model.trim="postData.remarks"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>
@@ -190,15 +190,9 @@
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="快递公司：" :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入快递公司" style="width:250px;" v-model.trim="postData.expressCompany" :maxlength="250"></el-input>
+                                <el-input placeholder="请输入快递公司" style="width:250px;" v-model.trim="postData.expressCompany" :maxlength="200"></el-input>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">快递公司：</span>
-                            <span class="right-con">
-                                <el-input placeholder="请输入快递公司" style="width:250px;" v-model.trim="postData.expressCompany" :maxlength="250"></el-input>
-                            </span>
-                        </div> -->
                     </el-col>
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="快递单号：" :required="true">
@@ -206,12 +200,6 @@
                                 <el-input placeholder="请输入快递单号" type="number" style="width:250px;" :maxlength="50" v-model.trim="postData.expressBill"></el-input>
                             </span>
                         </RedStar>
-                        <!-- <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">快递单号：</span>
-                            <span class="right-con">
-                                <el-input placeholder="请输入快递单号" style="width:250px;" :maxlength="50" v-model.trim="postData.expressBill"></el-input>
-                            </span>
-                        </div> -->
                     </el-col>
                 </el-row>
             </div>

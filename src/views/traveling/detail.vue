@@ -151,7 +151,7 @@
                     <sjbtextarea
                         :rows="3"
                         textStyle="width:420px;margin-top:20px;margin-bottom:20px"
-                        :max="300"
+                        :max="600"
                         placeholder="请输入内容"
                         v-model="comment">
                     </sjbtextarea>
@@ -290,13 +290,13 @@ export default {
             });
         },
         agreeBtn() {
-            if(this.comment.length>100) {
-                this.$message({
-                    message:'输入字符超出限额，请重新输入！',
-                    type:'warning'
-                })
-                return 
-            }
+            // if(this.comment.length>100) {
+            //     this.$message({
+            //         message:'输入字符超出限额，请重新输入！',
+            //         type:'warning'
+            //     })
+            //     return 
+            // }
             travelFlowCompleteTask({
                 travelFlowId: this.$route.query.key,
                 comment: this.comment,
@@ -320,13 +320,13 @@ export default {
                 });
                 return
             }
-            if(this.comment.length>100) {
-                this.$message({
-                    message:'输入字符超出限额，请重新输入！',
-                    type:'warning'
-                })
-                return 
-            }
+            // if(this.comment.length>300) {
+            //     this.$message({
+            //         message:'输入字符超出限额，请重新输入！',
+            //         type:'warning'
+            //     })
+            //     return 
+            // }
             
             travelFlowCompleteTask({
                 travelFlowId : this.$route.query.key,

@@ -4,7 +4,7 @@
             <el-checkbox v-model="itemData.checked"></el-checkbox>
         </td>
         <td style="padding: 0 10px 0 10px;">
-            <el-input auto-complete="off" v-model.trim="itemData.nodeName" :maxlength="250"></el-input>
+            <el-input auto-complete="off" v-model.trim="itemData.nodeName" :maxlength="200"></el-input>
         </td>
         <td style="padding: 0 10px 0 10px;">
             <div class="map-value" @click="showMap(itemData)">

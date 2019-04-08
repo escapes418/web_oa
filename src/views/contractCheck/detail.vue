@@ -183,7 +183,7 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                    <sjbtextarea :rows="3" :max="300" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model.trim="comment">
+                    <sjbtextarea :rows="3" :max="600" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model.trim="comment">
                     </sjbtextarea>
                 </div>
             </div>
@@ -211,7 +211,7 @@
                     <!-- <el-button v-if="ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
                     <el-button v-if="ISAPPLY&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISAPPLY&&ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="dialogCanVisible = true">撤销</el-button>
-                    <el-button v-if="ISAPPLY&&ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
+                    <!-- <el-button v-if="ISAPPLY&&ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button> -->
                     <!-- <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button> -->
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -532,13 +532,13 @@ export default {
             });
         },
         agreeBtn() {
-            if (this.comment.length > 100) {
-                this.$message({
-                    message: "输入字符超出限额，请重新输入！",
-                    type: "warning"
-                });
-                return;
-            }
+            // if (this.comment.length > 100) {
+            //     this.$message({
+            //         message: "输入字符超出限额，请重新输入！",
+            //         type: "warning"
+            //     });
+            //     return;
+            // }
             if(this.detail.isUploadFile == 1 && this.scanAttachment.length<this.scanMustCount){
                 this.$message({
                     message: '请至少上传'+this.scanMustCount+'张合同扫描件！',
@@ -573,13 +573,13 @@ export default {
                 });
                 return;
             }
-            if (this.comment.length > 100) {
-                this.$message({
-                    message: "输入字符超出限额，请重新输入！",
-                    type: "warning"
-                });
-                return;
-            }
+            // if (this.comment.length > 300) {
+            //     this.$message({
+            //         message: "输入字符超出限额，请重新输入！",
+            //         type: "warning"
+            //     });
+            //     return;
+            // }
             
             if(this.detail.isUploadFile == 1 && this.scanAttachment.length<this.scanMustCount){
                 this.$message({

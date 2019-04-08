@@ -178,10 +178,10 @@
                                     {{ detail.employeesName }}
                                 </span>
                             </div>
-                            <div class="clearfix  cominfo-item" v-if="detail.applyType == 2 && detail.expenseStatus !== 1">
+                            <div class="clearfix  cominfo-item" v-if="detail.applyType == '2' && detail.expenseStatus !== '1' && detail.expenseStatus !== '0'">
                                 <span class="left-title font-gray">接待客户情况：</span>
                                 <span class="right-con">
-                                    {{ detail.employeesName }}
+                                    {{ detail.customerSituation }}
                                 </span>
                             </div>
                             <div class="clearfix  cominfo-item" v-if="detail.relType !=3">
@@ -327,7 +327,7 @@
                     审批意见
                 </div>
                 <div class="segment-area">
-                    <sjbtextarea :rows="3" :max="300" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model="comment">
+                    <sjbtextarea :rows="3" :max="600" textStyle="width:420px;margin-top:20px;margin-bottom:20px" placeholder="请输入内容" v-model="comment">
                     </sjbtextarea>
                 </div>
             </div>
@@ -587,7 +587,7 @@ export default {
             // window.open(url);
         },
         backBtn() {
-        this.$router.go(-1);
+            this.$router.go(-1);
         //   this.$router.push({
         //       path:'/me/reim'
         //   })
@@ -625,13 +625,13 @@ export default {
             });
         },
         agreeBtn() {
-            if (this.comment.length > 100) {
-                this.$message({
-                message: "输入字符超出限额，请重新输入！",
-                type: "warning"
-                });
-                return;
-            }
+            // if (this.comment.length > 100) {
+            //     this.$message({
+            //     message: "输入字符超出限额，请重新输入！",
+            //     type: "warning"
+            //     });
+            //     return;
+            // }
             expFlow({
                 expenseFlowId: this.$route.query.key,
                 comment: this.comment,
@@ -658,13 +658,13 @@ export default {
                 });
                 return;
             }
-            if (this.comment.length > 100) {
-                this.$message({
-                    message: "输入字符超出限额，请重新输入！",
-                    type: "warning"
-                });
-                return;
-            }
+            // if (this.comment.length > 300) {
+            //     this.$message({
+            //         message: "输入字符超出限额，请重新输入！",
+            //         type: "warning"
+            //     });
+            //     return;
+            // }
             expFlow({
                 expenseFlowId: this.$route.query.key,
                 comment: this.comment,

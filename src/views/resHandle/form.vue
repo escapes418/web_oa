@@ -16,16 +16,7 @@
                             </el-select>
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-red">*</span>
-                        <span class="left-title font-gray">办理类型：</span>
-                        <span class="right-con">
-                            <el-select class="filter-item" @change="resTypeChange" v-model="filter.handleType" placeholder="请选择" style="width:280px;">
-                                <el-option v-for="item in handleTypeList" :label="item.name" :value="item.value" :key="item.value">
-                                </el-option>
-                            </el-select>
-                        </span>
-                    </div> -->
+                    
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="需求数量：">
@@ -41,22 +32,14 @@
                             {{filter.projectName}}
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item" v-if="filter.handleType == 2">
-                        <span class="left-title font-gray">项目名称：</span>
-                        <span class="right-con">
-                            {{filter.projectName}}
-                        </span>
-                    </div> -->
+                    
                     <Project @on-select="proSelect" :Pvalue="filter.projectName" :required="true" v-if="filter.handleType == 1"></Project>
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="项目负责人：">
                         <span class="right-con">{{filter.projectPersonel}}</span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item">
-                        <span class="left-title font-gray">项目负责人：</span>
-                        <span class="right-con">{{filter.projectPersonel}}</span>
-                    </div> -->
+                    
                 </el-col>
             </el-row>
             <el-row>
@@ -67,30 +50,18 @@
                             <span style="color:#606266;font-size:14px;">{{relationTheme}}</span>
                         </div>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item" v-if="filter.handleType == 2">
-                        <span class="left-red">*</span>
-                        <span class="left-title font-gray">关联主题：</span>
-                        <div class="item-value" @click="showThemeForm=true" :title="fullName">
-                            <i class="el-icon-search" style="color:#bfbfbf"></i>
-                            <span style="color:#606266;font-size:14px;">{{relationTheme}}</span>
-                        </div>
-                    </div> -->
+                    
                     <RedStar label="抵达时间：" v-if="filter.handleType == 2">
                         <span class="right-con">
                             {{arrivalTime | stamp2TextDateFull}}
                         </span>
                     </RedStar>
-                    <!-- <div class="clearfix  cominfo-item" v-if="filter.handleType == 2">
-                        <span class="left-title font-gray">抵达时间：</span>
-                        <span class="right-con">
-                            {{arrivalTime | stamp2TextDateFull}}
-                        </span>
-                    </div> -->
+                    
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="备注：">
                         <span class="right-con">
-                            <sjbtextarea v-model.trim="filter.remarks" textStyle="width:280px" :rows="3" :max="300"></sjbtextarea>
+                            <sjbtextarea v-model.trim="filter.remarks" textStyle="width:280px" :rows="3" :max="200"></sjbtextarea>
                         </span>
                     </RedStar>
                 </el-col>
