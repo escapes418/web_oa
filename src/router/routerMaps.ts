@@ -4,7 +4,6 @@ import me from '@/router/me';
 import inforManage from '@/router/inforManage';
 import task from '@/router/task';
 import process from '@/router/process';
-import oa from '@/router/oa';
 import publicGoods from '@/router/publicGoods';
 
 export default [
@@ -76,6 +75,5 @@ export default [
     ...inforManage,
     ...report,
     ...process,
-    ...oa,
     ...publicGoods
 ];
