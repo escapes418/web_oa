@@ -51,6 +51,7 @@ export interface POST_data {
     dailyTemplate:string,// 日志模板：0实施模板，1市场模板 ,
     remarks :string, // 备注 ,
     sendToList:string[] ,
+    copyToList:string[]
 }
 interface POST_cust {
     index:number,
@@ -155,6 +156,7 @@ export interface POST_imply{
     remarks:string,// 备注 ,
     revisitProjectStatus:string, //回访项目情况 ,
     sendToUserList:string[],// 发给谁 ,
+    copyToList:string[],
     todayThought:string,// 今日感想 ,
     todayWork:string,// 今日工作 ,
     transportPoolBuild:string,// 运力池建设

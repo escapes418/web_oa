@@ -176,21 +176,40 @@
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <RedStar label="发送给："
-                        :required="true" style="line-height:30px">
-                        <span class="right-con">
-                            <el-select 
-                                filterable
-                                multiple
-                                style="width: 300px" 
-                                class="filter-item" 
-                                v-model="postData.sendToUserList" 
-                                placeholder="请选择发送对象">
-                                <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </span>
-                    </RedStar>
+                    <ul class="base-ul">
+                        <li class="base-li">
+                            <RedStar label="发送给："
+                                :required="true" style="line-height:30px">
+                                <span class="right-con">
+                                    <el-select 
+                                        filterable
+                                        multiple
+                                        style="width: 300px" 
+                                        v-model="postData.sendToUserList" 
+                                        placeholder="请选择发送对象">
+                                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="抄送对象："
+                                style="line-height:30px">
+                                <span class="right-con">
+                                    <el-select 
+                                        filterable
+                                        multiple
+                                        style="width: 300px" 
+                                        v-model="postData.copyToList" 
+                                        placeholder="请选择抄送对象">
+                                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -235,6 +254,7 @@ export default class imForm extends Vue {
         remarks:'',// 备注 ,
         revisitProjectStatus:'', //回访项目情况 ,
         sendToUserList:[],// 发给谁 ,
+        copyToList:[],
         todayThought:'',// 今日感想 ,
         todayWork:'',// 今日工作 ,
         transportPoolBuild:'',// 运力池建设
@@ -259,8 +279,11 @@ export default class imForm extends Vue {
 
         getMember({}).then((res:Ajax.AjaxResponse)=> {
             this.memberList = res.data;
-            if(localStorage.getItem("web_oa_sendToUserList")){
-                this.postData.sendToUserList = JSON.parse(localStorage.getItem("web_oa_sendToUserList"));
+            if(localStorage.getItem("web_im_sendToUserList")){
+                this.postData.sendToUserList = JSON.parse(localStorage.getItem("web_im_sendToUserList"));
+            }
+            if(localStorage.getItem('web_im_copyToList')){
+                this.postData.copyToList = JSON.parse(localStorage.getItem("web_im_copyToList"));
             }
         })
     }
@@ -348,8 +371,12 @@ export default class imForm extends Vue {
             }).then((res: Ajax.AjaxResponse) => {
                 if (res.status == 0) {
                     localStorage.setItem(
-                        'web_oa_sendToUserList',
+                        'web_im_sendToUserList',
                         JSON.stringify(this.postData.sendToUserList)
+                    );
+                    localStorage.setItem(
+                        'web_im_copyToList',
+                        JSON.stringify(this.postData.copyToList)
                     );
                     this.$message({
                         message: res.message,
@@ -407,6 +434,12 @@ export default class imForm extends Vue {
 
 .el-cascader .el-cascader--small {
     width: 250px !important;
+}
+.base-ul{
+    display:flex
+}
+.base-li{
+    flex:0 0 50%;
 }
 </style>
 <style>

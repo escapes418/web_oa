@@ -96,3 +96,19 @@ export function getImDetail(params){
     data:params
   })
 }
+
+export function saveCritique(params){
+  return request({
+    url:'/marketDaily/saveDailyComment',
+    method:'post',
+    data:params
+  })
+}
+
+export function getCritique(params){
+  return request({
+    url:'/marketDaily/queryDailyComment',
+    method:'post',
+    data:params
+  })
+}
