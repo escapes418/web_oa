@@ -243,20 +243,7 @@ export default [
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true
-            },
-            //测试路由
-            {
-                path: 'staffWork',
-                id: 'staffWork',
-                show: false,
-                name: 'staffWork',
-                component: () => import('@/views/staffWork/list.vue'),
-                meta: {
-                    title: '测试路由',
-                    icon: 'iconfont icon-gongzuorizhi'
-                },
-                hidden: true
-            },
+            }
         ]
     }
 ];
