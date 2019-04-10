@@ -113,7 +113,6 @@
         </el-table>
 
         <el-dialog title="新建任务" :visible.sync="dialogCreate" width="25%">
-            <!-- <el-form ref='form' :model="form"> -->
             <el-form ref='form' label-width="150px" label-position="left">
                 <el-form-item label="产品/模块名称：">
                     <el-cascader :options="options" v-model="post.selectedSubject" @change="subjectOnChange" style="width:280px;">
