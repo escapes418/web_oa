@@ -38,7 +38,14 @@
                 <div v-show="toolexpand">
                     <div class="toolbar-row">
                         <div class="toolbar-item">
-                            <span class="item-label">归档日期：</span>
+                            <span class="item-label">日期类型：</span>
+                            <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.dateType" placeholder="请选择日期类型">
+                                <el-option v-for="item in dateTypeList" :key="item.value" :label="item.name" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="toolbar-item">
+                            <span class="item-label">日期：</span>
                             <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
                             </el-date-picker>
                         </div>
@@ -326,7 +333,10 @@ export default {
                 contractLeaderId:"",//合同负责人id,
                 contractType:"",//  合同类型,
                 faint:"", //模糊搜索字段,
+                dateType:""
+
             },
+            dateTypeList:[],
             conStatuList:[],
             conTypeList:[],
             comInfor: [],
@@ -385,6 +395,7 @@ export default {
 
         this.conStatuList = selectDic(dicList,"contract_his_status")
         this.conTypeList = selectDic(dicList,"contract_type_s")
+        this.dateTypeList = selectDic(dicList,"date_type")
 
         getMember({}).then(res => {
             if(res.status == 0){
@@ -596,6 +607,13 @@ export default {
             this.pageNo = 1
             if(!this.listQuery.timeRange){
                 this.listQuery.timeRange = []
+            }
+            if(!this.listQuery.dateType&&this.listQuery.timeRange.length>0 || this.listQuery.dateType&&this.listQuery.timeRange.length == 0){
+                this.$message({
+                    message: "时间类型和日期需配合使用!!",
+                    type: "warning"
+                });
+                return
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getList()
