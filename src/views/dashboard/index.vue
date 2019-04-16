@@ -13,7 +13,8 @@
                 placeholder="请输入"
                 :precision="2"
                 :max="10000"
-                :min="0"></sjbNumInput>
+                :min="0"
+                ></sjbNumInput>
         </span>
     </RedStar>
 
@@ -50,7 +51,7 @@ export default {
     data() {
     return {
         filter:{
-            customerSituation:"2.3963"
+            customerSituation:""
         },
         a:{width:"280px"},
         cascaderData: [

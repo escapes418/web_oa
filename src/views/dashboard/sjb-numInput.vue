@@ -31,7 +31,7 @@ export default {
     },
     watch:{
         value(val){
-            this.currentValue = Number(val).toFixed(this.precision)
+            this.currentValue = Number(val).toFixed(this.precision);
             this.$emit('input', this.currentValue);
         },
     },
