@@ -225,7 +225,8 @@ export default class maDetail extends Vue{
         })
     }
     showCritique():void{
-        this.dialogCritique = true
+        this.dialogCritique = true;
+        this.critique = "";
     }
     confirmCritique():void{
         saveCritique({

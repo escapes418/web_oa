@@ -227,7 +227,8 @@ export default class imDetail extends Vue{
         })
     }
     showCritique():void{
-        this.dialogCritique = true
+        this.dialogCritique = true;
+        this.critique = "";
     }
     confirmCritique():void{
         saveCritique({
