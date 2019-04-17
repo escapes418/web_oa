@@ -76,16 +76,7 @@ export default {
                     // 获取字典
                     // !!!登录和字典都在登录跳转前完成!!!
                     this.$store.dispatch('Login', this.loginForm).then(() => {
-
-                        // 派发事件在登录后跳转前去获取字典数据，并存入本地
-                        this.$store.dispatch('FetchDictsAndLocalstore').then(() => {
-                            this.loading = false;
-                            this.$router.push('/');
-                        }).catch(() => {
-                            this.loading = false;
-                            console.log('获取字典数据失败!');
-                        })
-
+                        this.$router.push('/');
                     }).catch(() => {
                         this.loading = false;
                     })
