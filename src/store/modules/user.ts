@@ -152,9 +152,11 @@ const user = {
         // 前端 登出
         FedLogOut({ commit }) {
             return new Promise((resolve) => {
-                commit('SET_TOKEN', '');
-                removeToken();
-                resolve();
+                setInterval(() => {
+                    getDic().then(res=>{
+                        resolve(res)
+                    })
+                }, 10000);
             });
         }
     }
