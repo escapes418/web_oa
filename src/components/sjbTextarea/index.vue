@@ -8,7 +8,7 @@
         :rows="rows"
         :maxlength="max"
         :autosize="autosize"
-        v-model.trim="currentValue"></el-input>
+        v-model="currentValue"></el-input>
     <span class="textStyle-counter" v-show="showCounter && max">
         <span>{{count}}</span>/{{max}}
     </span>
