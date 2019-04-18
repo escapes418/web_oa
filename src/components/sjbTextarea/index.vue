@@ -58,12 +58,13 @@ export default {
         count () {
             let len = 0
             if (this.currentValue) {
-                len = this.currentValue.replace(/\n/g, 'aa').length
+                len = this.currentValue.replace(/\n/g, 'n').length
             }
             return len > this.max ? this.max : len
         },
     }
 }
+
 </script>
 <style scoped>
 .textStyle-contain{
