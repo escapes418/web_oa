@@ -498,7 +498,7 @@ export default {
                     id: this.$route.query.key
                 }).then(res=>{
                     this.detail = res.data.contractHisDetailResponse;
-                    this.detail.projectList.forEach(item=>{
+                    this.detail.projectList&&this.detail.projectList.forEach(item=>{
                         this.projectName.push(item.projectName)
                     })
                     if (
