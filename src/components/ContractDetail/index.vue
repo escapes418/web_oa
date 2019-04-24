@@ -79,6 +79,26 @@
                                 </li>
                             </ul>
                         </base-temp>
+                        <base-temp :title="receiptPart">
+                            <ul class="base-ul">
+                                <li class="base-li">
+                                    <span class="left-title font-gray">回执状态：</span>
+                                    <span class="right-con">{{detail.receiptStatusName}}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">回执操作人：</span>
+                                    <span class="right-con">{{detail.personName}}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">回执操作人手机号：</span>
+                                    <span class="right-con">{{ detail.personPhone }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">回执操作时间：</span>
+                                    <span class="right-con">{{ detail.receiptTime | stamp2TextDateFull }}</span>
+                                </li>
+                            </ul>
+                        </base-temp>
                     </div>
                 </div>
             </div>
@@ -328,7 +348,8 @@ export default {
             listLoading:false,
             listQuery:{
                 contractId:''
-            }
+            },
+            receiptPart:"回执情况"
         };
     },
     
