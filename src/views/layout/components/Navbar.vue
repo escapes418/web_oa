@@ -2,13 +2,6 @@
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
         <breadcrumb></breadcrumb>
-        <el-dropdown class="count-message" trigger="click" @click="getCount">
-            <i class="el-icon-message"></i>
-            <span class="badge">{{count}}</span>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="(item,index) in list" :key="index">{{item}}</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
         <div class="changLog" @click="goChangLog">v{{userIn.version}}</div>
         <el-dropdown class="avatar-container" trigger="hover">
             
@@ -53,14 +46,6 @@ export default {
         return {
             headUrl: '',
             userIn: "",
-            count:0,
-            list:[
-                "黄金糕",
-                "狮子头",
-                "螺蛳粉",
-                "双皮奶",
-                "蚵仔煎"
-            ]
         }
     },
     computed: {
@@ -178,17 +163,9 @@ export default {
 .changLog{
     display: block;
     float: right;
-    margin-right: 10px;
-    line-height: 49px;
-    font-size: 14px;
-    cursor: pointer;
-}
-.count-message{
-    display: block;
-    float: right;
     margin-right: 150px;
     line-height: 49px;
-    font-size: 24px;
+    font-size: 14px;
     cursor: pointer;
 }
 .badge{
