@@ -391,7 +391,7 @@ export default {
             return new Promise(async (resolve,reject)=>{
                 let res = await getDetail({contractFlowId: this.$route.query.key})
                 this.detail = res.data.contractFlowDetailInfoNewResponse;
-                this.detail.projectList.forEach(item=>{
+                this.detail.projectList&&this.detail.projectList.forEach(item=>{
                     this.projectName.push(item.projectName)
                 })
                 this.flowLoglist = res.data.flowLoglist;

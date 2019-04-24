@@ -9,7 +9,8 @@ const user = {
         name: '',
         avatar: '',
         roles: [],
-        userInfo: null
+        userInfo: null,
+        msgCount:0
     },
 
     mutations: {
@@ -56,7 +57,9 @@ const user = {
             // 获取所有字典，写入本地
             // 通用配置字典
             var dictList = new Promise((resolve, reject) => {
-                getDic().then((res: Ajax.AjaxResponse) => {
+                getDic({
+                    typeList:[]
+                }).then((res: Ajax.AjaxResponse) => {
                     localStorage.removeItem('web_oa_dicList');
                     localStorage.setItem(
                         'web_oa_dicList',
@@ -150,11 +153,16 @@ const user = {
         },
 
         // 前端 登出
-        FedLogOut({ commit }) {
+        FedLogOut({ commit,state }) {
             return new Promise((resolve) => {
-                commit('SET_TOKEN', '');
-                removeToken();
-                resolve();
+                setInterval(() => {
+                    getDic({
+                        typeList:[] 
+                    }).then(res=>{
+                        state.msgCount = res
+                        resolve(res)
+                    })
+                }, 10000);
             });
         }
     }

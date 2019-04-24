@@ -29,12 +29,21 @@ export function menu() {
     });
 }
 
-export function getDic(){
+export function getDic(params){
     return request({
         url: "/commonInfo/queryDict",
-        method: "post"
+        method: 'post',
+        data:params
     },false);
 }
+export function expApply(params){
+    return request({
+        url: '/webExpenseFlow/expenseApply',
+        method: 'post',
+        data:params
+    })
+}
+
 
 export function getMember(params){
     return request({
