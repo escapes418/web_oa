@@ -6,7 +6,7 @@
       <sjb-cascader :titles="['titleA','titleB']" class="cascader" :listData="cascaderData"></sjb-cascader>
       <sjb-validate-input class="validate-input"/>
     </div> -->
-    <RedStar label="备注：">
+    <!-- <RedStar label="备注：">
         <span class="right-con">
             <sjbNumInput 
                 v-model.trim="filter.customerSituation" 
@@ -19,7 +19,7 @@
     </RedStar>
 
     
-    <el-button @click="backStep">返回</el-button>
+    <el-button @click="backStep">返回</el-button> -->
   </div>
 </template>
 
