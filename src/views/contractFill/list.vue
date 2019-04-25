@@ -333,8 +333,8 @@ export default {
                 contractLeaderId:"",//合同负责人id,
                 contractType:"",//  合同类型,
                 faint:"", //模糊搜索字段,
-                dateType:""
-
+                dateType:"",
+                sqlFlag:"1"
             },
             dateTypeList:[],
             conStatuList:[],
