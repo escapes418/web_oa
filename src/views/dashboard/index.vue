@@ -6,7 +6,7 @@
       <sjb-cascader :titles="['titleA','titleB']" class="cascader" :listData="cascaderData"></sjb-cascader>
       <sjb-validate-input class="validate-input"/>
     </div> -->
-    <RedStar label="备注：">
+    <!-- <RedStar label="备注：">
         <span class="right-con">
             <sjbNumInput 
                 v-model.trim="filter.customerSituation" 
@@ -17,17 +17,15 @@
                 ></sjbNumInput>
         </span>
     </RedStar>
-
-    
-    <el-button @click="backStep">返回</el-button>
+    <el-button @click="backStep">返回</el-button> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
-// import ImplyNode from '@/components/ImplyNode'
-import RedStar from '@/components/RedStar/RedStar.vue'
+// import ImplyNode from '@/components/ImplyNode';
+import RedStar from '@/components/RedStar/RedStar.vue';
 // import sjbInput from "./sjb-input.vue";
 // import sjbCascader from "./sjb-Cascader.vue";
 // import sjbValidateInput from "./sjb-validate-input.vue";
