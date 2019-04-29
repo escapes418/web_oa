@@ -26,7 +26,7 @@
                 <div class="mt-10">暂无数据</div>
             </div>
 
-            <i class="el-icon-message" slot="reference">
+            <i class="el-icon-bell" slot="reference">
                 <span class="badge">{{count}}</span>
             </i>
         </el-popover>
@@ -76,7 +76,7 @@ export default {
         return {
             headUrl: '',
             userIn: "",
-            count:0,
+            count:"0",
             active:"1",
             total:-1,
             pageTotal: 1,
@@ -156,8 +156,9 @@ export default {
         clickLoadMore(){
             this.listQuery.pageNo++;
             this.$store.dispatch('fetchMessage',this.listQuery).then((res)=>{
-                this.count = 20;
+                this.count = res.data.redCount;
                 this.listData.push(res.data.list);
+                this.total = res.data.total || 0;
                 this.pageTotal = Math.ceil(res.data.total / this.pageSize);
             })
         },
@@ -323,7 +324,6 @@ export default {
 .messageContain{
     font-size: 12px;
     margin-top: 5px;
-
 }
 .badge{
     display: inline-block;
@@ -337,7 +337,7 @@ export default {
     padding: 0 4px;
     background-clip: padding-box;
     vertical-align: middle;
-    margin:0 0 20px -10px;
+    margin:0 0 15px -10px;
 }
 </style>
 

@@ -235,24 +235,20 @@ export default {
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为下一级负责人！",
-                //     type: 'warning'
-                // })
                 this.$refs.chargeTree.setChecked(this.chargeData[0],false);
                 this.chargeData = [];
                 this.chargeData.push(data)
             }else if(this.chargeData.length ===0&&select){
-                if(data.children&&data.children.length>0){
+                if(data.type =='2'&&data.status == '1'){
+                    this.chargeData = [];
+                    this.chargeData.push(data);
+                }else{
                     this.$message({
                         message: "请选择子节点作为下一级负责人！",
                         type: 'warning'
                     })
                     this.$refs.chargeTree.setChecked(data,false);
                     return
-                }else{
-                    this.chargeData = [];
-                    this.chargeData.push(data)
                 }
             }else if(index>=0&&this.chargeData.length===1&&!select){
                 this.chargeData = []
@@ -261,15 +257,15 @@ export default {
         clickPart(data,select,children){
             let index = this.partList.indexOf(data)
             if(index<0&&select){
-                if(data.children&&data.children.length>0){
+                if(data.type =='2'&&data.status == '1'){
+                    this.partList.push(data);
+                }else{
                     this.$message({
                         message: "请选择子节点作为参与人！",
                         type: 'warning'
                     })
                     this.$refs.partTree.setChecked(data,false);
                     return
-                }else{
-                    this.partList.push(data)
                 }
             }else if(index>=0&&!select){
                 this.$refs.partTree.setChecked(data,false);
