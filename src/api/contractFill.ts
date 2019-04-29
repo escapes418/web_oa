@@ -130,3 +130,11 @@ export function moveContracts(params){
       data:params
     })
 }
+
+export function changeReceipt(params){
+    return request({
+      url:'/contractHis/changeReceipt',
+      method:'post',
+      data:params
+    })
+}

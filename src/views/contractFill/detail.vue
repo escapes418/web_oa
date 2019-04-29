@@ -301,6 +301,8 @@
         </el-dialog>
         <div class="segment statistics">
             <div class="sjb-foot-button">
+                <el-button size="medium" type="warning" v-if="detail.button == '1'" @click="confirmHandle(1)">已经续签</el-button>
+                <el-button size="medium" type="warning" v-if="detail.button == '1'" @click="confirmHandle(2)">不在续签</el-button>
                 <el-button size="medium" @click="backBtn">返回</el-button>
             </div>
         </div>
@@ -318,6 +320,7 @@ import {
     getDetail,
     findAllProject,
     changeRecord,
+    changeReceipt,
     downFile
 } from "@/api/contractFill";
 import { parseTime } from "@/utils";
@@ -671,6 +674,20 @@ export default {
             this.listQuery.projectId = this.$route.query.key
             this.$$queryStub = fromJS(this.listQuery);
         },
+        confirmHandle(receiptStatus){
+            changeReceipt({
+                contractId:this.$route.query.key,
+                receiptStatus:receiptStatus
+            }).then(res=>{
+                if (res.status == 0) {
+                    this.$message({
+                        message: res.message,
+                        type: 'success'
+                    })
+                    this.$router.push({path:'/inforManage/contractFillList' });
+                }
+            })
+        }
     },
     mounted() {
         Viewer.setDefaults({
