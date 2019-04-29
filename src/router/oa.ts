@@ -2,29 +2,18 @@ import Layout from '@/views/layout/Layout.vue';
 
 export default [
     {
-        path: '/goods',
+        path: '/oa',
         show: false,
-        id: 'goods',
-        name: 'Goods',
-        redirect: '/task/todo',
+        id: 'oa',
+        name: 'Oa',
+        redirect: '/oa/coopList',
         // component:() => import('@/views/task/index'),
         component: Layout,
         meta: {
-            title: '公共物品管理',
+            title: 'OA功能',
             icon: 'iconfont icon-OAxitong'
         },
         children: [
-            {
-                path: 'taskList',
-                show: false,
-                id: 'oa-taskList',
-                name: 'OaTaskList',
-                component: () => import('@/views/oa/taskList.vue'),
-                meta: {
-                    title: '任务列表',
-                    icon: 'iconfont icon-renwuzhongxin'
-                }
-            },
             {
                 path: 'coopList',
                 id: 'oa-coopList',
