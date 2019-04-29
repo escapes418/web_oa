@@ -8,3 +8,10 @@ export function modifyPwd(parmas) {
   })
 }
 
+export function fetchList(parmas) {
+  return request({
+    url:'/commonInfo/findMessagePage',
+    method:'post',
+    data:parmas
+  })
+}

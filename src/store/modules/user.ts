@@ -1,6 +1,6 @@
 import { login, logout, getMenu, getDic, getMember } from '@/api/login';
 import { getRegion } from '@/api/getRegion';
-import { fetchList } from '@/api/log';
+import { fetchList } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import common from '@/utils/common';
 import { resolve } from 'url';

@@ -13,12 +13,16 @@
                 <li class="tabItem" :class="active=='0'? 'is-active':''" @click="handleClick(0)">已读</li>
             </ul>
             <div class="contentContain">
-                <cell-box  v-for="(item,index) in listData" :key="index" @click.native="getDetail(item)"></cell-box>
+                <cell-box  v-for="(item,index) in listData" :key="index" @click.native="getDetail(item)">
+                    <div class="messageContain">
+                        {{item.sendMessage}}
+                    </div>
+                </cell-box>
             </div>
             <div class="add-btn mb-15" v-if="loadmore">
                 <span class="pointer" @click="clickLoadMore()">点击加载更多</span>
             </div>
-            <div class="prompt" v-if="count===0">
+            <div class="prompt" v-if="total===0">
                 <div class="mt-10">暂无数据</div>
             </div>
 
@@ -60,7 +64,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import CellBox from '@/components/CellBox'
 import mix from '@/mixins/common.mix'
-// import { fetchList,exportFile,exportImFile } from '@/api/log';
 
 export default {
     components: {
@@ -75,6 +78,7 @@ export default {
             userIn: "",
             count:0,
             active:"1",
+            total:-1,
             pageTotal: 1,
             listData:[],
             listQuery:{
@@ -90,7 +94,7 @@ export default {
             'avatar',
         ]),
         loadmore() {
-            if (this.page >= this.pageTotal) {
+            if (this.listQuery.pageNo >= this.pageTotal) {
                 return false;
             } else {
                 return true;
@@ -107,6 +111,7 @@ export default {
             this.loading = false;
             console.log('获取字典数据失败!');
         })
+        this.getList()
     },
     methods: {
         toggleSideBar() {
@@ -134,39 +139,46 @@ export default {
         handleClick(type){
             this.active = type;
             this.listQuery.readStatus = type;
+            this.listQuery.pageNo = 1;
             this.getList()
         },
         getList(){
             this.$store.dispatch('fetchMessage',this.listQuery).then((res)=>{
-                this.count = 20;
+                this.count = res.data.redCount;
                 this.listData = res.data.list;
-
+                this.total = res.data.total || 0;
+                this.pageTotal = Math.ceil(res.data.total / this.listQuery.pageSize);
             })
         },
         showPop(){
             this.getList()
         },
         clickLoadMore(){
-
+            this.listQuery.pageNo++;
+            this.$store.dispatch('fetchMessage',this.listQuery).then((res)=>{
+                this.count = 20;
+                this.listData.push(res.data.list);
+                this.pageTotal = Math.ceil(res.data.total / this.pageSize);
+            })
         },
         gotoDetail(item){
             return new Promise((resovle)=>{
                 if (item.billType == 3) {
                     this.$router.push({
                         path: '/me/reimDetail',
-                        query: { key: row.businessId, taskId: row.taskId, pathType: item.pathType }
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
                 if (item.billType == 4) {
                     this.$router.push({
                         path: '/me/recepDetail',
-                        query: { key: row.businessId, taskId: row.taskId, pathType: item.pathType }
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
                 if (item.billType == 5) {
                     this.$router.push({
                         path: '/me/travelingDetail',
-                        query: { key: row.businessId, taskId: row.taskId, pathType: item.pathType }
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
                 if (item.billType == 6) {
@@ -178,13 +190,19 @@ export default {
                 if (item.billType == 7) {
                     this.$router.push({
                         path: '/me/resHandleDetail',
-                        query: { key: row.businessId, taskId: row.taskId, pathType: item.pathType }
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
                 if (item.billType == 9) {
                     this.$router.push({
                         path: '/me/contractCheckDetail',
-                        query: { key: row.businessId, taskId: row.taskId, pathType: item.pathType }
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
+                    })
+                }
+                if (item.billType == 10) {
+                    this.$router.push({
+                        path:'/inforManage/contractFillDetail',
+                        query: { key: item.id }
                     })
                 }
                 resovle()
@@ -192,7 +210,9 @@ export default {
         },
         getDetail(item){
             this.gotoDetail(item).then(()=>{
-                this.getList()
+                setTimeout(_=>{
+                    this.getList()
+                },1000)
             })
         }
     }
@@ -299,6 +319,11 @@ export default {
     line-height: 49px;
     font-size: 24px;
     cursor: pointer;
+}
+.messageContain{
+    font-size: 12px;
+    margin-top: 5px;
+
 }
 .badge{
     display: inline-block;
