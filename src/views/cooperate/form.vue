@@ -235,10 +235,6 @@ export default {
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为下一级负责人！",
-                //     type: 'warning'
-                // })
                 this.$refs.chargeTree.setChecked(this.chargeData[0],false);
                 this.chargeData = [];
                 this.chargeData.push(data)

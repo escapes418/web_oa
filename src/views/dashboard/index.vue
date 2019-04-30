@@ -17,8 +17,6 @@
                 ></sjbNumInput>
         </span>
     </RedStar>
-
-    
     <el-button @click="backStep">返回</el-button> -->
   </div>
 </template>
@@ -26,8 +24,8 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
-// import ImplyNode from '@/components/ImplyNode'
-import RedStar from '@/components/RedStar/RedStar.vue'
+// import ImplyNode from '@/components/ImplyNode';
+import RedStar from '@/components/RedStar/RedStar.vue';
 // import sjbInput from "./sjb-input.vue";
 // import sjbCascader from "./sjb-Cascader.vue";
 // import sjbValidateInput from "./sjb-validate-input.vue";
