@@ -63,7 +63,7 @@
                                 <span class="red">*</span>：
                             </span>
                             <span class="right-con">
-                                <sjbtextarea placeholder="请输入" :rows="3" style="width:250px;height:100%;overflow:auto;margin:0px" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
+                                <sjbtextarea placeholder="请输入" :rows="3" textStyle="width:250px;" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
                             </span>
                         </div>
                     </el-col>

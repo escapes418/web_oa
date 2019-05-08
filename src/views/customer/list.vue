@@ -309,7 +309,7 @@ export default {
     }
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" >
+<style rel="stylesheet/scss" lang="scss" scoped>
 .toolbar-row {
     margin: 5px 0 0 0;
 }
