@@ -59,11 +59,11 @@ export function travelFormVali(self) {
                 toast('请选择科目');
                 key = false;
                 
-            } else if (typeof item.dayNum != 'number') {
+            } else if (typeof item.dayNum != 'number' || item.dayNum<0) {
                 toast('请正确填写出差天数！');
                 key = false;
                
-            } else if (typeof item.personNum != 'number') {
+            } else if (typeof item.personNum != 'number' || item.personNum<0) {
                 toast('请正确填写出差人数！');
                 key = false;
                 
