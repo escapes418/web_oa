@@ -86,6 +86,7 @@ export default {
                 pageSize:10,
                 readStatus:'1'
             },
+            billType:""
         }
     },
     computed: {
@@ -111,9 +112,16 @@ export default {
             this.loading = false;
             console.log('获取字典数据失败!');
         })
-        this.getList()
+        this.loopGetList()
     },
     methods: {
+        loopGetList(){
+            setInterval(_=>{
+                this.$store.dispatch('fetchCount').then((res)=>{
+                    this.count = res.data.redCount;
+                })
+            },30000)
+        },
         toggleSideBar() {
             this.$store.dispatch('ToggleSideBar')
         },
@@ -157,9 +165,10 @@ export default {
             this.listQuery.pageNo++;
             this.$store.dispatch('fetchMessage',this.listQuery).then((res)=>{
                 this.count = res.data.redCount;
-                this.listData.push(res.data.list);
+                this.listData.push(...res.data.list);
                 this.total = res.data.total || 0;
-                this.pageTotal = Math.ceil(res.data.total / this.pageSize);
+                this.pageTotal = Math.ceil(res.data.total / this.listQuery.pageSize);
+                console.log(this.pageTotal)
             })
         },
         gotoDetail(item){
@@ -213,6 +222,7 @@ export default {
             this.gotoDetail(item).then(()=>{
                 setTimeout(_=>{
                     this.getList()
+                    window.location.reload()
                 },1000)
             })
         }

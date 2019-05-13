@@ -244,7 +244,7 @@ export default {
                     this.chargeData.push(data);
                 }else{
                     this.$message({
-                        message: "请选择子节点作为下一级负责人！",
+                        message: "该子节点不能作为下一级负责人！",
                         type: 'warning'
                     })
                     this.$refs.chargeTree.setChecked(data,false);
@@ -261,7 +261,7 @@ export default {
                     this.partList.push(data);
                 }else{
                     this.$message({
-                        message: "请选择子节点作为参与人！",
+                        message: "该子节点不能作为参与人！",
                         type: 'warning'
                     })
                     this.$refs.partTree.setChecked(data,false);

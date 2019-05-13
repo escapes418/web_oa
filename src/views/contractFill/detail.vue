@@ -302,7 +302,7 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <el-button size="medium" type="warning" v-if="detail.button == '1'" @click="confirmHandle(1)">已经续签</el-button>
-                <el-button size="medium" type="warning" v-if="detail.button == '1'" @click="confirmHandle(2)">不在续签</el-button>
+                <el-button size="medium" type="warning" v-if="detail.button == '1'" @click="confirmHandle(2)">不再续签</el-button>
                 <el-button size="medium" @click="backBtn">返回</el-button>
             </div>
         </div>

@@ -140,6 +140,11 @@
                     <span>{{scope.row.contractHisStatusName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column width="80px" align="center" label="回执状态">
+                <template slot-scope="scope">
+                    <span>{{scope.row.receiptStatusName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column width="140px" align="center" label="合同归档时间" prop="createTime" sortable>
                 <template slot-scope="scope">
                     <span>{{scope.row.createTime | stamp2TextDateFull}}</span>

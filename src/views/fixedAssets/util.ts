@@ -46,7 +46,7 @@ export default {
             toast('请填写金额！');
             return (flag = false);
         }
-        if(_this.postData.money<0|| !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(_this.postData.money)){
+        if(_this.postData.money<=0|| !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(_this.postData.money)){
             toast('请正确填写金额！只能是最多保留2位小数的正数');
             return (flag = false);
         }

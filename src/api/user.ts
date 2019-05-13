@@ -15,3 +15,11 @@ export function fetchList(parmas) {
     data:parmas
   })
 }
+
+export function getRedCount(parmas) {
+  return request({
+    url:'/commonInfo/findRedCount',
+    method:'post',
+    data:parmas
+  })
+}
