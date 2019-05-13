@@ -46,7 +46,7 @@
                         </div>
                         <div class="toolbar-item">
                             <span class="item-label">日期：</span>
-                            <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
+                            <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围">
                             </el-date-picker>
                         </div>
                         <!-- <div class="toolbar-item">
@@ -320,11 +320,11 @@ export default {
     },
     data() {
         return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                }
-            },
+            // pickerOptions: {
+            //     disabledDate(time) {
+            //         return time.getTime() > Date.now();
+            //     }
+            // },
             toolexpand:false,
             list: [],
             total: 0,

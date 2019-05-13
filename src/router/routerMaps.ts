@@ -21,6 +21,17 @@ export default [
         hidden: true
     },
     {
+        path: '/redirect',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '/redirect/:path*',
+                component: () => import('@/views/redirect/index.vue')
+            }
+        ]
+    },
+    {
         path: '/',
         show: false,
         component: Layout,

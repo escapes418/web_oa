@@ -67,11 +67,11 @@ export function reimFormVali(self) {
                 toast('请正确填写报销天数！');
                 flag = false;
                 return;
-            } else if (typeof item.personNum != 'number') {
+            } else if (typeof item.personNum != 'number' || item.personNum<0) {
                 toast('请正确填写报销人数！');
                 flag = false;
                 return;
-            } else if (typeof item.billNum != 'number') {
+            } else if (typeof item.billNum != 'number' || item.billNum<0) {
                 toast('请正确填写票据张数！');
                 flag = false;
                 return;

@@ -215,6 +215,11 @@ export default {
                         query: { key: item.id }
                     })
                 }
+
+                const { fullPath } = this.$route;
+                this.$router.replace({
+                    path: '/redirect' + fullPath
+                })
                 resovle()
             })
         },
@@ -222,7 +227,6 @@ export default {
             this.gotoDetail(item).then(()=>{
                 setTimeout(_=>{
                     this.getList()
-                    window.location.reload()
                 },1000)
             })
         }
