@@ -63,7 +63,7 @@ export function reimFormVali(self) {
                 toast('请选择科目');
                 flag = false;
                 return;
-            } else if (typeof item.dayNum != 'number') {
+            } else if (typeof item.dayNum != 'number' || item.dayNum<0) {
                 toast('请正确填写报销天数！');
                 flag = false;
                 return;
@@ -77,7 +77,7 @@ export function reimFormVali(self) {
                 return;
             } else if (
                 typeof item.expenseAmt != 'number' ||
-                !(item.expenseAmt > 0)
+                item.expenseAmt < 0
             ) {
                 toast('请正确填写报销金额！');
                 flag = false;

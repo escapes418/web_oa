@@ -31,7 +31,7 @@ export default {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    max-height: 60px;
+    // max-height: 60px;
 }
 .weui-cell::before{
     content: " ";

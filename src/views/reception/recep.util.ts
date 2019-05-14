@@ -17,7 +17,7 @@ export function recepFormVali(self) {
     } else if (!self.filter.projectId) {
         toast('请选择项目名称！');
         flag = false;
-    } else if (typeof self.filter.recpNum != 'number') {
+    } else if (typeof self.filter.recpNum != 'number' || self.filter.recpNum<0) {
         toast('请正确填写接待人数！');
         flag = false;
     } else if (self.filter.employees.length == 0) {
@@ -63,11 +63,11 @@ export function recepFormVali(self) {
                 toast('请选择科目');
                 flag = false;
                 return;
-            } else if (typeof item.dayNum != 'number') {
+            } else if (typeof item.dayNum != 'number' || item.dayNum<0) {
                 toast('请正确填写报销天数！');
                 flag = false;
                 return;
-            } else if (typeof item.personNum != 'number') {
+            } else if (typeof item.personNum != 'number' || item.personNum<0) {
                 toast('请正确填写报销人数！');
                 flag = false;
                 return;

@@ -690,6 +690,7 @@ export default {
                         message: res.message,
                         type: "success"
                     });
+                    this.dialogCanVisible = false
                     this.$router.go(-1);
                 }
             });
