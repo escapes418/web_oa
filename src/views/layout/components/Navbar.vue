@@ -15,7 +15,7 @@
             <div class="contentContain">
                 <cell-box  v-for="(item,index) in listData" :key="index" @click.native="getDetail(item)">
                     <div class="messageContain">
-                        {{item.sendMessage}}
+                        {{item.sendMessage}} 
                     </div>
                 </cell-box>
             </div>
@@ -168,7 +168,6 @@ export default {
                 this.listData.push(...res.data.list);
                 this.total = res.data.total || 0;
                 this.pageTotal = Math.ceil(res.data.total / this.listQuery.pageSize);
-                console.log(this.pageTotal)
             })
         },
         gotoDetail(item){
