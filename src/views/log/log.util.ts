@@ -10,7 +10,7 @@ function toast(str) {
 export function logFormVali(self) {
     var flag = true;
     if (self.postData.custIntentionCount<0) {
-        toast('请填写当日意向客户数！');
+        toast('请正确填写当日意向客户数！');
         flag = false;
     }
     else if (self.postData.custSignCount<0) {

@@ -88,10 +88,12 @@
                             <template slot-scope="scope">
                                 <el-select 
                                     filterable
+                                    remote
                                     style="width: 300px" 
                                     class="filter-item" 
                                     v-model="scope.row.custId" 
                                     placeholder="请输入客户名称"
+                                    :remote-method="searchCust"
                                     @change="selectCust">
                                     <el-option v-for="item in custList" :key="item.custId" :label="item.custName" :value="item.custId">
                                     </el-option>
@@ -266,9 +268,9 @@ export default class maForm extends Vue {
                 this.postData.copyToList = JSON.parse(localStorage.getItem("web_ma_copyToList"));
             }
         })
-        getCustList({}).then((res:Ajax.AjaxResponse)=>{
-            this.custList = res.data
-        });
+        // getCustList({}).then((res:Ajax.AjaxResponse)=>{
+        //     this.custList = res.data
+        // });
     }
 
 
@@ -305,6 +307,18 @@ export default class maForm extends Vue {
     };
     handleSelectionChange(val) {
         this.multipleSelection = val;
+    };
+    searchCust(val){
+        this.custList = [];
+        if(val !== ''){
+            getCustList({
+                custName:val,
+            }).then((res:Ajax.AjaxResponse)=>{
+                if(res.status == 0){
+                    this.custList = res.data
+                }
+            })
+        }
     };
     selectCust():void{
         this.itemList.forEach(item=>{
