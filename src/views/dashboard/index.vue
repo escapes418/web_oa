@@ -33,13 +33,13 @@
 
     <my-btn type='primary' size='mini' @upRocket="getRocket"></my-btn> -->
 
-    <funcCom time="300" :before="beforeFn">
+    <!-- <funcCom time="300" :before="beforeFn">
         <input type="text" v-model="inpModel" @input="inputChange"/>
-    </funcCom>
+    </funcCom> -->
     <!-- <funcCom time="300" :before="beforeFn">
         <el-input type="text" v-model="inpModel" @input="inputChange"/>
     </funcCom> -->
-    <creatDiv>
+    <!-- <creatDiv>
         <div class="slide-action" slot="rightAction">
             <div class="action edit" @click="show">编辑</div>
             <div class="action delete" @click="show">删除</div>
@@ -48,7 +48,7 @@
         <div class="slide-action" slot="leftAction">
             <div class="action info" @click="show">查看</div>
         </div>
-    </creatDiv>
+    </creatDiv> -->
   </div>
 </template>
 

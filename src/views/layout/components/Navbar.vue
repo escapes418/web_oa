@@ -112,6 +112,9 @@ export default {
             this.loading = false;
             console.log('获取字典数据失败!');
         })
+        this.$store.dispatch('fetchCount').then((res)=>{
+            this.count = res.data.redCount;
+        })
         this.loopGetList()
     },
     methods: {
@@ -214,11 +217,13 @@ export default {
                         query: { key: item.id }
                     })
                 }
-
-                const { fullPath } = this.$route;
-                this.$router.replace({
-                    path: '/redirect' + fullPath
-                })
+                console.log(this.$route,111000)
+                if(this.$route.name){
+                    const { fullPath } = this.$route;
+                    this.$router.replace({
+                        path: '/redirect' + fullPath
+                    })
+                }
                 resovle()
             })
         },

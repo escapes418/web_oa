@@ -35,7 +35,7 @@ export function reimFormVali(self) {
     function itemVali() {
         self.filter.expenseDetail.forEach((item) => {
             if (!item.startDate) {
-                toast('请选择发生日期！');
+                toast('请选择正确的发生日期！');
                 flag = false;
                 return;
             } else if (
@@ -46,7 +46,7 @@ export function reimFormVali(self) {
                 flag = false;
                 return;
             } else if (!item.endDate) {
-                toast('请选择结束日期！');
+                toast('请选择正确的结束日期！');
                 flag = false;
                 return;
             } else if (

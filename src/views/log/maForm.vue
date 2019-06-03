@@ -276,6 +276,7 @@ export default class maForm extends Vue {
 
     //method
     add() {
+        this.custList = []
         this.itemList.push({ index: new Date().getTime(),custId:'',custName:'',custMaintenanceContent:'',visitType:'',visitTypeName:'',custMaintenanceDate:0});
     }
     del(){
