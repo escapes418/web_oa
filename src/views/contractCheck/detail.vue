@@ -573,21 +573,14 @@ export default {
                 });
                 return;
             }
-            // if (this.comment.length > 300) {
+            
+            // if(this.detail.isUploadFile == 1 && this.scanAttachment.length<this.scanMustCount){
             //     this.$message({
-            //         message: "输入字符超出限额，请重新输入！",
+            //         message: '请至少上传'+this.scanMustCount+'张合同扫描件！',
             //         type: "warning"
             //     });
             //     return;
             // }
-            
-            if(this.detail.isUploadFile == 1 && this.scanAttachment.length<this.scanMustCount){
-                this.$message({
-                    message: '请至少上传'+this.scanMustCount+'张合同扫描件！',
-                    type: "warning"
-                });
-                return;
-            }
             contractFlow({
                 contractFlowId: this.$route.query.key,
                 comment: this.comment,

@@ -18,6 +18,37 @@
         </span>
     </RedStar>
     <el-button @click="backStep">返回</el-button> -->
+
+    <!-- <satelBtn>
+        <div class="button-child" @click="showNew">
+            <span style="font-size:12px;color:#ba3080;">新建</span>
+        </div>
+        <div class="button-child" @click="backStep">
+            <span style="font-size:12px;color:#ba3080;">新建1</span>
+        </div>
+        <div class="button-child" @click="backStep3">
+            <span style="font-size:12px;color:#ba3080;">新建2</span>
+        </div>
+    </satelBtn>
+
+    <my-btn type='primary' size='mini' @upRocket="getRocket"></my-btn> -->
+
+    <!-- <funcCom time="300" :before="beforeFn">
+        <input type="text" v-model="inpModel" @input="inputChange"/>
+    </funcCom> -->
+    <!-- <funcCom time="300" :before="beforeFn">
+        <el-input type="text" v-model="inpModel" @input="inputChange"/>
+    </funcCom> -->
+    <!-- <creatDiv>
+        <div class="slide-action" slot="rightAction">
+            <div class="action edit" @click="show">编辑</div>
+            <div class="action delete" @click="show">删除</div>
+        </div>
+        <div class="slide-demo">左右拖拽</div>
+        <div class="slide-action" slot="leftAction">
+            <div class="action info" @click="show">查看</div>
+        </div>
+    </creatDiv> -->
   </div>
 </template>
 
@@ -30,6 +61,10 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 // import sjbCascader from "./sjb-Cascader.vue";
 // import sjbValidateInput from "./sjb-validate-input.vue";
 import sjbNumInput from "./sjb-numInput.vue";
+import satelBtn from "./satelliteBtn.vue";
+import myBtn from "./myBtn.vue";
+import funcCom from './funcCom'
+import creatDiv from './creatDiv'
 export default {
     name: 'dashboard',
     components: {
@@ -38,7 +73,11 @@ export default {
         // sjbInput,
         // sjbCascader,
         // sjbValidateInput,
-        sjbNumInput
+        sjbNumInput,
+        satelBtn,
+        myBtn,
+        funcCom,
+        creatDiv
     },
     mixins: [mixin],
     computed:{
@@ -47,53 +86,54 @@ export default {
         })
     },
     data() {
-    return {
-        filter:{
-            customerSituation:""
-        },
-        a:{width:"280px"},
-        cascaderData: [
-            {
-                id: 101,
-                name: "branch01",
-                parentid: 0
+        return {
+            inpModel:'1',
+            filter:{
+                customerSituation:""
             },
-            {
-                id: 102,
-                name: "branch02",
-                parentid: 0
-            },
-            {
-                id: 103,
-                name: "branch03",
-                parentid: 0
-            },
-            {
-                id: 201,
-                name: "termminalA",
-                parentid: 101
-            },
-            {
-                id: 202,
-                name: "termminalB",
-                parentid: 101
-            },
-            {
-                id: 203,
-                name: "termminalC",
-                parentid: 102
-            },
-            {
-                id: 204,
-                name: "termminalD",
-                parentid: 102
-            },
-            {
-                id: 205,
-                name: "termminalE",
-                parentid: 103
-            }]
-        };
+            a:{width:"280px"},
+            cascaderData: [
+                {
+                    id: 101,
+                    name: "branch01",
+                    parentid: 0
+                },
+                {
+                    id: 102,
+                    name: "branch02",
+                    parentid: 0
+                },
+                {
+                    id: 103,
+                    name: "branch03",
+                    parentid: 0
+                },
+                {
+                    id: 201,
+                    name: "termminalA",
+                    parentid: 101
+                },
+                {
+                    id: 202,
+                    name: "termminalB",
+                    parentid: 101
+                },
+                {
+                    id: 203,
+                    name: "termminalC",
+                    parentid: 102
+                },
+                {
+                    id: 204,
+                    name: "termminalD",
+                    parentid: 102
+                },
+                {
+                    id: 205,
+                    name: "termminalE",
+                    parentid: 103
+                }]
+            };
     },
     created() {
         // let data = [{lat: 30.696403,
@@ -124,8 +164,24 @@ export default {
         //     this.$store.dispatch('delItemListChecked');
         // },
         backStep(){
-            console.log(this.filter)
+            console.log(2222)
         },
+        showNew(){
+            console.log(1111)
+        },
+        backStep3(){
+            console.log(3333)
+        },
+        getRocket(){
+            console.log('222222')
+        },
+        beforeFn(e){
+            console.log(e, '不防抖')
+        },
+        inputChange(e){
+            // console.log(e.target.value, '防抖')
+            console.log(e, '防抖')
+        }
     }
 };
 </script>
@@ -158,5 +214,10 @@ export default {
 .validate-input {
   position: relative;
   top: 200px;
+}
+.setBtn{
+    font-size: 12px;
+    color: #ba3080;
+    
 }
 </style>

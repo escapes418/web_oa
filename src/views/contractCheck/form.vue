@@ -543,6 +543,7 @@ export default {
             this.contractMaxCount = 0;
             this.dataMustCount = 0;
             this.dataMaxCount = 0;
+            this.postData.contractNameId = "";
         },
         getList() {
             this.listLoading = true;
@@ -639,6 +640,7 @@ export default {
             this.postData.contractAttachmentList = [...this.dataAttachment,...this.contractAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
+            console.log(this.initData)
             if (contractFormVali(this)) {
                 conApply({...this.postData,...temObj}).then(res => {
                     if (res.status == 0) {
