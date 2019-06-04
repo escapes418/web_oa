@@ -121,6 +121,18 @@ export default [
                 hidden: false
             },
             {
+                path: 'presentDoc',
+                id: 'report-presentDoc',
+                show: false,
+                name: 'PresentDoc',
+                component: () => import('@/views/report/presentDoc.vue'),
+                meta: {
+                    title: '单据提交报表',
+                    icon: 'iconfont icon-renyuanpaiban'
+                },
+                hidden: false
+            },
+            {
                 path: 'overdue',
                 id: 'report-overdue',
                 show: false,

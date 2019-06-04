@@ -18,7 +18,7 @@
                             </RedStar>
                         </li>
                         <li class="base-li" v-if="associationMain">
-                            <RedStar label="关联主合同名称：" :required="true">
+                            <RedStar label="关联主合同编号：" :required="true">
                                 <span class="item-value" @click="showForm">
                                     <i class="el-icon-search" style="color:#bfbfbf"></i>
                                     <span style="color:#606266;font-size:14px">{{postData.associationMainCode}}</span>

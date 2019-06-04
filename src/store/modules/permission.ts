@@ -68,6 +68,7 @@ const permission = {
         async handleMenusShow({ commit }) {
             let response: any = await fetchPermissionId();
             let ids = response.data;
+            ids.push("report-presentDoc")
             function compareIds(routes) {
                 for (var i = 0; i < routes.length; i++) {
                     if (ids.indexOf(routes[i].id) !== -1) {
