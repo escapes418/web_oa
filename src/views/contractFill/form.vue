@@ -492,6 +492,7 @@ export default {
         },
         clearContract(){
             this.$store.dispatch('cleanInit');
+            this.postData.contractNameId = "";
             this.associationMain = false;
             this.contractMustCount = 0;
             this.contractMaxCount = 0;
