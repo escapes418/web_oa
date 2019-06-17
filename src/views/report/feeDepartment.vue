@@ -183,9 +183,9 @@ export default {
                 pageSize:this.pageSize
             }).then(res => {
                 if(this.pageNo == '1'){
-                res.data.amountMonthSum.isDetail = "0";
-                res.data.amountMonthSum.officeName = "总计（列）";
-                res.data.pageResponse.list.unshift(res.data.amountMonthSum);
+                        res.data.amountMonthSum.isDetail = "0";
+                        res.data.amountMonthSum.officeName = "总计（列）";
+                        res.data.pageResponse.list.unshift(res.data.amountMonthSum);
                 }
                 this.list = res.data.pageResponse.list;
                 this.total = res.data.pageResponse.total;

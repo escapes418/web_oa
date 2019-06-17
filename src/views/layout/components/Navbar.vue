@@ -217,7 +217,6 @@ export default {
                         query: { key: item.id }
                     })
                 }
-                console.log(this.$route,111000)
                 if(this.$route.name){
                     const { fullPath } = this.$route;
                     this.$router.replace({

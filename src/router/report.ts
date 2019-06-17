@@ -131,6 +131,29 @@ export default [
                     icon: 'iconfont icon-renyuanpaiban'
                 },
                 hidden: false
+            },{
+                path: 'approveDoc',
+                id: 'report-approveDoc',
+                show: false,
+                name: 'ApproveDoc',
+                component: () => import('@/views/report/approveDoc.vue'),
+                meta: {
+                    title: '单据审批报表',
+                    icon: 'iconfont icon-renyuanpaiban'
+                },
+                hidden: false
+            },
+            {
+                path: 'trendChart',
+                id: 'report-trendChart',
+                show: false,
+                name: 'TrendChart',
+                component: () => import('@/views/report/trendChart.vue'),
+                meta: {
+                    title: '单据审批趋势',
+                    icon: 'iconfont icon-renyuanpaiban'
+                },
+                hidden: false
             },
             {
                 path: 'overdue',
@@ -143,7 +166,8 @@ export default [
                     icon: 'iconfont icon-renyuanpaiban'
                 },
                 hidden: false
-            }
+            },
+           
         ]
     }
 ];

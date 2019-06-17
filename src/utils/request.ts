@@ -1,7 +1,8 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { Message, Loading } from 'element-ui';
 import store from '../store';
-import { getToken } from '@/utils/auth';
+import { getToken ,removeToken} from '@/utils/auth';
+
 
 // 创建axios实例
 const service: any = axios.create({
@@ -32,7 +33,19 @@ service.interceptors.response.use(
             var rtnObj = response.data;
             if (rtnObj.status == 0) {
                 return rtnObj;
-            } else {
+            }
+            if(rtnObj.status == 20){
+                Message({
+                    message: rtnObj.message,
+                    type: 'error',
+                    duration: 1 * 1000
+                });
+                removeToken()
+                setTimeout(_=>{
+                    window.location.reload()
+                },1000)
+            } 
+            else {
                 Message({
                     message: rtnObj.message,
                     type: 'error',

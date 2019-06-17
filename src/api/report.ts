@@ -181,17 +181,59 @@ export function fetchProDic(parmas) {
 }
 
 export function getSubjectsNew(parmas) {
-  return request({
-    url: '/commonInfo/querySubInfoNew',
-    method: 'post',
-    data:parmas
-  },false)
+    return request({
+        url: '/commonInfo/querySubInfoNew',
+        method: 'post',
+        data:parmas
+    },false)
 }
 
 export function downFuncUseFile(parmas) {
+    return request({
+        url: '/usage/exportUsageWeekOrDetail',
+        method: 'post',
+        data:parmas
+    },false)
+}
+
+
+export function getChartData(parmas) {
+    return request({
+        url: '/webExpenseFlow/approveTimeInfo',
+        method: 'post',
+        data:parmas
+    })
+}
+
+
+export function getApproval(parmas) {
+    return request({
+        url: '/webReport/approvalSituation',
+        method: 'post',
+        data:parmas
+    })
+}
+
+export function downApprove(parmas) {
   return request({
-    url: '/usage/exportUsageWeekOrDetail',
-    method: 'post',
-    data:parmas
-  },false)
+      url: '/webReport/approvalSituationExport',
+      method: 'post',
+      data:parmas
+  })
+}
+
+export function getSubmit(parmas) {
+    return request({
+        url: '/webReport/flowSubmitSituation',
+        method: 'post',
+        data:parmas
+    })
+}
+
+export function downSubmit(parmas) {
+  return request({
+      url: '/webReport/flowSubmitSituationExport',
+      method: 'post',
+      data:parmas
+  })
 }
