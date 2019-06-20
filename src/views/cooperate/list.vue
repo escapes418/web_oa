@@ -652,13 +652,23 @@ export default {
             tempObj.name = data.name;
             let index = this.chargeData.findIndex(item=>item.id == tempObj.id)
             if(index<0&&this.chargeData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为下一级负责人！",
-                //     type: 'warning'
-                // })
-                this.$refs.chargeTree.setChecked(this.chargeData[0],false);
-                this.chargeData = [];
-                this.chargeData.push(tempObj)
+                if(data.type =='2'&&data.status == '1'){
+                    this.$refs.chargeTree.setChecked(this.chargeData[0],false);
+                    this.chargeData = [];
+                    this.$refs.chargeTree.setChecked(data,true);
+                    this.chargeData.push(tempObj)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.chargeTree.setChecked(data,false);
+                    this.$refs.chargeTree.setChecked(this.chargeData[0],true);
+                    return
+                }
+                // this.$refs.chargeTree.setChecked(this.chargeData[0],false);
+                // this.chargeData = [];
+                // this.chargeData.push(tempObj)
             }else if(this.chargeData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.chargeData = [];

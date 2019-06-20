@@ -394,13 +394,21 @@ export default {
         handleProClick(data,select,childSelect) {
             let index = this.proData.indexOf(data)
             if(index<0&&this.proData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为项目负责人！",
-                //     type: 'warning'
-                // })
-                this.$refs.proTree.setChecked(this.proData[0],false);
-                this.proData = [];
-                this.proData.push(data)
+                if(data.type =='2'&&data.status == '1'){
+                    this.$refs.proTree.setChecked(this.proData[0],false);
+                    this.proData = [];
+                    this.$refs.proTree.setChecked(data,true);
+                    this.proData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.proTree.setChecked(data,false);
+                    this.$refs.proTree.setChecked(this.proData[0],true);
+                    return
+                }
+                
             }else if(this.proData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.proData = [];
@@ -420,13 +428,20 @@ export default {
         handleMarketClick(data,select,childSelect) {
             let index = this.marketData.indexOf(data)
             if(index<0&&this.marketData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为市场负责人！",
-                //     type: 'warning'
-                // })
-                this.$refs.marketTree.setChecked(this.marketData[0],false);
-                this.marketData = [];
-                this.marketData.push(data)
+                if(data.type =='2'&&data.status == '1'){
+                    this.$refs.marketTree.setChecked(this.marketData[0],false);
+                    this.marketData = [];
+                    this.$refs.marketTree.setChecked(data,true);
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    this.$refs.marketTree.setChecked(this.marketData[0],true);
+                    return
+                }
             }else if(this.marketData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.marketData = [];
@@ -446,13 +461,20 @@ export default {
         handleImpleClick(data,select,childSelect) {
             let index = this.impData.indexOf(data)
             if(index<0&&this.impData.length ===1&&select){
-                // this.$message({
-                //     message: "只能选择一个子节点作为实施负责人！",
-                //     type: 'warning'
-                // })
-                this.$refs.impleTree.setChecked(this.impData[0],false);
-                this.impData = [];
-                this.impData.push(data)
+                if(data.type =='2'&&data.status == '1'){
+                    this.$refs.impleTree.setChecked(this.impData[0],false);
+                    this.impData = [];
+                    this.$refs.impleTree.setChecked(data,true);
+                    this.impData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.impleTree.setChecked(data,false);
+                    this.$refs.impleTree.setChecked(this.impData[0],true);
+                    return
+                }
             }else if(this.impData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.impData = [];

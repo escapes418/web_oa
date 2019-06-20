@@ -235,9 +235,20 @@ export default {
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
             if(index<0&&this.chargeData.length ===1&&select){
-                this.$refs.chargeTree.setChecked(this.chargeData[0],false);
-                this.chargeData = [];
-                this.chargeData.push(data)
+                if(data.type =='2'&&data.status == '1'){
+                    this.$refs.chargeTree.setChecked(this.chargeData[0],false);
+                    this.chargeData = [];
+                    this.$refs.chargeTree.setChecked(data,true);
+                    this.chargeData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.chargeTree.setChecked(data,false);
+                    this.$refs.chargeTree.setChecked(this.chargeData[0],true);
+                    return
+                }
             }else if(this.chargeData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
                     this.chargeData = [];
