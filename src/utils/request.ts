@@ -31,7 +31,7 @@ service.interceptors.response.use(
     (response: AxiosResponse) => {
         if (response.status == 200) {
             var rtnObj = response.data;
-            if (rtnObj.status == 0) {
+            if (rtnObj.status == 0 || rtnObj.status == 2) {
                 return rtnObj;
             }
             if(rtnObj.status == 20){
