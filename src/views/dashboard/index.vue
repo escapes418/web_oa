@@ -1,14 +1,9 @@
 <template>
-  <div :class="$style['dashboard-container']">
-    <div :class="$style['dashboard-text']">{{userInfo.name}},欢迎使用司机宝管理助手</div>
-    
-    <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-        <div style="text-align: center;margin-bottom: 20px;">{{"单据提交饼图"}}</div>
-        <ve-pie :data="pieData"></ve-pie>
-        <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">{{"单据审批趋势折线图"}}</div>
-        <ve-line :data="chartData" :data-zoom="dataZoom"></ve-line>
-    </el-row> -->
-  </div>
+    <div :class="$style['dashboard-container']">
+        <div :class="$style['dashboard-text']">{{userInfo.name}},欢迎使用司机宝管理助手</div>
+        
+
+    </div>
 </template>
 
 <script>
@@ -20,7 +15,7 @@ export default {
     mixins: [mixin],
     computed:{
         ...mapState({
-            
+        
         })
     },
     data() {

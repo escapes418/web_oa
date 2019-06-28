@@ -171,7 +171,6 @@ export default {
         // this.listLoading = false;
     },
     activated() {
-        console.log(11111)
         this.getListData();
     },
     mounted() {

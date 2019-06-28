@@ -8,7 +8,10 @@ function toast(str) {
 }
 export function reimFormVali(self) {
     var flag = true;
-    if (!self.filter.applyType) {
+    if (!self.filter.costCenterId) {
+        toast('请选择成本中心！');
+        flag = false;
+    }else if (!self.filter.applyType) {
         toast('请选择报销类型！');
         flag = false;
     } else if (!self.filter.taxCity) {
