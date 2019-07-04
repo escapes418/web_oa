@@ -315,8 +315,6 @@ export default {
                 endApplyTime: "",
             },
             uploadTips: config.tips,
-
-            num1:""
         }
     },
     created() {
@@ -325,6 +323,8 @@ export default {
         // 清空store集合
         this.$store.dispatch('clearCollection');
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        this.costCenterName = this.userInfo.officeName;
+        this.filter.costCenterId =  this.userInfo.officeId
         // 编辑时
         if (this.$route.query.key) {
             getDetail({
@@ -447,7 +447,6 @@ export default {
     },
     methods: {
         depConfirm(data) {
-            // console.log(data)
             this.costCenterName = data.name;
             this.filter.costCenterId = data.id;
         },
