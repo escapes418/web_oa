@@ -17,7 +17,7 @@
                         <RedStar label="报销人员：">
                             <span class="right-con">{{userInfo.name}}</span>
                         </RedStar>
-                        <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
+                        <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :canshow="canshow" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
                         <RedStar label="报销类型：" :required="true">
                             <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:250px;" @change="clearLink">
                                 <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
@@ -266,7 +266,7 @@ export default {
             urlArr: [],
             itemList: [],
             fileList: [],
-            // dialogFormVisible: false,
+            canshow: true,
             dialogRelatVisible: false,
             costCenterName:"",
             labelName:"成本中心",
@@ -333,6 +333,7 @@ export default {
                 this.filter.applyType = res.data.detail.applyType;
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
+                this.canshow = Date.parse(this.filter.applyTime)< Date.parse("2019-07-08") ? false : true;
                 this.filter.remarks = res.data.detail.remarks;
                 this.filter.customerSituation = res.data.detail.customerSituation;
                 this.filter.costCenterId = res.data.detail.costCenterId;
