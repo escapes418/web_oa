@@ -291,9 +291,9 @@ export default {
         }
 
       // store中没值时，从接口获取存入store
-        if (this.subsTree.length == 0) {
+        // if (this.subsTree.length == 0) {
             this.$store.dispatch('getSubs');
-        }
+        // }
       
   },
   computed:{
