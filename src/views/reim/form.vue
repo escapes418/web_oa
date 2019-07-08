@@ -17,11 +17,9 @@
                         <RedStar label="报销人员：">
                             <span class="right-con">{{userInfo.name}}</span>
                         </RedStar>
-                        <RedStar label="所属部门：">
-                            <span class="right-con">{{ userInfo.officeName }}</span>
-                        </RedStar>
+                        <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :canshow="canshow" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
                         <RedStar label="报销类型：" :required="true">
-                            <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:280px;" @change="clearLink">
+                            <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:250px;" @change="clearLink">
                                 <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
                             </el-select>
@@ -61,13 +59,13 @@
                             <span class="right-con">{{ userInfo.postName }}</span>
                         </RedStar>
                         <RedStar label="发票所属公司：" :required="true">
-                            <el-select clearable class="filter-item " v-model="filter.taxCity" placeholder="请选择" style="width:280px;">
+                            <el-select clearable class="filter-item " v-model="filter.taxCity" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in taxList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
                             </el-select>
                         </RedStar>
                         <RedStar label="陪客人员：" v-if="filter.applyType == 2" :required="true">
-                            <el-select clearable multiple class="filter-item" filterable v-model="filter.employees" placeholder="请选择" style="width:280px;">
+                            <el-select clearable multiple class="filter-item" filterable v-model="filter.employees" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.loginName" :key="item.loginName">
                                 </el-option>
                             </el-select>
@@ -79,7 +77,7 @@
                                     placeholder="请输入" 
                                     :row="3" 
                                     :max="600"
-                                    textStyle="width:280px"></sjbtextarea>
+                                    textStyle="width:250px"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="随行人员：" v-if="filter.applyType == 3">
@@ -91,7 +89,7 @@
                         <RedStar label="备注：">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
-                                textStyle="width:280px;"
+                                textStyle="width:250px;"
                                 :rows="3"
                                 :max="700"
                                 v-model.trim="filter.remarks"></sjbtextarea>
@@ -227,6 +225,7 @@
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -236,6 +235,7 @@ import Approval from '@/components/Approval'
 import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbtextarea from '@/components/sjbTextarea'
+import Department from "@/components/Department";
 import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember } from '@/api/reim'
 import { mapState, mapGetters } from "vuex";
 
@@ -251,7 +251,8 @@ export default {
         Approval,
         Project,
         RedStar,
-        sjbtextarea
+        sjbtextarea,
+        Department
     },
     mixins: [listQueryMix],
     data() {
@@ -265,12 +266,14 @@ export default {
             urlArr: [],
             itemList: [],
             fileList: [],
-            // dialogFormVisible: false,
+            canshow: true,
             dialogRelatVisible: false,
-            
+            costCenterName:"",
+            labelName:"成本中心",
             filter: {//筛选条件
                 applyTime: "", // 报销日期
                 applyType: "", // 报销类型
+                costCenterId:"",
                 taxCity: "", // 发票城市
                 id: "", // 报销ID，新建时为空
                 procInsId: "", // 报销ID，新建时为空
@@ -312,8 +315,6 @@ export default {
                 endApplyTime: "",
             },
             uploadTips: config.tips,
-
-            num1:""
         }
     },
     created() {
@@ -322,6 +323,8 @@ export default {
         // 清空store集合
         this.$store.dispatch('clearCollection');
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        this.costCenterName = this.userInfo.officeName;
+        this.filter.costCenterId =  this.userInfo.officeId
         // 编辑时
         if (this.$route.query.key) {
             getDetail({
@@ -330,8 +333,11 @@ export default {
                 this.filter.applyType = res.data.detail.applyType;
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
-                this.filter.remarks = res.data.detail.remarks
-                this.filter.customerSituation = res.data.detail.customerSituation
+                this.canshow = Date.parse(this.filter.applyTime)< Date.parse("2019-07-08") ? false : true;
+                this.filter.remarks = res.data.detail.remarks;
+                this.filter.customerSituation = res.data.detail.customerSituation;
+                this.filter.costCenterId = res.data.detail.costCenterId;
+                this.costCenterName = res.data.detail.costCenterName
 
                 this.filter.id = res.data.detail.id;
                 this.filter.projectId = res.data.detail.projectId;
@@ -388,9 +394,9 @@ export default {
             })
         }
         // store中没值时，从接口获取存入store
-        if (this.subsTree.length == 0) {
+        // if (this.subsTree.length == 0) {
             this.$store.dispatch('getSubs');
-        }
+        // }
     },
     computed: {
         ...mapState({
@@ -441,6 +447,10 @@ export default {
 
     },
     methods: {
+        depConfirm(data) {
+            this.costCenterName = data.name;
+            this.filter.costCenterId = data.id;
+        },
         clearLink(){
             this.filter.projectPersonel ='';
             this.filter.projectId = '';
@@ -689,7 +699,7 @@ export default {
   background: white;
   padding-left: 7px;
   line-height: 30px;
-  width: 280px
+  width: 250px
 }
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;

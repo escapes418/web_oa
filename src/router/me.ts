@@ -53,7 +53,7 @@ export default [
                 id: 'me-payList',
                 show: false,
                 name: 'PayList',
-                component: () => import('@/views/advancepay/list.vue'),
+                component: () => import('@/views/advancePay/list.vue'),
                 meta: {
                     title: '提前打款管理',
                     icon: 'iconfont icon-qianbao'

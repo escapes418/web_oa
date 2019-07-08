@@ -566,10 +566,11 @@ export default {
                         type: "success"
                     });
                     this.dialogFreeVisible = false
-            }
-            setTimeout(_=>{
-                window.location.reload();
-            },500)
+                }
+                this.getListData();
+                // setTimeout(_=>{
+                //     window.location.reload();
+                // },500)
             })
         },
         searchMain(val){
@@ -610,11 +611,12 @@ export default {
                         type: "success"
                     });
                 }
-                setTimeout(_=>{
-                    // this.$router.go(-1)
-                    window.location.reload();
-                    // console.log('redere')
-                },500)
+                this.getListData();
+                // setTimeout(_=>{
+                //     // this.$router.go(-1)
+                //     window.location.reload();
+                //     // console.log('redere')
+                // },500)
                 
             })
         },
@@ -675,11 +677,19 @@ export default {
                             type: "success"
                         });
                     }
-                    setTimeout(_=>{
-                        // this.$router.go(-1)
-                        window.location.reload();
-                        // console.log('redere')
-                    },500)
+                    if(res.status == 2){
+                        this.dialogMoveVisible = false;
+                        this.$message({
+                            message: res.message,
+                            type: "warning"
+                        });
+                    }
+                    this.getListData();
+                    // setTimeout(_=>{
+                    //     // this.$router.go(-1)
+                    //     window.location.reload();
+                    //     // console.log('redere')
+                    // },1000)
                 })
             }else{
                 this.$message({

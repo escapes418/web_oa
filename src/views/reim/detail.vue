@@ -18,8 +18,8 @@
                             <div class="text">{{ detail.applyPerName }}</div>
                         </div>
                         <div class="item">
-                            <div class="label">所属部门:</div>
-                            <div class="text">{{ detail.officeName }}</div>
+                            <div class="label">成本中心:</div>
+                            <div class="text">{{ detail.costCenterName }}</div>
                         </div>
                         <div class="item">
                             <div class="label">报销类型:</div>
@@ -119,8 +119,8 @@
                                 <span class="right-con">{{ detail.applyPerName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">所属部门：</span>
-                                <span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">成本中心：</span>
+                                <span class="right-con">{{ detail.costCenterName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">报销类型：</span>

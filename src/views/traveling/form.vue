@@ -325,7 +325,8 @@ export default {
             });
         }
 
-        if (this.subsTree.length == 0) this.$store.dispatch('getSubs');
+        // if (this.subsTree.length == 0) 
+        this.$store.dispatch('getSubs');
         
     },
     computed: {

@@ -54,6 +54,10 @@ export default {
             type: String,
             default: "归属部门："
         },
+        canshow:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {
@@ -91,7 +95,9 @@ export default {
     },
     methods: {
         showTree(){
-            this.showDialog = true;
+            if(this.canshow){
+                this.showDialog = true;
+            }
         },
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
