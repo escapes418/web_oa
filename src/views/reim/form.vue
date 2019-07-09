@@ -333,7 +333,7 @@ export default {
                 this.filter.applyType = res.data.detail.applyType;
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
-                this.canshow = Date.parse(this.filter.applyTime)< Date.parse("2019-07-08") ? false : true;
+                this.canshow = Date.parse(this.filter.applyTime) < Date.parse("2019-07-09") ? false : true;
                 this.filter.remarks = res.data.detail.remarks;
                 this.filter.customerSituation = res.data.detail.customerSituation;
                 this.filter.costCenterId = res.data.detail.costCenterId;
