@@ -87,7 +87,6 @@ export default {
         }),
         // 是否禁用上传图片
         canUpload() {
-            console.log(this.itemData.subConfList)
             if (!this.itemData.subConfList) this.itemData.subConfList = []
             if (this.itemData.subConfList.length == 0 || this.isType != 'reim') {
                 return true;

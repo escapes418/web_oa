@@ -177,37 +177,37 @@ var common = {
     formatDateTime: function(inputTime) {
         inputTime = this.fullTimestamp(inputTime);
         var date = new Date(inputTime);
-        var y = date.getFullYear();
-        var m = date.getMonth() + 1;
-        m = m < 10 ? Number('0' + m) : m;
-        var d = date.getDate();
-        d = d < 10 ? Number('0' + d) : d;
+        var y:number | string = date.getFullYear();
+        var m:number | string = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d:number | string = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
         return y + '-' + m + '-' + d;
     },
     formatFullDateTime: function(inputTime) {
         inputTime = this.fullTimestamp(inputTime);
         var date = new Date(inputTime);
-        var Y = date.getFullYear();
-        var M = date.getMonth() + 1;
-        M = M < 10 ? Number('0' + M) : M;
-        var D = date.getDate();
-        D = D < 10 ? Number('0' + D) : D;
-        var h = date.getHours();
-        h = h < 10 ? Number('0' + h) : h;
-        var m = date.getMinutes();
-        m = m < 10 ? Number('0' + m) : m;
-        var s = date.getSeconds();
-        s = s < 10 ? Number('0' + s) : s;
+        var Y:number | string = date.getFullYear();
+        var M:number | string = date.getMonth() + 1;
+        M = M < 10 ? ('0' + M) : M;
+        var D :number | string = date.getDate();
+        D = D < 10 ? ('0' + D) : D;
+        var h:number | string = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var m:number | string = date.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        var s:number | string = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
         return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s;
     },
     // 时间相关
     time: (function() {
         var date = new Date();
-        var y = date.getFullYear();
-        var m = date.getMonth() + 1;
-        m = m < 10 ? Number('0' + m) : m;
-        var d = date.getDate();
-        d = d < 10 ? Number('0' + d) : d;
+        var y:number | string = date.getFullYear();
+        var m:number | string = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d:number | string = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
         var h = date.getHours();
         var rtnDate: any = {};
         rtnDate.y = y;
