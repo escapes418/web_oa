@@ -10,7 +10,7 @@
                     <RedStar label="报销人员：">
                         <span class="right-con">{{userInfo.name}}</span>
                     </RedStar>
-                    <RedStar label="报销人员：">
+                    <RedStar label="所属部门：">
                         <span class="right-con">{{userInfo.officeName}}</span>
                     </RedStar>
                     <Project @on-select="proSelect" :Pvalue="projectName" :required="true"></Project>
