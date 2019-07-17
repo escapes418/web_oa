@@ -22,7 +22,8 @@ export default [
                 component: () => import('@/views/task/todoList.vue'),
                 meta: {
                     title: '待办任务',
-                    icon: 'iconfont icon-daiban'
+                    icon: 'iconfont icon-daiban',
+                    reGet:true
                 }
             },
             {
@@ -33,7 +34,8 @@ export default [
                 component: () => import('@/views/task/doneList.vue'),
                 meta: {
                     title: '已办任务',
-                    icon: 'iconfont icon-yiban'
+                    icon: 'iconfont icon-yiban',
+                    reGet:true
                 }
             }
         ]

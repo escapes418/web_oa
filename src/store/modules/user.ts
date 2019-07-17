@@ -1,9 +1,10 @@
-import { login, logout, getMenu, getDic, getMember } from '@/api/login';
+import { login, logout, findUser, getDic, getMember } from '@/api/login';
 import { getRegion } from '@/api/getRegion';
 import { fetchList,getRedCount } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import common from '@/utils/common';
 import { resolve } from 'url';
+
 
 const user = {
     state: {
@@ -41,13 +42,15 @@ const user = {
                 login(username, userInfo.password)
                     .then((res: Ajax.AjaxResponse) => {
                         setToken(res.data.sessionid);
-                        localStorage.setItem(
-                            'web_oa_userInfor',
-                            JSON.stringify(res.data)
-                        );
                         commit('SET_TOKEN', res.data.sessionid);
-                        commit('SET_USERINFO', res.data);
-                        resolve();
+                        findUser({}).then((res:Ajax.AjaxResponse)=>{
+                            localStorage.setItem(
+                                'web_oa_userInfor',
+                                JSON.stringify(res.data)
+                            );
+                            commit('SET_USERINFO', res.data);
+                            resolve();
+                        })
                     })
                     .catch((error) => {
                         console.log(error);
@@ -55,7 +58,7 @@ const user = {
                     });
             });
         },
-        FetchDictsAndLocalstore() {
+        FetchDictsAndLocalstore({ commit }) {
             // 获取所有字典，写入本地
             // 通用配置字典
             var dictList = new Promise((resolve, reject) => {
@@ -107,7 +110,19 @@ const user = {
                     resolve();
                 });
             });
-            return Promise.all([dictList, member, depart, region]);
+
+            var userInfo = new Promise((resolve,reject) =>{
+                findUser({}).then((res:Ajax.AjaxResponse)=>{
+                    localStorage.setItem(
+                        'web_oa_userInfor',
+                        JSON.stringify(res.data)
+                    );
+                    commit('SET_USERINFO', res.data);
+                    resolve();
+                })
+            })
+            return Promise.all([dictList, member, depart, region, userInfo]);
+            // return Promise.all([dictList, member, depart, region]);
         },
         // 获取用户信息
 

@@ -59,9 +59,18 @@ export function logout() {
         method: "post"
     });
 }
+
 export function getMenu() {
     return request({
         url: "/menu",
         method: "post"
+    });
+}
+
+export function findUser(params) {
+    return request({
+        url: "/commonInfo/findUserRealTimeInfo",
+        method: "post",
+        data:params
     });
 }

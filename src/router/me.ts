@@ -32,7 +32,8 @@ export default [
                 component: () => import('@/views/reim/form.vue'),
                 meta: {
                     title: '报销申请',
-                    icon: 'tree'
+                    icon: 'tree',
+                    reGet:true
                 },
                 hidden: true
             },
@@ -90,7 +91,8 @@ export default [
                 component: () => import('@/views/reception/form.vue'),
                 meta: {
                     title: '新建接待申请',
-                    icon: ''
+                    icon: '',
+                    reGet:true
                 },
                 hidden: true
             },
@@ -115,7 +117,8 @@ export default [
                 component: () => import('@/views/traveling/list.vue'),
                 meta: {
                     title: '出差申请',
-                    icon: 'iconfont icon-zhifuqianbao'
+                    icon: 'iconfont icon-zhifuqianbao',
+                   
                 }
             },
             {
@@ -126,7 +129,8 @@ export default [
                 component: () => import('@/views/traveling/form.vue'),
                 meta: {
                     title: '新建出差申请',
-                    icon: ''
+                    icon: '',
+                    reGet:true
                 },
                 hidden: true
             },
@@ -162,7 +166,8 @@ export default [
                 component: () => import('@/views/resource/form.vue'),
                 meta: {
                     title: '新建资源申请',
-                    icon: ''
+                    icon: '',
+                    reGet:true
                 },
                 hidden: true
             },
@@ -212,7 +217,8 @@ export default [
                 component: () => import('@/views/resHandle/form.vue'),
                 meta: {
                     title: '新建资源申请办理',
-                    icon: 'iconfont icon-changyongshili'
+                    icon: 'iconfont icon-changyongshili',
+                    reGet:true
                 },
                 hidden: true
             },
