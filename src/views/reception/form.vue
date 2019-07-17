@@ -7,7 +7,7 @@
         <div class="segment-area">
             <el-row>
                 <el-col :span="12" class="segment-brline">
-                    <RedStar label="报销人员：">
+                    <RedStar label="申请人员：">
                         <span class="right-con">{{userInfo.name}}</span>
                     </RedStar>
                     <RedStar label="所属部门：">
