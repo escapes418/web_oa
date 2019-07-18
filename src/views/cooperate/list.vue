@@ -321,7 +321,8 @@ export default {
             coopChecked:false,
             coopLeaderId:'',
             memberList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+            scrollTop:0
         }
     },
     created() {
@@ -331,7 +332,7 @@ export default {
     },
     activated() {
         this.getList()
-        
+        document.documentElement.scrollTop = this.scrollTop 
     },
     mounted(){
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -360,6 +361,14 @@ export default {
             this.typeList = res.data
         })
     },
+    beforeRouteLeave (to, from, next) {
+            let self = this;
+            this.$nextTick(_=> {
+                self.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            })
+            //保存滚动条元素div的scrollTop值
+			next()
+	},
     methods: {
         handleSelectionChange(val){
             this.selectCoop = val;
