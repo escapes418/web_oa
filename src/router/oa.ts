@@ -45,7 +45,8 @@ export default [
                 component: () => import('@/views/cooperate/form.vue'),
                 meta: {
                     title: '新建协作',
-                    icon: 'iconfont icon-yiban'
+                    icon: 'iconfont icon-yiban',
+                    reGet:true
                 },
                 hidden: true
             },
