@@ -32,6 +32,15 @@ router.beforeEach((to, from, next) => {
                 next();
             }
 
+           if(to.meta.reGet){
+                store.dispatch('FetchDictsAndLocalstore').then(() => {
+                    this.loading = false;
+                }).catch(() => {
+                    this.loading = false;
+                    console.log('获取字典数据失败!');
+                })
+           }
+
             /*
             if (store.getters.roles.length === 0) {
                 store
