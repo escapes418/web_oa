@@ -112,7 +112,8 @@ export default [
                 component: () => import('@/views/project/form.vue'),
                 meta: {
                     title: '新建项目',
-                    icon: ''
+                    icon: '',
+                    reGet:true
                 },
                 hidden: true
             },

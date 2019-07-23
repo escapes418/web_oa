@@ -71,7 +71,7 @@
                 <el-tab-pane label="全部" name="3"></el-tab-pane>
             </el-tabs>
         </template>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column
                 type="selection"
                 width="55">
@@ -232,6 +232,7 @@ import utils from '@/utils/utils';
 import { mapState, mapGetters } from "vuex";
 
 export default {
+    name: "coopList",
     directives: {
         waves
     },
@@ -274,7 +275,6 @@ export default {
             total: null,
             pageNo: 1,
             pageSize: 20,
-            listLoading: true,
             activeName:"1",
             memberType:[],
             listQuery: {
@@ -321,15 +321,18 @@ export default {
             coopChecked:false,
             coopLeaderId:'',
             memberList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+            scrollTop:0
         }
     },
     created() {
         this.$$queryStub = this.$$listQuery;
         this.activeName = this.coopListPlace;
-        this.getList()
-        this.listLoading = false
         
+    },
+    activated() {
+        this.getList()
+        document.documentElement.scrollTop = this.scrollTop 
     },
     mounted(){
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -358,6 +361,14 @@ export default {
             this.typeList = res.data
         })
     },
+    beforeRouteLeave (to, from, next) {
+            let self = this;
+            this.$nextTick(_=> {
+                self.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            })
+            //保存滚动条元素div的scrollTop值
+			next()
+	},
     methods: {
         handleSelectionChange(val){
             this.selectCoop = val;
@@ -495,10 +506,8 @@ export default {
         handleClick(val){
             this.$store.dispatch('changeCoop', val.name);
             this.getList();
-            this.listLoading = false;
         },
         getList() {
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             fetchList({
                 ...postData,
@@ -508,7 +517,6 @@ export default {
             }).then(response => {
                 this.list = response.data.list
                 this.total = response.data.total
-                this.listLoading = false
             })
         },
         restCallback() {
@@ -538,12 +546,10 @@ export default {
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getList()
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val
             this.getList()
-            this.listLoading = false;
         },
         showPlan(row){
             this.$router.push({
@@ -581,7 +587,6 @@ export default {
                     this.comment = '';
                     this.dialogComment = false;
                     this.getList();
-                    this.listLoading = false;
                 }
             })
         },
@@ -636,7 +641,6 @@ export default {
                         type: 'success'
                     })
                     this.getList();
-                    this.listLoading = false;
                 }
             }else{
                 this.$message({
@@ -725,7 +729,6 @@ export default {
                         type: 'success'
                     })
                     this.getList();
-                    this.listLoading = false;
                 }
             }else{
                 this.$message({
