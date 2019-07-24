@@ -660,6 +660,7 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .el-input--small .el-input__inner {
     height: 40px!important;
 }
