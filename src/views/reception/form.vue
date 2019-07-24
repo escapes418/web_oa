@@ -528,9 +528,9 @@ export default {
     word-break: break-all;
 }
 </style>
-<style>
-.el-select .el-input.el-input--small.el-input--suffix {
+<style scoped>
+/* .el-select .el-input. {
     overflow: scroll !important;
     padding-bottom: 1px!important;
-}
+} */
 </style>
