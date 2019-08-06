@@ -236,14 +236,14 @@ export default {
             recepQuery:{
                 pageNo:1,
                 pageSize:20
-            }
+            },
+            userInfo:{}
         }
     },
     created(){
         this.filter.applyTime = common.time.monthlast
         this.$store.dispatch('clearCollection');
-        //拿到基本信息
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        
         if(this.$route.query.key){
             this.filter.id = this.$route.query.key
             getDetail({
@@ -313,7 +313,10 @@ export default {
          return result
      }
   },
-  mounted(){
+  async mounted(){
+    await this.$store.dispatch('FetchDictsAndLocalstore');
+    //拿到基本信息
+    this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
     //获取字典
     let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
     function selectDic(arr,type){

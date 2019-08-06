@@ -161,7 +161,7 @@ export default {
         //时间转换
         this.filter.applyTime = common.time.monthlast
         //拿到基本信息
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        
         if (this.$route.query.key) {
             this.filter.id = this.$route.query.key;
             getDetail({
@@ -184,8 +184,10 @@ export default {
             });
         }
     },
-    mounted() {
+    async mounted() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         //获取字典
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {
             let temp = [];

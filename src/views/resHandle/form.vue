@@ -265,7 +265,7 @@ export default {
             total: null,
             listLoading: false,
             list: [],
-            userInfo:"",
+            userInfo:{},
             ThemeData: [],
             handleTypeList: [],
             projectName: "",
@@ -288,7 +288,7 @@ export default {
     watch: {},
     created() {
         //拿到基本信息
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        
         if (this.$route.query.key) {
             this.filter.id = this.$route.query.key;
             resourcesHandleInfoDetail({
@@ -317,7 +317,9 @@ export default {
             personelNumber: state => state.resHandle.personelNumber,
         }),
     },
-    mounted() {
+    async mounted() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         //获取字典
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {

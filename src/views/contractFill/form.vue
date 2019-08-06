@@ -161,7 +161,7 @@
                             <RedStar label="合同签约人：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
-                                        <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
+                                        <el-option v-for="item in memberFullList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -258,7 +258,7 @@ export default {
             //     }
             // },
 
-            
+            memberFullList:[],
             memberList:[],
 
             associationMain:false,
@@ -407,7 +407,10 @@ export default {
         })
 
         getMember({}).then(res => {
-            this.memberList = res.data
+            this.memberFullList = res.data;
+            this.memberList = res.data.filter((item)=>{
+                return item.userStatus == '1'
+            });
         })
     },
     methods: {

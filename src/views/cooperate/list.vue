@@ -124,7 +124,7 @@
 
         <el-dialog title="选择人员/部门" :visible.sync="dialogDepartVisible" width="25%" :center="true" @close="dialogDepartVisible = false">
             <el-input placeholder="输入关键字进行过滤" v-model="filterDepart" style="margin-bottom:10px"></el-input>
-            <el-tree show-checkbox check-strictly node-key="id" :data="treeData" :props="defaultProps" @check-change="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
+            <el-tree show-checkbox check-strictly node-key="id" :data="treeFullData" :props="defaultProps" @check-change="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogDepartVisible = false">取消</el-button>
                 <el-button type="primary" @click="selectDepart">确认</el-button>
@@ -303,6 +303,7 @@ export default {
             dialogCharge:false,
             filterCharge:'',
             treeData:[],
+            treeFullData:[],
             defaultProps: {
                 children: "children",
                 label: "name"
@@ -328,13 +329,19 @@ export default {
     created() {
         this.$$queryStub = this.$$listQuery;
         this.activeName = this.coopListPlace;
-        
+
+        let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
+        var newArr = [];
+        common.transToTree(memberList, newArr);
+        common.mapAndAddChildren(newArr);
+        this.treeFullData = newArr;
     },
     activated() {
         this.getList()
         document.documentElement.scrollTop = this.scrollTop 
     },
-    mounted(){
+    async mounted(){
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr,type){
             let temp = [];
@@ -349,6 +356,32 @@ export default {
 
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    tem = tem.filter(i=>{
+                        return i.status=="1"
+                    })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
@@ -400,7 +433,7 @@ export default {
             if(this.coopChecked){
                 if(!this.coopLeaderId){
                     this.$message({
-                        message:'请选择合同负责人！',
+                        message:'请选择协作负责人！',
                         type:'warning'
                     })
                     return
@@ -426,7 +459,7 @@ export default {
             }else{
                 this.coopLeaderId = ""
                 this.$message({
-                    message:'请为移动合同勾选相关负责人！',
+                    message:'请为协作勾选相关负责人！',
                     type:'warning'
                 })
             }
