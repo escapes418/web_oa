@@ -48,9 +48,9 @@ import common from '@/utils/common'
 // });
 export default {
     // mixins: [mixin],
-    directives: {
-      longpress
-    },
+    // directives: {
+    //   longpress
+    // },
     computed:{
         ...mapState({
           userInfo: state =>state.user.userInfo
