@@ -10,7 +10,7 @@
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import { getToken ,removeToken} from '@/utils/auth';
-import longpress from '@/directive/longpress' // 水波纹指令
+// import longpress from '@/directive/longpress' // 水波纹指令
 import common from '@/utils/common'
 
 // export default common.firstHide({
@@ -48,9 +48,9 @@ import common from '@/utils/common'
 // });
 export default {
     // mixins: [mixin],
-    directives: {
-      longpress
-    },
+    // directives: {
+    //   longpress
+    // },
     computed:{
         ...mapState({
           userInfo: state =>state.user.userInfo
