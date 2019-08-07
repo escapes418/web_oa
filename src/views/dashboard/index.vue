@@ -10,7 +10,7 @@
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import { getToken ,removeToken} from '@/utils/auth';
-import longpress from '@/directive/longpress' // 水波纹指令
+// import longpress from '@/directive/longpress' // 水波纹指令
 import common from '@/utils/common'
 
 // export default common.firstHide({
