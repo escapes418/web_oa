@@ -15,7 +15,7 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="报销人员：">
-                            <span class="right-con">{{userInfo.name}}</span>
+                            <span class="right-con">{{userInfo.name || ""}}</span>
                         </RedStar>
                         <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :canshow="canshow" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
                         <RedStar label="报销类型：" :required="true">
@@ -56,7 +56,7 @@
                             <span class="right-con">{{ filter.applyTime }}</span>
                         </RedStar>
                         <RedStar label="岗位名称：">
-                            <span class="right-con">{{ userInfo.postName }}</span>
+                            <span class="right-con">{{ userInfo.postName || "" }}</span>
                         </RedStar>
                         <RedStar label="发票所属公司：" :required="true">
                             <el-select clearable class="filter-item " v-model="filter.taxCity" placeholder="请选择" style="width:250px;">
@@ -315,16 +315,14 @@ export default {
                 endApplyTime: "",
             },
             uploadTips: config.tips,
+            userInfo:{}
         }
     },
-    created() {
+    async created() {
         //时间转换
         this.filter.applyTime = common.time.monthlast;
         // 清空store集合
         this.$store.dispatch('clearCollection');
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-        this.costCenterName = this.userInfo.officeName;
-        this.filter.costCenterId =  this.userInfo.officeId
         // 编辑时
         if (this.$route.query.key) {
             getDetail({
@@ -426,7 +424,11 @@ export default {
             return result;
         }
     },
-    mounted() {
+    async mounted() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        this.costCenterName = this.userInfo.officeName;
+        this.filter.costCenterId =  this.userInfo.officeId
         //获取字典
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {
@@ -440,7 +442,6 @@ export default {
         }
         this.expTypeList = selectDic(dicList, "oa_expense_type");
         this.taxList = selectDic(dicList, "tax_city");
-
         getMember({}).then(res => {
             this.memberList = res.data;
         })

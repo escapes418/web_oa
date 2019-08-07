@@ -23,7 +23,7 @@
             <div class="toolbar-item">
                 <span class="item-label">所属区域：</span>
                 <el-cascader style="width: 140px" 
-                    class="filter-item" :options="marketList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
+                    class="filter-item" :options="marketFullList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
                 </el-cascader>
             </div>
             <div class="toolbar-item">
@@ -334,6 +334,7 @@ export default {
             marketLeaderId:"",
             custStage:"",
             memberList:[],
+            marketFullList:[],
             marketList:[],
             marketId:[],
             defaultProps: {
@@ -382,7 +383,7 @@ export default {
                 var newArr = [];
                 common.transToTree(res.data, newArr);
                 // common.mapAndAddChildren(newArr);
-                this.marketList = newArr
+                this.marketFullList = newArr
             }
         })
 

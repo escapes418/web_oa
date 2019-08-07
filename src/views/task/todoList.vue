@@ -162,8 +162,8 @@ export default {
     },
     methods: {
         depConfirm(data){
-        this.listQuery.officeId = data.id;
-        this.listQuery.officeName = data.name;
+            this.listQuery.officeId = data.id;
+            this.listQuery.officeName = data.name;
         },
         // clearInput() {
         //     this.dialogFormVisible = false

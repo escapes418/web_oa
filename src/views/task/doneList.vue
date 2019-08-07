@@ -166,7 +166,8 @@ export default {
         // 暂存对象初始值为组件默认的初始值
         this.$$queryStub = this.$$listQuery;
     },
-    mounted() {
+    async mounted() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr,type){
             let temp = [];

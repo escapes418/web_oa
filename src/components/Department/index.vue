@@ -86,9 +86,15 @@ export default {
             if(this.DId) this.officeId[0] = this.DId;
         }
     },
-    created() {
+    async created() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
         var newArr = [];
+        if(this.type == "form"){
+            departList = departList.filter(item=>{
+                return item.status == 1
+            })
+        }
         common.transToTree(departList, newArr);
         this.treeData = newArr;
         this.officeName = this.Dvalue;

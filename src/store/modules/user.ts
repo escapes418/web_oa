@@ -2,6 +2,7 @@ import { login, logout, findUser, getDic, getMember } from '@/api/login';
 import { getRegion } from '@/api/getRegion';
 import { fetchList,getRedCount } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
+
 import common from '@/utils/common';
 import { resolve } from 'url';
 
@@ -13,7 +14,7 @@ const user = {
         avatar: '',
         roles: [],
         userInfo: null,
-        msgCount:0
+        count:0
     },
 
     mutations: {
@@ -31,6 +32,11 @@ const user = {
         },
         SET_USERINFO: (state, obj) => {
             state.userInfo = obj;
+        },
+        SET_REDCOUNT:(state,res) =>{
+            if(res.status=="0"){
+                state.count = res.data.redCount
+            }
         }
     },
 
@@ -191,11 +197,42 @@ const user = {
                 })
             })
         },
-        fetchCount({commit,state}){
+        fetchCount({commit,state},userInfor){
             return new Promise((resolve)=>{
-                getRedCount({}).then(res=>{
-                    resolve(res)
-                })
+                let websocket = null;
+                let url;
+                if('WebSocket' in window) {
+                    const argv = process.env.NODE_ENV;
+                    if (argv == "test") {
+                        url  = 'ws://oa.sijibao.co/OA/websocket/myHandler?userId='+ userInfor.mobile;
+                    } else if (argv == "production") {
+                        url  = 'ws://oa.sijibao.com/OA/websocket/myHandler?userId='+ userInfor.mobile;
+                    } else {
+                        url  = 'ws://192.168.12.134/OA/websocket/myHandler?userId='+ userInfor.mobile; 
+                    }
+                    websocket = new WebSocket(url);
+                    websocket.onopen = function (event) {
+                        console.log('建立连接');
+                    }
+        
+                    websocket.onclose = function (event) {
+                        websocket = new WebSocket(url);
+                        console.log('连接关闭');
+                    }
+        
+                    websocket.onmessage = function (event) {
+                        console.log('收到消息:' + event.data);
+                        commit('SET_REDCOUNT', JSON.parse(event.data));
+                        // resolve(JSON.parse(event.data))
+                    }
+        
+                    websocket.onerror = function (event) {
+                        alert('websocket通信发生错误！');
+                    }
+                    resolve()
+                }else {
+                    alert('该浏览器不支持websocket!');
+                }
             })
         }
     }
