@@ -34,8 +34,9 @@ const user = {
             state.userInfo = obj;
         },
         SET_REDCOUNT:(state,res) =>{
-            console.log(res)
-            state.count = res.data.redCount
+            if(res.status=="0"){
+                state.count = res.data.redCount
+            }
         }
     },
 
@@ -198,11 +199,10 @@ const user = {
         },
         fetchCount({commit,state},userInfor){
             return new Promise((resolve)=>{
-                var websocket = null;
+                let websocket = null;
+                let url;
                 if('WebSocket' in window) {
-                    let url;
                     const argv = process.env.NODE_ENV;
-                    console.log(argv)
                     if (argv == "test") {
                         url  = 'ws://oa.sijibao.co/OA/websocket/myHandler?userId='+ userInfor.mobile;
                     } else if (argv == "production") {
@@ -210,33 +210,29 @@ const user = {
                     } else {
                         url  = 'ws://192.168.12.134/OA/websocket/myHandler?userId='+ userInfor.mobile; 
                     }
-                    console.log(url)
-                    websocket = new WebSocket(url)
+                    websocket = new WebSocket(url);
+                    websocket.onopen = function (event) {
+                        console.log('建立连接');
+                    }
+        
+                    websocket.onclose = function (event) {
+                        websocket = new WebSocket(url);
+                        console.log('连接关闭');
+                    }
+        
+                    websocket.onmessage = function (event) {
+                        console.log('收到消息:' + event.data);
+                        commit('SET_REDCOUNT', JSON.parse(event.data));
+                        // resolve(JSON.parse(event.data))
+                    }
+        
+                    websocket.onerror = function (event) {
+                        alert('websocket通信发生错误！');
+                    }
+                    resolve()
                 }else {
                     alert('该浏览器不支持websocket!');
                 }
-    
-                websocket.onopen = function (event) {
-                    console.log('建立连接');
-                }
-    
-                websocket.onclose = function (event) {
-                    console.log('连接关闭');
-                }
-    
-                websocket.onmessage = function (event) {
-                    console.log('收到消息:' + event.data);
-                    commit('SET_REDCOUNT', JSON.parse(event.data));
-                    // resolve(JSON.parse(event.data))
-                }
-    
-                websocket.onerror = function () {
-                    alert('websocket通信发生错误！');
-                }
-                // getRedCount({}).then(res=>{
-                resolve()
-                // })
-                
             })
         }
     }
