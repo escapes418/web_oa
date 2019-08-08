@@ -216,8 +216,8 @@ const user = {
                     }
         
                     websocket.onclose = function (event) {
-                        websocket = new WebSocket(url);
                         console.log('连接关闭');
+                        // websocket = new WebSocket(url);
                     }
         
                     websocket.onmessage = function (event) {
