@@ -427,8 +427,10 @@ export default {
     async mounted() {
         await this.$store.dispatch('FetchDictsAndLocalstore');
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-        this.costCenterName = this.userInfo.officeName;
-        this.filter.costCenterId =  this.userInfo.officeId
+        if(this.userInfo.useable=="1"){
+            this.costCenterName = this.userInfo.officeName;
+            this.filter.costCenterId =  this.userInfo.officeId
+        }
         //获取字典
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {
