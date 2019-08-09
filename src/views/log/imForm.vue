@@ -291,11 +291,11 @@ export default class imForm extends Vue {
         getSend({
             dailyTemplate:"0"
         }).then((res:Ajax.AjaxResponse)=>{
-            res.data.sendTo.forEach(item=>{
+             res.data.sendTo&&res.data.sendTo.forEach(item=>{
                 this.postData.sendToUserList.push(item.sendToId)
             })
 
-            res.data.copyTo.forEach(item=>{
+            res.data.copyTo&&res.data.copyTo.forEach(item=>{
                 this.postData.copyToList.push(item.copyToId)
             })
             // this.postData.sendToUserList = res.data.sendTo;
