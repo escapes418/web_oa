@@ -273,11 +273,11 @@ export default class maForm extends Vue {
         getSend({
             dailyTemplate:"1"
         }).then((res:Ajax.AjaxResponse)=>{
-            res.data.sendTo.forEach(item=>{
+            res.data.sendTo&&res.data.sendTo.forEach(item=>{
                 this.postData.sendToList.push(item.sendToId)
             })
 
-            res.data.copyTo.forEach(item=>{
+            res.data.copyTo&&res.data.copyTo.forEach(item=>{
                 this.postData.copyToList.push(item.copyToId)
             })
         })
