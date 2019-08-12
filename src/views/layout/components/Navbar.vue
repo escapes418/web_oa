@@ -233,9 +233,9 @@ export default {
         },
         getDetail(item){
             this.gotoDetail(item).then(()=>{
-                // setTimeout(_=>{
+                setTimeout(_=>{
                     this.getList()
-                // },1000)
+                },1000)
             })
         }
     }
