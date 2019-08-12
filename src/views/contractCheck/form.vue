@@ -418,6 +418,13 @@ export default {
     },
     methods: {
         detailPromise(){
+            function createUid() {
+                return Number(
+                    parseInt((Math.random() * 100000)) +
+                    '' +
+                    new Date().getTime()
+                );
+            }
             return new Promise((resolve,reject)=>{
                 getDetail({
                     contractFlowId: this.$route.query.key
@@ -442,6 +449,7 @@ export default {
                             item.url = item.urlPrefix + item.url;
                             if(item.fileType == 1){
                                 this.contractAttachment.push({
+                                    uid:createUid(),
                                     url: item.url,
                                     name: item.name,
                                     contractAttachmentUrl: originUrl,
@@ -450,6 +458,7 @@ export default {
                             }
                             if(item.fileType == 3){
                                 this.dataAttachment.push({
+                                    uid:createUid(),
                                     url: item.url,
                                     name: item.name,
                                     contractAttachmentUrl: originUrl,
@@ -569,19 +578,19 @@ export default {
         contractSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url = res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1});
+                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1,uid:file.uid});
             }
         },
         dataSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3});
+                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3,uid:file.uid});
             }
         },
         // 附件移除
         contractRemove(file, fileList) {
             this.contractAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.contractAttachment.splice(index, 1);
                 }
             })
