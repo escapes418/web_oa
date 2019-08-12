@@ -525,39 +525,39 @@ export default {
         contractSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url = res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1});
+                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1,uid:file.uid});
             }
         },
         dataSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3});
+                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3,uid:file.uid});
             }
         },
         scanSuccess(res,file,fileList){
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2});
+                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2,uid:file.uid});
             }
         },
         // 附件移除
         contractRemove(file, fileList) {
             this.contractAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.contractAttachment.splice(index, 1);
                 }
             })
         },
         dataRemove(file, fileList) {
             this.dataAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.dataAttachment.splice(index, 1);
                 }
             })
         },
         scanRemove(file,fileList){
             this.scanAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.scanAttachment.splice(index, 1);
                 }
             })
