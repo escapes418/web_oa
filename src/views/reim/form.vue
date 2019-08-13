@@ -385,7 +385,7 @@ export default {
                     res.data.detail.expenseAttachmentWeb.forEach(item => {
                         let originUrl = item.url;
                         item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl });
+                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl ,uid:new Date().getTime()});
                     })
                 }
                 
@@ -597,13 +597,13 @@ export default {
         handleSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
-                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url})
+                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
             }
         },
         // 附件移除
         handleRemove(file, fileList) {
             this.expenseAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.expenseAttachment.splice(index, 1)
                 }
             })

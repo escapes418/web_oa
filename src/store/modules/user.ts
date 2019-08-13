@@ -14,7 +14,8 @@ const user = {
         avatar: '',
         roles: [],
         userInfo: null,
-        count:0
+        count:0,
+        reTry:false
     },
 
     mutations: {
@@ -37,7 +38,11 @@ const user = {
             if(res.status=="0"){
                 state.count = res.data.redCount
             }
+        },
+        SET_RETRY:(state,data) =>{
+            state.reTry = data
         }
+
     },
 
     actions: {
@@ -212,11 +217,13 @@ const user = {
                     }
                     websocket = new WebSocket(url);
                     websocket.onopen = function (event) {
+                        commit('SET_RETRY',false);
                         console.log('建立连接');
                     }
         
                     websocket.onclose = function (event) {
                         console.log('连接关闭');
+                        commit('SET_RETRY',true);
                         // websocket = new WebSocket(url);
                     }
         
