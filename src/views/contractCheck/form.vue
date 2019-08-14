@@ -597,7 +597,7 @@ export default {
         },
         dataRemove(file, fileList) {
             this.dataAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.dataAttachment.splice(index, 1);
                 }
             })
