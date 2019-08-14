@@ -607,6 +607,7 @@ export default {
             }).then(res=>{
                 if(res.status == 0){
                     this.dialogMergeVisible = false;
+                    this.dialogVisible = false;
                     this.$message({
                         message: res.message,
                         type: "success"
