@@ -319,6 +319,25 @@ export default {
         }
     },
     async created() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        if(this.userInfo.useable=="1"){
+            this.costCenterName = this.userInfo.officeName;
+            this.filter.costCenterId =  this.userInfo.officeId
+        }
+        //获取字典
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                };
+            }
+            return temp;
+        }
+        this.expTypeList = selectDic(dicList, "oa_expense_type");
+        this.taxList = selectDic(dicList, "tax_city");
         //时间转换
         this.filter.applyTime = common.time.monthlast;
         // 清空store集合
@@ -425,25 +444,7 @@ export default {
         }
     },
     async mounted() {
-        await this.$store.dispatch('FetchDictsAndLocalstore');
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-        if(this.userInfo.useable=="1"){
-            this.costCenterName = this.userInfo.officeName;
-            this.filter.costCenterId =  this.userInfo.officeId
-        }
-        //获取字典
-        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-        function selectDic(arr, type) {
-            let temp = [];
-            for (var i = 0; i < arr.length; i++) {
-                if (arr[i].type == type) {
-                    temp.push(arr[i]);
-                };
-            }
-            return temp;
-        }
-        this.expTypeList = selectDic(dicList, "oa_expense_type");
-        this.taxList = selectDic(dicList, "tax_city");
+        
         getMember({}).then(res => {
             this.memberList = res.data;
         })
