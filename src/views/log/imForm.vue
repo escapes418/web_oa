@@ -227,7 +227,7 @@
 
 <script lang="ts">
 import common from "@/utils/common";
-import { saveImLog,getMember,getProject,getNode} from "@/api/log";
+import { saveImLog,getMember,getProject,getNode,getSend} from "@/api/log";
 import { parseTime } from "@/utils/index";
 import { imFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";
@@ -276,15 +276,30 @@ export default class imForm extends Vue {
             return temp;
         }
         this.nodeList = selectDic(dicList,"node_has_abnormal_status");
-
         getMember({}).then((res:Ajax.AjaxResponse)=> {
-            this.memberList = res.data;
-            if(localStorage.getItem("web_im_sendToUserList")){
-                this.postData.sendToUserList = JSON.parse(localStorage.getItem("web_im_sendToUserList"));
-            }
-            if(localStorage.getItem('web_im_copyToList')){
-                this.postData.copyToList = JSON.parse(localStorage.getItem("web_im_copyToList"));
-            }
+            this.memberList = res.data.filter((item)=>{
+                return item.userStatus == '1'
+            })
+            
+            // if(localStorage.getItem("web_im_sendToUserList")){
+            //     this.postData.sendToUserList = JSON.parse(localStorage.getItem("web_im_sendToUserList"));
+            // }
+            // if(localStorage.getItem('web_im_copyToList')){
+            //     this.postData.copyToList = JSON.parse(localStorage.getItem("web_im_copyToList"));
+            // }
+        })
+        getSend({
+            dailyTemplate:"0"
+        }).then((res:Ajax.AjaxResponse)=>{
+             res.data.sendTo&&res.data.sendTo.forEach(item=>{
+                this.postData.sendToUserList.push(item.sendToId)
+            })
+
+            res.data.copyTo&&res.data.copyTo.forEach(item=>{
+                this.postData.copyToList.push(item.copyToId)
+            })
+            // this.postData.sendToUserList = res.data.sendTo;
+            // this.postData.copyToList = res.data.copyTo;
         })
     }
 
@@ -370,14 +385,14 @@ export default class imForm extends Vue {
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
                 if (res.status == 0) {
-                    localStorage.setItem(
-                        'web_im_sendToUserList',
-                        JSON.stringify(this.postData.sendToUserList)
-                    );
-                    localStorage.setItem(
-                        'web_im_copyToList',
-                        JSON.stringify(this.postData.copyToList)
-                    );
+                    // localStorage.setItem(
+                    //     'web_im_sendToUserList',
+                    //     JSON.stringify(this.postData.sendToUserList)
+                    // );
+                    // localStorage.setItem(
+                    //     'web_im_copyToList',
+                    //     JSON.stringify(this.postData.copyToList)
+                    // );
                     this.$message({
                         message: res.message,
                         type: "success"

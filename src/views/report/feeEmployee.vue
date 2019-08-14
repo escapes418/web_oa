@@ -185,7 +185,7 @@ export default {
             pageNo: 1,
             pageSize: 20,
             listQuery: {
-                officeName:"市场中心",
+                officeName:"营销中心",
                 tempChoice:{},
                 officeId: "15725250",//默认市场中心
                 employeeName:"",

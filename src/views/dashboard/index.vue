@@ -1,8 +1,8 @@
 <template>
     <div :class="$style['dashboard-container']">
-        <div :class="$style['dashboard-text']">{{userInfo.name}},欢迎使用司机宝管理助手</div>
+        <div :class="$style['dashboard-text']">{{userInfo&&userInfo.name || ""}},欢迎使用司机宝管理助手</div>
         
-
+        <!-- <button v-longpress="incrementPlusTen" @click="incrementPlusOne">{{value}}</button> -->
     </div>
 </template>
 
@@ -10,27 +10,73 @@
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import { getToken ,removeToken} from '@/utils/auth';
+// import longpress from '@/directive/longpress' // 水波纹指令
+import common from '@/utils/common'
 
+// export default common.firstHide({
+//     mixins: [mixin],
+//     directives: {
+//       longpress
+//     },
+//     computed:{
+//         ...mapState({
+        
+//         })
+//     },
+//     data() {
+//         return {
+//             value: 10
+//         };
+//     },
+//     created() {
+       
+//     },
+//     mounted() {
+//       // return new Promise((resolve)=>{
+//       //   resolve()
+//       // })    
+//     },
+//     methods: {
+//         incrementPlusOne() {
+//             this.value++
+//         },
+//         // increment value plus 10
+//         incrementPlusTen() {
+//             this.value += 10
+//         }
+//     }
+// });
 export default {
-    mixins: [mixin],
+    // mixins: [mixin],
+    // directives: {
+    //   longpress
+    // },
     computed:{
         ...mapState({
-        
+          userInfo: state =>state.user.userInfo
         })
     },
     data() {
         return {
-            
+            value: 10
         };
     },
     created() {
        
     },
     mounted() {
-        
+      // return new Promise((resolve)=>{
+      //   resolve()
+      // })    
     },
     methods: {
-        
+        incrementPlusOne() {
+            this.value++
+        },
+        // increment value plus 10
+        incrementPlusTen() {
+            this.value += 10
+        }
     }
 };
 </script>

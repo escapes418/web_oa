@@ -490,13 +490,13 @@ export default {
         scanSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
-                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2})
+                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2,uid:file.uid})
             }
         },
         // 附件移除
        scanRemove(file, fileList) {
             this.scanAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.scanAttachment.splice(index, 1);
                 }
             })

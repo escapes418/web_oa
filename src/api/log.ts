@@ -112,3 +112,11 @@ export function getCritique(params){
     data:params
   })
 }
+
+export function getSend(params){
+  return request({
+    url:'/marketDaily/querySendToByUserId',
+    method:'post',
+    data:params
+  })
+}
