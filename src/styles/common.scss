@@ -328,3 +328,7 @@ code {
 //     overflow: scroll !important;
 //     padding-bottom: 1px!important;
 // }
+
+.viewer-container.viewer-backdrop.viewer-fixed.viewer-fade.viewer-transition.viewer-in{
+    z-index: 9999!important;
+}
