@@ -211,7 +211,7 @@ const user = {
                     if (argv == "test") {
                         url  = 'ws://oa.sijibao.co/OA/websocket/myHandler?userId='+ userInfor.mobile;
                     } else if (argv == "production") {
-                        url  = 'ws://oa.sijibao.com/OA/websocket/myHandler?userId='+ userInfor.mobile;
+                        url  = 'wss://oa.sijibao.com/OA/websocket/myHandler?userId='+ userInfor.mobile;
                     } else {
                         url  = 'ws://192.168.12.134/OA/websocket/myHandler?userId='+ userInfor.mobile; 
                     }
