@@ -535,13 +535,15 @@ export default {
                 if(res.data.onlinePlanTime){
                     this.onlinePlanTime = common.timeParseObj(res.data.onlinePlanTime)
                 }
-                this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map(item=>{   
-                    return{
-                        ...item,
-                        index: (parseInt((Math.random() * 100000)) + new Date().getTime())
-                    }
-                })
-                res.data.carrierGoods.forEach(item=>{
+                if(res.data.projectLinkmanDetailResponse){
+                    this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map(item=>{   
+                        return{
+                            ...item,
+                            index: (parseInt((Math.random() * 100000)) + new Date().getTime())
+                        }
+                    })
+                }
+                res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
                     this.filter.carrierGoods.push(item.carrierGood)
                 })
                 res.data.projectNodeDetailResponse = res.data.projectNodeDetailResponse || [];
@@ -941,20 +943,15 @@ export default {
                 });
                 return;
             }
-            var flag = true
 
-            if(this.itemList.length>0){
-                this.itemList.forEach(item=>{
-                    if(!item.nodeName&&!item.nodeAddress){
-                        flag  = false
-                        this.$message({
-                            message: "请填写地点节点或选择节点地址！",
-                            type: "warning"
-                        });
-                        return;
-                    }
-                }) 
+            if(this.contactList.length<1){
+                this.$message({
+                    message: "请填写联系人信息！",
+                    type: "warning"
+                });
+                return;
             }
+            var flag = true;
             this.contactList.forEach(item=>{
                 if(!item.linkmanName){
                     this.$message({
@@ -980,8 +977,24 @@ export default {
                     flag = false
                     return;
                 }
-                
             })
+            
+
+            if(this.itemList.length>0){
+                this.itemList.forEach(item=>{
+                    if(!item.nodeName&&!item.nodeAddress){
+                        flag  = false
+                        this.$message({
+                            message: "请填写地点节点或选择节点地址！",
+                            type: "warning"
+                        });
+                        return;
+                    }
+                }) 
+            }
+            
+         
+            
             if(flag){
                 savePro({
                     ...this.filter,
