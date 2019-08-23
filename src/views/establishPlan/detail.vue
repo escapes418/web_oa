@@ -50,6 +50,12 @@
                                 {{ detail.onlinePlanTime | stamp2TextDate}}
                             </span>
                         </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">项目类型：</span>
+                            <span class="right-con">
+                                {{ detail.projectTypeName }}
+                            </span>
+                        </div>
                         <!-- <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">实际上线时间：</span>
                             <span class="right-con">
@@ -70,12 +76,7 @@
                         </div> -->
                     </el-col>
                     <el-col :span="12" class="segment-brline">
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">项目类型：</span>
-                            <span class="right-con">
-                                {{ detail.projectTypeName }}
-                            </span>
-                        </div>
+                        
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">月开票频次(次/月)：</span>
                             <span class="right-con">
