@@ -321,6 +321,12 @@ export default {
                     query: { key: row.businessId, taskId: row.taskId, pathType: 'done' }
                 })
             }
+            if (row.billType == 11) {
+                this.$router.push({
+                    path: '/inforManage/establishDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'done' }
+                })
+            }
         },
     }
 }

@@ -139,12 +139,12 @@
                 </span>
             </div>
             <div class="merge-item">
-                <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox>
+                <!-- <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox> -->
                 <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
-                <el-checkbox v-model="projectChecked" label="项目负责人"></el-checkbox>
+                <!-- <el-checkbox v-model="projectChecked" label="项目负责人"></el-checkbox> -->
             </div>
             <div class="move-select">
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">市场负责人：</span>
                     <el-select 
                         style="width: 300px" 
@@ -156,7 +156,7 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
-                </div>
+                </div> -->
                 <div class="move-item">
                     <span class="item-label">实施负责人：</span>
                     <el-select 
@@ -170,7 +170,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">项目负责人：</span>
                     <el-select 
                         style="width: 300px" 
@@ -182,7 +182,7 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
-                </div>
+                </div> -->
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmMove">确认</el-button>

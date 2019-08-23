@@ -224,9 +224,21 @@ export default {
                         query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
+                if (item.billType == 11) {
+                    this.$router.push({
+                        path: '/inforManage/establishDetail',
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
+                    })
+                }
                 if (item.billType == 10) {
                     this.$router.push({
                         path:'/inforManage/contractFillDetail',
+                        query: { key: item.id }
+                    })
+                }
+                if (item.billType == 12) {
+                    this.$router.push({
+                        path:'/inforManage/projectDetail',
                         query: { key: item.id }
                     })
                 }
