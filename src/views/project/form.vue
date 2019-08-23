@@ -15,7 +15,7 @@
 
                     <RedStar label="项目名称：" :required="true">
                         <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName" :maxlength="50"></el-input>
+                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName" :maxlength="64"></el-input>
                         </span>
                     </RedStar>
                     
@@ -87,12 +87,12 @@
                     </RedStar>
                     <RedStar label="月开票频次(次/月)：" :required="true">
                         <span class="right-con">
-                            <el-input v-model.number="filter.invoicingFrequency" type="number" style="width:250px;" ></el-input>
+                            <el-input v-model.number="filter.invoicingFrequency" type="number" style="width:250px;"></el-input>
                         </span>
                     </RedStar>
                      <RedStar label="计划月运费(万元/月)：" :required="true">
                         <span class="right-con">
-                            <el-input v-model.number="filter.transExpenssPlan" type="number" style="width:250px;" ></el-input>
+                            <el-input v-model.number="filter.transExpenssPlan" type="number" style="width:250px;"></el-input>
                         </span>
                     </RedStar>
                     <RedStar label="承运货物：" :required="true">
@@ -796,7 +796,7 @@ export default {
                 });
                 return;
             }
-            if(!/^[1-9]\d*$/.test(this.filter.invoicingFrequency)){
+            if(!/^[1-9]\d{0,16}$/.test(this.filter.invoicingFrequency)){
                 this.$message({
                     message: "请正确填写月开票频次(次/月)",
                     type: "warning"
@@ -810,7 +810,7 @@ export default {
                 });
                 return;
             }
-            if(!this.filter.transExpenssPlan || this.filter.transExpenssPlan < 0){
+            if(!/^([1-9][0-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
                 this.$message({
                     message: "请正确填写计划月运费(万元/月)",
                     type: "warning"
