@@ -184,8 +184,8 @@
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
                     <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:100%" @selection-change="handleSelectionChange">
                         <el-table-column
-                        type="selection"
-                        width="55">
+                            type="selection"
+                            width="55">
                         </el-table-column>
                         <el-table-column align="center" label="联系人" width="150px">
                             <template slot-scope="scope">

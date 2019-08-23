@@ -191,7 +191,7 @@ export default {
     background: white;
     padding-left: 7px;
     line-height: 30px;
-    width: 280px;
+    width: 250px;
 }
 .left-red{
     color: red;

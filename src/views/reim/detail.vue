@@ -433,11 +433,11 @@ export default {
             expenseAttachment: [],
             detail: {},
             comment: "",
-            taskId: undefined,
+            taskId: 0,
             dialogCanVisible: false,
             dialogDelVisible: false,
             dialogImg: false,
-            pathType: undefined,
+            pathType: "",
             finish: false
         };
     },
