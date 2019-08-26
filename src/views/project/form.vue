@@ -15,7 +15,7 @@
 
                     <RedStar label="项目名称：" :required="true">
                         <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName" :maxlength="64"></el-input>
+                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.projectName" :maxlength="64"></el-input>
                         </span>
                     </RedStar>
                     
@@ -951,35 +951,35 @@ export default {
                 });
                 return;
             }
-            var flag = true;
-            this.contactList.forEach(item=>{
-                if(!item.linkmanName){
-                    this.$message({
-                        message: "联系人名称不能为空",
-                        type: "warning"
-                    });
-                    flag = false;
-                    return;
-                }
-                else if(!item.linkmanPhone || !/^1[345678][0-9]{9}$/.test(item.linkmanPhone)){
-                    this.$message({
-                        message: "请正确填写联系人联系方式",
-                        type: "warning"
-                    });
-                    flag = false
-                    return;
-                }
-                else if(!item.linkmanPost){
-                    this.$message({
-                        message: "联系人职位不能为空",
-                        type: "warning"
-                    });
-                    flag = false
-                    return;
-                }
-            })
-            
-
+            let self = this
+            function vali(){
+                let flag = true;
+                self.contactList.forEach(item=>{
+                    if(!item.linkmanName){
+                        self.$message({
+                            message: "联系人名称不能为空",
+                            type: "warning"
+                        });
+                        flag = false;
+                    }
+                    else if(!item.linkmanPhone || !/^1[345678][0-9]{9}$/.test(item.linkmanPhone)){
+                        self.$message({
+                            message: "请正确填写联系人联系方式",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                    else if(!item.linkmanPost){
+                        self.$message({
+                            message: "联系人职位不能为空",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                })
+                return flag
+            }
+            let flag = true;
             if(this.itemList.length>0){
                 this.itemList.forEach(item=>{
                     if(!item.nodeName&&!item.nodeAddress){
@@ -992,10 +992,7 @@ export default {
                     }
                 }) 
             }
-            
-         
-            
-            if(flag){
+            if(vali()&&flag){
                 savePro({
                     ...this.filter,
                     projectNodeReqs:this.itemList,
