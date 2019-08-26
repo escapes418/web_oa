@@ -22,7 +22,7 @@
                     
                     <RedStar label="客户名称：" :required="true">
                         <span class="right-con">
-                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请选择" style="width:250px;" :remote-method="searchCust">
+                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请输入客户名称" style="width:250px;" :remote-method="searchCust">
                                 <el-option v-for="item in custArr" :label="item.custName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
