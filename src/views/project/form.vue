@@ -22,7 +22,7 @@
                     
                     <RedStar label="客户名称：" :required="true">
                         <span class="right-con">
-                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请选择" style="width:250px;" :remote-method="searchCust">
+                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请输入客户名称" style="width:250px;" :remote-method="searchCust">
                                 <el-option v-for="item in custArr" :label="item.custName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
@@ -500,7 +500,7 @@ export default {
             fetchForm({
                 id: this.$route.query.key
             }).then(res => {
-                
+                this.processFlag = res.data.processFlag || ""
                 this.filter.id = res.data.id;
                 this.filter.custInfoId= res.data.custInfoId;
                 this.custArr.push({custName:res.data.custInfoName,id:res.data.custInfoId});
@@ -854,7 +854,7 @@ export default {
             }
             if (!this.generalRequire.projectTrusteeshipt) {
                 this.$message({
-                    message: "请选择托管",
+                    message: "请选择是否托管",
                     type: "warning"
                 });
                 return;
@@ -868,14 +868,14 @@ export default {
             }
             if (!this.specialRequire.selfMarketing) {
                 this.$message({
-                    message: "请选择自营",
+                    message: "请选择是否自营",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.returnPoint) {
                 this.$message({
-                    message: "请选择返点",
+                    message: "请选择是否返点",
                     type: "warning"
                 });
                 return;
@@ -889,14 +889,14 @@ export default {
             }
             if (!this.specialRequire.projectAgent) {
                 this.$message({
-                    message: "请选择经纪人",
+                    message: "请选择是否经纪人",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.truckLeader) {
                 this.$message({
-                    message: "请选择车队长",
+                    message: "请选择是否车队长",
                     type: "warning"
                 });
                 return;
@@ -910,35 +910,35 @@ export default {
             }
             if (!this.specialRequire.callTruck) {
                 this.$message({
-                    message: "请选择叫车",
+                    message: "请选择是否叫车",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.projectTrade) {
                 this.$message({
-                    message: "请选择贸易",
+                    message: "请选择是否贸易",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.accountPeriod) {
                 this.$message({
-                    message: "请选择账期",
+                    message: "请选择是否账期",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.networkBusiness) {
                 this.$message({
-                    message: "请选择网商",
+                    message: "请选择是否网商",
                     type: "warning"
                 });
                 return;
             }
             if (!this.specialRequire.projectTray) {
                 this.$message({
-                    message: "请选择托盘",
+                    message: "请选择是否托盘",
                     type: "warning"
                 });
                 return;
@@ -995,6 +995,7 @@ export default {
             if(vali()&&flag){
                 savePro({
                     ...this.filter,
+                    processFlag:this.processFlag,
                     projectNodeReqs:this.itemList,
                     generalRequire:this.generalRequire,
                     specialRequire:this.specialRequire,
