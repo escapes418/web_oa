@@ -500,7 +500,7 @@ export default {
             fetchForm({
                 id: this.$route.query.key
             }).then(res => {
-                
+                this.processFlag = res.data.processFlag || ""
                 this.filter.id = res.data.id;
                 this.filter.custInfoId= res.data.custInfoId;
                 this.custArr.push({custName:res.data.custInfoName,id:res.data.custInfoId});
@@ -995,6 +995,7 @@ export default {
             if(vali()&&flag){
                 savePro({
                     ...this.filter,
+                    processFlag:this.processFlag,
                     projectNodeReqs:this.itemList,
                     generalRequire:this.generalRequire,
                     specialRequire:this.specialRequire,
