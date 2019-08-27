@@ -1,35 +1,35 @@
 import request from '@/utils/request'
 
 export function fetchList(params) {
-  return request({
-    url: '/custInfo/custInfoList',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/custInfo/custInfoList',
+        method: 'post',
+        data:params
+    })
 }
 
 export function custNum(params) {
-  return request({
-    url: '/custInfo/custInfoListNum',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/custInfo/custInfoListNum',
+        method: 'post',
+        data:params
+    })
 }
 
 export function getLinkman(params) {
-  return request({
-    url: '/custInfo/findCustLinkman',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/custInfo/findCustLinkman',
+        method: 'post',
+        data:params
+    })
 }
 
 export function custChange(params) {
-  return request({
-    url: '/custInfo/custChangePick',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/custInfo/custChangePick',
+        method: 'post',
+        data:params
+    })
 }
 
 export function fetchForm(params){
