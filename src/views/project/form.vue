@@ -810,7 +810,8 @@ export default {
                 });
                 return;
             }
-            if(!/^([1-9][0-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
+            // if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan) || this.filter.transExpenssPlan == 0){
+            if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
                 this.$message({
                     message: "请正确填写计划月运费(万元/月)",
                     type: "warning"
@@ -880,7 +881,8 @@ export default {
                 });
                 return;
             }
-            if (this.specialRequire.returnPoint == 1 && !/^[1-9]\d*(\.\d+)?$/.test(this.specialRequire.returnPointProportion)) {
+            // if (this.specialRequire.returnPoint == 1 && (!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion) || this.specialRequire.returnPointProportion == 0)) {
+            if (this.specialRequire.returnPoint == 1 && !/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion)) {
                 this.$message({
                     message: "请正确填写返点比例",
                     type: "warning"
