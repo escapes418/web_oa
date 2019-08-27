@@ -775,9 +775,9 @@ export default {
                 this.specialRequire.returnPointProportion = ""
             }
              
-            if (!this.filter.projectName) {
+            if (!/^[0-9\u4E00-\u9FA5（）()]+$/.test(this.filter.projectName)) {
                 this.$message({
-                    message: "请填写项目名称",
+                    message: "请正确填写项目名称",
                     type: "warning"
                 });
                 return;
