@@ -549,6 +549,8 @@ export default {
                 res.data.projectNodeDetailResponse = res.data.projectNodeDetailResponse || [];
                 this.$store.dispatch('fillItemList', res.data.projectNodeDetailResponse);
             });
+        }else{
+            this.addContact()
         }
     },
     async mounted() {
