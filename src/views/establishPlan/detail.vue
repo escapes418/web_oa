@@ -369,7 +369,7 @@
                 </template> -->
             </div>
             <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
-                <span>确认删除该报销单吗？</span>
+                <span>确认删除该立项申请吗？</span>
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="delBtn">确认</el-button>
                     <el-button @click="dialogDelVisible = false">取消</el-button>
@@ -524,6 +524,9 @@ export default {
                 //     path:'/me/reim'
                 // })
                     this.$router.go(-1);
+                    // this.$router.push({
+                    //     path: "/task/todo"
+                    // });
                 }
             });
         },
@@ -553,6 +556,9 @@ export default {
                         message: res.message,
                         type: "success"
                     });
+                    // this.$router.push({
+                    //     path: "/task/todo"
+                    // });
                     this.$router.go(-1);
                 }
             });
