@@ -115,7 +115,7 @@
             </el-table-column>
             <el-table-column  label="报销时间" align="center">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.createDate">{{scope.row.createDate}}</span>
+                    <span class="ignore-detail" :title="scope.row.applyTime">{{scope.row.applyTime}}</span>
                 </template>
             </el-table-column>
             <el-table-column  label="费用合计" align="center">
