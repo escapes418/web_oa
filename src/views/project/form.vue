@@ -777,7 +777,7 @@ export default {
              
             if (!/^[0-9\u4E00-\u9FA5（）()]+$/.test(this.filter.projectName)) {
                 this.$message({
-                    message: "请正确填写项目名称",
+                    message: "请正确填写项目名称，仅支持数字、中文和中英文小括号",
                     type: "warning"
                 });
                 return;
@@ -798,7 +798,7 @@ export default {
             }
             if(!/^[1-9]\d{0,5}$/.test(this.filter.invoicingFrequency)){
                 this.$message({
-                    message: "请正确填写月开票频次(次/月)",
+                    message: "请正确填写月开票频次(次/月)，仅支持最长5位的正整数",
                     type: "warning"
                 });
                 return;
@@ -813,7 +813,7 @@ export default {
             // if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan) || this.filter.transExpenssPlan == 0){
             if(!/^([0-9]{1,15})(\.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
                 this.$message({
-                    message: "请正确填写计划月运费(万元/月)",
+                    message: "请正确填写计划月运费(万元/月)，仅支持最长16位正数和小数点后两位",
                     type: "warning"
                 });
                 return;
@@ -884,7 +884,7 @@ export default {
             // if (this.specialRequire.returnPoint == 1 && (!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion) || this.specialRequire.returnPointProportion == 0)) {
             if (this.specialRequire.returnPoint == 1 && !/^([0-9]{1,5})(\.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion)) {
                 this.$message({
-                    message: "请正确填写返点比例",
+                    message: "请正确填写返点比例，仅支持最长5位的正数和小数点后两位",
                     type: "warning"
                 });
                 return;
