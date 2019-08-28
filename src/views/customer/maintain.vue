@@ -214,7 +214,9 @@ export default {
                             message: res.message,
                             type: "success"
                         });
-                        this.$router.go(0)
+                        setTimeout(_=>{
+                            this.$router.go(0)
+                        },500)
                     }
                 });
             }
