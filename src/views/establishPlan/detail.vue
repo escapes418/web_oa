@@ -460,26 +460,19 @@ export default {
         if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
         if(this.$route.query.key) this.projectApprovalFlowId = this.$route.query.key
         // if (this.$route.query.key) {
-            this.showNum = true;
-            getDetail({
-                projectApprovalFlowId: this.projectApprovalFlowId
-            }).then(res => {
-                this.detail = res.data.projectApprovalFlowResp;
-                this.flowLoglist = res.data.flowLoglist;
-                this.contactList = res.data.projectApprovalFlowResp.projectApprovalLinkman&&res.data.projectApprovalFlowResp.projectApprovalLinkman.map((i,key)=>{
-                    return {
-                        ...i,
-                        index:key+1
-                    }
-                })
-                // if(res.data.carrierGoodsName){
-                //     this.detail.carrierGoodsName = res.data.carrierGoodsName
-                // }
-                
-                // res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
-                //     this.companyList.push(item.companyName)
-                // })
-            });
+        this.showNum = true;
+        getDetail({
+            projectApprovalFlowId: this.projectApprovalFlowId
+        }).then(res => {
+            this.detail = res.data.projectApprovalFlowResp;
+            this.flowLoglist = res.data.flowLoglist;
+            this.contactList = res.data.projectApprovalFlowResp.projectApprovalLinkman&&res.data.projectApprovalFlowResp.projectApprovalLinkman.map((i,key)=>{
+                return {
+                    ...i,
+                    index:key+1
+                }
+            })
+        });
         // }
     },
     mounted() {
@@ -502,13 +495,6 @@ export default {
             // });
         },
         agreeBtn() {
-            // if (this.comment.length > 100) {
-            //     this.$message({
-            //     message: "输入字符超出限额，请重新输入！",
-            //     type: "warning"
-            //     });
-            //     return;
-            // }
             proFlow({
                 projectApprovalFlowId: this.$route.query.key,
                 comment: this.comment,
@@ -520,13 +506,7 @@ export default {
                         message: res.message,
                         type: "success"
                     });
-                // this.$router.push({
-                //     path:'/me/reim'
-                // })
                     this.$router.go(-1);
-                    // this.$router.push({
-                    //     path: "/task/todo"
-                    // });
                 }
             });
         },
@@ -538,13 +518,6 @@ export default {
                 });
                 return;
             }
-            // if (this.comment.length > 300) {
-            //     this.$message({
-            //         message: "输入字符超出限额，请重新输入！",
-            //         type: "warning"
-            //     });
-            //     return;
-            // }
             proFlow({
                 projectApprovalFlowId: this.$route.query.key,
                 comment: this.comment,
@@ -556,9 +529,6 @@ export default {
                         message: res.message,
                         type: "success"
                     });
-                    // this.$router.push({
-                    //     path: "/task/todo"
-                    // });
                     this.$router.go(-1);
                 }
             });
