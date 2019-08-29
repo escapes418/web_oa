@@ -798,7 +798,7 @@ export default {
                 });
                 return;
             }
-            if(!/^[1-9]\d{0,5}$/.test(this.filter.invoicingFrequency)){
+            if(!/^[1-9]{0,5}$/.test(this.filter.invoicingFrequency)){
                 this.$message({
                     message: "请正确填写月开票频次(次/月)，仅支持最长5位的正整数",
                     type: "warning"
@@ -815,7 +815,7 @@ export default {
             // if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan) || this.filter.transExpenssPlan == 0){
             if(!/^([0-9]{1,15})(\.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
                 this.$message({
-                    message: "请正确填写计划月运费(万元/月)，仅支持最长16位正数和小数点后两位",
+                    message: "请正确填写计划月运费(万元/月)，仅支持最长15位正数和小数点后两位",
                     type: "warning"
                 });
                 return;
