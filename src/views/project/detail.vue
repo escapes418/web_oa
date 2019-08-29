@@ -55,7 +55,7 @@
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">实际上线时间：</span>
                                     <span class="right-con">
-                                        {{ detail.onlinePlanTime | stamp2TextDate}}
+                                        {{ detail.onLineDate | stamp2TextDate}}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
