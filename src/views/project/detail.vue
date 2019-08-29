@@ -16,21 +16,16 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">项目类型：</span>
+                                    <span class="left-title font-gray">项目名称：</span>
                                     <span class="right-con">
-                                        {{ detail.projectTypeName }}
+                                        {{ detail.projectName }}
                                     </span>
                                 </div>
+                                
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">客户名称：</span>
                                     <span class="right-con">
                                         {{ detail.custInfoName }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">市场负责人：</span>
-                                    <span class="right-con">
-                                        {{ detail.marketLeaderName }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
@@ -39,24 +34,84 @@
                                         {{ companyList.join('，') }}
                                     </span>
                                 </div>
-                            </el-col>
-                            <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">项目名称：</span>
+                                    <span class="left-title font-gray">项目等级：</span>
                                     <span class="right-con">
-                                        {{ detail.projectName }}
+                                        {{ detail.projectLevel }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">归属部门：</span>
+                                    <span class="left-title font-gray">承运货物：</span>
                                     <span class="right-con">
-                                        {{ detail.officeName }}
+                                        {{ goodsNames.join('，')}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">计划上线时间：</span>
+                                    <span class="right-con">
+                                        {{ detail.onlinePlanTime | stamp2TextDate}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">实际上线时间：</span>
+                                    <span class="right-con">
+                                        {{ detail.onlinePlanTime | stamp2TextDate}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">商务助理：</span>
+                                    <span class="right-con">
+                                        {{ detail.businessAssistantName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">VIP客服：</span>
+                                    <span class="right-con">
+                                        {{ detail.vipCustomerName }}
+                                    </span>
+                                </div>
+                            </el-col>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">项目类型：</span>
+                                    <span class="right-con">
+                                        {{ detail.projectTypeName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">月开票频次(次/月)：</span>
+                                    <span class="right-con">
+                                        {{ detail.invoicingFrequency }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">计划月运费(万元/月)：</span>
+                                    <span class="right-con">
+                                        {{ detail.transExpenssPlan }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">项目负责人：</span>
                                     <span class="right-con">
-                                        {{ detail.projectLeaderName }}
+                                        {{ detail.newProjectLeaderName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">归属部门：</span>
+                                    <span class="right-con">
+                                        {{ detail.newOfficeName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">归属部门负责人：</span>
+                                    <span class="right-con">
+                                        {{ detail.officeLeaderName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">项目管理负责人：</span>
+                                    <span class="right-con">
+                                        {{ detail.projectManager }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
@@ -65,6 +120,128 @@
                                         {{ detail.impleLeaderName }}
                                     </span>
                                 </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">清结算：</span>
+                                    <span class="right-con">
+                                        {{ detail.accountLeaderName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item" v-if="processFlag">
+                                    <span class="float-con">
+                                        <el-button type="text" size="small" @click="showEstablish">查看项目调研表<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                                    </span>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+                <div class="segment statistics">
+                    <div class="segment-header">
+                        一般要求
+                    </div>
+                    <div class="segment-area">
+                        <el-row>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">开票方式：</span>
+                                    <span class="right-con">
+                                        {{ detail.generalRequireResponse&&detail.generalRequireResponse.invoiceModeName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item" v-if="detail.generalRequireResponse&&detail.generalRequireResponse.projectTrusteeshipt == 1">
+                                    <span class="left-title font-gray">托管渠道：</span>
+                                    <span class="right-con">
+                                        {{ detail.generalRequireResponse&&detail.generalRequireResponse.trusteeshiptChannelName }}
+                                    </span>
+                                </div>
+                            </el-col>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">托管：</span>
+                                    <span class="right-con">
+                                        {{ detail.generalRequireResponse&&detail.generalRequireResponse.projectTrusteeshiptName }}
+                                    </span>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+                <div class="segment statistics">
+                    <div class="segment-header">
+                        特殊要求
+                    </div>
+                    <div class="segment-area">
+                        <el-row>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">自营：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.selfMarketingName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">经纪人：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectAgentName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">油气：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.oilGasName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">贸易：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTradeName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">网商：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.networkBusinessName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">托盘：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTrayName }}
+                                    </span>
+                                </div>
+                            </el-col>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">返点：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.returnPointName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item" v-if="detail.specialRequireResponse&&detail.specialRequireResponse.returnPoint == 1">
+                                    <span class="left-title font-gray">返点比例（%）：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.returnPointProportion }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">车队长：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.truckLeaderName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">叫车：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.callTruckName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">账期：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.accountPeriodName }}
+                                    </span>
+                                </div>
+                                
                             </el-col>
                         </el-row>
                     </div>
@@ -82,6 +259,47 @@
                             :readonly="true"
                             v-model.trim="detail.remarks">
                         </sjbtextarea>
+                    </div>
+                </div>
+                <div class="segment statistics">
+                    <div class="segment-header">
+                        <span class="left-red">*</span>
+                        联系人信息
+                    </div>
+                    <div class="segment-area">
+                        <div class="el-table__body-wrapper" style="padding: 15px 0;">
+                            <el-table ref="multipleTable" border :data="contactList" tooltip-effect="dark" style="width:800px">
+                                <el-table-column align="center" label="编号" width="50px">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.index}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="联系人" width="320px">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.linkmanName}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="联系方式">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.linkmanPhone}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="职位">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.linkmanPost}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="备注（选填）">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.remarks}}</span>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                        <!-- <div class="pagination-container">
+                            <el-pagination background @current-change="handleNodeChange" :current-page="pageNodeNo" :page-size="pageNodeSize" layout="total, prev, pager, next, jumper" :total="nodeTotal">
+                            </el-pagination>
+                        </div> -->
                     </div>
                 </div>
                 <div class="segment statistics">
@@ -328,7 +546,10 @@ export default {
             pageImSize:10,
             imTotal:0,
             imList:[],
-            companyList:[]
+            companyList:[],
+            contactList:[],
+            goodsNames:[],
+            processFlag:""
         };
     },
     watch: {
@@ -341,8 +562,21 @@ export default {
                 id: this.$route.query.key
             }).then(res => {
                 this.detail = res.data;
+                this.processFlag = res.data.processFlag || ""
+                res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
+                    this.goodsNames.push(item.carrierGoodName)
+                })
                 res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
                     this.companyList.push(item.companyName)
+                })
+                // res.data.projectLinkmanDetailResponse.forEach((item,index)=>{
+                //     item.index = index+1
+                // })
+                this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map((i,key)=>{
+                    return {
+                        ...i,
+                        index:key+1
+                    }
                 })
             });
             this.$$queryStub = this.$$listQuery;
@@ -453,6 +687,12 @@ export default {
                 path:'/inforManage/contractFillDetail',
                 query: { key: row.contractHisId }
             })
+        },
+        showEstablish(){
+            this.$router.push({
+                path:'/inforManage/establishDetail',
+                query: { key: this.processFlag ,pathType: 'list' }
+            })
         }
     }
 };
@@ -520,5 +760,8 @@ export default {
 .item-label{
     color: #616367;
     font-size: 12px;
+}
+.float-con{
+    float:right
 }
 </style>

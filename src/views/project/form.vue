@@ -15,26 +15,17 @@
 
                     <RedStar label="项目名称：" :required="true">
                         <span class="right-con">
-                            <el-input placeholder="请输入" style="width:250px;" v-model="filter.projectName" :maxlength="50"></el-input>
+                            <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.projectName" :maxlength="64"></el-input>
                         </span>
                     </RedStar>
                     
                     
                     <RedStar label="客户名称：" :required="true">
                         <span class="right-con">
-                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请选择" style="width:250px;" :remote-method="searchCust">
+                            <el-select filterable remote reserve-keyword  clearable class="filter-item" v-model="filter.custInfoId" placeholder="请输入客户名称" style="width:250px;" :remote-method="searchCust">
                                 <el-option v-for="item in custArr" :label="item.custName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
-                        </span>
-                    </RedStar>
-                    
-                    <RedStar label="市场负责人：" :required="true">
-                        <span class="right-con">
-                            <div class="item-value" @click="dialogMarketVisible = !dialogMarketVisible">
-                                <i class="el-icon-search" style="color:#bfbfbf"></i>
-                                <span style="color:#606266">{{marketLeader}}</span>
-                            </div>
                         </span>
                     </RedStar>
 
@@ -54,6 +45,36 @@
                             </el-select>
                         </span>
                     </RedStar>
+                    <RedStar label="项目等级：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="filter.projectLevel" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in LevelList" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="计划上线时间：" :required="true">
+                        <span class="right-con">
+                            <el-date-picker style="width:250px" v-model="onlinePlanTime" type="date" placeholder="选择日期">
+                            </el-date-picker>
+                        </span>
+                    </RedStar>
+                    <RedStar label="商务助理：">
+                        <span class="right-con">
+                            <div class="item-value" @click="showDialog(1)">
+                                <i class="el-icon-search" style="color:#bfbfbf"></i>
+                                <span style="color:#606266">{{assistLeader}}</span>
+                            </div>
+                        </span>
+                    </RedStar>
+                    <RedStar label="VIP客服：">
+                        <span class="right-con">
+                            <div class="item-value" @click="showDialog(2)">
+                                <i class="el-icon-search" style="color:#bfbfbf"></i>
+                                <span style="color:#606266">{{serviceLeader}}</span>
+                            </div>
+                        </span>
+                    </RedStar>
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="项目类型：" :required="true">
@@ -64,22 +85,183 @@
                             </el-select>
                         </span>
                     </RedStar>
-                    <Department type="form" :DId="filter.officeId" :Dvalue="depart" @on-confirm="depConfirm"></Department>
-                    <RedStar label="项目负责人：" :required="true">
+                    <RedStar label="月开票频次(次/月)：" :required="true">
                         <span class="right-con">
-                            <div class="item-value" @click="dialogProVisible = !dialogProVisible">
+                            <el-input v-model.number="filter.invoicingFrequency" type="number" style="width:250px;"></el-input>
+                        </span>
+                    </RedStar>
+                     <RedStar label="计划月运费(万元/月)：" :required="true">
+                        <span class="right-con">
+                            <el-input v-model.number="filter.transExpenssPlan" type="number" style="width:250px;"></el-input>
+                        </span>
+                    </RedStar>
+                    <RedStar label="承运货物：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable multiple filterable class="filter-item" v-model="filter.carrierGoods" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in goods" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <!-- <Department type="form" :DId="filter.officeId" :Dvalue="depart" @on-confirm="depConfirm"></Department> -->
+                    <RedStar label="项目管理负责人：" :required="true">
+                        <span class="right-con">
+                            <div class="item-value" @click="showDialog(3)">
                                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                                 <span style="color:#606266">{{proLeader}}</span>
                             </div>
                         </span>
                     </RedStar>
                    
-                    <RedStar label="实施负责人：" :required="true">
+                    <RedStar label="实施负责人：">
                         <span class="right-con">
-                            <div class="item-value" @click="dialogImpleVisible = !dialogImpleVisible">
+                            <div class="item-value" @click="showDialog(4)">
                                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                                 <span style="color:#606266">{{impleLeader}}</span>
                             </div>
+                        </span>
+                    </RedStar>
+                    <RedStar label="清结算：">
+                        <span class="right-con">
+                            <div class="item-value" @click="showDialog(5)">
+                                <i class="el-icon-search" style="color:#bfbfbf"></i>
+                                <span style="color:#606266">{{settleLeader}}</span>
+                            </div>
+                        </span>
+                    </RedStar>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+    <div class="segment statistics">
+        <div class="segment-header">
+           一般要求：
+        </div>
+        <div class="segment-area">
+            <el-row>
+                <el-col :span="12" class="segment-brline">
+                    <RedStar label="开票方式：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="generalRequire.invoiceMode" placeholder="请选择开票方式" style="width:250px;" >
+                                <el-option v-for="item in invoiceList" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="托管渠道：" :required="true" v-if="generalRequire.projectTrusteeshipt == 1">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="generalRequire.trusteeshiptChannel" placeholder="请选择托管渠道" style="width:250px;" >
+                                <el-option v-for="item in channelList" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                </el-col>
+                <el-col :span="12" class="segment-brline">
+                    <RedStar label="托管：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="generalRequire.projectTrusteeshipt" placeholder=" 请选择是否托管" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+    <div class="segment statistics">
+        <div class="segment-header">
+           特殊要求：
+        </div>
+        <div class="segment-area">
+            <el-row>
+                <el-col :span="12" class="segment-brline">
+                    <RedStar label="自营：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.selfMarketing" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="经纪人：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.projectAgent" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="油气：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.oilGas" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in oilGasList" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="贸易：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.projectTrade" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="网商：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.networkBusiness" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="托盘：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.projectTray" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                </el-col>
+                <el-col :span="12" class="segment-brline">
+                    <RedStar label="返点：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.returnPoint" placeholder="请选择" style="width:250px;">
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="返点比例（%）：" :required="true" v-if="specialRequire.returnPoint == 1">
+                        <span class="right-con">
+                            <el-input v-model.number="specialRequire.returnPointProportion" type="number" style="width:250px;"></el-input>
+                        </span>
+                    </RedStar>
+                    <RedStar label="车队长：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.truckLeader" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="叫车：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item" v-model="specialRequire.callTruck" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </RedStar>
+                    <RedStar label="账期：" :required="true">
+                        <span class="right-con">
+                            <el-select clearable class="filter-item"v-model="specialRequire.accountPeriod" placeholder="请选择" style="width:250px;" >
+                                <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
+                                </el-option>
+                            </el-select>
                         </span>
                     </RedStar>
                     
@@ -87,6 +269,7 @@
             </el-row>
         </div>
     </div>
+
     <div class="segment statistics">
         <div class="segment-header">
             备注：
@@ -101,6 +284,47 @@
             </sjbtextarea>
         </div>
     </div>
+
+     <div class="segment statistics">
+            <div class="segment-header">
+                <span class="left-red">*</span>
+                联系人信息
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper" style="padding: 15px 0;">
+                    <el-table ref="multipleTable" border :data="contactList" tooltip-effect="dark" style="width:100%" @selection-change="handleSelectionChange">
+                        <el-table-column
+                            type="selection"
+                            width="55">
+                        </el-table-column>
+                        <el-table-column align="center" label="联系人" width="150px">
+                            <template slot-scope="scope">
+                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanName" :maxlength="50"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="联系方式" width="180px">
+                            <template slot-scope="scope">
+                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPhone" :maxlength="50"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="职位" width="150px">
+                            <template slot-scope="scope">
+                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPost" :maxlength="50"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="备注（选填）" >
+                            <template slot-scope="scope">
+                                <el-input auto-complete="off" v-model.trim="scope.row.remarks" :maxlength="200"></el-input>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
+            <div class="segment-foot">
+                <el-button type="primary" size="small" @click="addContact">新增</el-button>
+                <el-button type="danger" size="small" @click="delContact">删除</el-button>
+            </div>
+        </div>
     <div class="segment statistics">
         <div class="segment-header">
             实施节点
@@ -129,28 +353,12 @@
             <el-button type="danger" size="small" @click="del">删除</el-button>
         </div>
     </div>
-    <el-dialog title="选择项目负责人" :visible.sync="dialogProVisible"  width="25%" :center="true">
-        <el-input placeholder="输入关键字进行过滤" v-model="filterPro" style="margin-bottom:10px"></el-input>
-        <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleProClick"  :filter-node-method="proNode" ref="proTree"></el-tree>
+    <el-dialog :title="title" :visible.sync="dialogVisible"  width="25%" :center="true">
+        <el-input placeholder="输入关键字进行过滤" v-model="filterTree" style="margin-bottom:10px"></el-input>
+        <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleClick"  :filter-node-method="memberNode" ref="tree"></el-tree>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogProVisible = false">取消</el-button>
-            <el-button type="primary" @click="selectPro">确认</el-button>
-        </div>
-    </el-dialog>
-    <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true">
-        <el-input placeholder="输入关键字进行过滤" v-model="filterMarket" style="margin-bottom:10px"></el-input>
-        <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogMarketVisible = false">取消</el-button>
-            <el-button type="primary" @click="selectMarket">确认</el-button>
-        </div>
-    </el-dialog>
-    <el-dialog title="选择实施负责人" :visible.sync="dialogImpleVisible" width="25%" :center="true">
-        <el-input placeholder="输入关键字进行过滤" v-model="filterImple" style="margin-bottom:10px"></el-input>
-        <el-tree node-key="id" :data="treeData"  show-checkbox check-strictly :props="defaultProps" @check-change="handleImpleClick" :filter-node-method="impleNode" ref="impleTree"></el-tree>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogImpleVisible = false">取消</el-button>
-            <el-button type="primary" @click="selectImple">确认</el-button>
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="selectMember">确认</el-button>
         </div>
     </el-dialog>
     <div class="segment statistics">
@@ -199,22 +407,15 @@ export default {
         let self = this;
         return {
             showNum: false,
-            dialogDepartVisible: false,
-            dialogProVisible: false,
-            dialogMarketVisible: false,
-            dialogImpleVisible: false,
-            filterDepart: "",
-            filterPro: "",
-            filterMarket: "",
-            filterImple: "",
+            dialogVisible: false,
+            title:"",
+            dialogType:"",
+            filterTree: "",
+            serviceLeader: "",
+            assistLeader: "",
             proLeader: "",
-            depart: "",
-            marketLeader: "",
             impleLeader: "",
-            departProps: {
-                children: "children",
-                label: "name"
-            },
+            settleLeader:"",
             defaultProps: {
                 children: "children",
                 label: "name"
@@ -222,45 +423,75 @@ export default {
             treeData: [],
             proTypeList: [],
             proStateList: [],
-            departTreeList: [],
-            // itemList: [],
             projectCode: "",
             multipleSelection:[],
+            onlinePlanTime:'',
             filter: {
                 //筛选条件
-                id: null,
-                custInfoId: "",
-                officeId: "",
-                impleLeaderId: "",
-                marketLeaderId: "",
-                projectLeaderId: "",
-                projectType: "",
-                projectName: "",
-                remarks: "",
-                holderCode:[]
+                accountLeaderId: "",//清结算 ,
+                businessAssistantId:"" ,//商务助理 ,
+                carrierGoods:[],// 承运货物:1煤炭2钢铁3商砼4其他 ,
+                custInfoId:"",// 归属客户 ,
+                // generalRequire:"",// 一般要求 ,
+                holderCode:[],// 企业编号 ,
+                id:"" ,//主键id ,
+                impleLeaderId: "",//实施负责人 ,
+                invoicingFrequency:"", //月开票频次（次/月） ,
+                // marketLeaderId:"",// 市场负责人 ,
+                // officeId:"",// 归属部门 ,
+                onlinePlanTime:"", //计划上线时间 ,
+                // producSide :"",
+                // projectLeaderId:"",// 项目负责人 ,
+                projectLevel:"",// 项目等级ABCD ,
+                projectManagerId:"",// 项目管理负责人 ,
+                projectName:"",// 项目名称 ,
+                projectNodeReqs:[],// 项目节点 ,
+                projectType:"",// 项目类型0公司项目1市场项目 ,
+                remarks:"",// 备注 ,
+                // specialRequire: 特殊要求 ,
+                transExpenssPlan : "",//计划月运费(万元) ,
+                vipCustomerId :"", //VIP客服
+            },
+            // 一般要求 ,
+            generalRequire:{
+                invoiceMode:"",
+                projectTrusteeshipt:"",
+                trusteeshiptChannel:"1"
+            },
+            //特殊要求 ,
+            specialRequire:{
+                accountPeriod:"0",// 账期：1是，0否 ,
+                callTruck:"0",// 叫车：1是，0否 ,
+                networkBusiness:"0",// 网商：1是，0否 ,
+                oilGas:"1",// 油气：1不做油气，2带油,3带气,4带油和气 ,
+                projectAgent:"0",// 项目经纪人：1是，0否 ,
+                projectTrade:"0",// 贸易：1是，0否 ,
+                projectTray:"0",// 项目托盘：1是，0否 ,
+                returnPoint:"0",// 返点：1是，0否 ,
+                returnPointProportion:"",
+                selfMarketing:"0",// 自营：1是，0否 ,
+                truckLeader:"0",// 车队长：1是，0否
             },
             custArr: [],
-            proData:[],
-            marketData:[],
-            impData:[],
+            memberData:[],
+
             comList:[],
 
-            companyList:[]
+            companyList:[],
+            contactList:[],
+            yesNo:[],
+            oilGasList:[],
+            invoiceList:[],
+            channelList:[],
+            goods:[],
+            LevelList:[],
+            processFlag:""
         };
     },
     watch: {
-        filterDepart(val) {
-            this.$refs.departTree.filter(val);
+        filterTree(val) {
+            this.$refs.tree.filter(val);
         },
-        filterPro(val) {
-            this.$refs.proTree.filter(val);
-        },
-        filterMarket(val) {
-            this.$refs.marketTree.filter(val);
-        },
-        filterImple(val) {
-            this.$refs.impleTree.filter(val);
-        }
     },
     created() {
         this.$store.dispatch('clearList');
@@ -269,13 +500,13 @@ export default {
             fetchForm({
                 id: this.$route.query.key
             }).then(res => {
+                this.processFlag = res.data.processFlag || ""
                 this.filter.id = res.data.id;
                 this.filter.custInfoId= res.data.custInfoId;
-                this.custArr.push({custName:res.data.custInfoName,id:res.data.custInfoId})
-                this.filter.officeId= res.data.officeId;
-                this.filter.impleLeaderId= res.data.impleLeaderId;
-                this.filter.marketLeaderId= res.data.marketLeaderId;
-                this.filter.projectLeaderId = res.data.projectLeaderId;
+                this.custArr.push({custName:res.data.custInfoName,id:res.data.custInfoId});
+                this.filter.transExpenssPlan = res.data.transExpenssPlan;
+                this.filter.invoicingFrequency = res.data.invoicingFrequency;
+                this.filter.projectLevel = res.data.projectLevel
                 this.filter.projectType= res.data.projectType;
                 this.filter.projectName= res.data.projectName;
                 this.filter.remarks= res.data.remarks;
@@ -285,15 +516,41 @@ export default {
                     this.filter.holderCode.push(item.holderCode)
                 })
                 this.projectCode = res.data.projectCode;
-                this.depart = res.data.officeName;
-                this.marketLeader = res.data.marketLeaderName;
-                this.impleLeader = res.data.impleLeaderName;
-                this.proLeader = res.data.projectLeaderName;
-
+                this.filter.vipCustomerId = res.data.vipCustomerId;
+                this.serviceLeader = res.data.vipCustomerName;
+                this.filter.businessAssistantId = res.data.businessAssistantId;
+                this.assistLeader = res.data.businessAssistantName;
+                this.filter.projectManagerId = res.data.projectManagerId;
+                this.proLeader= res.data.projectManager;
+                this.filter.impleLeaderId = res.data.impleLeaderId;
+                this.impleLeader= res.data.impleLeaderName;
+                this.filter.accountLeaderId = res.data.accountLeaderId
+                this.settleLeader= res.data.accountLeaderName;
+                if(res.data.generalRequireResponse){
+                    this.generalRequire = res.data.generalRequireResponse;
+                }
+                if(res.data.specialRequireResponse){
+                    this.specialRequire = res.data.specialRequireResponse;
+                }
+                if(res.data.onlinePlanTime){
+                    this.onlinePlanTime = common.timeParseObj(res.data.onlinePlanTime)
+                }
+                if(res.data.projectLinkmanDetailResponse){
+                    this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map(item=>{   
+                        return{
+                            ...item,
+                            index: (parseInt((Math.random() * 100000)) + new Date().getTime())
+                        }
+                    })
+                }
+                res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
+                    this.filter.carrierGoods.push(item.carrierGood)
+                })
                 res.data.projectNodeDetailResponse = res.data.projectNodeDetailResponse || [];
                 this.$store.dispatch('fillItemList', res.data.projectNodeDetailResponse);
-                
             });
+        }else{
+            this.addContact()
         }
     },
     async mounted() {
@@ -310,14 +567,12 @@ export default {
         }
         this.proTypeList = selectDic(dicList, "project_type");
         this.proStateList = selectDic(dicList, "project_state");
-
-        //部门树
-
-        let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
-        var newDepart = [];
-        common.transToTree(departList, newDepart);
-        this.departTreeList = newDepart;
-
+        this.yesNo = selectDic(dicList,"yes_no");
+        this.oilGasList = selectDic(dicList, "oil_gas");
+        this.invoiceList = selectDic(dicList, "invoice_mode");
+        this.channelList = selectDic(dicList, "trusteeshipt_channel");
+        this.goods = selectDic(dicList, "carrier_goods");
+        this.LevelList = selectDic(dicList, "project_level")
         //人员树
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
@@ -353,6 +608,28 @@ export default {
         this.treeData = newArr;
     },
     methods: {
+        handleSelectionChange(val){
+            this.multipleSelection = val;
+        },
+        showDialog(type){
+            this.dialogType = type;
+            this.dialogVisible = true;
+            if(type==1){
+                this.title = "请选择商务助理"
+            }
+            if(type==2){
+                this.title = "请选择VIP客服"
+            }
+            if(type==3){
+                this.title = "请选择项目管理负责人"
+            }
+            if(type==4){
+                this.title = "请选择实施负责人"
+            }
+            if(type==5){
+                this.title = "请选择清结算"
+            }
+        },
         searchCust(val){
             if(val !==''){
                 custList({
@@ -387,7 +664,24 @@ export default {
             }
             
         },
-        
+        addContact(){
+            this.contactList.push({ index: parseInt((Math.random() * 100000))+new Date().getTime(),});
+        },
+        delContact(){
+            var _this = this
+            var newindex = [];
+            var newBox = [];
+            _this.multipleSelection.forEach((value,idx)=>{
+                newindex.push(value.index)
+            })
+            var arrBox = JSON.parse(JSON.stringify(this.contactList||[]))
+            arrBox.forEach((val,num)=>{
+                if(newindex.indexOf(val.index) == -1){
+                    newBox.push(arrBox[num])
+                }
+            })
+            this.contactList = newBox
+        },
         searchCom(val){
             if(val !== ''){
                 getCompanyList({
@@ -402,121 +696,43 @@ export default {
             }
         },
        
-        proNode(value, data) {
+        memberNode(value, data) {
             if (!value) return true;
             return data.name.indexOf(value) !== -1;
         },
-        marketNode(value, data) {
-            if (!value) return true;
-            return data.name.indexOf(value) !== -1;
-        },
-        impleNode(value, data) {
-            if (!value) return true;
-            return data.name.indexOf(value) !== -1;
-        },
-        depConfirm(data) {
-            // console.log(data)
-            this.depart = data.name;
-            this.filter.officeId = data.id;
-        },
-        handleProClick(data,select,childSelect) {
-            let index = this.proData.indexOf(data)
-            if(index<0&&this.proData.length ===1&&select){
+        
+        handleClick(data,select,childSelect) {
+            let index = this.memberData.indexOf(data)
+            if(index<0&&this.memberData.length ===1&&select){
                 if(data.type =='2'&&data.status == '1'){
-                    this.$refs.proTree.setChecked(this.proData[0],false);
-                    this.proData = [];
-                    this.$refs.proTree.setChecked(data,true);
-                    this.proData.push(data)
+                    this.$refs.tree.setChecked(this.memberData[0],false);
+                    this.memberData = [];
+                    this.$refs.tree.setChecked(data,true);
+                    this.memberData.push(data)
                 }else{
                     this.$message({
                         message: "该节点不可选！",
                         type: 'warning'
                     })
-                    this.$refs.proTree.setChecked(data,false);
-                    this.$refs.proTree.setChecked(this.proData[0],true);
+                    this.$refs.tree.setChecked(data,false);
+                    this.$refs.tree.setChecked(this.memberData[0],true);
                     return
                 }
                 
-            }else if(this.proData.length ===0&&select){
+            }else if(this.memberData.length ===0&&select){
                 if(data.type =='2'&&data.status == '1'){
-                    this.proData = [];
-                    this.proData.push(data)
+                    this.memberData = [];
+                    this.memberData.push(data)
                 }else{
                     this.$message({
                         message: "该节点不可选！",
                         type: 'warning'
                     })
-                    this.$refs.proTree.setChecked(data,false);
+                    this.$refs.tree.setChecked(data,false);
                     return
                 }
-            }else if(index>=0&&this.proData.length===1&&!select){
-                this.proData = []
-            }
-        },
-        handleMarketClick(data,select,childSelect) {
-            let index = this.marketData.indexOf(data)
-            if(index<0&&this.marketData.length ===1&&select){
-                if(data.type =='2'&&data.status == '1'){
-                    this.$refs.marketTree.setChecked(this.marketData[0],false);
-                    this.marketData = [];
-                    this.$refs.marketTree.setChecked(data,true);
-                    this.marketData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.marketTree.setChecked(data,false);
-                    this.$refs.marketTree.setChecked(this.marketData[0],true);
-                    return
-                }
-            }else if(this.marketData.length ===0&&select){
-                if(data.type =='2'&&data.status == '1'){
-                    this.marketData = [];
-                    this.marketData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.marketTree.setChecked(data,false);
-                    return
-                }
-            }else if(index>=0&&this.marketData.length===1&&!select){
-                this.marketData = []
-            }
-        },
-        handleImpleClick(data,select,childSelect) {
-            let index = this.impData.indexOf(data)
-            if(index<0&&this.impData.length ===1&&select){
-                if(data.type =='2'&&data.status == '1'){
-                    this.$refs.impleTree.setChecked(this.impData[0],false);
-                    this.impData = [];
-                    this.$refs.impleTree.setChecked(data,true);
-                    this.impData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.impleTree.setChecked(data,false);
-                    this.$refs.impleTree.setChecked(this.impData[0],true);
-                    return
-                }
-            }else if(this.impData.length ===0&&select){
-                if(data.type =='2'&&data.status == '1'){
-                    this.impData = [];
-                    this.impData.push(data)
-                }else{
-                    this.$message({
-                        message: "该节点不可选！",
-                        type: 'warning'
-                    })
-                    this.$refs.impleTree.setChecked(data,false);
-                    return
-                }
-            }else if(index>=0&&this.impData.length===1&&!select){
-                this.impData = []
+            }else if(index>=0&&this.memberData.length===1&&!select){
+                this.memberData = []
             }
         },
         backStep() {
@@ -524,49 +740,46 @@ export default {
                 path: "/inforManage/projectList"
             });
         },
-        selectPro() {
-            if(this.proData.length){
-                this.proLeader = this.proData[0].name;
-                this.filter.projectLeaderId = this.proData[0].id;
-                this.dialogProVisible = false;
+        selectMember() {
+            if(this.memberData.length&&this.dialogType){
+                if(this.dialogType == 1){
+                    this.assistLeader = this.memberData[0].name;
+                    this.filter.businessAssistantId  = this.memberData[0].id;
+                }
+                if(this.dialogType == 2){
+                    this.serviceLeader = this.memberData[0].name;
+                    this.filter.vipCustomerId = this.memberData[0].id;
+                }
+                if(this.dialogType == 3){
+                    this.proLeader = this.memberData[0].name;
+                    this.filter.projectManagerId = this.memberData[0].id;
+                }
+                if(this.dialogType == 4){
+                    this.impleLeader = this.memberData[0].name;
+                    this.filter.impleLeaderId = this.memberData[0].id;
+                }
+                if(this.dialogType == 5){
+                    this.settleLeader = this.memberData[0].name;
+                    this.filter.accountLeaderId  = this.memberData[0].id;
+                }
+                this.dialogVisible = false;
             }else{
                 this.$message({
-                    message: "请选择项目负责人",
-                    type: "warning"
-                });
-                return;
-            }
-        },
-        selectMarket() {
-            if(this.marketData.length){
-                this.marketLeader = this.marketData[0].name;
-                this.filter.marketLeaderId = this.marketData[0].id;
-                this.dialogMarketVisible = false;
-            }else{
-                this.$message({
-                    message: "请选择市场负责人",
-                    type: "warning"
-                });
-                return;
-            }
-        },
-        selectImple() {
-            if(this.impData.length){
-                this.impleLeader = this.impData[0].name;
-                this.filter.impleLeaderId = this.impData[0].id;
-                this.dialogImpleVisible = false;
-            }else{
-                this.$message({
-                    message: "请选择实施负责人",
+                    message: this.title,
                     type: "warning"
                 });
                 return;
             }
         },
         saveProForm() {
-            if (!this.filter.projectName) {
+            this.filter.onlinePlanTime = common.timeParse(this.onlinePlanTime);
+            if(this.specialRequire.returnPoint == 0){
+                this.specialRequire.returnPointProportion = ""
+            }
+             
+            if (!/^[0-9\u4E00-\u9FA5（）()]+$/.test(this.filter.projectName)) {
                 this.$message({
-                    message: "请填写项目名称",
+                    message: "请正确填写项目名称，仅支持数字、中文和中英文小括号",
                     type: "warning"
                 });
                 return;
@@ -578,13 +791,6 @@ export default {
                 });
                 return;
             }
-            if (!this.filter.officeId) {
-                this.$message({
-                    message: "请选择归属部门",
-                    type: "warning"
-                });
-                return;
-            }
             if (!this.filter.custInfoId) {
                 this.$message({
                     message: "请选择客户名称",
@@ -592,23 +798,9 @@ export default {
                 });
                 return;
             }
-            if (!this.filter.impleLeaderId) {
+            if(!/^[1-9]\d{0,5}$/.test(this.filter.invoicingFrequency)){
                 this.$message({
-                    message: "请选择实施负责人",
-                    type: "warning"
-                });
-                return;
-            }
-            if (!this.filter.projectLeaderId) {
-                this.$message({
-                    message: "请选择项目负责人",
-                    type: "warning"
-                });
-                return;
-            }
-            if (!this.filter.marketLeaderId) {
-                this.$message({
-                    message: "请选择市场负责人",
+                    message: "请正确填写月开票频次(次/月)，仅支持最长5位的正整数",
                     type: "warning"
                 });
                 return;
@@ -620,8 +812,178 @@ export default {
                 });
                 return;
             }
-            var flag = true
+            // if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan) || this.filter.transExpenssPlan == 0){
+            if(!/^([0-9]{1,15})(\.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
+                this.$message({
+                    message: "请正确填写计划月运费(万元/月)，仅支持最长16位正数和小数点后两位",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.filter.projectLevel) {
+                this.$message({
+                    message: "请选择项目等级",
+                    type: "warning"
+                });
+                return;
+            }
+            if(!this.filter.carrierGoods.length){
+                this.$message({
+                    message: "请选择承运货物",
+                    type: "warning"
+                });
+                return;
+            }
+            if(!this.filter.onlinePlanTime){
+                this.$message({
+                    message: "请选择计划上线时间",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.filter.projectManagerId) {
+                this.$message({
+                    message: "请选择项目管理负责人",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.generalRequire.invoiceMode) {
+                this.$message({
+                    message: "请选择开票方式",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.generalRequire.projectTrusteeshipt) {
+                this.$message({
+                    message: "请选择是否托管",
+                    type: "warning"
+                });
+                return;
+            }
+            if (this.generalRequire.projectTrusteeshipt==1&&!this.generalRequire.trusteeshiptChannel) {
+                this.$message({
+                    message: "请选择托管渠道",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.selfMarketing) {
+                this.$message({
+                    message: "请选择是否自营",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.returnPoint) {
+                this.$message({
+                    message: "请选择是否返点",
+                    type: "warning"
+                });
+                return;
+            }
+            // if (this.specialRequire.returnPoint == 1 && (!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion) || this.specialRequire.returnPointProportion == 0)) {
+            if (this.specialRequire.returnPoint == 1 && !/^([0-9]{1,5})(\.[0-9]{1,2})?$/.test(this.specialRequire.returnPointProportion)) {
+                this.$message({
+                    message: "请正确填写返点比例，仅支持最长5位的正数和小数点后两位",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.projectAgent) {
+                this.$message({
+                    message: "请选择是否经纪人",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.truckLeader) {
+                this.$message({
+                    message: "请选择是否车队长",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.oilGas) {
+                this.$message({
+                    message: "请选择油气",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.callTruck) {
+                this.$message({
+                    message: "请选择是否叫车",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.projectTrade) {
+                this.$message({
+                    message: "请选择是否贸易",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.accountPeriod) {
+                this.$message({
+                    message: "请选择是否账期",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.networkBusiness) {
+                this.$message({
+                    message: "请选择是否网商",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!this.specialRequire.projectTray) {
+                this.$message({
+                    message: "请选择是否托盘",
+                    type: "warning"
+                });
+                return;
+            }
 
+            if(this.contactList.length<1){
+                this.$message({
+                    message: "请填写联系人信息！",
+                    type: "warning"
+                });
+                return;
+            }
+            let self = this
+            function vali(){
+                let flag = true;
+                self.contactList.forEach(item=>{
+                    if(!item.linkmanName){
+                        self.$message({
+                            message: "联系人名称不能为空",
+                            type: "warning"
+                        });
+                        flag = false;
+                    }
+                    else if(!item.linkmanPhone || !/^1[345678][0-9]{9}$/.test(item.linkmanPhone)){
+                        self.$message({
+                            message: "请正确填写联系人联系方式",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                    else if(!item.linkmanPost){
+                        self.$message({
+                            message: "联系人职位不能为空",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                })
+                return flag
+            }
+            let flag = true;
             if(this.itemList.length>0){
                 this.itemList.forEach(item=>{
                     if(!item.nodeName&&!item.nodeAddress){
@@ -634,11 +996,14 @@ export default {
                     }
                 }) 
             }
-            
-            if(flag){
+            if(vali()&&flag){
                 savePro({
                     ...this.filter,
-                    projectNodeReqs:this.itemList
+                    processFlag:this.processFlag,
+                    projectNodeReqs:this.itemList,
+                    generalRequire:this.generalRequire,
+                    specialRequire:this.specialRequire,
+                    mainProjectContacts:this.contactList
                 }).then(res => {
                     this.$message({
                         message: res.message,

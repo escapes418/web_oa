@@ -141,6 +141,18 @@ export default [
                 },
                 hidden: true
             },
+            {
+                path: 'establishDetail',
+                id: 'inforManage-establishDetail',
+                show: false,
+                name: 'EstablishDetail',
+                component: () => import('@/views/establishPlan/detail.vue'),
+                meta: {
+                    title: '立项详情',
+                    icon: ''
+                },
+                hidden: true
+            },
             // 工作日志  - 列表
             {
                 path: 'logList',
