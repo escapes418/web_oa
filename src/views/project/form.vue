@@ -815,7 +815,7 @@ export default {
             // if(!/^([0-9][1-16]*)+(.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan) || this.filter.transExpenssPlan == 0){
             if(!/^([0-9]{1,15})(\.[0-9]{1,2})?$/.test(this.filter.transExpenssPlan)){
                 this.$message({
-                    message: "请正确填写计划月运费(万元/月)，仅支持最长16位正数和小数点后两位",
+                    message: "请正确填写计划月运费(万元/月)，仅支持最长15位正数和小数点后两位",
                     type: "warning"
                 });
                 return;
