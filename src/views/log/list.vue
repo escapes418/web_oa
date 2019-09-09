@@ -234,15 +234,19 @@ export default class LogList extends Vue {
         if(this.departData.length){
             this.departName = this.departData[0].name;
             this.listQuery.deptOrUserId = this.departData[0].id;
-            this.dialogDepartVisible = false;
             // this.$refs.assignTree.setCheckedKeys([])
         }else{
-            this.$message({
-                message: "请选择人员/部门",
-                type: "warning"
-            });
-            return;
+            this.departName = "";
+            this.listQuery.deptOrUserId = ""
         }
+        this.dialogDepartVisible = false;
+        // else{
+        //     this.$message({
+        //         message: "请选择人员/部门",
+        //         type: "warning"
+        //     });
+        //     return;
+        // }
     }
     departNode(value, data) {
         if (!value) return true;
@@ -353,6 +357,12 @@ export default class LogList extends Vue {
     restCallback() {
         this.departName = '';
         // 用来补充默认rest不足的问题
+        if(this.departData[0]){
+            this.$nextTick(()=>{
+                let VM:any = this.$refs.departTree;
+                VM.setChecked(this.departData[0],false);
+            })
+        }
     };
     
 }

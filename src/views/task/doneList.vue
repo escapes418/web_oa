@@ -193,10 +193,20 @@ export default {
     methods: {
         restCallback() {
             // 用来补充默认rest不足的问题
+            if(this.assignData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.assignTree.setChecked(this.assignData[0],false);
+                })
+            } 
         },
         depConfirm(data){
-            this.listQuery.officeId = data.id;
-            this.listQuery.officeName = data.name;
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
         },
         handleAssignClick(data,select,childSelect){
             let index = this.assignData.indexOf(data)
@@ -226,16 +236,13 @@ export default {
             }
         },
         selectAssign(){
+            this.dialogFormVisible = false;
             if(this.assignData.length){
                 this.listQuery.approvalAssignName = this.assignData[0].name;
                 this.listQuery.approvalAssigneeId = this.assignData[0].id;
-                this.dialogFormVisible = false;
             }else{
-                this.$message({
-                    message: "请选择审批人",
-                    type: "warning"
-                });
-                return;
+                this.listQuery.approvalAssignName = "";
+                this.listQuery.approvalAssigneeId = "";
             }
         },
         assignNode(value, data){

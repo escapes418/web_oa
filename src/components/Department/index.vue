@@ -57,6 +57,10 @@ export default {
         canshow:{
             type:Boolean,
             default:true
+        },
+        clearCheck:{
+            type:Boolean,
+            default:false
         }
     },
     data() {
@@ -76,7 +80,9 @@ export default {
             chargeName:"",
         };
     },
-    computed: {},
+    computed: {
+
+    },
     watch: {
         filterText(val) {
             this.$refs.tree.filter(val);
@@ -84,7 +90,7 @@ export default {
         Dvalue(val){
             this.officeName = val
             if(this.DId) this.officeId[0] = this.DId;
-        }
+        },
     },
     async created() {
         await this.$store.dispatch('FetchDictsAndLocalstore');
@@ -104,6 +110,9 @@ export default {
             if(this.canshow){
                 this.showDialog = true;
             }
+            this.$nextTick(_=>{
+                this.$refs.tree.setChecked(this.chargeData[0],false);
+            })  
         },
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
@@ -136,16 +145,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         confirmChoice() {
+            this.showDialog = false;
             if(this.chargeData.length){
                 const [{id,name}] = this.chargeData;
                 this.officeName = name;
-                this.showDialog = false;
                 this.$emit("on-confirm", {id,name});
             }else{
-                this.$message({
-                    message: "请选择一个子节点作为归属部门！",
-                    type: 'warning'
-                })
+                this.$emit("on-confirm");
             }
         }
     }

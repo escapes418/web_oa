@@ -1,61 +1,53 @@
-import {
-    Message
-} from "element-ui";
+import { Message } from 'element-ui';
 function toast(str) {
     Message({
         message: str,
-        type: "warning",
+        type: 'warning'
         // duration: 2 * 1000
     });
 }
-export function clueFormVali(self) {
+export function remindFormVali(self) {
     var flag = true;
-    if (!self.filter.custName||self.filter.custName&&self.filter.custName.indexOf(' ') != -1) {
-        toast('请正确填写客户名称！');
+    if (self.postData.remindType==="") {
+        toast('请选择模版类型！');
+        flag = false;
+    }else if (self.postData.remindWays.length<1) {
+        toast('请选择提醒方式！');
+        flag = false;
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 0 && !self.postData.pollHourMin) {
+        toast('请选择每天发送时间！');
+        flag = false;
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && !self.postData.pollWeek) {
+        toast('请选择每周频率！');
+        flag = false;
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && self.postData.pollWeek &&!self.postData.pollWeekday) {
+        toast('请选择周时间！');
+        flag = false;
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && self.postData.pollWeek &&self.postData.pollWeekday&&!self.postData.pollHourMin) {
+        toast('请填写具体天的时间！');
+        flag = false;
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 2&& !self.postData.pollMonth) {
+        toast('请选择每月频率！');
         flag = false;
     }
-    // else if (!self.filter.custAbbreviation || self.filter.custAbbreviation&&self.filter.custAbbreviation.indexOf(' ') != -1) {
-    //     toast('请正确填写客户简称！');
-    //     flag = false;
-    // }
-    // else if (!self.filter.custClassify) {
-    //     toast('请选择客户分类！');
-    //     flag = false;
-    // }
-    // else if (self.filter.areaId.length == 0) {
-    //     toast('请选择所属区域！');
-    //     flag = false;
-    // }
-    else if (self.filter.custCompanySize&&self.filter.custCompanySize<0) {
-        toast('请正确填写运输规模！');
+    else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 2&& self.postData.pollMonth&&!self.postData.pollMonthday) {
+        toast('请选择月时间！');
         flag = false;
     }
-    // else if (self.filter.tranMethod.length == 0) {
-    //     toast('请选择运输方式！');
-    //     flag = false;
-    // }
-    // else if (!self.filter.custLinkmanName || self.filter.custLinkmanName&&self.filter.custLinkmanName.indexOf(' ') != -1) {
-    //     toast('请正确填写联系人');
-    //     flag = false;
-    // }
-    // else if (!self.filter.linkmanPost || self.filter.linkmanPost&&self.filter.linkmanPost.indexOf(' ') != -1) {
-    //     toast('请正确填写联系人职位');
-    //     flag = false;
-    // }
-    else if(self.filter.linkmanPhone && !/^1[3456789][0-9]{9}$/.test(self.filter.linkmanPhone)){
-        toast('请正确填写联系人联系方式！');
+    else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 2&& self.postData.pollMonth&&self.postData.pollMonthday&&!self.postData.pollHourMin) {
+        toast('请选择具体天的时间！');
         flag = false;
     }
-    // else if(!self.filter.custActuality){
-    //     toast('请填写客户现状！');
-    //     flag = false;
-    // }
-    // else if(!self.filter.custBusinessProfile){
-    //     toast('请填写业务概况！');
-    //     flag = false;
-    // }
-    else if(!self.filter.custClueExplain){
-        toast('请填写线索说明！');
+    else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 3&&!self.postData.startTime) {
+        toast('请选择频率为的一次具体的时间！');
+        flag = false;
+    }
+    else if (self.postData.emailBlack.length < 1) {
+        toast('请选择邮件黑名单！');
+        flag = false;
+    }
+    else if (self.postData.smsBlack.length < 1) {
+        toast('请选择短信黑名单！');
         flag = false;
     }
     return flag;

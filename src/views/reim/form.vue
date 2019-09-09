@@ -186,7 +186,7 @@
                                 <td class="tableTitle">终点</td>
                                 <td class="tableTitle">科目</td>
                                 <td class="tableTitle">人数</td>
-                                <td class="tableTitle">天数</td>
+                                <!-- <td class="tableTitle">天数</td> -->
                                 <td class="tableTitle">票据张数</td>
                                 <td class="tableTitle">报销金额</td>
                                 <td class="tableTitle">备注</td>
@@ -323,7 +323,7 @@ export default {
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if(this.userInfo.useable=="1"){
             this.costCenterName = this.userInfo.officeName;
-            this.filter.costCenterId =  this.userInfo.officeId
+            this.filter.costCenterId =  this.userInfo.officeId;
         }
         //获取字典
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -452,8 +452,14 @@ export default {
     },
     methods: {
         depConfirm(data) {
-            this.costCenterName = data.name;
-            this.filter.costCenterId = data.id;
+            if(data){
+                this.costCenterName = data.name;
+                this.filter.costCenterId = data.id;
+            }else{
+                this.costCenterName = "";
+                this.filter.costCenterId = "";
+            }
+            
         },
         clearLink(){
             this.filter.projectPersonel ='';

@@ -140,7 +140,7 @@
                                 <td class="tableTitle">终点</td>
                                 <td class="tableTitle">科目</td>
                                 <td class="tableTitle">人数</td>
-                                <td class="tableTitle">天数</td>
+                                <!-- <td class="tableTitle">天数</td> -->
                                 <td class="tableTitle">票据张数</td>
                                 <td class="tableTitle">预算金额</td>
                                 <td class="tableTitle">备注</td>
