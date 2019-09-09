@@ -142,30 +142,6 @@ export default [
                 hidden: true
             },
             {
-                path: 'establishList',
-                id: 'inforManage-establishList',
-                show: false,
-                name: 'EstablishList',
-                component: () => import('@/views/establishPlan/list.vue'),
-                meta: {
-                    title: '立项管理',
-                    icon: 'iconfont icon-xiangmuguanli1'
-                }
-            },
-            {
-                path: 'establishForm',
-                id: 'inforManage-establishForm',
-                show: false,
-                name: 'EstablishForm',
-                component: () => import('@/views/establishPlan/form.vue'),
-                meta: {
-                    title: '新建立项',
-                    icon: '',
-                    reGet:true
-                },
-                hidden: true
-            },
-            {
                 path: 'establishDetail',
                 id: 'inforManage-establishDetail',
                 show: false,
