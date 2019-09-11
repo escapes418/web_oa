@@ -6,7 +6,7 @@ import task from '@/router/task';
 import process from '@/router/process';
 import publicGoods from '@/router/publicGoods';
 import oa from '@/router/oa';
-
+import config from '@/router/config';
 export default [
     {
         path: '/login',
@@ -88,5 +88,6 @@ export default [
     ...report,
     ...process,
     ...oa,
+    ...config,
     ...publicGoods
 ];

@@ -402,7 +402,7 @@ export default {
                     });
                     flag = false;
                 }
-                else if(!item.linkmanPhone || !/^1[345678][0-9]{9}$/.test(item.linkmanPhone)){
+                else if(!item.linkmanPhone || !/^1[3456789][0-9]{9}$/.test(item.linkmanPhone)){
                     this.$message({
                         message: "请正确填写联系人联系方式",
                         type: "warning"

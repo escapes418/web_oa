@@ -61,6 +61,7 @@
                             <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围" :picker-options="pickerOptions">
                             </el-date-picker>
                         </div>
+                        <Department type="list" @on-confirm="depConfirm" :Dvalue="listQuery.officeName" :clearCheck ="clearCheck"></Department>
                     </div>
                 </div>
             </el-collapse-transition>
@@ -74,6 +75,11 @@
             <el-table-column
                 type="selection"
                 width="55">
+            </el-table-column>
+            <el-table-column align="center" label="项目编号"  width="220px">
+                <template slot-scope="scope">
+                    <span class="ignore-detail" :title="scope.row.projectCode">{{scope.row.projectCode}}</span>
+                </template>
             </el-table-column>
             <el-table-column align="center" label="项目名称"  width="220px">
                 <template slot-scope="scope">
@@ -100,14 +106,9 @@
                     <span>{{scope.row.projectStateName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="140px" label="上线日期" align="center">
+            <el-table-column width="140px" label="计划上线日期" align="center">
                 <template slot-scope="scope">
-                    <span>{{scope.row.onLineDate | stamp2TextDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column width="90px" label="项目负责人" align="center">
-                <template slot-scope="scope">
-                    <span>{{scope.row.projectLeaderName}}</span>
+                    <span>{{scope.row.onlinePlanTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="140px" label="更新时间" align="center">
@@ -141,22 +142,13 @@
             <div class="merge-item">
                 <!-- <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox> -->
                 <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
-                <!-- <el-checkbox v-model="projectChecked" label="项目负责人"></el-checkbox> -->
+                <el-checkbox v-model="projectChecked" label="项目管理负责人"></el-checkbox>
+                <el-checkbox v-model="businessChecked" label="商务助理"></el-checkbox>
+                <el-checkbox v-model="vipChecked" label="VIP客服"></el-checkbox>
+                <el-checkbox v-model="accountChecked" label="清结算"></el-checkbox>
             </div>
             <div class="move-select">
-                <!-- <div class="move-item">
-                    <span class="item-label">市场负责人：</span>
-                    <el-select 
-                        style="width: 300px" 
-                        class="filter-item" 
-                        v-model="marketLeaderId"
-                        :disabled="!marketChecked"
-                        filterable
-                        placeholder="请选择市场负责人">
-                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </div> -->
+                
                 <div class="move-item">
                     <span class="item-label">实施负责人：</span>
                     <el-select 
@@ -170,19 +162,58 @@
                         </el-option>
                     </el-select>
                 </div>
-                <!-- <div class="move-item">
-                    <span class="item-label">项目负责人：</span>
+                <div class="move-item">
+                    <span class="item-label">项目管理负责人：</span>
                     <el-select 
                         style="width: 300px" 
                         class="filter-item" 
-                        v-model="projectLeaderId"
+                        v-model="projectManagerId"
                         :disabled="!projectChecked"
                         filterable
-                        placeholder="请选择项目负责人">
+                        placeholder="请选择项目管理负责人">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
-                </div> -->
+                </div>
+                <div class="move-item">
+                    <span class="item-label">商务助理：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="businessAssistantId"
+                        :disabled="!businessChecked"
+                        filterable
+                        placeholder="请选择商务助理">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    <span class="item-label">VIP客服：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="vipCustomerId"
+                        :disabled="!vipChecked"
+                        filterable
+                        placeholder="请选择VIP客服">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    <span class="item-label">清结算：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="accountLeaderId"
+                        :disabled="!accountChecked"
+                        filterable
+                        placeholder="请选择清结算">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmMove">确认</el-button>
@@ -194,6 +225,7 @@
 
 <script>
 import common from "@/utils/common";
+import Department from "@/components/Department";
 import { fetchList,getMember,moveProjects} from "@/api/project";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
@@ -204,6 +236,9 @@ import { mapState } from "vuex";
 export default {
     directives: {
         waves
+    },
+    components: {
+        Department
     },
     mixins: [listQueryMix],
     watch: {
@@ -248,9 +283,11 @@ export default {
             listLoading: true,
             pageNo: 1,
             pageSize: 20,
+            clearCheck:false,
             listQuery: {
                 timeRange:[],
                 officeId: "",
+                officeName: '',
                 projectName: "",//项目名称
                 projectType: "",
                 timeType: "2",//时间类型
@@ -270,12 +307,17 @@ export default {
             memberList:[],
             selectProject:[],
             dialogMoveVisible:false,
-            marketChecked:false,
+            // marketChecked:false,
             implyChecked:false,
             projectChecked:false,
-            marketLeaderId:'',
-            projectLeaderId:'',
-            impleLeaderId:''
+            businessChecked:false,
+            vipChecked:false,
+            accountChecked:false,
+            accountLeaderId:'',
+            businessAssistantId:'',
+            projectManagerId:'',
+            impleLeaderId:'',
+            vipCustomerId:''
         };
     },
     created() {
@@ -300,6 +342,16 @@ export default {
         this.leaderTypeList = selectDic(dicList, "leader_type");
     },
     methods: {
+        depConfirm(data){
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
+            
+        },
         handleSelectionChange(val){
             this.selectProject = val;
         },
@@ -323,26 +375,19 @@ export default {
         },
         moveClose(){
             this.dialogMoveVisible = false;
-            this.marketChecked=false;
-            this.projectChecked=false;
             this.implyChecked=false;
-            this.marketLeaderId="";
-            this.projectLeaderId = "";
-            this.impleLeaderId= "";
+            this.projectChecked=false;
+            this.businessChecked=false;
+            this.vipChecked=false;
+            this.accountChecked=false;
+            this.accountLeaderId='';
+            this.businessAssistantId='';
+            this.projectManagerId='';
+            this.impleLeaderId='';
+            this.vipCustomerId=''
         },
         confirmMove(){
-            if(this.marketChecked || this.projectChecked || this.implyChecked){
-                if(this.marketChecked){
-                    if(!this.marketLeaderId){
-                        this.$message({
-                            message:'请选择市场负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.marketLeaderId = ""
-                }
+            if(this.implyChecked || this.projectChecked || this.businessChecked || this.vipChecked || this.accountChecked){
                 if(this.implyChecked){
                     if(!this.impleLeaderId){
                         this.$message({
@@ -355,26 +400,61 @@ export default {
                     this.impleLeaderId = ""
                 }
                 if(this.projectChecked){
-                    if(!this.projectLeaderId){
+                    if(!this.projectManagerId){
                         this.$message({
-                            message:'请选择项目负责人！',
+                            message:'请选择项目管理负责人！',
                             type:'warning'
                         })
                         return
                     }
                 }else{
-                    this.projectLeaderId = ""
+                    this.projectManagerId = ""
+                }
+                if(this.businessChecked){
+                    if(!this.businessAssistantId){
+                        this.$message({
+                            message:'请选择商务助理！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.businessAssistantId = ""
+                }
+                if(this.vipChecked){
+                    if(!this.vipCustomerId){
+                        this.$message({
+                            message:'请选择VIP客服！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.vipCustomerId = ""
                 }
 
+                if(this.accountChecked){
+                    if(!this.accountLeaderId){
+                        this.$message({
+                            message:'请选择清结算！',
+                            type:'warning'
+                        })
+                        return
+                    }
+                }else{
+                    this.accountLeaderId = ""
+                }
                 let projectIds = [];
                 this.selectProject.forEach(item=>{
                     projectIds.push(item.id)
                 })
                 moveProjects({
                     projectIds:projectIds,
-                    marketLeaderId:this.marketLeaderId,
-                    projectLeaderId:this.projectLeaderId,
-                    impleLeaderId:this.impleLeaderId
+                    impleLeaderId:this.impleLeaderId,
+                    projectManagerId:this.projectManagerId,
+                    businessAssistantId:this.businessAssistantId,
+                    vipCustomerId:this.vipCustomerId,
+                    accountLeaderId:this.accountLeaderId
                 }).then(res=>{
                     if(res.status == 0){
                         this.moveClose();
@@ -394,12 +474,16 @@ export default {
         },
         moveCancel(){
             this.dialogMoveVisible = false;
-            this.marketChecked=false;
-            this.projectChecked=false;
             this.implyChecked=false;
-            this.marketLeaderId="";
-            this.projectLeaderId = "";
-            this.impleLeaderId = "";
+            this.projectChecked=false;
+            this.businessChecked=false;
+            this.vipChecked=false;
+            this.accountChecked=false;
+            this.accountLeaderId='';
+            this.businessAssistantId='';
+            this.projectManagerId='';
+            this.impleLeaderId='';
+            this.vipCustomerId=''
         },
         getList() {
             this.listLoading = true;
@@ -423,7 +507,7 @@ export default {
             return $$postData.toJS();
         },
         restCallback(){
-
+            
         },
         handleFilter() {
             this.pageNo = 1;
