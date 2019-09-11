@@ -82,6 +82,7 @@
                                     <el-option v-for="item in monthList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
+                                号
                                 <el-time-select v-model="postData.pollHourMin"
                                     :picker-options="{
                                         start: '08:30',
@@ -96,6 +97,7 @@
                             <div class="pickOption">
                                  <el-date-picker
                                     v-model="startTime"
+                                    :picker-options="pickerOptions"
                                     type="datetime"
                                     placeholder="选择日期时间">
                                 </el-date-picker>
@@ -103,7 +105,7 @@
                         </template>
                     </el-form-item>
                 </RedStar>
-                <RedStar :required ="true">
+                <RedStar>
                     <el-form-item label="黑名单设置：">
                         <div class="blackList">
                             <div class="header">黑名单内员工不会接收邮件提醒</div>
@@ -145,6 +147,11 @@ export default {
     },
     data() {
         return {
+            pickerOptions:{
+                disabledDate(time) {
+                    return time.getTime() < Date.now();
+                }
+            },
             postData:{
                 id:"",
                 remindCategory:0,

@@ -104,7 +104,7 @@
                         </template> -->
                     </el-form-item>
                 </RedStar>
-                <RedStar :required ="true">
+                <RedStar>
                     <el-form-item label="黑名单设置：">
                         <div class="blackList">
                             <div class="header">黑名单内员工不会接收邮件提醒</div>
