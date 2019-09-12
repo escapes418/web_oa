@@ -55,7 +55,7 @@
                                     <el-option v-for="item in periodList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select> -->
-                                周
+                                每周
                                 <el-select clearable class="filter-item" filterable v-model="postData.pollWeekday" style="width:100px;">
                                     <el-option v-for="item in weekList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
