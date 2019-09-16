@@ -212,8 +212,17 @@ export default class LogList extends Vue {
             // })
 
             VM.setChecked(this.departData[0],false);
-            this.departData = [];
-            this.departData.push(data)
+            if(data.status == '1'){
+                this.departData = [];
+                this.departData.push(data)
+            }else{
+                this.$message({
+                    message: "该节点不可选！",
+                    type: 'warning'
+                })
+                VM.setChecked(data,false);
+                return
+            }
         }else if(this.departData.length ===0&&select){
             if(data.status == '1'){
                 this.departData = [];
