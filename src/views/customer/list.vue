@@ -213,8 +213,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.marketTree.setChecked(this.marketData[0],false);
-                this.marketData = []
-                this.marketData.push(data)
+                if(data.type =='2'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
             }else if(this.marketData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){
