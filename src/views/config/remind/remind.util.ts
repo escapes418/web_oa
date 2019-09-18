@@ -8,6 +8,7 @@ function toast(str) {
 }
 export function remindFormVali(self) {
     var flag = true;
+    console.log(self.postData)
     if (self.postData.remindType==="") {
         toast('请选择模版类型！');
         flag = false;
@@ -17,13 +18,15 @@ export function remindFormVali(self) {
     } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 0 && !self.postData.pollHourMin) {
         toast('请选择每天发送时间！');
         flag = false;
-    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && !self.postData.pollWeek) {
-        toast('请选择每周频率！');
-        flag = false;
-    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && self.postData.pollWeek &&!self.postData.pollWeekday) {
+    } 
+    // else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && !self.postData.pollWeek) {
+    //     toast('请选择每周频率！');
+    //     flag = false;
+    // } 
+    else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 &&!self.postData.pollWeekday) {
         toast('请选择周时间！');
         flag = false;
-    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 && self.postData.pollWeek &&self.postData.pollWeekday&&!self.postData.pollHourMin) {
+    } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 1 &&self.postData.pollWeekday&&!self.postData.pollHourMin) {
         toast('请填写具体天的时间！');
         flag = false;
     } else if (self.postData.remindCategory == 0&&self.postData.sendFrequency == 2&& !self.postData.pollMonth) {

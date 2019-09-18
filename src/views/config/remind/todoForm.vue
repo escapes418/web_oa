@@ -160,7 +160,7 @@ export default {
                 remindWays:[],
                 pollHourMin:"",
                 isWeek:0,
-                pollWeek:1,
+                // pollWeek:1,
                 pollWeekday:"",
                 pollMonth:"",
                 pollMonthday:"",
