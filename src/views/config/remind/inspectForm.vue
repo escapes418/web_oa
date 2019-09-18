@@ -152,7 +152,7 @@ export default {
                 remindCategory:1,
                 remindType:"",
                 sendFrequency:4,
-                remindWay:[],
+                remindWays:[],
                 pollHourMin:"",
                 isWeek:0,
                 pollWeek:1,
@@ -329,6 +329,8 @@ export default {
                 id:this.$route.query.key,
                 remindCategory:this.postData.remindCategory
             }).then(res => {
+                res.data.emailBlack = res.data.emailBlack || []
+                res.data.smsBlack = res.data.smsBlack || []
                 this.postData = res.data;
             })
         }
