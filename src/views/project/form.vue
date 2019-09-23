@@ -798,7 +798,7 @@ export default {
                 });
                 return;
             }
-            if(!/^[1-9]{0,5}$/.test(this.filter.invoicingFrequency)){
+            if(!/^[1-9][0-9]{0,4}$/.test(this.filter.invoicingFrequency)){
                 this.$message({
                     message: "请正确填写月开票频次(次/月)，仅支持最长5位的正整数",
                     type: "warning"
