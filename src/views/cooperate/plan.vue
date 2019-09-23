@@ -146,7 +146,7 @@
                         <li class="base-li">
                             <RedStar label="处理说明：" :required="true">
                                 <span class="right-con">
-                                    <sjbtextarea :rows="3" placeholder="请输入" style="width:260px;" :max="100" v-model.trim="postData.handleExplain"></sjbtextarea>
+                                    <sjbtextarea :rows="3" placeholder="请输入" textStyle="width:260px;" :max="100" v-model.trim="postData.handleExplain"></sjbtextarea>
                                 </span>
                             </RedStar>
                         </li>

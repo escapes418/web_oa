@@ -47,6 +47,7 @@ export default {
 .star-item{
     color: red;
     flex:0 0 15px;
+    line-height: 35px;
 }
 .label-item{
     font-size: 14px;

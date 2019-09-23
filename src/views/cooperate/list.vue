@@ -519,16 +519,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         selectDepart() {
+            this.dialogDepartVisible = false;
             if(this.departTreeData.length){
                 this.departName = this.departTreeData[0].name;
-                this.listQuery.deptOrUserId  = this.departTreeData[0].id;
-                this.dialogDepartVisible = false;
+                this.listQuery.deptOrUserId  = this.departTreeData[0].id; 
             }else{
-                this.$message({
-                    message: "请选择人员/部门",
-                    type: "warning"
-                });
-                return;
+                this.departName = "";
+                this.listQuery.deptOrUserId  = ""; 
             }
         },
         handleCreate(){
@@ -555,6 +552,11 @@ export default {
         restCallback() {
             this.departName = '';
             // 用来补充默认rest不足的问题
+            if(this.departTreeData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.departTree.setChecked(this.departTreeData[0],false);
+                })
+            } 
         },
         // 处理接口不一致情况
         reduceParams($$imData) {

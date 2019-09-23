@@ -182,6 +182,32 @@ export default {
 
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    // tem = tem.filter(i=>{
+                    //     return i.status=="1"
+                    // })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
@@ -193,10 +219,20 @@ export default {
     methods: {
         restCallback() {
             // 用来补充默认rest不足的问题
+            if(this.assignData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.assignTree.setChecked(this.assignData[0],false);
+                })
+            } 
         },
         depConfirm(data){
-            this.listQuery.officeId = data.id;
-            this.listQuery.officeName = data.name;
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
         },
         handleAssignClick(data,select,childSelect){
             let index = this.assignData.indexOf(data)
@@ -206,8 +242,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.assignTree.setChecked(this.assignData[0],false);
-                this.assignData = []
-                this.assignData.push(data)
+                if(data.type =='2'){
+                    this.assignData = [];
+                    this.assignData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.assignTree.setChecked(data,false);
+                    return
+                }
             }else if(this.assignData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){
@@ -226,16 +271,13 @@ export default {
             }
         },
         selectAssign(){
+            this.dialogFormVisible = false;
             if(this.assignData.length){
                 this.listQuery.approvalAssignName = this.assignData[0].name;
                 this.listQuery.approvalAssigneeId = this.assignData[0].id;
-                this.dialogFormVisible = false;
             }else{
-                this.$message({
-                    message: "请选择审批人",
-                    type: "warning"
-                });
-                return;
+                this.listQuery.approvalAssignName = "";
+                this.listQuery.approvalAssigneeId = "";
             }
         },
         assignNode(value, data){

@@ -255,8 +255,13 @@ export default {
 
         },  
         depConfirm(data){ 
-            this.listQuery.officeId = data.id;
-            this.listQuery.officeName = data.name;
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
         }, 
         handleFilter() {
             if(!this.listQuery.year){

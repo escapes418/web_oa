@@ -42,7 +42,7 @@ export function clueFormVali(self) {
     //     toast('请正确填写联系人职位');
     //     flag = false;
     // }
-    else if(self.filter.linkmanPhone && !/^1[345678][0-9]{9}$/.test(self.filter.linkmanPhone)){
+    else if(self.filter.linkmanPhone && !/^1[3456789][0-9]{9}$/.test(self.filter.linkmanPhone)){
         toast('请正确填写联系人联系方式！');
         flag = false;
     }

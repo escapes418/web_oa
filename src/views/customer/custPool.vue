@@ -406,8 +406,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.marketTree.setChecked(this.marketData[0],false);
-                this.marketData = [];
-                this.marketData.push(data)
+                if(data.type =='2'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
             }else if(this.marketData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){
@@ -430,16 +439,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         selectMarket() {
-           if(this.marketData.length){
+            this.dialogMarketVisible = false;
+            if(this.marketData.length){
                 this.marketLeader = this.marketData[0].name;
                 this.listQuery.marketLeaderId = this.marketData[0].id;
-                this.dialogMarketVisible = false;
             }else{
-                this.$message({
-                    message: "请选择市场负责人",
-                    type: "warning"
-                });
-                return;
+                this.marketLeader = "";
+                this.listQuery.marketLeaderId = "";
             }
         },
 
@@ -747,6 +753,11 @@ export default {
         restCallback() {
             // 用来补充默认rest不足的问题
             this.marketLeader = '';
+            if(this.marketData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.marketTree.setChecked(this.marketData[0],false);
+                })
+            }
         },
         getListData() {
             var _this = this;

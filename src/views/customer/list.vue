@@ -191,14 +191,46 @@ export default {
         //人员树
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    // tem = tem.filter(i=>{
+                    //     return i.status=="1"
+                    // })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
     },
     methods: {
+        // showDialog(){
+        //     this.dialogMarketVisible = !this.dialogMarketVisible
+        //     // if(this.marketData[0]){
+        //     //     this.$nextTick(_=>{
+        //     //         this.$refs.marketTree.setChecked(this.marketData[0],false);
+        //     //     })
+        //     // } 
+        // },
         handleMarketClick(data,select,childSelect) {
-            console.log(data,select)
-
             let index = this.marketData.indexOf(data)
             if(index<0&&this.marketData.length ===1&&select){
 
@@ -207,8 +239,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.marketTree.setChecked(this.marketData[0],false);
-                this.marketData = []
-                this.marketData.push(data)
+                if(data.type =='2'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
             }else if(this.marketData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){
@@ -231,16 +272,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         selectMarket() {
+            this.dialogMarketVisible = false;
             if(this.marketData.length){
                 this.marketLeader = this.marketData[0].name;
                 this.listQuery.marketLeaderId = this.marketData[0].id;
-                this.dialogMarketVisible = false;
             }else{
-                this.$message({
-                    message: "请选择市场负责人",
-                    type: "warning"
-                });
-                return;
+                this.marketLeader = "";
+                this.listQuery.marketLeaderId = "";
             }
         },
         handleClick(val){
@@ -250,7 +288,12 @@ export default {
         },
         restCallback() {
             // 用来补充默认rest不足的问题
-            this.marketLeader = ''
+            this.marketLeader = '';
+            if(this.marketData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.marketTree.setChecked(this.marketData[0],false);
+                })
+            } 
         },
         getListData() {
             var _this = this;
