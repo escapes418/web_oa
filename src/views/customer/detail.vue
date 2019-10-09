@@ -21,7 +21,12 @@
                             <span class="left-title font-gray">客户简称：</span>
                             <span class="right-con">{{detailData.custAbbreviation}}</span>
                         </div>
-                        
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">主客户名称：</span>
+                            <span class="right-con">
+                                {{detailData.mainCustName}}
+                            </span>
+                        </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">市场负责人：</span>
                             <span class="right-con">
@@ -32,6 +37,12 @@
                             <span class="left-title font-gray">市场负责人手机号：</span>
                             <span class="right-con">
                                 {{detailData.marketLeaderPhone}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">清结算：</span>
+                            <span class="right-con">
+                                {{detailData.accountLeaderName}}
                             </span>
                         </div>
                     </el-col>
@@ -52,6 +63,18 @@
                             <span class="left-title font-gray">详细地址：</span>
                             <span class="right-con" v-if="detailData.custAddressCode">
                                 {{detailData.custAddress}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">VIP客服：</span>
+                            <span class="right-con">
+                                {{detailData.vipCustomerName}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">商务助理：</span>
+                            <span class="right-con">
+                                {{detailData.businessAssistantName}}
                             </span>
                         </div>
                     </el-col>

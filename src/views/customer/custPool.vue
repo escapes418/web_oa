@@ -301,14 +301,13 @@ export default {
 
 
             listQuery: {
+                isMain:"0",
                 custOfficeId:[],
                 timeRange: [],
                 custListPlace:"",
                 custName: "",
                 marketLeaderId: "",
                 leaderName: "",
-                beginTime: "",
-                endTime: "",
             },
             custTradesList: [],
             custPlaceList:[],

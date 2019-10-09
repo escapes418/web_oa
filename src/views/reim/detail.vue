@@ -233,9 +233,23 @@
                             </el-table-column>
                             <el-table-column label="终点" prop="endPointName">
                             </el-table-column>
-                            <el-table-column label="一级科目" prop="firstSubName" width="120">
+                            <el-table-column label="一级科目">
+                                <template slot-scope="scope">
+                                    <span>{{scope.row.firstSubName}}
+                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.subjectExceed == 0" placement="top">
+                                            <el-tag size="mini" v-if="scope.row.subjectExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
+                                </template>
                             </el-table-column>
-                            <el-table-column label="二级科目" prop="secondSubName">
+                            <el-table-column label="二级科目">
+                                <template slot-scope="scope">
+                                    <span :class="scope.row.subjectExceed == 1 ? 'font-red':''">{{scope.row.secondSubName}}
+                                         <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.subjectExceed == 0" placement="top">
+                                            <el-tag size="mini" v-if="scope.row.subjectExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
+                                </template>
                             </el-table-column>
                             <el-table-column label="人数" prop="personNum">
                             </el-table-column>
@@ -243,9 +257,13 @@
                             </el-table-column>
                             <el-table-column label="票据张数" prop="billNum">
                             </el-table-column>
-                            <el-table-column label="报销金额" prop="expenseAmt">
+                            <el-table-column label="报销金额">
                                 <template slot-scope="scope">
-                                    <span class="font-orange">{{ scope.row.expenseAmt | thousands(2) }}元</span>
+                                    <span>{{ scope.row.expenseAmt | thousands(2) }}元
+                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.expenseAmtExceed == 0" placement="top-start">
+                                            <el-tag size="mini" v-if="scope.row.expenseAmtExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="备注" prop="remarks">
@@ -255,7 +273,13 @@
                                     <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
                                 </template>
                             </el-table-column>
-
+                            <!-- <el-table-column label="异常分析">
+                                <template slot-scope="scope">
+                                    <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="!scope.row.anomalyAnalysis" placement="top-start">
+                                        <el-button type="text">{{!scope.row.anomalyAnalysis ? '无':'有'}}</el-button>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column> -->
                         </el-table>
                         <div class="sum-title">
                             合计：
@@ -287,7 +311,7 @@
                                         <span class="color-black bold">{{item.assigneeName}}</span>
                                         <!-- 审批bug的补丁 -->
                                         <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                                        <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                                        <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                                     </div>
                                     <div class="state-item">
                                         <span class="font-size14">{{item.endTime}}</span>
@@ -754,6 +778,9 @@ export default {
         float: right;
         line-height: 32px;
     }
+}
+.font-red{
+    color: red
 }
 .img-font {
     font-size: 14px;

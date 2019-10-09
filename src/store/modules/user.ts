@@ -2,6 +2,7 @@ import { login, logout, findUser, getDic, getMember } from '@/api/login';
 import { getRegion } from '@/api/getRegion';
 import { fetchList,getRedCount } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
+import { Message } from 'element-ui';
 
 import common from '@/utils/common';
 import { resolve } from 'url';
@@ -234,11 +235,21 @@ const user = {
                     }
         
                     websocket.onerror = function (event) {
-                        alert('websocket通信发生错误！');
+                        // alert('websocket通信发生错误！');
+                        Message({
+                            message: '通讯断掉，已重连接!',
+                            type: 'warning'
+                            // duration: 2 * 1000
+                        });
                     }
                     resolve()
                 }else {
-                    alert('该浏览器不支持websocket!');
+                    // alert('该浏览器不支持websocket!');
+                    Message({
+                        message: '该浏览器不支持websocket!',
+                        type: 'warning'
+                        // duration: 2 * 1000
+                    });
                 }
             })
         }
