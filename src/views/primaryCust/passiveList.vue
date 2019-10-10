@@ -17,7 +17,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">人员：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入人员" v-model.trim="listQuery.operateUserName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入人员" v-model.trim="listQuery.custMaintenanceMan">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -26,37 +26,37 @@
             </div>
         </div>
         <el-table :data="list" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="企业code">
+            <el-table-column align="center" label="企业code" width="130px">
                 <template slot-scope="scope">
                     <span class="ignore-detail" style="color:#409EFF;cursor: Pointer;" :title="scope.row.customerCode">{{scope.row.customerCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="项目名称">
+            <el-table-column align="center" label="项目名称"  width="120px">
                 <template slot-scope="scope">
                     <span class="ignore-detail" :title="scope.row.projectName">{{scope.row.projectName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="创建时间" width="120px">
+            <el-table-column align="center" label="创建时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{scope.row.createDate | stamp2TextDateFull}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="记录人" width="50px">
+            <el-table-column align="center" label="记录人" width="60px">
                 <template slot-scope="scope">
                     <span>{{scope.row.createName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="记录类型" width="100px">
+            <el-table-column align="center" label="记录类型" width="80px">
                 <template slot-scope="scope">
                     <span>{{scope.row.recordName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="沟通类型" width="100px">
+            <el-table-column align="center" label="沟通类型" width="80px">
                 <template slot-scope="scope">
                     <span>{{scope.row.communicateName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="沟通渠道" width="100px">
+            <el-table-column align="center" label="沟通渠道" width="80px">
                 <template slot-scope="scope">
                     <span>{{scope.row.communicatieName}}</span>
                 </template>
@@ -66,33 +66,33 @@
                     <span>{{scope.row.customerFeedBack}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="客服回复" width="120px">
+            <el-table-column align="center" label="客服回复">
                 <template slot-scope="scope">
                     <span>{{scope.row.customerServicerReply}}</span>
                 </template>
             </el-table-column>
             
-            <el-table-column align="center" label="处理结果" width="140px">
+            <el-table-column align="center" label="处理结果">
                 <template slot-scope="scope">
                     <span>{{scope.row.dealResultName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="对接部门" width="120px">
+            <el-table-column align="center" label="对接部门" width="100px">
                 <template slot-scope="scope">
                     <span>{{scope.row.connectDepartmentName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="其他部门回复" width="120px">
+            <el-table-column align="center" label="其他部门回复">
                 <template slot-scope="scope">
                     <span>{{scope.row.otherDepartmentReply}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="处理人" width="120px">
+            <el-table-column align="center" label="处理人" width="100px">
                 <template slot-scope="scope">
                     <span>{{scope.row.updateName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="处理时间" width="120px">
+            <el-table-column align="center" label="处理时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{scope.row.dealDate | stamp2TextDateFull}}</span>
                 </template>

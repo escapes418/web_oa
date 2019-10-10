@@ -260,7 +260,7 @@
                             <el-table-column label="报销金额">
                                 <template slot-scope="scope">
                                     <span>{{ scope.row.expenseAmt | thousands(2) }}元
-                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.expenseAmtExceed == 0" placement="top-start">
+                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.expenseAmtExceed == 0" placement="top">
                                             <el-tag size="mini" v-if="scope.row.expenseAmtExceed == 1"  type="danger">异常</el-tag>
                                         </el-tooltip>
                                     </span>

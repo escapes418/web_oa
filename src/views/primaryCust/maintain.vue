@@ -8,17 +8,17 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
-                            <RedStar label="客户名称：" :required="false">
+                            <RedStar label="主客户名称：" :required="false">
                                 <span class="right-con">
                                     {{custName}}
                                 </span>
                             </RedStar>
                         </div>
-                        <div class="clearfix  cominfo-item">
-                            <RedStar label="客户级别：" :required="true">
+                        <div class="clearfix cominfo-item">
+                            <RedStar label="拜访类型：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item" v-model.trim="postData.custStage" placeholder="请选择" style="width:250px;">
-                                        <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
+                                    <el-select clearable class="filter-item" v-model.trim="postData.visitType" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -28,7 +28,7 @@
                         <div class="clearfix cominfo-item">
                             <RedStar label="问题归类：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable multiple class="filter-item" v-model.trim="postData.issuesClassification" placeholder="请选择" style="width:250px;">
+                                    <el-select clearable multiple class="filter-item" v-model.trim="issuePostList" placeholder="请选择" style="width:250px;">
                                         <el-option v-for="item in issueList" :label="item.name" :value="item.value" :key="item.value">
                                         </el-option>
                                     </el-select>
@@ -57,16 +57,7 @@
                             </RedStar>
                             
                         </div>
-                        <div class="clearfix cominfo-item">
-                            <RedStar label="拜访类型：" :required="true">
-                                <span class="right-con">
-                                    <el-select clearable class="filter-item" v-model.trim="postData.visitType" placeholder="请选择" style="width:250px;">
-                                        <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </span>
-                            </RedStar>
-                        </div>
+                        
                         <div class="clearfix cominfo-item">
                             <RedStar label="归属客户：" :required="true">
                                 <span class="right-con">
@@ -124,6 +115,7 @@ export default {
             // confirmDialog: false,
             custName:this.$route.query.custName,
             itemList:[],
+            issuePostList:[],
             postData: {
                 belongCustId:"",// 归属客户id ,
                 // custId:"",// 客户id ,
@@ -143,6 +135,11 @@ export default {
             this.linkmanList.forEach(item=>{
                 if(this.postData.linkmanId == item.id){
                     this.postData.linkmanName = item.linkmanName
+                }
+            })
+            this.issueList.forEach(item=>{
+                if(this.issuePostList.indexOf(item.value) !== -1){
+                    this.postData.issuesClassification.push(item.name)
                 }
             })
             this.postData = {

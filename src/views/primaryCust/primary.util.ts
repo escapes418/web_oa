@@ -13,10 +13,6 @@ export function maintainVali(self){
         toast('请选择联系人！');
         flag = false;
         return;
-    }else if(!self.postData.custStage){
-        toast('请选择客户级别！');
-        flag = false;
-        return;
     }else if(!self.postData.visitType){
         toast('请选择拜访类型！');
         flag = false;

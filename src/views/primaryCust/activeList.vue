@@ -8,12 +8,12 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">维护人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入维护人" v-model.trim="listQuery.conflictName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入维护人" v-model.trim="listQuery.custMaintenanceMan">
                 </el-input>
             </div>
             <div class="toolbar-item">
                 <span class="item-label">维护部门：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入维护人部门" v-model.trim="listQuery.conflictName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入维护人部门" v-model.trim="listQuery.maintainerDeptName">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -22,9 +22,9 @@
             </div>
         </div>
         <el-table :data="list" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="维护时间" width="100px">
+            <el-table-column align="center" label="维护时间" width="150px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.custMaintenanceDate">{{scope.row.custMaintenanceDate | stamp2TextDateFull}}</span>
+                    <span class="ignore-detail">{{scope.row.custMaintenanceDate | stamp2TextDateFull}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="维护人" width="120px">
@@ -35,6 +35,11 @@
             <el-table-column align="center" label="维护人部门" width="150px">
                 <template slot-scope="scope">
                     <span>{{scope.row.maintainerDeptName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="归属客户" width="150px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.custName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="客户级别" width="100px">
@@ -109,8 +114,8 @@ export default {
             listQuery: {
                 // custId:
                 timeRange: [],
-                operateUserName:"",
-                operateOfficeName: "",
+                custMaintenanceMan:"",
+                maintainerDeptName: "",
             },
 
         };

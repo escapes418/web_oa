@@ -43,7 +43,7 @@
         <el-table :data="list" border fit highlight-current-row style="width: 100%">
             <el-table-column align="center" label="主客户编号" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" style="color:#409EFF;cursor: Pointer;" :title="scope.row.mainCustCode">{{scope.row.mainCustCode}}</span>
+                    <span class="ignore-detail" :title="scope.row.mainCustCode">{{scope.row.mainCustCode}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="主客户" width="180px">
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column align="center" label="更新时间" width="150px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.createTime ">{{scope.row.createTime  | stamp2TextDateFull}}</span>
+                    <span class="ignore-detail" :title="scope.row.createTime ">{{scope.row.createTime | stamp2TextDateFull}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="操作人" width="100px">
@@ -61,7 +61,7 @@
                     <span>{{scope.row.operateUserName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作人部门" width="100px">
+            <el-table-column align="center" label="操作人部门" width="120px">
                 <template slot-scope="scope">
                     <span>{{scope.row.operateOfficeName}}</span>
                 </template>

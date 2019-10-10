@@ -255,6 +255,11 @@
                                 <span>{{scope.row.custMaintenanceMan}}</span>
                             </template>
                         </el-table-column>
+                        <el-table-column align="center" label="维护人部门" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.maintainerDeptName}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column align="center" label="客户级别" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.custStageName}}</span>
@@ -263,6 +268,11 @@
                         <el-table-column align="center" label="拜访类型" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.visitTypeName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="问题归类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.issuesClassification}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" label="维护内容" width="200px">
