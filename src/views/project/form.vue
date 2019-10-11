@@ -59,7 +59,7 @@
                             </el-date-picker>
                         </span>
                     </RedStar>
-                    <RedStar label="商务助理：">
+                    <!-- <RedStar label="商务助理：">
                         <span class="right-con">
                             <div class="item-value" @click="showDialog(1)">
                                 <i class="el-icon-search" style="color:#bfbfbf"></i>
@@ -74,7 +74,7 @@
                                 <span style="color:#606266">{{serviceLeader}}</span>
                             </div>
                         </span>
-                    </RedStar>
+                    </RedStar> -->
                 </el-col>
                 <el-col :span="12" class="segment-brline">
                     <RedStar label="项目类型：" :required="true">
@@ -121,14 +121,14 @@
                             </div>
                         </span>
                     </RedStar>
-                    <RedStar label="清结算：">
+                    <!-- <RedStar label="清结算：">
                         <span class="right-con">
                             <div class="item-value" @click="showDialog(5)">
                                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                                 <span style="color:#606266">{{settleLeader}}</span>
                             </div>
                         </span>
-                    </RedStar>
+                    </RedStar> -->
                 </el-col>
             </el-row>
         </div>

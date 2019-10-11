@@ -129,7 +129,7 @@
                                     <span class="color-black bold">{{item.assigneeName}}</span>
                                     <!-- 审批bug的补丁 -->
                                     <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                                    <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                                    <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                                 </div>
                                 <div class="state-item">
                                     <span class="font-size14">{{item.endTime}}</span>

@@ -189,7 +189,7 @@
                                 <!-- <td class="tableTitle">天数</td> -->
                                 <td class="tableTitle">票据张数</td>
                                 <td class="tableTitle">报销金额</td>
-                                <td class="tableTitle">备注</td>
+                                <td class="tableTitle">备注（限300字）</td>
                                 <td class="tableTitle">上传图片</td>
                             </tr>
                         </thead>

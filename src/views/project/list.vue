@@ -2,8 +2,8 @@
     <div class="sjb-container calendar-list-container">
         <div class="filter-container">
             <div class="toolbar-item">
-                <span class="item-label">项目名称/企业编号：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" placeholder="请输入项目名称/企业编号" class="filter-item" v-model.trim="listQuery.projectName">
+                <span class="item-label">项目名称：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" placeholder="请输入项目名称" class="filter-item" v-model.trim="listQuery.projectName">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -13,11 +13,11 @@
                     </el-option>
                 </el-select>
             </div>
-            <!-- <div class="toolbar-item">
-                <span class="item-label">项目负责人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入项目负责人"  v-model.trim="listQuery.projectLeaderName">
+            <div class="toolbar-item">
+                <span class="item-label">企业编号：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" class="filter-item" placeholder="请输入企业编号"  v-model.trim="listQuery.holderCode">
                 </el-input>
-            </div> -->
+            </div>
             <div class="toolbar-item">
                 <span class="item-label">负责人类型：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.leaderType" placeholder="请选择">
@@ -143,9 +143,9 @@
                 <!-- <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox> -->
                 <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
                 <el-checkbox v-model="projectChecked" label="项目管理负责人"></el-checkbox>
-                <el-checkbox v-model="businessChecked" label="商务助理"></el-checkbox>
+                <!-- <el-checkbox v-model="businessChecked" label="商务助理"></el-checkbox>
                 <el-checkbox v-model="vipChecked" label="VIP客服"></el-checkbox>
-                <el-checkbox v-model="accountChecked" label="清结算"></el-checkbox>
+                <el-checkbox v-model="accountChecked" label="清结算"></el-checkbox> -->
             </div>
             <div class="move-select">
                 
@@ -175,7 +175,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">商务助理：</span>
                     <el-select 
                         style="width: 300px" 
@@ -213,7 +213,7 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
-                </div>
+                </div> -->
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmMove">确认</el-button>
@@ -292,7 +292,7 @@ export default {
                 projectType: "",
                 timeType: "2",//时间类型
                 projectState: "",//项目状态
-                // projectLeaderName: "",//市场负责人
+                holderCode: "",//市场负责人
                 applyTimeStart: "",
                 applyTimeEnd: "",
                 leaderType:'',
