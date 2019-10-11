@@ -20,7 +20,7 @@ export default [
                 component: () => import('@/views/primaryCust/list.vue'),
                 meta: {
                     title: '主客户管理',
-                    icon: 'iconfont icon-kehuguanli'
+                    icon: 'iconfont icon-keycustomer'
                 }
             },
             {
