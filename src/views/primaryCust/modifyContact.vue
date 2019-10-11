@@ -89,30 +89,39 @@ export default {
             var _this = this;
 
             let flag = true;
-            this.itemList.forEach(item=>{
-                if(!item.linkmanName){
-                    this.$message({
-                        message: "联系人名称不能为空",
-                        type: "warning"
-                    });
-                    flag = false;
-                }
-                else if(!item.linkmanPhone || !/^1[3456789][0-9]{9}$/.test(item.linkmanPhone)){
-                    this.$message({
-                        message: "请正确填写联系人联系方式",
-                        type: "warning"
-                    });
-                    flag = false
-                }
-                else if(!item.linkmanPost){
-                    this.$message({
-                        message: "联系人职位不能为空",
-                        type: "warning"
-                    });
-                    flag = false
-                }
-                
-            })
+            if(this.itemList.length){
+                this.itemList.forEach(item=>{
+                    if(!item.linkmanName){
+                        this.$message({
+                            message: "联系人名称不能为空",
+                            type: "warning"
+                        });
+                        flag = false;
+                    }
+                    else if(!item.linkmanPhone || !/^1[3456789][0-9]{9}$/.test(item.linkmanPhone)){
+                        this.$message({
+                            message: "请正确填写联系人联系方式",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                    else if(!item.linkmanPost){
+                        this.$message({
+                            message: "联系人职位不能为空",
+                            type: "warning"
+                        });
+                        flag = false
+                    }
+                    
+                })
+            }else{
+                this.$message({
+                    message: "请添加联系人信息！",
+                    type: "warning"
+                });
+                return;
+            }
+            
             if(flag&&type =="apply"){
                 this.confirmDialog = true;
             }
