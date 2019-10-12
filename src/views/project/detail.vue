@@ -29,6 +29,12 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">主客户名称：</span>
+                                    <span class="right-con">
+                                        {{detail.mainCustName}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">企业名称：</span>
                                     <span class="right-con">
                                         {{ companyList.join('，') }}
