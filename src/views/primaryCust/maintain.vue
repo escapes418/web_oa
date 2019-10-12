@@ -126,7 +126,7 @@ export default {
                 // linkmanName:"",// 联系人name ,
                 // producSide:"",
                 remarks:"",// 备注 ,
-                visitType:"",// 拜访类型
+                visitType:"2",// 拜访类型
             },
         };
     },
