@@ -315,6 +315,32 @@ export default {
         //人员树
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    // tem = tem.filter(i=>{
+                    //     return i.status=="1"
+                    // })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
