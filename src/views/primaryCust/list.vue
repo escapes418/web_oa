@@ -281,7 +281,8 @@ export default {
                 label: "name",
                 value:"id"
             },
-            userInfo:{}
+            userInfo:{},
+            scrollTop:"",
         };
     },
     watch:{
@@ -295,8 +296,17 @@ export default {
     },
     activated() {
         this.getListData();
+        document.documentElement.scrollTop = this.scrollTop;
         this.listLoading = false;
     },
+    beforeRouteLeave (to, from, next) {
+        let self = this;
+        this.$nextTick(_=> {
+            self.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        })
+        //保存滚动条元素div的scrollTop值
+        next()
+	},
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {
