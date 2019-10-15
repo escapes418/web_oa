@@ -68,8 +68,7 @@ export function travelFormVali(self) {
                 key = false;
                 
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                !(item.expenseAmt > 0)
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
                 toast('请正确填写出差金额！');
                 key = false;

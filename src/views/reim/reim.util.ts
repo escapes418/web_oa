@@ -79,8 +79,7 @@ export function reimFormVali(self) {
                 flag = false;
                 return;
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                item.expenseAmt < 0
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
                 toast('请正确填写报销金额！');
                 flag = false;
