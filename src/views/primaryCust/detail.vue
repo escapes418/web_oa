@@ -10,6 +10,12 @@
                         <el-row>
                             <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">主客户：</span>
+                                    <span class="right-con">
+                                        {{detailData.custName}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">客户编号：</span>
                                     <span class="right-con">
                                         {{detailData.custCode}}
@@ -17,7 +23,13 @@
                                 </div>
                                 <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">客户名称：</span>
-                                    <span class="right-con">{{detailData.custName}}</span>
+                                    <span class="right-con" v-for="(item,index) in detailData.childCustList" :key="index">
+                                        <span style="color:#409EFF;cursor: Pointer;"  @click="handleDetail(item)">
+                                            {{item.childCustName}}  
+                                        </span>
+                                        <span v-if="detailData.childCustList.length!=1 &&index+1 !== detailData.childCustList.length "> 、</span>
+                                    </span>
+                                    
                                 </div>
                                 <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">客户简称：</span>
@@ -187,6 +199,12 @@ export default {
                 this.$router.go(-1)
             }
         },
+        handleDetail(item){
+            this.$router.push({
+                path: "/inforManage/customerDetail",
+                query: { key: item.childCustId}
+            });
+        }
     }
 };
 </script>
