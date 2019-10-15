@@ -72,8 +72,7 @@ export function recepFormVali(self) {
                 flag = false;
                 return;
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                !(item.expenseAmt > 0)
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
                 toast('请正确填写预算金额！');
                 flag = false;

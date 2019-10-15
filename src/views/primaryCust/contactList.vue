@@ -2,7 +2,7 @@
     <div class="sjb-container calendar-list-container ">
         <div class="filter-container">
             <div class="toolbar-item">
-                <span class="item-label">主客户查询：</span>
+                <span class="item-label">主客户/编号查询：</span>
                 <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入客户名/客户编号" v-model.trim="listQuery.mainCustName">
                 </el-input>
             </div>
