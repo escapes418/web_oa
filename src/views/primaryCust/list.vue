@@ -159,6 +159,7 @@
                         v-model="businessAssistantId"
                         :disabled="!businessChecked"
                         filterable
+                        clearable
                         placeholder="请选择商务助理">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
@@ -172,6 +173,7 @@
                         v-model="vipCustomerId"
                         :disabled="!vipChecked"
                         filterable
+                        clearable
                         placeholder="请选择VIP客服">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
@@ -185,6 +187,7 @@
                         v-model="accountLeaderId"
                         :disabled="!accountChecked"
                         filterable
+                        clearable
                         placeholder="请选择清结算">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
