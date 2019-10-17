@@ -48,6 +48,12 @@
                                         {{detailData.marketLeaderPhone}}
                                     </span>
                                 </div>
+                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">清结算：</span>
+                                    <span class="right-con">
+                                        {{detailData.accountLeaderName}}
+                                    </span>
+                                </div>
                             </el-col>
                             <el-col :span="12">
                                 <div class="clearfix cominfo-item">
@@ -66,6 +72,18 @@
                                     <span class="left-title font-gray">详细地址：</span>
                                     <span class="right-con" v-if="detailData.custAddressCode">
                                         {{detailData.custAddress}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">VIP客服：</span>
+                                    <span class="right-con">
+                                        {{detailData.vipCustomerName}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">商务助理：</span>
+                                    <span class="right-con">
+                                        {{detailData.businessAssistantName}}
                                     </span>
                                 </div>
                             </el-col>
