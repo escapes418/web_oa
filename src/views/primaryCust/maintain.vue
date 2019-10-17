@@ -137,6 +137,7 @@ export default {
                     this.postData.linkmanName = item.linkmanName
                 }
             })
+            this.postData.issuesClassification = []
             this.issueList.forEach(item=>{
                 if(this.issuePostList.indexOf(item.value) !== -1){
                     this.postData.issuesClassification.push(item.name)
