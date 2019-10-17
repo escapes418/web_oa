@@ -181,6 +181,7 @@ export default {
                 this.belongCust = res.data
             }
         })
+        this.postData.belongCustId = this.$route.query.key
     },
     mounted() {
         //下拉列表数据转换
