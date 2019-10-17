@@ -235,7 +235,7 @@
                             </el-table-column>
                             <el-table-column label="一级科目">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.firstSubName}}
+                                    <span :class="scope.row.subjectExceed == 1 ? 'font-red':''">{{scope.row.firstSubName}}
                                         <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.subjectExceed == 0" placement="top">
                                             <el-tag size="mini" v-if="scope.row.subjectExceed == 1"  type="danger">异常</el-tag>
                                         </el-tooltip>
