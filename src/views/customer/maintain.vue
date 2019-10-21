@@ -8,63 +8,62 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">客户名称：</span>
-                            <span class="right-con">
-                                {{custName}}
-                            </span>
+                            <RedStar label="客户名称：" :required="false">
+                                <span class="right-con">
+                                    {{custName}}
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">客户级别
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="客户级别：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">拜访类型
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.visitType" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="拜访类型：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.visitType" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">备注：</span>
-                            <span class="right-con">
-                                <el-input placeholder="请输入"  type="textarea" :rows="3" style="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></el-input>
-                            </span>
+                            <RedStar label="备注：" :required="true">
+                                <span class="right-con">
+                                    <sjbtextarea type="textarea" :rows="3" placeholder="请输入" textStyle="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></sjbtextarea>
+                                </span>
+                            </RedStar>
                         </div>
                     </el-col>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">维护时间：</span>
-                            <span class="right-con">{{filter.custMaintenanceDate | stamp2TextDateFull}}</span>
+                            <RedStar label="维护时间：" :required="false">
+                                <span class="right-con">{{filter.custMaintenanceDate | stamp2TextDateFull}}</span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">联系人
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.linkmanId" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in linkmanList" :label="item.linkmanName" :value="item.id" :key="item.id">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="联系人：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.linkmanId" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in linkmanList" :label="item.linkmanName" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">维护内容
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <sjbtextarea placeholder="请输入" :rows="3" textStyle="width:250px;" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
-                            </span>
+                            <RedStar label="维护内容：" :required="true">
+                                <span class="right-con">
+                                    <sjbtextarea placeholder="请输入" :rows="3" textStyle="width:250px;" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
+                                </span>
+                            </RedStar>
                         </div>
                     </el-col>
                 </el-row>
@@ -92,6 +91,11 @@
                                 <span>{{scope.row.custMaintenanceMan}}</span>
                             </template>
                         </el-table-column>
+                        <el-table-column align="center" label="维护人部门" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.maintainerDeptName}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column align="center" label="客户级别" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.custStageName}}</span>
@@ -100,6 +104,11 @@
                         <el-table-column align="center" label="拜访类型" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.visitTypeName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="问题归类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.issuesClassification}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" label="维护内容" width="200px">
@@ -141,11 +150,12 @@ import { getMaintain, saveMaintain ,getLinkman} from "@/api/customer";
 import { parseTime } from "@/utils";
 import { custMaintainVali } from './cust.util';
 import sjbtextarea from '@/components/sjbTextarea';
-
+import RedStar from '@/components/RedStar/RedStar.vue';
 export default {
     name: "complexTable",
     components:{
-        sjbtextarea
+        sjbtextarea,
+        RedStar
     },
     data() {
         return {

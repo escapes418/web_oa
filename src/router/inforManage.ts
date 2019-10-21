@@ -13,6 +13,61 @@ export default [
         redirect: '/inforManage/implement',
         children: [
             {
+                path: 'primaryCust',
+                id: 'inforManage-primaryCust',
+                show: false,
+                name: 'PrimaryCust',
+                component: () => import('@/views/primaryCust/list.vue'),
+                meta: {
+                    title: '主客户管理',
+                    icon: 'iconfont icon-keycustomer'
+                }
+            },
+            {
+                path: 'maintainPrimary',
+                id: 'inforManage-maintainPrimary',
+                show: false,
+                name: 'MaintainPrimary',
+                component: () => import('@/views/primaryCust/maintain.vue'),
+                meta: {
+                    title: '维护管理',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'modifyPrimary',
+                id: 'inforManage-modifyPrimary',
+                show: false,
+                name: 'ModifyPrimary',
+                component: () => import('@/views/primaryCust/modifyContact.vue'),
+                meta: {
+                    title: '编辑联系人',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'primaryDetail',
+                id: 'inforManage-primaryDetail',
+                show: false,
+                name: 'PrimaryDetail',
+                component: () => import('@/views/primaryCust/detail.vue'),
+                meta: {
+                    title: '主客户详情',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'contactRecord',
+                id: 'inforManage-contactRecord',
+                show: false,
+                name: 'ContactRecord',
+                component: () => import('@/views/primaryCust/contactList.vue'),
+                meta: {
+                    title: '联系人记录',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
                 path: 'customerList',
                 id: 'inforManage-customerList',
                 show: false,

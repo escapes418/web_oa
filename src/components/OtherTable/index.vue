@@ -11,11 +11,17 @@
                 <span class="ignore-detail" :title="scope.row.custName">{{scope.row.custName}}</span>
             </template>
         </el-table-column>
+        <el-table-column align="center" label="主客户名称">
+            <template slot-scope="scope">
+                <span class="ignore-detail">{{scope.row.mainCustName}}</span>
+            </template>
+        </el-table-column>
         <el-table-column align="center" label="统一社会信用代码" width="120px">
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.creditCode}}</span>
             </template>
         </el-table-column>
+        
         <el-table-column align="center" label="客户级别" width="120px">
             <template slot-scope="scope">
                 <span>{{scope.row.custStageName}}</span>
