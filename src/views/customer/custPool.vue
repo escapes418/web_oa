@@ -60,6 +60,7 @@
                 <el-button v-if="ids.indexOf('inforManage-custPool-moveBtn')!==-1" class="filter-item" type="primary" v-waves @click="moveCust">批量移动客户</el-button>
                 <el-button v-if="ids.indexOf('inforManage-custPool-mergeBtn')!==-1" class="filter-item" type="primary" v-waves @click="dialogMergeVisible = true">合并客户</el-button>
                 <el-button v-if="ids.indexOf('inforManage-custPool-freeBtn')!==-1" class="filter-item" type="primary" v-waves @click="freeSea">移至公海/区域公海</el-button>
+                <el-button v-if="ids.indexOf('inforManage-custPool-unbindBtn')!==-1" class="filter-item" type="primary" v-waves @click="freeMerge">解除合并客户</el-button>
             </div>
         </div>
         <el-table ref="multipleTable" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
@@ -249,12 +250,20 @@
                 <el-button type="primary" @click="selectMarket">确认</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="系统提示？" width="25%" :visible.sync="dialogUnbind">
+            <span>确认解除合并该客户吗？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="unbindBtn">确认</el-button>
+                <el-button @click="dialogUnbind = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import common from "@/utils/common";
-import { getCustPool, fetchComInfoList,getMainCust,mergeCust,getMember,getMarket,moveBatchCust,openBatchCust} from "@/api/customer";
+import { getCustPool, fetchComInfoList,getMainCust,mergeCust,getMember,getMarket,moveBatchCust,openBatchCust,unboundCust} from "@/api/customer";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { getRegion } from "@/api/getRegion";
@@ -341,6 +350,8 @@ export default {
                 label: "name",
                 value:"id"
             },
+
+            dialogUnbind:false
         };
     },
     watch:{
@@ -577,6 +588,35 @@ export default {
                 // setTimeout(_=>{
                 //     window.location.reload();
                 // },500)
+            })
+        },
+        freeMerge(){
+            if(this.selectCust.length<1){
+                this.$message({
+                    message:'请选择要解除合并的客户！',
+                    type:"warning"
+                })
+            }else{
+                this.dialogUnbind = true
+            }
+        },
+
+        unbindBtn(){
+            let ids = [];
+            this.selectCust.forEach(item=>{
+                ids.push(item.id)
+            })
+            unboundCust({
+                custIds:ids
+            }).then(res=>{
+                if(res.status == 0){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.dialogUnbind = false
+                }
+                this.getListData();
             })
         },
         searchMain(val){
