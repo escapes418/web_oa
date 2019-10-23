@@ -151,3 +151,11 @@ export function openBatchCust(params){
     data:params
   })
 }
+
+export function unboundCust(params){
+  return request({
+    url:'/custInfo/custUnbind',
+    method:'post',
+    data:params
+  })
+}
