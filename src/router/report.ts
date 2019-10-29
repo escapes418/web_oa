@@ -92,7 +92,7 @@ export default [
                 component: () => import('@/views/report/implementer.vue'),
                 meta: {
                     title: '实施人员报表',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-Fun_icon03'
                 },
                 hidden: false
             },
@@ -104,7 +104,7 @@ export default [
                 component: () => import('@/views/report/functionUse.vue'),
                 meta: {
                     title: '功能使用报表',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-gongnengshiyong'
                 },
                 hidden: false
             },
@@ -116,7 +116,7 @@ export default [
                 component: () => import('@/views/report/reimDoc.vue'),
                 meta: {
                     title: '报销单据报表',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-baoxiao'
                 },
                 hidden: false
             },
@@ -128,7 +128,7 @@ export default [
                 component: () => import('@/views/report/presentDoc.vue'),
                 meta: {
                     title: '单据提交报表',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-danju'
                 },
                 hidden: false
             },{
@@ -151,7 +151,7 @@ export default [
                 component: () => import('@/views/report/trendChart.vue'),
                 meta: {
                     title: '单据审批趋势',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-danjutongji'
                 },
                 hidden: false
             },
@@ -163,11 +163,57 @@ export default [
                 component: () => import('@/views/report/overdue.vue'),
                 meta: {
                     title: '合同逾期报表',
-                    icon: 'iconfont icon-renyuanpaiban'
+                    icon: 'iconfont icon-daohangtubiao_huabanfuben'
                 },
                 hidden: false
             },
-           
+            {
+                path: 'maintainStatistic',
+                id: 'report-maintainStatistic',
+                show: false,
+                name: 'MaintainStatistic',
+                component: () => import('@/views/report/maintainStatistic.vue'),
+                meta: {
+                    title: '主客户维护报表',
+                    icon: 'iconfont icon-zhongyaokehu'
+                },
+                hidden: false
+            },
+            {
+                path: 'vipCustomer',
+                id: 'report-vipCustomer',
+                show: false,
+                name: 'VipCustomer',
+                component: () => import('@/views/report/vipCustomer.vue'),
+                meta: {
+                    title: 'vip客服维护报表',
+                    icon: 'iconfont icon-vipkefu'
+                },
+                hidden: false
+            },
+            {
+                path: 'saleStatistic',
+                id: 'report-saleStatistic',
+                show: false,
+                name: 'SaleStatistic',
+                component: () => import('@/views/report/saleStatistic.vue'),
+                meta: {
+                    title: '销售工作统计',
+                    icon: 'iconfont icon-xiaoshoutongji'
+                },
+                hidden: false
+            },{
+                path: 'saleManStatistic',
+                id: 'report-saleManStatistic',
+                show: false,
+                name: 'SaleManStatistic',
+                component: () => import('@/views/report/saleManStatistic.vue'),
+                meta: {
+                    title: '销售工作统计',
+                    icon: 'iconfont'
+                },
+                hidden: false
+            }
         ]
     }
 ];

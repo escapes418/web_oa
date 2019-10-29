@@ -56,7 +56,8 @@ export interface REIM_list {
     timeType:string,
     expenseAmtStart:number | string,
     expenseAmtEnd:number | string,
-    subNum:string[]
+    subNum:string[],
+    procCode:string
 }
 
 

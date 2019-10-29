@@ -237,3 +237,44 @@ export function downSubmit(parmas) {
         data:parmas
     })
 }
+
+export function getMaintainStatistic(parmas) {
+    return request({
+        url: '/completionRateReport/queryMainCustMaintainReport',
+        method: 'post',
+        data:parmas
+    })
+}
+
+export function getVipCustomer(parmas) {
+    return request({
+        url: '/completionRateReport/queryCompletionRateReport',
+        method: 'post',
+        data:parmas
+    })
+}
+
+
+export function getMember(params){
+    return request({
+      url:'/commonInfo/queryUserInfo',
+      method:'post',
+      data:params
+    })
+}
+
+export function getSalesOffice(params){
+    return request({
+      url:'/webReport/salesOfficeWorkStat',
+      method:'post',
+      data:params
+    })
+}
+
+export function getSalesMan(params){
+    return request({
+      url:'/webReport/salesEmployeeWorkStat',
+      method:'post',
+      data:params
+    })
+}

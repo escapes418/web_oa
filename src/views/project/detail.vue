@@ -65,17 +65,18 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">首次跑单时间：</span>
+                                    <span class="right-con">
+                                        {{ detail.firstOrderTime | stamp2TextDateFull}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">商务助理：</span>
                                     <span class="right-con">
                                         {{ detail.businessAssistantName }}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">VIP客服：</span>
-                                    <span class="right-con">
-                                        {{ detail.vipCustomerName }}
-                                    </span>
-                                </div>
+                                
                             </el-col>
                             <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
