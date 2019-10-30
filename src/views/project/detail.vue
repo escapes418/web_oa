@@ -67,7 +67,7 @@
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">首次跑单时间：</span>
                                     <span class="right-con">
-                                        {{ detail.firstOrderTime | stamp2TextDateFull}}
+                                        {{ detail.firstOrderTime }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">

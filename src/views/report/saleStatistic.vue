@@ -4,7 +4,7 @@
             <Department type="list" @on-confirm="depConfirm" :Dvalue="listQuery.officeName"></Department>
             <div class="toolbar-item">
                 <span class="item-label">时间：</span>
-                <el-select clearable style="width: 220px" class="filter-item" v-model="listQuery.timeType" placeholder="请选择">
+                <el-select clearable style="width: 220px" class="filter-item" v-model="listQuery.timeType" placeholder="请选择" @change="cleanrFilter">
                     <el-option v-for="item in timeTypeList" :key="item.value" :label="item.name" :value="item.value">
                     </el-option>
                 </el-select>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <el-alert
-            title="备注：该表单位（元），所有显示费用为已审批完结费用。"
+            title="备注：该表单位（个）"
             class="remarkInfo"
             :closable="false"
             show-icon
@@ -93,7 +93,7 @@
 
 <script>
 import common from '@/utils/common'
-import { getSalesOffice ,downEmpFile} from '@/api/report'
+import { getSalesOffice ,exportSalesOffice} from '@/api/report'
 import Department from "@/components/Department";
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
@@ -120,7 +120,7 @@ export default {
                 officeName:"营销中心",
                 tempChoice:{},
                 officeId: "15725250",//默认市场中心
-                timeType: "",
+                timeType: "2",
                 timeRange:[]
             },
 
@@ -203,17 +203,12 @@ export default {
             })
         },
         cleanrFilter(){
-            this.listQuery.year = "";
-            this.depart = "";
-            this.listQuery.officeId ="";
-            this.listQuery.employeeName ="";
-            this.listQuery.pageNo = 1;
-            this.year = new Date().getFullYear();
-            this.getList();
+            this.listQuery.timeRange = [];
         },
         exportFile(){
-            downEmpFile({
-                year:this.listQuery.year
+            var postData = this.reduceParams(this.$$queryStub);
+            exportSalesOffice({
+                ...postData
             }).then(res=>{
                 if(res.status == 0){
                     var url = `./OA${res.data}`;

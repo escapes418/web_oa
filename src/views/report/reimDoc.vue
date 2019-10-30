@@ -272,7 +272,8 @@ export default class reimDoc extends Vue{
         if(!this.listQuery.timeRange){
             this.listQuery.timeRange = []
         }
-        if(this.listQuery.timeRange.length==0
+        if(this.listQuery.procCode ==''
+            &&this.listQuery.timeRange.length==0
             &&this.listQuery.timeType == ''
             &&this.listQuery.officeId == ''
             &&this.listQuery.projectId ==''

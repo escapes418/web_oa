@@ -271,9 +271,25 @@ export function getSalesOffice(params){
     })
 }
 
+export function exportSalesOffice(params){
+    return request({
+      url:'/webReport/salesOfficeWorkStatExport',
+      method:'post',
+      data:params
+    })
+}
+
 export function getSalesMan(params){
     return request({
       url:'/webReport/salesEmployeeWorkStat',
+      method:'post',
+      data:params
+    })
+}
+
+export function exportSalesMan(params){
+    return request({
+      url:'/webReport/salesEmployeeWorkStatExport',
       method:'post',
       data:params
     })

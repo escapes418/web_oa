@@ -8,7 +8,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">客户查询：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="客户名" v-model.trim="listQuery.custName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="客户名/编号" v-model.trim="listQuery.custName">
                 </el-input>
             </div>
             <div class="toolbar-item">

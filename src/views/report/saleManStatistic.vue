@@ -4,9 +4,14 @@
             <div class="toolbar-item">
                 <el-button class="filter-item" icon="el-icon-back" @click="goBack">返回</el-button>
             </div>
+            <div class="toolmore-control">
+                <div class="toolbar-item">
+                <el-button class="filter-item" type="primary" icon="el-icon-download" @click="exportFile">导出Excel</el-button>
+                </div>
+            </div>
         </div>
         <el-alert
-            title="备注：该表单位（元），所有显示费用为已审批完结费用。"
+            title="备注：该表单位（个）"
             class="remarkInfo"
             :closable="false"
             show-icon
@@ -70,14 +75,12 @@
             </el-table-column>
         </el-table>
 
-        
-
     </div>
 </template>
 
 <script>
 // import common from '@/utils/common'
-import { getSalesMan ,downEmpFile} from '@/api/report'
+import { getSalesMan ,exportSalesMan} from '@/api/report'
 // import Department from "@/components/Department";
 // import waves from '@/directive/waves' // 水波纹指令
 // import { parseTime } from '@/utils'
@@ -104,6 +107,7 @@ export default {
             getSalesMan({
                 ...this.$route.query
             }).then(res => {
+                
                 this.list = res.data;
             })
         },
@@ -111,8 +115,8 @@ export default {
             this.$router.go(-1);
         },
         exportFile(){
-            downEmpFile({
-                year:this.listQuery.year
+            exportSalesMan({
+                ...this.$route.query
             }).then(res=>{
                 if(res.status == 0){
                     var url = `./OA${res.data}`;

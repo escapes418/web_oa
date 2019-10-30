@@ -121,8 +121,12 @@ export default {
             getVipCustomer({
                 ...postData
             }).then(res => {
-                this.list = res.data.list;
-                this.total = res.data.total;
+                if(this.pageNo == '1'){
+                    res.data.completionRateSum.complerName = "总计（列）";
+                    res.data.page.list.unshift(res.data.completionRateSum);
+                }
+                this.list = res.data.page.list;
+                this.total = res.data.page.total;
             })
         },
         handleFilter() {
