@@ -242,6 +242,24 @@ export default {
                         query: { key: item.id }
                     })
                 }
+                if(item.billType == 13){
+                    this.$router.push({
+                        path:'/inforManage/imDetail',
+                        query: { key: item.id }
+                    })
+                }
+                if(item.billType == 14){
+                    this.$router.push({
+                        path:'/inforManage/maDetail',
+                        query: { key: item.id }
+                    })
+                }
+                if(item.billType == 15){
+                    this.$router.push({
+                        path:'/inforManage/primaryDetail',
+                        query: { key: item.id }
+                    })
+                }
                 if(this.$route.name){
                     const { fullPath } = this.$route;
                     this.$router.replace({

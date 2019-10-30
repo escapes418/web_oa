@@ -7,11 +7,9 @@
                 </el-input>
             </div>
             <div class="toolbar-item">
-                <span class="item-label">客户级别：</span>
-                <el-select style="width:350px" class="filter-item" multiple v-model="listQuery.custStage" placeholder="请选择客户级别">
-                    <el-option v-for="item in custStageList" :key="item.value" :label="item.name" :value="item.value">
-                    </el-option>
-                </el-select>
+                <span class="item-label">客户查询：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="客户名/编号" v-model.trim="listQuery.custName">
+                </el-input>
             </div>
             <div class="toolbar-item">
                 <span class="item-label">负责人类型：</span>
@@ -40,6 +38,20 @@
             </div>
             <el-collapse-transition>
                 <div v-show="toolexpand" style="margin-top:8px">
+                    <div class="toolbar-item">
+                        <span class="item-label">客户级别：</span>
+                        <el-select style="width:350px" class="filter-item" multiple v-model="listQuery.custStage" placeholder="请选择客户级别">
+                            <el-option v-for="item in custStageList" :key="item.value" :label="item.name" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div class="toolbar-item">
+                        <span class="item-label">时间类型：</span>
+                        <el-select style="width:130px" class="filter-item" v-model="listQuery.timeType" placeholder="请选择时间类型">
+                            <el-option v-for="item in timeTypeList" :key="item.value" :label="item.name" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
                     <div class="toolbar-item">
                         <span class="item-label">时间：</span>
                         <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围" :picker-options="pickerOptions">
@@ -117,7 +129,11 @@
                     <span>{{scope.row.officeName}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column align="center" label="首次跑单时间" width="140px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.firstOrderTime}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="更新时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{scope.row.time | stamp2TextDateFull}}</span>
@@ -214,7 +230,7 @@
 
 <script>
 import common from "@/utils/common";
-import { getCustPool,getMember,getMarket,updateCust} from "@/api/primaryCust";
+import { getMainCust,getMember,getMarket,updateCust} from "@/api/primaryCust";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { getRegion } from "@/api/getRegion";
@@ -243,7 +259,7 @@ export default {
             toolexpand: false,
             tableKey: 0,
             list: [],
-            total: null,
+            total: 0,
             loading: false,
             listLoading: false,
             pageNo: 1,
@@ -255,6 +271,7 @@ export default {
             marketData: [],
             leaderName:'',
             custTypeList:[],
+            timeTypeList:[],
 
             listQuery: {
                 isMain:"1",
@@ -265,6 +282,8 @@ export default {
                 mainCustName: "",
                 leaderType:"",
                 leader: "",
+                timeType:"",
+                custName:""
             },
             custTradesList: [],
             dialogMoveVisible: false,
@@ -324,7 +343,7 @@ export default {
         this.custTradesList = selectDic(dicList, "cust_trades");
         this.custTypeList = selectDic(dicList, "cust_leader_type");
         this.custStageList = selectDic(dicList, "cust_stage");
-
+        this.timeTypeList = selectDic(dicList, "cust_time_type")
         //人员树
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
@@ -443,7 +462,7 @@ export default {
         modifyCust(){
             if(this.selectCust.length<1){
                 this.$message({
-                    message:'请选择要移动的主客户！',
+                    message:'请选择要修改的主客户！',
                     type:"warning"
                 })
                 return
@@ -546,7 +565,7 @@ export default {
             var _this = this;
             this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
-            getCustPool({
+            getMainCust({
                 ...postData,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize

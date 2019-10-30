@@ -1,7 +1,11 @@
 <template>
     <div class="sjb-container calendar-list-container">
         <div class="filter-container">
-            
+            <div class="toolbar-item">
+                <span class="item-label">流程编号：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程编号" v-model.trim="listQuery.procCode">
+                </el-input>
+            </div>
             <div class="toolbar-item">
                 <span class="item-label">时间类型：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.timeType" placeholder="请选择">
@@ -187,6 +191,7 @@ export default class reimDoc extends Vue{
     };
     
     listQuery: REIM_list = {
+        procCode:"",
         timeRange:[],
         officeId:'',
         officeName:'',
@@ -267,7 +272,8 @@ export default class reimDoc extends Vue{
         if(!this.listQuery.timeRange){
             this.listQuery.timeRange = []
         }
-        if(this.listQuery.timeRange.length==0
+        if(this.listQuery.procCode ==''
+            &&this.listQuery.timeRange.length==0
             &&this.listQuery.timeType == ''
             &&this.listQuery.officeId == ''
             &&this.listQuery.projectId ==''
