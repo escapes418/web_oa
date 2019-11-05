@@ -9,7 +9,7 @@
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="客户名称：" :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="50"></el-input>
+                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="30"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="地址：" :required="true">
