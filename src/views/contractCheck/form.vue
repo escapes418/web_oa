@@ -547,6 +547,10 @@ export default {
                 })
                 this.getConfig(this.postData.contractNameId);
             }
+            this.postData.associationMainName = "";
+            this.postData.associationMainCode = "";
+            this.postData.associationMainId = "";
+            this.postData.projectIds = [];
         },
         clearContract(){
             this.$store.dispatch('cleanInit');

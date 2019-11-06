@@ -49,7 +49,7 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="620">
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="620">
         <el-table-column align="center" label="员工名称"  width="120px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.employeeName}}</span>
@@ -167,7 +167,6 @@ export default {
     mixins: [listQueryMix],
     data() {
         return {
-            tableKey: 0,
             year:"",
             list: [],
             total: 0,

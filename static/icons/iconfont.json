@@ -55,6 +55,13 @@
       "unicode_decimal": 59005
     },
     {
+      "icon_id": "782801",
+      "name": "店主客户",
+      "font_class": "dianzhukehu",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
       "icon_id": "796561",
       "name": "钱包",
       "font_class": "qianbao",
@@ -130,6 +137,13 @@
       "font_class": "qiandinghetong",
       "unicode": "e625",
       "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "1141898",
+      "name": "VIP客服",
+      "font_class": "vipkefu",
+      "unicode": "e700",
+      "unicode_decimal": 59136
     },
     {
       "icon_id": "1163360",
@@ -279,6 +293,13 @@
       "unicode_decimal": 58943
     },
     {
+      "icon_id": "2866168",
+      "name": "销售统计",
+      "font_class": "xiaoshoutongji",
+      "unicode": "e658",
+      "unicode_decimal": 58968
+    },
+    {
       "icon_id": "2959071",
       "name": "人员排班",
       "font_class": "renyuanpaiban",
@@ -314,6 +335,13 @@
       "unicode_decimal": 58901
     },
     {
+      "icon_id": "4056070",
+      "name": "功能使用",
+      "font_class": "gongnengshiyong",
+      "unicode": "e7a0",
+      "unicode_decimal": 59296
+    },
+    {
       "icon_id": "4238157",
       "name": "线索",
       "font_class": "xiansuo1",
@@ -335,6 +363,20 @@
       "unicode_decimal": 58902
     },
     {
+      "icon_id": "5176684",
+      "name": "实施人员_Fun_Icon03",
+      "font_class": "Fun_icon03",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "5949167",
+      "name": "合同统计cg",
+      "font_class": "daohangtubiao_huabanfuben",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
       "icon_id": "6321263",
       "name": "审批",
       "font_class": "shenpi",
@@ -354,6 +396,34 @@
       "font_class": "daiban1",
       "unicode": "e632",
       "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "7319021",
+      "name": "报销统计",
+      "font_class": "baoxiao",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "8192978",
+      "name": "重要客户",
+      "font_class": "zhongyaokehu",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "9835129",
+      "name": "单据统计",
+      "font_class": "danjutongji",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "10751804",
+      "name": "单据",
+      "font_class": "danju",
+      "unicode": "e9c9",
+      "unicode_decimal": 59849
     }
   ]
 }

@@ -8,6 +8,10 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">工作日志编号：</span>
+                            <span class="right-con">{{ detail.dailyCode }}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">提交人：</span>
                             <span class="right-con">{{ detail.createByName }}</span>
                         </div>

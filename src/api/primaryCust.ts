@@ -8,9 +8,9 @@ export function fetchList(params) {
     })
 }
 
-export function getCustPool(params){
+export function getMainCust(params){
     return request({
-        url:'/custInfo/custPoolList',
+        url:'/custInfo/mainCustList',
         method:'post',
         data:params
     })

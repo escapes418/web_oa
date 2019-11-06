@@ -75,6 +75,12 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">首次跑单时间：</span>
+                                    <span class="right-con">
+                                        {{detailData.firstOrderTime}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">VIP客服：</span>
                                     <span class="right-con">
                                         {{detailData.vipCustomerName}}
