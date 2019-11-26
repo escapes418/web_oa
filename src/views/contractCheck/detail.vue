@@ -24,7 +24,11 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同类型：</span>
-                                    <span class="right-con">{{ detail.contractTypeTxt }}</span>
+                                    <span class="right-con">{{ contractTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">合同关键字：</span>
+                                    <span class="right-con">{{ keyWordName.join(' ,') }}</span>
                                 </li>
                                 <li class="base-li" v-if="associationMain">
                                     <span class="left-title font-gray">关联主合同编号：</span>
@@ -285,7 +289,9 @@ export default {
             tipsUpload3:'合同扫描件图片（必填）',
             dataAttachment:[],
             contractAttachment:[],
-            
+            keyWords:[],
+            contractTypeName:"",
+            keyWordName:[],
             scanConAttachment:[],
             fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
             // uploadTips: config.tips,
@@ -360,6 +366,7 @@ export default {
 
         //先获取详情根据详情返回的模版ID再获取相关的配置数据，并将详情的数据回填到配置文件然后渲染详情页面
         this.detailPromise().then(async res=>{
+
             let respond = await getContractConfig({id:res.data.contractFlowDetailInfoNewResponse.configId});
             respond.data.contractConfigAttachmentList.forEach(item=>{
                 if(item.attachmentType == 2){
@@ -381,6 +388,14 @@ export default {
                         }
                     })
                 })
+            })
+            this.contractTypeName = respond.data.contractTypeName;
+            respond.data.keyWords = res.data.keyWords || [];
+            this.keyWords = respond.data.keyWords;
+            this.keyWords.forEach(i=>{
+                if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
+                    this.keyWordName.push(i.value)
+                }
             })
             this.associationMain = respond.data.associationMain == 1
             this.detail.contractPartyList = respond.data.contractPartyList;

@@ -120,3 +120,11 @@ export function downReim(params){
         data:params
     })
 }
+
+export function getAccountList(parmas) {
+    return request({
+        url:'/commonInfo/queryMyBankCardInfoList',
+        method:'post',
+        // data:parmas
+    })
+}

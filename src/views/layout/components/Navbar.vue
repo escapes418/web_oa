@@ -260,6 +260,12 @@ export default {
                         query: { key: item.id }
                     })
                 }
+                if(item.billType == 16){
+                    this.$router.push({
+                        path:'/me/loanDeatil',
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
+                    })
+                }
                 if(this.$route.name){
                     const { fullPath } = this.$route;
                     this.$router.replace({

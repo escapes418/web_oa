@@ -118,6 +118,14 @@
                                 <span class="left-title font-gray">报销人员：</span>
                                 <span class="right-con">{{ detail.applyPerName }}</span>
                             </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">收款方：</span>
+                                <span class="right-con">{{ detail.payeeName }}</span>
+                            </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">开户行：</span>
+                                <span class="right-con">{{ detail.payeeOpeningBank }}</span>
+                            </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">成本中心：</span>
                                 <span class="right-con">{{ detail.costCenterName }}</span>
@@ -168,6 +176,10 @@
                                 <span class="left-title font-gray">所属岗位：</span>
                                 <span class="right-con">{{ detail.postName }}</span>
                             </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">收款账号：</span>
+                                <span class="right-con">{{ detail.payeeCardNum }}</span>
+                            </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">发票所属公司：</span>
                                 <span class="right-con">{{ detail.taxCityName }}</span>
@@ -200,6 +212,12 @@
                                 <span class="left-title font-gray">费用合计：</span>
                                 <span class="right-con">
                                     {{ detail.expenseTotal | thousands(2) }}
+                                </span>
+                            </div>
+                            <div class="clearfix  cominfo-item" v-if="actualInput">
+                                <span class="left-title font-gray">实际报销金额：</span>
+                                <span class="right-con">
+                                    <el-input type="number" placeholder="请输入" style="width:250px;" v-model.number="actualAmt"></el-input>
                                 </span>
                             </div>
                             <div class="clearfix  cominfo-item">
@@ -329,7 +347,7 @@
                     附件
                 </div>
                 <div class="segment-area">
-                    <div class="el-table__body-wrapper">
+                    <div class="el-table__body-wrapper" id="imgList" @click="showImg">
                         <div v-for="(val,index) in expenseAttachment" :key="index" style="width:40%;margin-bottom:15px">
                             <div v-if="val.url != ''" class="upload-list">
                                 <span class="img-font">{{val.name}}</span>
@@ -337,7 +355,7 @@
                                 <el-button v-else type="text" style="float:right" @click="showImg(index,1)">
                                     查看<img :src="val.url" style="display:none">
                                 </el-button>
-                                
+                                <!-- <img :src="val.url" style="display:none"> -->
                                 <!-- <el-button type="text" style="float:right" @click="downAttach(val)">下载</el-button> -->
                             </div>
                         </div>
@@ -360,8 +378,9 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <template v-if="pathType === 'list'">
-                    <!-- <el-button v-if="ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
-                    <el-button v-if="ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="dialogCanVisible = true">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
@@ -373,6 +392,7 @@
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
+                    <el-button v-if="ISCOST" size="medium" type="info" @click="setBackBtn">退回</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -397,6 +417,13 @@
             <el-button @click="dialogDelVisible = false">取消</el-button>
         </span>
     </el-dialog>
+    <!-- <el-dialog title="系统提示？" width="25%" :visible.sync="dialogActual">
+        
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="actualBtn">确认</el-button>
+            <el-button @click="dialogActual = false">取消</el-button>
+        </span>
+    </el-dialog> -->
     <el-dialog title="系统提示？" width="25%" :visible.sync="dialogCanVisible">
         <span>确认撤销该报销单吗？</span>
         <span slot="footer" class="dialog-footer">
@@ -462,7 +489,10 @@ export default {
             dialogDelVisible: false,
             dialogImg: false,
             pathType: "",
-            finish: false
+            finish: false,
+            viewer:null,
+            actualAmt:"",
+            actualInput:false,
         };
     },
     computed: {
@@ -489,6 +519,9 @@ export default {
             let result = this.detail.modify == "modify" ? true : false;
             return result;
         },
+        ISCOST: function() {
+            let result = this.detail.modify == "costAccounting" ? true:false        
+        },
         ISPUTIN: function() {
             let result = this.detail.expenseStatus == 4 ? true : false;
             return result;
@@ -506,50 +539,59 @@ export default {
         }
     },
     created() {
-            this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-            if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
-            if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
+        if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
 
-            getDetail({
-                expenseFlowId: this.$route.query.key
-            }).then(res => {
-                this.detail = res.data.detail;
-                res.data.flowDetailList = res.data.flowDetailList || [];
-                this.flowDetailList = res.data.flowDetailList;
-                this.flowLoglist = res.data.flowLoglist;
-                this.amtList = res.data.amtList;
-                if (
-                    res.data.detail.expenseAttachmentWeb &&
-                    res.data.detail.expenseAttachmentWeb.length > 0
-                ) {
-                    res.data.detail.expenseAttachmentWeb.forEach(item => {
-                        let originUrl = item.url;
-                        item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                        this.expenseAttachment.push({
-                            url: item.url,
-                            name: item.fileName,
-                            originUrl: originUrl,
-                            previewUrl: item.url,
-                            viewer: null
-                        });
+        getDetail({
+            expenseFlowId: this.$route.query.key
+        }).then(res => {
+            this.detail = res.data.detail;
+            res.data.flowDetailList = res.data.flowDetailList || [];
+            this.flowDetailList = res.data.flowDetailList;
+            this.flowLoglist = res.data.flowLoglist;
+            this.amtList = res.data.amtList;
+            if (
+                res.data.detail.expenseAttachmentWeb &&
+                res.data.detail.expenseAttachmentWeb.length > 0
+            ) {
+                res.data.detail.expenseAttachmentWeb.forEach(item => {
+                    let originUrl = item.url;
+                    item.url = res.data.detail.expenseAttachmentPrefix + item.url;
+                    this.expenseAttachment.push({
+                        url: item.url,
+                        name: item.fileName,
+                        originUrl: originUrl,
+                        previewUrl: item.url,
+                        viewer: null
                     });
+                });
+            }
+            if (this.detail.applyType == 2) {
+                if (
+                    res.data.detail.employeesName &&
+                    res.data.detail.employeesName.length > 0
+                ) {
+                    this.detail.employeesName = res.data.detail.employeesName.join(" , ");
                 }
-                if (this.detail.applyType == 2) {
-                    if (
-                        res.data.detail.employeesName &&
-                        res.data.detail.employeesName.length > 0
-                    ) {
-                        this.detail.employeesName = res.data.detail.employeesName.join(" , ");
-                    }
-                    this.detail.customerSituation = res.data.detail.customerSituation
-                }
-                if (this.detail.applyType == 2 || this.detail.applyType == 3) {
-                    this.detail.procName = res.data.detail.procName;
-                }
-                
-            });
+                this.detail.customerSituation = res.data.detail.customerSituation
+            }
+            if (this.detail.applyType == 2 || this.detail.applyType == 3) {
+                this.detail.procName = res.data.detail.procName;
+            }
+            
+        });
     },
+    
     methods: {
+        showExpenseAmt(){
+            this.actualInput = true
+        },
+        actualBtn(){
+            setActual({}).then(res => {
+
+            })
+        },
         showImgDia(subConfList) {
             this.urlArr = [];
             if (subConfList) {
@@ -589,6 +631,16 @@ export default {
             return false;
         },
         showImg(index, type) {
+            // if(this.viewer){
+            //     this.viewer.show();
+            //     return
+            // }
+            // const ViewerDom = document.getElementById('imgList');
+            // console.log(ViewerDom)
+            // this.viewer = new Viewer(ViewerDom, {
+            //     // 相关配置项,详情见下面
+            // });
+            // this.viewer.show()
             if (type == 1) {
                 // 如果已初始化过 直接show出
                 if (this.expenseAttachment[index].viewer) {
@@ -704,6 +756,29 @@ export default {
                 }
             });
         },
+        setBackBtn(){
+            if (this.comment == "") {
+                this.$message({
+                    message: "审批意见不能为空！",
+                    type: "warning"
+                });
+                return;
+            }
+            expFlow({
+                expenseFlowId: this.$route.query.key,
+                comment: this.comment,
+                flag: "back",
+                procInsId: this.detail.procInsId
+            }).then(res => {
+                if (res.status == 0) {
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.$router.go(-1);
+                }
+            });
+        },
         cancelBtn() {
             expCancel({
                 procInsId: this.detail.procInsId,
@@ -738,6 +813,7 @@ export default {
         }
     },
     mounted() {
+
         Viewer.setDefaults({
             navbar: false,
             toolbar: {
@@ -751,10 +827,13 @@ export default {
                     show: 4,
                     size: "large"
                 },
+                // prev:4,
+                // next:4,
                 rotateLeft: 4,
                 rotateRight: 4
             }
         });
+        
     }
 };
 </script>

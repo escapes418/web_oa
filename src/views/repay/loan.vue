@@ -9,21 +9,16 @@
             </div>
             <el-input :value="name" @click="openDialog" readonly></el-input>
         </div> -->
-        <RedStar label="项目名称：" :required="required">
+        <RedStar label="关联申请：" :required="required">
             <div class="item-value" @click="openDialog">
                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                 <span style="color:#606266;font-size:14px">{{name}}</span>
             </div>
         </RedStar>
-        <el-dialog title="关联项目" :visible.sync="showDialog" width="1000px" top="6vh" required="false">
+        <el-dialog title="关联借款申请" :visible.sync="showDialog" width="1000px" top="6vh" required="false">
             <span class="toolbar-item">
-                <span class="item-label">更新时间</span>
-                <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围" :picker-options="pickerOptions">
-                </el-date-picker>
-            </span>
-            <span class="toolbar-item">
-                <span class="item-label">项目名称：</span>
-                <el-input @keyup.enter.native="handleProFilter" style="width: 120px;" class="filter-item" placeholder="请输入项目名" v-model.trim="listQuery.projectName">
+                <span class="item-label">流程编号/标题：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程编号/标题" v-model.trim="listQuery.procCodeOrTitle">
                 </el-input>
             </span>
             <span class="toolbar-item">
@@ -31,35 +26,40 @@
                 <el-button class="filter-item" type="warning" icon="el-icon-refresh" @click="restListQuery(restCallback)">重置</el-button>
             </span>
             <div class="dialog" style="margin-top:10px">
-                <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;" @row-click="selectProject">
-                    <el-table-column align="center" label="项目名称">
+                <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;" @row-click="selectLoan">
+                    <el-table-column align="center" label="流程编号" width="100px">
                         <template slot-scope="scope">
-                            <span class="ignore-detail">{{scope.row.projectName}}</span>
+                            <span>{{scope.row.procCode}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="归属部门">
+                    <el-table-column align="center" label="流程名称">
                         <template slot-scope="scope">
-                            <span class="ignore-detail">{{scope.row.officeName}}</span>
+                            <a>{{scope.row.procName}}</a>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="客户名称">
+                    <el-table-column align="center" label="借款人">
                         <template slot-scope="scope">
-                            <span class="ignore-detail">{{scope.row.custInfoName}}</span>
+                            <span>{{scope.row.applyPerName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center"  width="100px" label="项目类型">
+                    <el-table-column align="center" label="借款时间">
                         <template slot-scope="scope">
-                            <span>{{scope.row.projectTypeName}}</span>
+                            <span>{{scope.row.applyTime | stamp2TextDate}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" width="100px" label="更新时间">
+                    <el-table-column width="80px" align="center" label="借款金额">
                         <template slot-scope="scope">
-                            <span>{{scope.row.updateTime | stamp2TextDate}}</span>
+                            <span>{{scope.row.loanAmount}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center"  width="100px" label="项目负责人">
+                    <el-table-column width="100px" align="center" label="已还款金额">
                         <template slot-scope="scope">
-                            <span>{{scope.row.projectLeaderName}}</span>
+                            <span>{{scope.row.paidAmount}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column width="100px" align="center" label="待还款金额">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.unpaidAmount}}</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -75,7 +75,7 @@
 
 <script>
 import common from "@/utils/common";
-import { fetchProList } from "@/api/reim";
+import { getLoanList } from "@/api/repay";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
 import RedStar from '@/components/RedStar/RedStar.vue'
@@ -85,94 +85,71 @@ export default {
         RedStar
     },
     props: {
-        Pvalue: String,
+        lValue: String,
         required: Boolean
     },
     mixins: [listQueryMix],
     data() {
         return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                }
-            },
             showDialog: false,
-            listLoading: false,
             list: [],
-            total: null,
+            total: 0,
             name: "",
             
             pageNo: 1,
             pageSize: 10,
             listQuery: {
-                projectName: "",
-                timeRange: [],
-                applyTimeStart: "",
-                applyTimeEnd: ""
+                procCodeOrTitle: "",
+                loanFlowStatus:"1"
             }
         };
     },
     computed: {},
     watch: {
-        Pvalue(val) {
+        lValue(val) {
             this.name = val;
         }
     },
     created() {
         this.$$queryStub = this.$$listQuery;
-        this.name = this.Pvalue;
+        this.name = this.lValue;
+        // this.getList()
     },
     methods: {
         openDialog() {
             this.showDialog = true;
-            // this.listLoading = false;
-            // if(this.list.length == 0) {
-            //     this.getList();
-            //     this.listLoading = false;
-            // } else {
-            //     this.listLoading = false;
-            // }
+            this.getList();
         },
         restCallback() {
             // 用来补充默认rest不足的问题
         },
         getList() {
-            this.listLoading = true;
-            var postData = this.reduceParams(this.$$queryStub);
-            fetchProList({
+            var postData = this.$$queryStub.toJS();
+            getLoanList({
                 ...postData,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }).then(res => {
                 this.list = res.data.list;
                 this.total = res.data.total;
-                this.listLoading = false;
             });
-        },
-        reduceParams($$imData) {
-            if (!$$imData || $$imData.size == 0) return {};
-            const $$postData = $$imData
-                .set('applyTimeStart', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeStart)
-                .set('applyTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeEnd)
-                .delete('timeRange')
-            return $$postData.toJS();
         },
         handleProFilter() {
             this.pageNo = 1;
-            if(this.listQuery.projectName){
+            if(this.listQuery.procCodeOrTitle){
                 this.$$queryStub = fromJS(this.listQuery);
                 this.getList();
-                this.listLoading = false;
             }
         },
         handleCurrentChange(val) {
             this.pageNo = val;
             this.getList();
-            this.listLoading = false;
         },
-        selectProject(row) {
-            this.name = row.projectName;
-            this.$emit("on-select",row);
+        selectLoan(row) {
+            if(this.name !== row.procName){
+                this.name = row.procName;
+                this.$emit("on-select",row);
+            }
             this.showDialog = false;
         },
         
