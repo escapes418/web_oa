@@ -27,7 +27,7 @@
             </span>
             <div class="dialog" style="margin-top:10px">
                 <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;" @row-click="selectLoan">
-                    <el-table-column align="center" label="流程编号" width="100px">
+                    <el-table-column width="180px" align="center" label="流程编号">
                         <template slot-scope="scope">
                             <span>{{scope.row.procCode}}</span>
                         </template>
@@ -37,12 +37,12 @@
                             <a>{{scope.row.procName}}</a>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="借款人">
+                    <el-table-column width="80px" align="center" label="借款人">
                         <template slot-scope="scope">
                             <span>{{scope.row.applyPerName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="借款时间">
+                    <el-table-column width="100px" align="center" label="借款时间">
                         <template slot-scope="scope">
                             <span>{{scope.row.applyTime | stamp2TextDate}}</span>
                         </template>

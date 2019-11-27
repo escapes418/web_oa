@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 export function getRepaytList(parmas) {
     return request({
-        url:'/webRepayFlow/queryMyRepayFlowList',
+        url:'/repayFlow/queryMyRepayFlowList',
         method:'post',
         data:parmas
     })
@@ -19,7 +19,7 @@ export function getLoanList(parmas) {
 
 export function repayApply(parmas) {
     return request({
-        url:'/webRepayFlow/apply',
+        url:'/repayFlow/apply',
         method:'post',
         data:parmas
     })
@@ -28,7 +28,7 @@ export function repayApply(parmas) {
 
 export function getDetail(parmas) {
     return request({
-        url:'/webRepayFlow/queryMyRepayFlowDetail',
+        url:'/repayFlow/queryMyRepayFlowDetail',
         method:'post',
         data:parmas
     })
@@ -37,7 +37,7 @@ export function getDetail(parmas) {
 
 export function repayFlow(params){
     return request({
-        url:'/webRepayFlow/completeTask',
+        url:'/repayFlow/completeTask',
         method:'post',
         data:params
     })
@@ -45,7 +45,7 @@ export function repayFlow(params){
 
 export function repayCancel(params){
     return request({
-        url:'/webRepayFlow/repealTask',
+        url:'/repayFlow/repealTask',
         method:'post',
         data:params
     })
@@ -53,7 +53,15 @@ export function repayCancel(params){
 
 export function repayDel(params){
     return request({
-        url:'/webRepayFlow/repealApply',
+        url:'/repayFlow/repealApply',
+        method:'post',
+        data:params
+    })
+}
+
+export function getLoanMember(params){
+    return request({
+        url:'/webLoanFlow/queryLoanPersonHisList',
         method:'post',
         data:params
     })

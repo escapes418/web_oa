@@ -26,7 +26,7 @@
                             <RedStar label="合同关键字：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
-                                        <el-option v-for="item in keyWords" :label="key" :value="item.value" :key="item.value">
+                                        <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -48,6 +48,7 @@
                                         filterable
                                         multiple
                                         remote 
+                                        debounce	
                                         reserve-keyword 
                                         v-model="postData.projectIds" 
                                         placeholder="请输入项目名称" 
@@ -196,7 +197,7 @@
                             <RedStar label="用章类型：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable filterable multiple class="filter-item ignore-detail" v-model="postData.chapterType" placeholder="请选择用章类型" style="width:260px;">
-                                        <el-option v-for="item in chapterList" :label="item.name" :value="item.id" :key="item.id">
+                                        <el-option v-for="item in chapterList" :label="item.name" :value="item.value" :key="item.value">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -310,6 +311,7 @@ export default {
             associationMain:false,
             contractTypeName:"",
             keyWords:[],
+            keyWordName:[],
             chapterList:[],
             projectList:[],
             conInfor: [],
@@ -317,6 +319,7 @@ export default {
             postData: {//提交数据
                 chapterNum:"",
                 keyWord:[],
+                keyWordName:[],
                 chapterType:[],
                 associationMainCode:'',
                 associationMainName:'',
@@ -329,8 +332,8 @@ export default {
                 contractNameId : '',//合同名称模版ID ,
                 signLeaderId :'', //合同签约人ID ,
                 contractStartTime : '',//合同开始日期 ,
-                expressBill: '',//快递单号 ,
-                expressCompany : '',//快递公司 ,
+                // expressBill: '',//快递单号 ,
+                // expressCompany : '',//快递公司 ,
                 // firstAddress : '',//甲方住所 ,
                 // firstCreditCode : '',//甲方统一社会信用代码 ,
                 // firstLegalRepresentative :'',// 甲方法定代表人 ,
@@ -400,6 +403,9 @@ export default {
                             this.dataMaxCount = item.maxCount;
                         }
                     })
+                    this.contractTypeName = respond.data.contractTypeName;
+                    respond.data.keyWords = respond.data.keyWords || [];
+                    this.keyWords = respond.data.keyWords;
                     respond.data.contractPartyList.forEach(item=>{
                         item.contractPartyType.forEach(i=>{
                             res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
@@ -420,6 +426,7 @@ export default {
                             })
                         })
                     })
+
                     this.associationMain = respond.data.associationMain == 1;
                     this.$store.dispatch('setData',respond.data.contractPartyList);
                 })
@@ -551,6 +558,7 @@ export default {
                 this.contractTypeName = res.data.contractTypeName;
                 res.data.keyWords = res.data.keyWords || [];
                 this.keyWords = res.data.keyWords;
+                console.log(this.keyWords)
                 res.data.contractConfigAttachmentList.forEach(item=>{
                     if(item.attachmentType == 1){
                         this.contractMustCount = item.mustCount;
@@ -709,10 +717,14 @@ export default {
                     }
                 })
             })
+            this.keyWords.forEach(i=>{
+                if(this.postData.keyWord.indexOf(i.key)!=-1){
+                    this.postData.keyWordName.push(i.value)
+                }
+            })
             this.postData.contractAttachmentList = [...this.dataAttachment,...this.contractAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
-            console.log(this.initData)
             if (contractFormVali(this)) {
                 conApply({...this.postData,...temObj}).then(res => {
                     if (res.status == 0) {

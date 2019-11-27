@@ -229,7 +229,7 @@
             </div>
         </div>
 
-        <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="25%" :center="true">
+        <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="26%" :center="true" :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false">
             <span class="">亲爱的用户，请在首页-设置-收款账管理添加收款账户，让报销更便利</span>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="jumpAccount">前往设置</el-button>
@@ -467,7 +467,7 @@ export default {
         })
 
         getAccountList().then(res => {
-            if(res.status == 0){
+            if(res.status == 0&&res.data){
                 this.bankList = res.data.filter(i=>{
                     if(i.defaultAccount == "1"){
                         this.filter.receivablesAccountId = i.id;
@@ -476,10 +476,10 @@ export default {
                         this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
                     }
                     return i.accountType == '1'
-                })
-                if(this.bankList.length<1){
-                    this.dialogAccount = true
-                }
+                })  
+            }
+            if(this.bankList.length<1){
+                this.dialogAccount = true
             }
         })
     },

@@ -88,3 +88,18 @@ export function getLoanMmber(params){
     })
 }
 
+export function getMember(params){
+    return request({
+        url:'/commonInfo/queryUserInfo',
+        method:'post',
+        data:params
+    })
+}
+
+export function modifyLoan(params){
+    return request({
+        url:'/webLoanFlow/modifyLoanPerson',
+        method:'post',
+        data:params
+    })
+}

@@ -10,77 +10,37 @@
                         <el-col :span="12" class="segment-brline">
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">流程编号：</span>
-                                <span class="right-con">
-                                {{ detail.procCode }}
-                                </span>
+                                <span class="right-con">{{ detail.procCode }}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">借款人：</span><span class="right-con">{{ detail.applyPerName }}</span>
-                                <span style="margin-left:65%">
-                                    <el-button type="primary" size="small" @click="showloanMember">查看历史借款人</el-button>
-                                </span>
+                                <span class="left-title font-gray">公司：</span>
+                                <span class="right-con">{{ detail.invoiceCompanyName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">岗位名称：</span><span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">关联借款单：</span>
+                                <span class="right-con">{{ detail.loanFlowProcName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">所属公司：</span>
-                                <span class="right-con">
-                                {{ detail.projectName }}
-                                </span>
+                                <span class="left-title font-gray">备注：</span>
+                                <span class="right-con">{{ detail.remarks }}</span>
                             </div>
                         </el-col>
                         <el-col :span="12">
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">借款时间：</span><span class="right-con">{{ detail.applyTime }}</span>
+                                <span class="left-title font-gray">还款时间：</span>
+                                <span class="right-con">{{ detail.applyTime | stamp2TextDate}}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">所属部门：</span><span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">还款人：</span>
+                                <span class="right-con">{{ detail.payeeName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">项目名称：</span><span class="right-con">{{  detail.projectName }}</span>
+                                <span class="left-title font-gray">成本中心：</span>
+                                <span class="right-con">{{  detail.costCenterName }}</span>
                             </div>
-                            <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">备注：</span>
-                                <span class="right-con">
-                                {{ detail.remarks }}
-                                </span>
-                            </div>
+                            
                         </el-col>
                     </el-row>
-                </div>
-            </div>
-            <div class="segment statistics">
-                <div class="segment-header">
-                    借款信息
-                </div>
-                <div class="segment-area">
-                    <div class="el-table__body-wrapper">
-                        <el-row>
-                            <el-col :span="12" class="segment-brline">
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">收款方：</span><span class="right-con">{{ detail.payeeName }}</span>
-                                </div>
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">开户行：</span><span class="right-con">{{ detail.payeeOpeningBank }}</span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">预计还款时间：</span><span class="right-con">{{ detail.planRepayTime | stamp2TextDate }}</span>
-                                </div>
-                            </el-col>
-                            <el-col :span="12">
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">收款账号：</span><span class="right-con">{{ detail.payeeCardNum }}</span>
-                                </div>
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">借款金额：</span><span class="right-con">{{ detail.loanAmount }}</span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">借款事由：</span><span class="right-con">{{ detail.loanReason }}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
                 </div>
             </div>
             <div class="segment statistics">
@@ -89,36 +49,75 @@
                 </div>
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
-                        <el-table :data="detail.repaymentRecordList " border fit highlight-current-row style="width: 100%">
-                            <el-table-column align="center" label="流程编号" width="150px">
+                        <el-row>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">收款方：</span>
+                                    <span class="right-con">{{ detail.payeeName }}</span>
+                                </div>
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">开户行：</span>
+                                    <span class="right-con">{{ detail.payeeOpeningBank  }}</span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">待还款金额：</span>
+                                    <span class="right-con">{{ detail.unpaidAmount }}</span>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">收款账号：</span>
+                                    <span class="right-con">{{ detail.payeeCardNum }}</span>
+                                </div>
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">还款方式：</span>
+                                    <span class="right-con">{{ detail.repayMethodName }}</span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">还款金额：</span>
+                                    <span class="right-con">{{ detail.currentRepayAmount }}</span>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+            </div>
+            <div class="segment statistics" v-if="detail.repayFlowInvoiceDetailResponseList&&detail.repayFlowInvoiceDetailResponseList.length>0">
+                <div class="segment-header">
+                    还款信息
+                </div>
+                <div class="segment-area">
+                    <div class="el-table__body-wrapper">
+                        <el-table :data="detail.repayFlowInvoiceDetailResponseList" border fit highlight-current-row style="width: 100%">
+                            <el-table-column align="center" label="一级科目" width="150px">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.procCode}}</span>
+                                    <span>{{scope.row.firstSubName}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column width="320px" align="center" label="流程名称">
+                            <el-table-column width="320px" align="center" label="二级科目">
                                 <template slot-scope="scope">
-                                    <a>{{scope.row.procName}}</a>
+                                    <a>{{scope.row.secondSubName}}</a>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" label="还款人">
+                            <el-table-column align="center" label="票据数量">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.applicantName}}</span>
+                                    <span>{{scope.row.billNum}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" label="还款时间">
+                            <el-table-column align="center" label="票据金额">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.repayTime | stamp2TextDate}}</span>
+                                    <span>{{scope.row.expenseAmt}}</span>
                                 </template>
                             </el-table-column>
                             
-                            <el-table-column width="120px" align="center" label="还款金额">
+                            <el-table-column width="120px" align="center" label="备注">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.repayAmount}}</span>
+                                    <span>{{scope.row.remarks}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column width="120px" align="center" label="待还款金额">
+                            <el-table-column width="120px" align="center" label="查看附件">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.remainingRepayAmount}}</span>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -244,15 +243,23 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="pagination-container">
+            <!-- <div class="pagination-container">
                 <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
                 </el-pagination>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCharge = false">取消</el-button>
-            </div>
+            </div> -->
         </el-dialog>
 
+        <el-dialog title="图片详情" width="25%" :visible.sync="dialogImg">
+            <div v-for="(val,index) in urlArr" :key="index" >
+                <div v-if="val.url != ''" class="upload-list" @click="showImg(index,2)">
+                    <img :src="val.url" alt="" style="width:120px;height:120px">
+                    <div class="img-font">{{val.name}}</div>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogImg = false">返回</el-button>
+            </span>
+        </el-dialog>
         <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
             <span>确认删除该报销单吗？</span>
             <span slot="footer" class="dialog-footer">
@@ -264,9 +271,10 @@
 </template>
 
 <script>
-import common from '@/utils/common'
-import { getDetail  , repayFlow , repayCancel , repayDel } from '@/api/repay'
-import { parseTime } from '@/utils'
+import common from '@/utils/common';
+import { getDetail  , repayFlow , repayCancel , repayDel ,getLoanMember} from '@/api/repay';
+import { toJS, fromJS, Map, List } from 'immutable';
+import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import "viewerjs/dist/viewer.css";
@@ -291,11 +299,12 @@ export default {
             dialogLoan:false,
             loanMemberList:[],
             total:0,
-            pageNo:1,
-            pageSize:10,
             listQuery:{
-                loanId:''
+                loanFlowId:''
             },
+
+            urlArr:[],
+            dialogImg:false
         }
     },
     computed:{
@@ -344,26 +353,37 @@ export default {
   methods:{
         showloanMember(){
             this.dialogLoan = true;
-
+            this.listQuery.loanFlowId = this.$route.query.key; 
+            this.$$queryStub = fromJS(this.listQuery);
+            this.getLoanList()
         },
         getLoanList(){
             var postData = this.$$queryStub.toJS();
-            getLoanMmber({
+            getLoanMember({
                 ...postData,
-                pageNo:this.pageNo,
-                pageSize:this.pageSize
             }).then(res=>{
                 this.loanMemberList = res.data.list;
                 this.total = res.data.total;
             })
         },
         restCallback(){
-            this.listQuery.loanId = this.$route.query.key
             this.$$queryStub = fromJS(this.listQuery);
         },
-        handleCurrentChange(val) {
-            this.pageNo = val;
-            this.getLoanList();
+        showImgDia(subConfList) {
+            this.urlArr = [];
+            if (subConfList) {
+                subConfList.forEach(item => {
+                    let url = "";
+                    url = item.urlPrefix + item.url;
+                    this.urlArr.push({
+                        url: url,
+                        name: item.confDesc,
+                        previewUrl: url,
+                        viewer: null
+                    });
+                });
+                this.dialogImg = true;
+            }
         },
         showImg(index, type) {
             if (type == 1) {

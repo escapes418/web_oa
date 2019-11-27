@@ -52,12 +52,12 @@
             </el-table-column>
             <el-table-column width="320px" align="center" label="关联借款流程名称">
                 <template slot-scope="scope">
-                    <span>{{scope.row.relationLoanProcName}}</span>
+                    <span>{{scope.row.loanFlowProcName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="还款人">
                 <template slot-scope="scope">
-                    <span>{{scope.row.repayPersonName}}</span>
+                    <span>{{scope.row.applyPerName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="还款时间">
@@ -67,7 +67,7 @@
             </el-table-column>
             <el-table-column width="120px" align="center" label="还款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.repayAmount}}</span>
+                    <span>{{scope.row.currentRepayAmount}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="120px" align="center" label="还款方式">

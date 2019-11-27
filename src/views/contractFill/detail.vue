@@ -22,10 +22,14 @@
                                     <span class="left-title font-gray">合同归档方式：</span>
                                     <span class="right-con">{{ detail.contractHisMethodName }}</span>
                                 </li>
-                                <li class="base-li">
+                                <!-- <li class="base-li">
                                     <span class="left-title font-gray">合同类型：</span>
                                     <span class="right-con">{{ detail.contractTypeName }}</span>
                                 </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">合同关键字：</span>
+                                    <span class="right-con">{{ detail.contractTypeName }}</span>
+                                </li> -->
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同归档时间：</span>
                                     <span class="right-con">{{ detail.createTime | stamp2TextDateFull }}</span>
@@ -646,15 +650,9 @@ export default {
 
             this.getChangeList()
         },
-        handleProFilter(){
-            this.pageNo = 1;
-            this.$$queryStub = fromJS(this.listQuery);
-            this.getConnect();
-            this.listLoading = false;
-        },
         handleCurrentChange(val) {
             this.pageNo = val;
-            this.getConnect();
+            this.getChangeList();
             this.listLoading = false;
         },
         getChangeList(){

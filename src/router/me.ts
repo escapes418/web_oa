@@ -205,6 +205,18 @@ export default [
                 },
                 hidden: true
             },
+            {
+                path: 'repayDetail',
+                id: 'me-repayDetail',
+                show: false,
+                name: 'RepayDetail',
+                component: () => import('@/views/repay/detail.vue'),
+                meta: {
+                    title: '还款详情',
+                    icon: '',
+                },
+                hidden: true
+            },
             //资源申请~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 path: 'resourceList',

@@ -51,56 +51,60 @@
         </div>
         <div class="filter-container">
             <div class="toolbar-item">
-                <el-button v-if="ids.indexOf('') !== -1" class="filter-item" type="primary" @click="modifyLoan">修改借款人</el-button>
+                <el-button v-if="ids.indexOf('me-loanList-modifyBtn') !== -1" class="filter-item" type="primary" @click="modifyLoan">修改借款人</el-button>
             </div>
         </div>
-        <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="流程编号" width="150px">
+        <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  @selection-change="handleSelection">
+            <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
+            <el-table-column align="center" label="流程编号" width="130px">
                 <template slot-scope="scope">
                     <span>{{scope.row.procCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="320px" align="center" label="流程名称">
+            <el-table-column width="260px" align="center" label="流程名称">
                 <template slot-scope="scope">
                     <a>{{scope.row.procName}}</a>
                 </template>
             </el-table-column>
-            <el-table-column width="320px" align="center" label="项目名称">
+            <el-table-column align="center" label="项目名称">
                 <template slot-scope="scope">
                     <a>{{scope.row.projectName}}</a>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="借款人">
+            <el-table-column width="80px" align="center" label="借款人">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyPerName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="借款时间">
+            <el-table-column width="90px" align="center" label="借款时间">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="预计还款时间">
+            <el-table-column width="100px" align="center" label="预计还款时间">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="借款金额">
+            <el-table-column width="80px" align="center" label="借款金额">
                 <template slot-scope="scope">
                     <span>{{scope.row.loanAmount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="已还款金额">
+            <el-table-column width="90px" align="center" label="已还款金额">
                 <template slot-scope="scope">
                     <span>{{scope.row.paidAmount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="待还款金额">
+            <el-table-column width="90px" align="center" label="待还款金额">
                 <template slot-scope="scope">
                     <span>{{scope.row.unpaidAmount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="最新还款时间">
+            <el-table-column width="100px" align="center" label="最新还款时间">
                 <template slot-scope="scope">
                     <span>{{scope.row.lastRepayTime | stamp2TextDate}}</span>
                 </template>
@@ -121,7 +125,35 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <el-dialog title="批量修改借款人" :visible.sync="dialogModify" width="35%" :before-close="modifyClose">
+            <div class="move-item">
+                <div>
+                    已选择：
+                </div>
+                <span v-for="item in selectLoanMember">
+                    <span class="select-item">{{item.procName}}</span>
+                </span>
+            </div>
+            <div class="move-select">
+                <div class="move-item">
+                    <span class="item-label">借款人：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="newLoanPerson"
+                        filterable
+                        clearable
+                        placeholder="请选择商务助理">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmModify">确认</el-button>
+                <el-button @click="modifyCancel">取消</el-button>
+            </span>
+        </el-dialog>
         <div class="pagination-container">
             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -131,7 +163,7 @@
 
 <script>
 import common from '@/utils/common'
-import { getLoan ,fetchProDic,downReim} from '@/api/loan'
+import { getLoan ,fetchProDic,getMember,modifyLoan} from '@/api/loan'
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -170,6 +202,11 @@ export default {
             },
             expStatuList:[],
             proDic: [],
+
+            dialogModify:false,
+            newLoanPerson:"",
+            selectLoanMember:[],
+            memberList:[]
         }
     },
     created() {
@@ -190,6 +227,36 @@ export default {
         this.expStatuList = selectDic(dicList,"expense_status");
     },
     methods: {
+        handleSelection(val){
+            this.selectLoanMember = val;
+        },
+        modifyClose(){
+            this.dialogModify = false;
+            this.newLoanPerson = "";
+        },
+        modifyCancel(){
+            this.dialogModify = false;
+            this.newLoanPerson = "";
+        },
+        confirmModify(){
+            let loanFlowIds = [];
+            this.selectLoanMember.forEach(item=>{
+                loanFlowIds.push(item.id)
+            })
+            modifyLoan({
+                loanFlowId:loanFlowIds,
+                newLoanPerson:this.newLoanPerson
+            }).then(res=>{
+                if(res.status == 0){
+                    this.modifyClose();
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.getList()
+                }
+            })
+        },
         searchProject(val){
             if( val!==''){
                 fetchProDic({
@@ -247,12 +314,43 @@ export default {
             this.$router.push({path: '/me/loanForm'})
         },
         modifyLoan(){
-
+            if(this.selectLoanMember.length<1){
+                this.$message({
+                    message:'请选择要修改的借款申请！',
+                    type:"warning"
+                })
+                return
+            }
+            this.dialogModify = true;
+            //获取当前登陆人的部门和区域
+            getMember({}).then(res=>{
+                if(res.status ==0){
+                    this.memberList = res.data.filter(item=>{
+                        return item.userStatus == 1
+                    })
+                }
+            })
         }
     }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.move-item{
+    padding: 10px;
+    background: #f2f7fa;
+    color: #343434;
+    .item-label{
+        float: left;
+        width: 100px;
+    }
+    .filter-item{
+        display: inline-block;
+        margin-left: 30px
+    }
+}
+.select-item{
+    margin-right: 5px
+}
 .toolbar-row{
   margin: 5px 0 0 0 
 }

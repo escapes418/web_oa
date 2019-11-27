@@ -28,7 +28,7 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同关键字：</span>
-                                    <span class="right-con">{{ keyWordName.join(' ,') }}</span>
+                                    <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
                                 </li>
                                 <li class="base-li" v-if="associationMain">
                                     <span class="left-title font-gray">关联主合同编号：</span>
@@ -74,12 +74,20 @@
                                     <span class="left-title font-gray">合同负责人：</span>
                                     <span class="right-con">{{ detail.contractLeaderName }}</span>
                                 </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">用章类型：</span>
+                                    <span class="right-con">{{ detail.chapterTypeName&&detail.chapterTypeName.join(' ，') }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">用章份数：</span>
+                                    <span class="right-con">{{ detail.contractLeaderName }}</span>
+                                </li>
                             </ul>
                         </base-temp>
                     </div>
                 </div>
             </div>
-            <div class="segment statistics">
+            <!-- <div class="segment statistics">
                 <div class="segment-header">
                     快递信息
                 </div>
@@ -103,7 +111,7 @@
                         </el-col>
                     </el-row>
                 </div>
-            </div>
+            </div> -->
             <div class="segment statistics part-wrap" v-if="detail.contractAttachmentList&&detail.contractAttachmentList.length > 0">
                 <div class="segment-header">
                     附件
@@ -390,13 +398,13 @@ export default {
                 })
             })
             this.contractTypeName = respond.data.contractTypeName;
-            respond.data.keyWords = res.data.keyWords || [];
-            this.keyWords = respond.data.keyWords;
-            this.keyWords.forEach(i=>{
-                if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
-                    this.keyWordName.push(i.value)
-                }
-            })
+            // respond.data.keyWords = res.data.keyWords || [];
+            // this.keyWords = respond.data.keyWords;
+            // this.keyWords.forEach(i=>{
+            //     if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
+            //         this.keyWordName.push(i.value)
+            //     }
+            // })
             this.associationMain = respond.data.associationMain == 1
             this.detail.contractPartyList = respond.data.contractPartyList;
         })

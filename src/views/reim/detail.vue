@@ -378,9 +378,9 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <template v-if="pathType === 'list'">
-                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
-                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
-                    <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISCOST" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISCOST" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISEDIT&&!ISCOST" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="dialogCanVisible = true">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
@@ -454,7 +454,8 @@ import {
   expFlow,
   expCancel,
   expDel,
-  downFile
+  downFile,
+  setActual
 } from "@/api/reim";
 import { parseTime } from "@/utils";
 import { mapState } from "vuex";
@@ -588,8 +589,32 @@ export default {
             this.actualInput = true
         },
         actualBtn(){
-            setActual({}).then(res => {
-
+            if(this.actualAmt < 0 || !this.actualAmt){
+                this.$message({
+                    message:"请正确输入修改金额！",
+                    type:"warning"
+                })
+                return
+            }
+            if(this.actualAmt > this.detail.expenseTotal){
+                this.$message({
+                    message:"输入修改金额不能大于报销金额！",
+                    type:"warning"
+                })
+                return
+            }
+            setActual({
+                id:this.detail.id,
+                actualExpenseTotal: this.actualAmt
+            }).then(res => {
+                if(res.status == 0){
+                    this.actualInput = false;
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    })
+                    this.$router.go(-1);
+                }
             })
         },
         showImgDia(subConfList) {
@@ -715,14 +740,14 @@ export default {
                 procInsId: this.detail.procInsId
             }).then(res => {
                 if (res.status == 0) {
-                this.$message({
-                    message: res.message,
-                    type: "success"
-                });
-                // this.$router.push({
-                //     path:'/me/reim'
-                // })
-                this.$router.go(-1);
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    // this.$router.push({
+                    //     path:'/me/reim'
+                    // })
+                    this.$router.go(-1);
                 }
             });
         },

@@ -16,7 +16,7 @@
                             </div>
                             <div class="clearfix cominfo-item">
                                 <span class="left-title font-gray">借款人：</span><span class="right-con">{{ detail.applyPerName }}</span>
-                                <span style="margin-left:65%">
+                                <span style="margin-left:55%">
                                     <el-button type="primary" size="small" @click="showloanMember">查看历史借款人</el-button>
                                 </span>
                             </div>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
-                        <el-table :data="detail.repaymentRecordList " border fit highlight-current-row style="width: 100%">
+                        <el-table :data="detail.repaymentRecordResponses " border fit highlight-current-row style="width: 100%">
                             <el-table-column align="center" label="流程编号" width="150px">
                                 <template slot-scope="scope">
                                     <span>{{scope.row.procCode}}</span>
@@ -102,7 +102,7 @@
                             </el-table-column>
                             <el-table-column align="center" label="还款人">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.applicantName}}</span>
+                                    <span>{{scope.row.repayPersonName}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column align="center" label="还款时间">
