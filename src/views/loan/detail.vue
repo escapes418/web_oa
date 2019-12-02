@@ -32,7 +32,7 @@
                         </el-col>
                         <el-col :span="12">
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">借款时间：</span><span class="right-con">{{ detail.applyTime }}</span>
+                                <span class="left-title font-gray">借款时间：</span><span class="right-con">{{ detail.applyTime | stamp2TextDate}}</span>
                             </div>
                             <div class="clearfix cominfo-item">
                                 <span class="left-title font-gray">所属部门：</span><span class="right-con">{{ detail.officeName }}</span>
@@ -301,7 +301,7 @@ export default {
             return result
         },
         ISDEL:function(){
-            let result = this.detail.recpStatus == 2 || this.detail.recpStatus == 3 || this.detail.recpStatus == 4 ? true : false
+            let result = this.detail.loanFlowStatus == 2 || this.detail.loanFlowStatus == 3 || this.detail.loanFlowStatus == 4 ? true : false
             return result
         },
         ISEDIT:function(){
@@ -313,11 +313,11 @@ export default {
             return result
         },
         ISPUTIN:function(){
-            let result = this.detail.recpStatus == 4 ? true :false
+            let result = this.detail.loanFlowStatus == 4 ? true :false
             return result
         },
         ISCANCEL:function(){
-            let result = this.detail.recpStatus == 2 ? true:false
+            let result = this.detail.loanFlowStatus == 2 ? true:false
             return result
         },
         ISPRINT:function(){
@@ -407,12 +407,12 @@ export default {
        
         editBtn(){
             this.$router.push({
-                path:'/me/recepForm',
+                path:'/me/loanForm',
                 query:{ key: this.$route.query.key }
             })
         },
         agreeBtn(){
-            recepFlow({
+            loanFlow({
                 loanFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'yes',
@@ -445,7 +445,7 @@ export default {
             //     })
             //     return 
             // }
-            recepFlow({
+            loanFlow({
                 loanFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'no',
@@ -464,7 +464,6 @@ export default {
             })
         },
         cancelBtn(){
-            console.log(this.taskId)
             loanCancel({
                 procInsId:this.detail.procInsId,
                 taskId:this.taskId || 0

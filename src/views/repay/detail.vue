@@ -313,7 +313,7 @@ export default {
             return result
         },
         ISDEL:function(){
-            let result = this.detail.recpStatus == 2 || this.detail.recpStatus == 3 || this.detail.recpStatus == 4 ? true : false
+            let result = this.detail.repayFlowStatus == 2 || this.detail.repayFlowStatus == 3 || this.detail.repayFlowStatus == 4 ? true : false
             return result
         },
         ISEDIT:function(){
@@ -321,15 +321,15 @@ export default {
             return result
         },
         ISPUTIN:function(){
-            let result = this.detail.recpStatus == 4 ? true :false
+            let result = this.detail.repayFlowStatus == 4 ? true :false
             return result
         },
         ISCANCEL:function(){
-            let result = this.detail.recpStatus == 2 ? true:false
+            let result = this.detail.repayFlowStatus == 2 ? true:false
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.expenseStatus == 1  ? true:false
+            let result = this.detail.repayFlowStatus == 1  ? true:false
             return result
         }
     },
@@ -419,14 +419,12 @@ export default {
                 document.body.innerHTML = oldstr
                 return false
         },
-
         backBtn(){
             this.$router.go(-1)
         },
-       
         editBtn(){
             this.$router.push({
-                path:'/me/recepForm',
+                path:'/me/repayForm',
                 query:{ key: this.$route.query.key }
             })
         },
@@ -442,9 +440,6 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })
@@ -457,13 +452,6 @@ export default {
                 })
                 return 
             }
-            // if(this.comment.length>300) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
             repayFlow({
                 repayFlowId:this.$route.query.key,
                 comment:this.comment,
@@ -475,9 +463,6 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })

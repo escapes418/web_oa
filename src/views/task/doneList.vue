@@ -375,6 +375,12 @@ export default {
                     query: { key: row.businessId, taskId: row.taskId, pathType: 'done' }
                 })
             }
+            if(row.billType == 17){
+                this.$router.push({
+                    path:'/me/repayDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'done' }
+                })
+            }
         },
     }
 }

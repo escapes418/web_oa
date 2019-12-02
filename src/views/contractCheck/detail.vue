@@ -30,6 +30,15 @@
                                     <span class="left-title font-gray">合同关键字：</span>
                                     <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
                                 </li>
+                                <li class="base-li" v-if="ISMODIFY">
+                                    <span class="left-title font-gray">修改合同关键字：</span>
+                                    <span class="right-con">
+                                        <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="keyWord" placeholder="请选择合同关键字" style="width:260px;">
+                                            <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                            </el-option>
+                                        </el-select>
+                                    </span>
+                                </li>
                                 <li class="base-li" v-if="associationMain">
                                     <span class="left-title font-gray">关联主合同编号：</span>
                                     <span class="right-con">{{ detail.associationMainCode }}</span>
@@ -229,7 +238,7 @@
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
-                    <!-- <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
+                    <el-button v-if="ISMODIFY" size="medium" type="primary" @click="updateBtn">提交</el-button>
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || (!ISME&&ISBACK)" size="medium" type="info" @click="refuseBtn">驳回</el-button>
@@ -274,7 +283,8 @@ import {
     contractFlow,
     findAllProject,
     expDel,
-    downFile
+    downFile,
+    updateKeyWord
 } from "@/api/contractCheck";
 import { parseTime } from "@/utils";
 import { mapState } from "vuex";
@@ -297,7 +307,9 @@ export default {
             tipsUpload3:'合同扫描件图片（必填）',
             dataAttachment:[],
             contractAttachment:[],
+            keyWord:[],
             keyWords:[],
+            keyWordName:[],
             contractTypeName:"",
             keyWordName:[],
             scanConAttachment:[],
@@ -323,6 +335,10 @@ export default {
         ...mapState({
             token: state => state.user.token
         }),
+        ISMODIFY: function() {
+            let result = this.detail.showModify  == "0" ? true : false;
+            return result;
+        },
         ISAPPLY:function(){
             let result =
                 this.userInfo.loginName == this.detail.applyPerCode ? true : false;
@@ -398,8 +414,8 @@ export default {
                 })
             })
             this.contractTypeName = respond.data.contractTypeName;
-            // respond.data.keyWords = res.data.keyWords || [];
-            // this.keyWords = respond.data.keyWords;
+            respond.data.keyWords = res.data.keyWords || [];
+            this.keyWords = respond.data.keyWords;
             // this.keyWords.forEach(i=>{
             //     if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
             //         this.keyWordName.push(i.value)
@@ -459,6 +475,26 @@ export default {
                     });
                 }
                 resolve(res)
+            })
+        },
+        updateBtn(){
+            this.keyWords.forEach(i=>{
+                if(this.keyWord.indexOf(i.key)!=-1){
+                    this.keyWordName.push(i.value)
+                }
+            })
+            updateKeyWord({
+                id:this.$route.query.key,
+                keyWord:this.keyWord,
+                keyWordName:this.keyWordName
+            }).then(res=>{
+                if(res.status == 0){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    })
+                    this.$router.go(0);
+                }
             })
         },
         showImg(index,type) {
@@ -581,10 +617,9 @@ export default {
                         message: res.message,
                         type: "success"
                     });
-                    // this.$router.push({
-                    //     path:'/me/reim'
-                    // })
-                    this.$router.go(-1);
+                    this.$router.push({
+                        path:'/task/todo'
+                    })
                 }
             });
         },
@@ -616,7 +651,9 @@ export default {
                         message: res.message,
                         type: "success"
                     });
-                    this.$router.go(-1);
+                    this.$router.push({
+                        path:'/task/todo'
+                    })
                 }
             });
         },

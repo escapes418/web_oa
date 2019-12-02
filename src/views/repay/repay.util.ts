@@ -7,6 +7,7 @@ function toast(str) {
     });
 }
 export function repayFormVali(self) {
+    console.log(/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(self.postData.currentRepayAmount))
     var flag = true;
     if (!self.postData.costCenterId) {
         toast('请选择成本中心！');
@@ -20,7 +21,7 @@ export function repayFormVali(self) {
     }else if(self.postData.repayMethod=="1"&&self.postData.repayFlowDetailRequestList.length<1){
         toast('请添加还款明细！');
         flag = false;
-    }else if (self.postData.repayMethod=="1"&&/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(self.postData.currentRepayAmount)){
+    }else if (self.postData.repayMethod=="2"&&!/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(self.postData.currentRepayAmount)){
         toast('请正确输入本次还款金额！');
         flag = false;
     }else if (!itemVali()) {

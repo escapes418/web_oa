@@ -263,13 +263,13 @@ export default {
                 this.postData.loanFlowId = res.data.loanFlowId;
                 this.postData.remarks = res.data.remarks
 
-                this.procLoanName = res.data.relationLoanProcName.substring(0,20)+'...';
+                this.procLoanName = res.data.loanFlowProcName.substring(0,20)+'...';
                 this.costCenterName = res.data.costCenterName;
-                this.taxName = res.data.companyName;
+                this.taxName = res.data.invoiceCompanyName;
                 this.pendingTotal = res.data.unpaidAmount
 
-                var itemDatas = res.data.repayFlowInvoiceAttachmentResponseList || [];
-                this.$store.dispatch('fill',this.transDetailData(itemDatas))
+                var itemDatas = res.data.repayFlowInvoiceDetailResponseList || [];
+                this.$store.dispatch('fillItemList',this.transDetailData(itemDatas))
                 if (res.data.repayFlowCashAttachmentResponseList  && res.data.repayFlowCashAttachmentResponseList.length > 0) {
                     res.data.repayFlowCashAttachmentResponseList.forEach(item => {
                         let originUrl = item.url;
@@ -323,7 +323,7 @@ export default {
             let detailCollection = dataArr.map(i => {
                 return {
                     ...i,
-                    selectedSubject: [i.firstSub, i.secondSub],
+                    subject: [i.firstSub, i.secondSub],
                     uid: createUid(),
                     checked: false
                 }

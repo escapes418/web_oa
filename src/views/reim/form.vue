@@ -695,7 +695,7 @@ export default {
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/task/todo' })
+                        this.$router.go(-1)
                     }
                 })
             }

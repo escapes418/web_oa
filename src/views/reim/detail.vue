@@ -378,9 +378,9 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <template v-if="pathType === 'list'">
-                    <el-button v-if="ISCOST" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
-                    <el-button v-if="ISCOST" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
-                    <el-button v-if="ISEDIT&&!ISCOST" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="dialogCanVisible = true">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
@@ -392,7 +392,7 @@
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
-                    <el-button v-if="ISCOST" size="medium" type="info" @click="setBackBtn">退回</el-button>
+                    <el-button v-if="ISCOST" size="medium" type="warning" @click="setBackBtn">退回</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -521,7 +521,12 @@ export default {
             return result;
         },
         ISCOST: function() {
-            let result = this.detail.modify == "costAccounting" ? true:false        
+            let result = this.detail.modify == "costAccounting" ? true : false;
+            return result;       
+        },
+        ISBACK:function() {
+            let result = this.detail.costCenterBack == "back" ? true : false;
+            return result; 
         },
         ISPUTIN: function() {
             let result = this.detail.expenseStatus == 4 ? true : false;

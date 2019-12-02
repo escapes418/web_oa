@@ -127,7 +127,7 @@ import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbtextarea from '@/components/sjbTextarea'
 import Department from "@/components/Department";
-import { getBankList , loanApply , loanSave , } from '@/api/loan'
+import { getBankList , loanApply , loanSave ,getDetail } from '@/api/loan'
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils'
@@ -222,9 +222,9 @@ export default {
             }).then(res => {
                 this.postData = res.data;
                 this.planRepayTime = common.timeParseObj(res.data.planRepayTime);
-                this.applyTime = common.timeParseObj(res.data.applyTime)
-                if (res.data.detail.attachmentWebResponseList && res.data.detail.attachmentWebResponseList.length > 0) {
-                    res.data.detail.attachmentWebResponseList.forEach(item => {
+                this.applyTime = common.formatDateTime(res.data.applyTime)
+                if (res.data.attachmentWebResponseList && res.data.attachmentWebResponseList.length > 0) {
+                    res.data.attachmentWebResponseList.forEach(item => {
                         let originUrl = item.url;
                         item.url = res.data.detail.urlPrefix + item.url;
                         this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl ,uid:new Date().getTime()});

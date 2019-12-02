@@ -262,7 +262,13 @@ export default {
                 }
                 if(item.billType == 16){
                     this.$router.push({
-                        path:'/me/loanDeatil',
+                        path:'/me/loanDetail',
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
+                    })
+                }
+                if(item.billType == 17){
+                    this.$router.push({
+                        path:'/me/repayDetail',
                         query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
