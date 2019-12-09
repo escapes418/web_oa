@@ -59,7 +59,23 @@ const repay = {
         },
         FILL_ITEM_LIST:(state, data)=>{
             state.itemList = data
-        }
+        },
+        UPDATE_COLLECTION_IMG: (state, data) => {
+            // 比较差的处理方式
+            var clone = JSON.parse(JSON.stringify(state.itemList));
+            clone.forEach((item, index, self) => {
+                if (data.uid == item.uid) {
+                    item.subConfList.forEach((i, idx) => {
+                        if (i.id == data.id) {
+                            i.url = data.url;
+                            i.urlPrefix = data.urlPrefix;
+                        }
+                    });
+                }
+            });
+            state.itemList = clone;
+            console.log('updated collection', state.itemList);
+        },
     },
     actions: {
         addRepay({commit}){
@@ -76,6 +92,9 @@ const repay = {
         },
         fillItemList({ commit }, data){
             commit('FILL_ITEM_LIST', data);
+        },
+        updateCollectionImg({ commit }, data) {
+            commit('UPDATE_COLLECTION_IMG', data);
         }
     }
 };

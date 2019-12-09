@@ -37,8 +37,8 @@
                     <div class="toolbar-row">
                         <Department type="list" @on-confirm="depConfirm" :Dvalue="officeName"></Department>
                         <div class="toolbar-item">
-                            <span class="item-label">合同类型：</span>
-                            <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.contractTimeType" placeholder="请选择合同名称">
+                            <span class="item-label">合同日期类型：</span>
+                            <el-select clearable filterable style="width: 170px" class="filter-item" v-model="listQuery.contractTimeType" placeholder="请选择合同日期类型">
                                 <el-option v-for="item in dateTypeList" :key="item.value" :label="item.name" :value="item.value">
                                 </el-option>
                             </el-select>

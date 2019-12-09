@@ -27,10 +27,18 @@
                                     <span class="right-con">{{ contractTypeName }}</span>
                                 </li>
                                 <li class="base-li">
+                                    <span class="left-title font-gray">业务类型：</span>
+                                    <span class="right-con">{{ businessTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务模块：</span>
+                                    <span class="right-con">{{ businessModelName }}</span>
+                                </li>
+                                <li class="base-li">
                                     <span class="left-title font-gray">合同关键字：</span>
                                     <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
                                 </li>
-                                <li class="base-li" v-if="ISMODIFY">
+                                <li class="base-li" v-if="pathType === 'todo'&&ISMODIFY">
                                     <span class="left-title font-gray">修改合同关键字：</span>
                                     <span class="right-con">
                                         <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="keyWord" placeholder="请选择合同关键字" style="width:260px;">
@@ -311,7 +319,8 @@ export default {
             keyWords:[],
             keyWordName:[],
             contractTypeName:"",
-            keyWordName:[],
+            businessTypeName:"",
+            businessModelName:"",
             scanConAttachment:[],
             fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
             // uploadTips: config.tips,
@@ -336,7 +345,7 @@ export default {
             token: state => state.user.token
         }),
         ISMODIFY: function() {
-            let result = this.detail.showModify  == "0" ? true : false;
+            let result = this.detail.showModify  == "1" ? true : false;
             return result;
         },
         ISAPPLY:function(){
@@ -385,8 +394,7 @@ export default {
     created() {
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
-        if (this.$route.query.pathType)
-            this.pathType = this.$route.query.pathType;
+        if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
 
         //先获取详情根据详情返回的模版ID再获取相关的配置数据，并将详情的数据回填到配置文件然后渲染详情页面
         this.detailPromise().then(async res=>{
@@ -414,8 +422,11 @@ export default {
                 })
             })
             this.contractTypeName = respond.data.contractTypeName;
-            respond.data.keyWords = res.data.keyWords || [];
+            this.businessTypeName = respond.data.businessTypeName;
+            this.businessModelName = respond.data.businessModelName;
+            respond.data.keyWords = respond.data.keyWords || [];
             this.keyWords = respond.data.keyWords;
+            console.log(this.keyWords)
             // this.keyWords.forEach(i=>{
             //     if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
             //         this.keyWordName.push(i.value)

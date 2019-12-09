@@ -272,6 +272,12 @@ export default {
                         query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
                     })
                 }
+                if(item.billType == 18){
+                    this.$router.push({
+                        path:'/me/paymentDetail',
+                        query: { key: item.businessId, taskId: item.taskId, pathType: item.pathType }
+                    })
+                }
                 if(this.$route.name){
                     const { fullPath } = this.$route;
                     this.$router.replace({

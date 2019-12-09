@@ -6,11 +6,11 @@
                 <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="请输入合同编号/甲方/乙方/丙方" v-model.trim="listQuery.faint">
                 </el-input>
             </div>
-            <!-- <div class="toolbar-item">
-                <span class="item-label">合同方名称：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 140px;" class="filter-item" placeholder="请输入甲/乙方名称" v-model.trim="listQuery.companyName">
+            <div class="toolbar-item">
+                <span class="item-label">合同关键字：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
                 </el-input>
-            </div> -->
+            </div>
             <div class="toolbar-item">
                 <span class="item-label">合同名称：</span>
                 <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.contractId" placeholder="请选择合同名称">
@@ -113,6 +113,11 @@
             <el-table-column align="center" label="丙方名称">
                 <template slot-scope="scope">
                     <span class="ignore-detail" :title="scope.row.thirdMemberName">{{scope.row.thirdMemberName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" align="center" label="合同关键字">
+                <template slot-scope="scope">
+                    <span>{{scope.row.keyWordName&&scope.row.keyWordName.join('，')}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="100px" align="center" label="合同开始日期">
@@ -339,7 +344,8 @@ export default {
                 contractType:"",//  合同类型,
                 faint:"", //模糊搜索字段,
                 dateType:"",
-                sqlFlag:"1"
+                sqlFlag:"1",
+                keyWords:""
             },
             dateTypeList:[],
             conStatuList:[],

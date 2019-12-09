@@ -154,7 +154,7 @@ export default [
                 component: () => import('@/views/loan/list.vue'),
                 meta: {
                     title: '借款申请',
-                    icon: 'iconfont icon-zhifuqianbao',
+                    icon: 'iconfont icon-jiekuan',
                    
                 }
             },
@@ -189,7 +189,7 @@ export default [
                 component: () => import('@/views/repay/list.vue'),
                 meta: {
                     title: '还款申请',
-                    icon: 'iconfont icon-zhifuqianbao',
+                    icon: 'iconfont icon-huankuan',
                    
                 }
             },
@@ -217,6 +217,43 @@ export default [
                 },
                 hidden: true
             },
+            {
+                path: 'paymentList',
+                id: 'me-paymentList',
+                show: false,
+                name: 'PaymentList',
+                component: () => import('@/views/pay/list.vue'),
+                meta: {
+                    title: '付款申请',
+                    icon: 'iconfont icon-fukuan',
+                   
+                }
+            },
+            {
+                path: 'paymentForm',
+                id: 'me-paymentForm',
+                show: false,
+                name: 'PaymentForm',
+                component: () => import('@/views/pay/form.vue'),
+                meta: {
+                    title: '新建付款申请',
+                    icon: '',
+                },
+                hidden: true
+            },
+            {
+                path: 'paymentDetail',
+                id: 'me-paymentDetail',
+                show: false,
+                name: 'PaymentDetail',
+                component: () => import('@/views/pay/detail.vue'),
+                meta: {
+                    title: '付款详情',
+                    icon: '',
+                },
+                hidden: true
+            },
+
             //资源申请~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 path: 'resourceList',

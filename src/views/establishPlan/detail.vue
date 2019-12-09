@@ -26,6 +26,7 @@
                                 {{ detail.custName }}
                             </span>
                         </div>
+                        
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">企业名称：</span>
                             <span class="right-con">
@@ -56,6 +57,12 @@
                                 {{ detail.projectTypeName }}
                             </span>
                         </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">是否新签合同：</span>
+                            <span class="right-con">
+                                {{ detail.contractNew == "1" ? "是" : "否" }}
+                            </span>
+                        </div>
                         <!-- <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">实际上线时间：</span>
                             <span class="right-con">
@@ -81,6 +88,12 @@
                             <span class="left-title font-gray">月开票频次(次/月)：</span>
                             <span class="right-con">
                                 {{ detail.invoicingFrequency }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">主客户名称：</span>
+                            <span class="right-con">
+                                {{ detail.mainCustName }}
                             </span>
                         </div>
                         <div class="clearfix  cominfo-item">
@@ -117,6 +130,12 @@
                             <span class="left-title font-gray">实施负责人：</span>
                             <span class="right-con">
                                 {{ detail.implyLeaderName }}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">合同名称：</span>
+                            <span class="right-con">
+                                {{ detail.contractNew == "1" ? "" : detail.contractName.join('，') }}
                             </span>
                         </div>
                         <!-- <div class="clearfix  cominfo-item">

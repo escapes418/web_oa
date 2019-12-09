@@ -17,21 +17,31 @@
                                 </span>
                             </RedStar>
                         </li>
-                        <!-- <li class="base-li">
+                        <li class="base-li">
                             <RedStar label="合同类型：">
                                 <span class="right-con">{{contractTypeName}}</span>
                             </RedStar>
                         </li>
                         <li class="base-li">
-                            <RedStar label="合同关键字：">
+                            <RedStar label="业务类型：">
+                                <span class="right-con">{{businessTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务模块：">
+                                <span class="right-con">{{businessModelName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="keyWords.length>1">
+                            <RedStar label="合同关键字：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWordName" placeholder="请选择合同名称" style="width:260px;" @change="selectContract" @clear="clearContract">
-                                        <el-option v-for="item in keyWords" :label="item.contractName" :value="item.code" :key="item.code">
+                                    <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
+                                        <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
                                         </el-option>
                                     </el-select>
                                 </span>
                             </RedStar>
-                        </li> -->
+                        </li>
                         <li class="base-li" v-if="associationMain">
                             <RedStar label="关联主合同编号：" :required="true">
                                 <span class="item-value" @click="showForm">
@@ -295,6 +305,8 @@ export default {
 
             associationMain:false,
             contractTypeName:"",
+            businessTypeName:"",
+            businessModelName:"",
             keyWords:[],
             chapterList:[],
             projectList:[],
@@ -302,7 +314,8 @@ export default {
             postData: {//提交数据
                 chapterNum:"",
                 keyWord:[],
-                chapterType:[],
+                keyWordName:[],
+                // chapterType:[],
                 associationMainCode:'',
                 associationMainName:'',
                 associationMainId:'',
@@ -489,6 +502,8 @@ export default {
             }).then(res=>{
                 this.associationMain = res.data.associationMain == 1
                 this.contractTypeName = res.data.contractTypeName;
+                this.businessTypeName = res.data.businessTypeName;
+                this.businessModelName = res.data.businessModelName;
                 res.data.keyWords = res.data.keyWords || [];
                 this.keyWords = res.data.keyWords;
                 res.data.contractConfigAttachmentList.forEach(item=>{
@@ -676,6 +691,12 @@ export default {
                         tempObj[i.columnName] = i.value;
                     }
                 })
+            })
+
+            this.keyWords.forEach(i=>{
+                if(this.postData.keyWord.indexOf(i.key)!=-1){
+                    this.postData.keyWordName.push(i.value)
+                }
             })
 
             this.postData.contractAttachmentRequest = [...this.dataAttachment,...this.contractAttachment,...this.scanAttachment];

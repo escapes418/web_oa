@@ -139,6 +139,11 @@
                     <span>{{scope.row.time | stamp2TextDateFull}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="vip客服最新维护时间" width="140px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.vipUpdateTime | stamp2TextDateFull}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="操作"  width="320px">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>

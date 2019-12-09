@@ -80,9 +80,9 @@ export function loanDel(params){
     })
 }
 
-export function getLoanMmber(params){
+export function getLoanMember(params){
     return request({
-        url:'/webLoanFlow/repealApply',
+        url:'/webLoanFlow/queryLoanPersonHisList',
         method:'post',
         data:params
     })

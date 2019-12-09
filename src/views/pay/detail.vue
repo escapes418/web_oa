@@ -10,73 +10,76 @@
                         <el-col :span="12" class="segment-brline">
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">流程编号：</span>
-                                <span class="right-con">
-                                {{ detail.procCode }}
-                                </span>
+                                <span class="right-con">{{ detail.procCode }}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">借款人：</span><span class="right-con">{{ detail.applyPerName }}</span>
-                                <span style="margin-left:55%">
-                                    <el-button type="primary" size="small" @click="showloanMember">查看历史借款人</el-button>
-                                </span>
+                                <span class="left-title font-gray">申请人：</span>
+                                <span class="right-con">{{ detail.applyPerName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">岗位名称：</span><span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">成本中心：</span>
+                                <span class="right-con">{{  detail.costCenterName }}</span>
+                            </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">发票公司：</span>
+                                <span class="right-con">{{ detail.taxCityName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">所属公司：</span>
-                                <span class="right-con">
-                                {{ detail.projectName }}
-                                </span>
+                                <span class="left-title font-gray">备注：</span>
+                                <span class="right-con">{{ detail.remarks }}</span>
                             </div>
                         </el-col>
                         <el-col :span="12">
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">借款时间：</span><span class="right-con">{{ detail.applyTime | stamp2TextDate}}</span>
+                                <span class="left-title font-gray">申请时间：</span>
+                                <span class="right-con">{{ detail.applyTime | stamp2TextDate}}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">所属部门：</span><span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">岗位名称：</span>
+                                <span class="right-con">{{ detail.postName }}</span>
                             </div>
-                            <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">项目名称：</span><span class="right-con">{{  detail.projectName }}</span>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">项目名称：</span>
+                                <span class="right-con">{{ detail.projectName }}</span>
                             </div>
-                            <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">备注：</span>
-                                <span class="right-con">
-                                {{ detail.remarks }}
-                                </span>
-                            </div>
+                            
                         </el-col>
                     </el-row>
                 </div>
             </div>
             <div class="segment statistics">
                 <div class="segment-header">
-                    借款信息
+                    付款信息
                 </div>
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
                         <el-row>
                             <el-col :span="12" class="segment-brline">
                                 <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">收款方：</span><span class="right-con">{{ detail.payeeName }}</span>
+                                    <span class="left-title font-gray">收款方：</span>
+                                    <span class="right-con">{{ detail.bankAccountName }}</span>
                                 </div>
                                 <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">开户行：</span><span class="right-con">{{ detail.payeeOpeningBank }}</span>
+                                    <span class="left-title font-gray">开户行：</span>
+                                    <span class="right-con">{{ detail.belongBank  }}</span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">预计还款时间：</span><span class="right-con">{{ detail.planRepayTime | stamp2TextDate }}</span>
+                                    <span class="left-title font-gray">付款金额：</span>
+                                    <span class="right-con">{{ detail.expenseTotal }}</span>
                                 </div>
                             </el-col>
                             <el-col :span="12">
                                 <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">收款账号：</span><span class="right-con">{{ detail.payeeCardNum }}</span>
+                                    <span class="left-title font-gray">收款账号：</span>
+                                    <span class="right-con">{{ detail.bankAccountNumber }}</span>
                                 </div>
                                 <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">借款金额：</span><span class="right-con">{{ detail.loanAmount }}</span>
+                                    <span class="left-title font-gray">银行支行：</span>
+                                    <span class="right-con">{{ detail.belongBranchBank }}</span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">借款事由：</span><span class="right-con">{{ detail.loanReason }}</span>
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">付款事由：</span>
+                                    <span class="right-con">{{ detail.payReason }}</span>
                                 </div>
                             </el-col>
                         </el-row>
@@ -85,43 +88,54 @@
             </div>
             <div class="segment statistics">
                 <div class="segment-header">
-                    还款信息
+                    科目明细
                 </div>
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
-                        <el-table :data="detail.repaymentRecordResponses " border fit highlight-current-row style="width: 100%">
-                            <el-table-column align="center" label="流程编号" width="150px">
+                        <el-table :data="flowDetailList" border fit highlight-current-row style="width: 100%">
+                            <el-table-column align="center" label="一级科目" width="150px">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.procCode}}</span>
+                                    <span>{{scope.row.firstSubName}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column width="320px" align="center" label="流程名称">
+                            <el-table-column width="320px" align="center" label="二级科目">
                                 <template slot-scope="scope">
-                                    <a>{{scope.row.procName}}</a>
+                                    <a>{{scope.row.secondSubName}}</a>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" label="还款人">
+                            <el-table-column align="center" label="票据数量">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.repayPersonName}}</span>
+                                    <span>{{scope.row.billNum}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" label="还款时间">
+                            <el-table-column align="center" label="票据金额">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.repayTime | stamp2TextDate}}</span>
+                                    <span>{{scope.row.expenseAmt}}</span>
                                 </template>
                             </el-table-column>
                             
-                            <el-table-column width="120px" align="center" label="还款金额">
+                            <el-table-column width="120px" align="center" label="备注">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.repayAmount}}</span>
+                                    <span>{{scope.row.remarks}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column width="120px" align="center" label="待还款金额">
+                            <el-table-column width="120px" align="center" label="查看附件">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.remainingRepayAmount}}</span>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
+                        <div class="sum-title">
+                            合计：
+                        </div>
+                        <div v-for="(item,index) in amtList" :key="index" class="sum-item">
+                            <span class="sum-name">
+                                {{item.firstSubName}}
+                                <span v-if="item.secondSubName">/</span>
+                                {{item.secondSubName}}
+                            </span>
+                            <span class="sum-value">{{item.amt}}元</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,8 +209,8 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <template v-if="pathType === 'list'">
-                    
-                    <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <!-- <el-button v-if="ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
+                    <el-button v-if="ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
                     <!-- <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button> -->
@@ -216,40 +230,17 @@
             </div>
         </div>
 
-        <el-dialog title="历史借款人" :visible.sync="dialogLoan">
-            <el-table :data="loanMemberList" border fit highlight-current-row style="width: 100%">
-                <el-table-column align="center" label="开始负责时间">
-                    <template slot-scope="scope">
-                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.createTime | stamp2TextDateFull}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="人员姓名">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.contractLeader">{{scope.row.contractLeader}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="登录账号">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.loginName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="部门">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.officeName">{{scope.row.officeName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="修改人">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.createByName">{{scope.row.createByName}}</span>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="pagination-container">
-                <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
-                </el-pagination>
+        <el-dialog title="图片详情" width="25%" :visible.sync="dialogImg">
+            <div v-for="(val,index) in urlArr" :key="index" >
+                <div v-if="val.url != ''" class="upload-list" @click="showImg(index,2)">
+                    <img :src="val.url" alt="" style="width:120px;height:120px">
+                    <div class="img-font">{{val.name}}</div>
+                </div>
             </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogImg = false">返回</el-button>
+            </span>
         </el-dialog>
-
         <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
             <span>确认删除该报销单吗？</span>
             <span slot="footer" class="dialog-footer">
@@ -262,7 +253,7 @@
 
 <script>
 import common from '@/utils/common';
-import { getDetail  , loanFlow , loanCancel , loanDel,getLoanMember } from '@/api/loan';
+import { getDetail  , payFlow , payCancel , payDel } from '@/api/payment';
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
@@ -271,28 +262,24 @@ import "viewerjs/dist/viewer.css";
 import Viewer from 'viewerjs';
 
 export default {
+    name: 'complexTable',
     components: {
         sjbtextarea
     },
     data() {
         return {
             expenseAttachment:[],
+            flowDetailList:[],
             flowLoglist:[],
+            amtList:[],
             detail:{},
             comment:'',
             taskId:0,
             pathType:"",
             dialogDelVisible:false,
-            finish:false,
 
-            dialogLoan:false,
-            loanMemberList:[],
-            total:0,
-            pageNo:1,
-            pageSize:10,
-            listQuery:{
-                loanId:''
-            },
+            urlArr:[],
+            dialogImg:false
         }
     },
     computed:{
@@ -301,27 +288,23 @@ export default {
             return result
         },
         ISDEL:function(){
-            let result = this.detail.loanFlowStatus == 2 || this.detail.loanFlowStatus == 3 || this.detail.loanFlowStatus == 4 ? true : false
+            let result = this.detail.expenseStatus == 2 || this.detail.expenseStatus == 3 || this.detail.expenseStatus == 4 ? true : false
             return result
         },
         ISEDIT:function(){
             let result = this.detail.modify == 'modify' ? true :false;
             return result
         },
-        ISBACK:function(){
-            let result = this.detail.costSenterBack == 'back' ? true :false;
-            return result
-        },
         ISPUTIN:function(){
-            let result = this.detail.loanFlowStatus == 4 ? true :false
+            let result = this.detail.expenseStatus == 4 ? true :false
             return result
         },
         ISCANCEL:function(){
-            let result = this.detail.loanFlowStatus == 2 ? true:false
+            let result = this.detail.expenseStatus == 2 ? true:false
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.expenseStatus == 1  ? true:false
+            let result = this.detail.repayFlowStatus == 1  ? true:false
             return result
         }
     },
@@ -329,43 +312,48 @@ export default {
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if(this.$route.query.taskId) this.taskId = this.$route.query.taskId
         if(this.$route.query.pathType) this.pathType = this.$route.query.pathType
-        getDetail({
-            loanFlowId:this.$route.query.key
-        }).then(res =>{
-            this.detail = res.data
-            // if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
-            //     this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
-            // }
-            res.data.budgetDetailList = res.data.budgetDetailList || []
-            this.budgetDetailList = res.data.budgetDetailList
-            res.data.flowLogResponseList = res.data.flowLogResponseList || []
-            this.flowLoglist = res.data.flowLogResponseList
+        getDetail(
+           this.$route.query.key
+        ).then(res =>{
+            this.detail = res.data.detail;
+            res.data.flowDetailList = res.data.flowDetailList || [];
+            this.flowDetailList = res.data.flowDetailList;
+            this.flowLoglist = res.data.flowLoglist;
+            this.amtList = res.data.amtList;
+            if (
+                res.data.detail.expenseAttachmentWeb &&
+                res.data.detail.expenseAttachmentWeb.length > 0
+            ) {
+                res.data.detail.expenseAttachmentWeb.forEach(item => {
+                    let originUrl = item.url;
+                    item.url = res.data.detail.expenseAttachmentPrefix + item.url;
+                    this.expenseAttachment.push({
+                        url: item.url,
+                        name: item.fileName,
+                        originUrl: originUrl,
+                        previewUrl: item.url,
+                        viewer: null
+                    });
+                });
+            }
         })
   },
   methods:{
-        showloanMember(){
-            this.dialogLoan = true;
-            this.$$queryStub = fromJS(this.listQuery);
-            this.getLoanList();
-        },
-        getLoanList(){
-            var postData = this.$$queryStub.toJS();
-            getLoanMember({
-                ...postData,
-                pageNo:this.pageNo,
-                pageSize:this.pageSize
-            }).then(res=>{
-                this.loanMemberList = res.data.list;
-                this.total = res.data.total;
-            })
-        },
-        restCallback(){
-            this.listQuery.loanFlowId = this.$route.query.key
-            this.$$queryStub = fromJS(this.listQuery);
-        },
-        handleCurrentChange(val) {
-            this.pageNo = val;
-            this.getLoanList();
+        showImgDia(subConfList) {
+            this.urlArr = [];
+            if (subConfList) {
+                subConfList.forEach(item => {
+                    let url = "";
+                    url = item.urlPrefix + item.url;
+                    this.urlArr.push({
+                        url: url,
+                        name: item.confDesc,
+                        previewUrl: url,
+                        viewer: null
+                    });
+                });
+                this.dialogImg = true;
+            }
         },
         showImg(index, type) {
             if (type == 1) {
@@ -389,32 +377,18 @@ export default {
             }
             // window.open(url);
         },
-        createPdf(){
-                var pdfstr = document.getElementById('pdf-wrap')
-                // 2. 复制给body，并执行window.print打印功能
-                var newstr = pdfstr.innerHTML
-                // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
-                var oldstr = document.body.innerHTML
-                document.body.innerHTML = newstr
-                window.print()
-                window.location.reload()
-                document.body.innerHTML = oldstr
-                return false
-        },
-
         backBtn(){
             this.$router.go(-1)
         },
-       
         editBtn(){
             this.$router.push({
-                path:'/me/loanForm',
+                path:'/me/paymentForm',
                 query:{ key: this.$route.query.key }
             })
         },
         agreeBtn(){
-            loanFlow({
-                loanFlowId:this.$route.query.key,
+            payFlow({
+                repayFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'yes',
                 procInsId:this.detail.procInsId 
@@ -424,9 +398,6 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })
@@ -439,15 +410,8 @@ export default {
                 })
                 return 
             }
-            // if(this.comment.length>300) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
-            loanFlow({
-                loanFlowId:this.$route.query.key,
+            payFlow({
+                repayFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'no',
                 procInsId:this.detail.procInsId 
@@ -457,15 +421,12 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })
         },
         cancelBtn(){
-            loanCancel({
+            payCancel({
                 procInsId:this.detail.procInsId,
                 taskId:this.taskId || 0
             }).then(res =>{
@@ -474,26 +435,20 @@ export default {
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })
         },
         delBtn(){
-            loanDel({
-                loanFlowId:this.$route.query.key
-            }).then(res =>{
+            payDel(
+                this.$route.query.key
+            ).then(res =>{
                 if(res.status ==0){
                     this.dialogDelVisible = false
                     this.$message({
                         message: res.message,
                         type: 'success'
                     })
-                    // this.$router.push({
-                    //     path:'/me/recepList'
-                    // })
                     this.$router.go(-1)
                 }
             })
@@ -526,5 +481,21 @@ export default {
 .segment .el-table__body-wrapper {
   padding: 40px 20px 35px;
 }
-
+.sum-title {
+    font-size: 14px;
+    margin: 15px 0 15px 0;
+}
+.sum-item {
+    margin-left: 40px;
+    font-size: 14px;
+    width: 40%;
+    .sum-name {
+        line-height: 32px;
+        color: #99a9bf;
+    }
+    .sum-value {
+        float: right;
+        line-height: 32px;
+    }
+}
 </style>

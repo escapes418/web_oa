@@ -22,6 +22,16 @@
                                 <span class="right-con">{{contractTypeName}}</span>
                             </RedStar>
                         </li>
+                        <li class="base-li">
+                            <RedStar label="业务类型：">
+                                <span class="right-con">{{businessTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务模块：">
+                                <span class="right-con">{{businessModelName}}</span>
+                            </RedStar>
+                        </li>
                         <li class="base-li" v-if="keyWords.length>1">
                             <RedStar label="合同关键字：" :required="true">
                                 <span class="right-con">
@@ -310,6 +320,8 @@ export default {
 
             associationMain:false,
             contractTypeName:"",
+            businessTypeName:"",
+            businessModelName:"",
             keyWords:[],
             keyWordName:[],
             chapterList:[],
@@ -404,6 +416,8 @@ export default {
                         }
                     })
                     this.contractTypeName = respond.data.contractTypeName;
+                    this.businessTypeName = respond.data.businessTypeName;
+                    this.businessModelName = respond.data.businessModelName;
                     respond.data.keyWords = respond.data.keyWords || [];
                     this.keyWords = respond.data.keyWords;
                     respond.data.contractPartyList.forEach(item=>{
@@ -556,9 +570,10 @@ export default {
             }).then(res=>{
                 this.associationMain = res.data.associationMain == 1;
                 this.contractTypeName = res.data.contractTypeName;
+                this.businessTypeName = res.data.businessTypeName;
+                this.businessModelName = res.data.businessModelName;
                 res.data.keyWords = res.data.keyWords || [];
                 this.keyWords = res.data.keyWords;
-                console.log(this.keyWords)
                 res.data.contractConfigAttachmentList.forEach(item=>{
                     if(item.attachmentType == 1){
                         this.contractMustCount = item.mustCount;

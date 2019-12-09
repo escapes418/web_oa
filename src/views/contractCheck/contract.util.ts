@@ -18,6 +18,10 @@ export function contractFormVali(self) {
         toast('请关联主合同！');
         flag = false;
     }
+    else if(self.keyWords.length>1&&self.postData.keyWord.length<1){
+        toast('请选择合同关键字！');
+        flag = false;
+    }
     else if(!self.associationMain&&self.postData.projectIds.length<1){
         toast('请关联项目！');
         flag = false;
@@ -45,14 +49,14 @@ export function contractFormVali(self) {
         toast('请选择合同负责人！');
         flag = false;
     }
-    else if (!self.postData.expressCompany) {
-        toast('请填写快递公司！');
-        flag = false;
-    }
-    else if (!self.postData.expressBill) {
-        toast('请填写快递单号！');
-        flag = false;
-    }
+    // else if (!self.postData.expressCompany) {
+    //     toast('请填写快递公司！');
+    //     flag = false;
+    // }
+    // else if (!self.postData.expressBill) {
+    //     toast('请填写快递单号！');
+    //     flag = false;
+    // }
     else if(self.contractMustCount&&(self.contractAttachment.length<self.contractMustCount)){
         toast('请至少上传'+self.contractMustCount+'张预签合同图片！');
         flag = false

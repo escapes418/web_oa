@@ -468,14 +468,15 @@ export default {
 
         getAccountList().then(res => {
             if(res.status == 0&&res.data){
-                this.bankList = res.data.filter(i=>{
+                this.bankList = res.data;
+                res.data.forEach(i=>{
                     if(i.defaultAccount == "1"){
                         this.filter.receivablesAccountId = i.id;
                         this.filter.payeeCardNum = i.accountNumber// 收款人银行卡号 ,
                         this.filter.payeeName = i.accountName// 收款人姓名 ,
                         this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
                     }
-                    return i.accountType == '1'
+                    // return i.accountType == '1'
                 })  
             }
             if(this.bankList.length<1){
