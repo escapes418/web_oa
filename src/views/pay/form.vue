@@ -133,7 +133,7 @@
             </div>
         </div>
         <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="26%" :center="true" :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false">
-            <span class="">亲爱的用户，请在首页-设置-收款账管理添加收款账户，让付款更便利</span>
+            <span class="">亲爱的用户，请在个人中心-账户管理-新增添加收款账户，让付款更便利</span>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="jumpAccount">前往设置</el-button>
             </div>

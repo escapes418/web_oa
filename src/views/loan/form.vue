@@ -116,7 +116,12 @@
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
-
+        <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="26%" :center="true" :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false">
+            <span class="">亲爱的用户，请在个人中心-账户管理-新增添加收款账户，让借款更便利</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="jumpAccount">前往设置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -127,7 +132,7 @@ import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbtextarea from '@/components/sjbTextarea'
 import Department from "@/components/Department";
-import { getBankList , loanApply , loanSave ,getDetail } from '@/api/loan'
+import { getAccountList , loanApply , loanSave ,getDetail } from '@/api/loan'
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils'
@@ -182,6 +187,7 @@ export default {
             },
             expenseAttachment: [], // 读取和提交时均做转换
             bankList:[],
+            dialogAccount:false,
             taxList: [],
 
             fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
@@ -237,12 +243,20 @@ export default {
     },
     async mounted() {
         
-        getBankList().then(res => {
-            this.bankList = res.data;
+        getAccountList().then(res => {
+            if(res.status == 0&&res.data){
+                this.bankList = res.data;
+            }
+            if(this.bankList.length<1){
+                this.dialogAccount = true
+            }
         })
 
     },
     methods: {
+        jumpAccount(){
+            this.$router.push({path:"/me/addAccount"})
+        },
         depConfirm(data) {
             if(data){
                 this.postData.officeName  = data.name;

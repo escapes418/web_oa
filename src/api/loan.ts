@@ -24,7 +24,7 @@ export function payApplay(params){
     })
 }
 
-export function getBankList(params){
+export function getAccountList(params){
     return request({
         url:'/commonInfo/queryMyBankCardInfoList',
         method:'post',
