@@ -576,6 +576,8 @@ export default {
             this.scanMustCount = 0;
             this.scanMaxCount = 0;
             this.contractTypeName = "";
+            this.businessTypeName = "";
+            this.businessModelName = "";
         },
         getList() {
             this.listLoading = true;

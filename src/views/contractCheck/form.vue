@@ -638,7 +638,9 @@ export default {
             this.dataMustCount = 0;
             this.dataMaxCount = 0;
             this.postData.contractNameId = "";
-            this.contractTypeName = ""
+            this.contractTypeName = "";
+            this.businessTypeName = "";
+            this.businessModelName = "";
         },
         getList() {
             this.listLoading = true;
