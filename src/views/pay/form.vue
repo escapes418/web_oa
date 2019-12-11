@@ -50,7 +50,7 @@
         </div>
         <div class="segment statistics">
             <div class="segment-header">
-                借款信息
+                付款信息
             </div>
             <div class="segment-area">
                 <el-row>
