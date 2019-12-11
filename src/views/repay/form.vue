@@ -60,7 +60,7 @@
                         </RedStar>
                         <RedStar label="待还款金额：">
                             <span class="right-con">
-                                {{unpaidAmount}}
+                                {{unpaidAmount.toFixed(2)}}
                             </span>
                         </RedStar>
                     </el-col>
@@ -68,7 +68,7 @@
                         <RedStar label="本次还款金额：" :required="postData.repayMethod == '2'">
                             <span class="right-con">
                                 <el-input v-if="postData.repayMethod == '2'" type="number" placeholder="请输入" style="width:250px;" v-model.number="postData.currentRepayAmount"></el-input>
-                                <span v-else>{{repayTotal}}</span>
+                                <span v-else>{{repayTotal.toFixed(2)}}</span>
                             </span>
                         </RedStar>
                     </el-col>

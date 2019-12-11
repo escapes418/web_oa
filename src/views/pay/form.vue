@@ -74,7 +74,7 @@
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="付款金额：">
                             <span class="right-con">
-                                <span>{{payTotal}}</span>
+                                <span>{{payTotal.toFixed(2)}}</span>
                             </span>
                         </RedStar>
                     </el-col>
