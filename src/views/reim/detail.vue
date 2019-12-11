@@ -611,7 +611,7 @@ export default {
         jumpRentFuel(){
             let routerJump = this.$router.resolve({
                 path:"/report/rentCarDetail",
-                query: { employeeId:this.detail.employeeId,year:common.timeParse(this.detail.applyTime)}
+                query: { employeeId:this.detail.applyPerId,year:common.timeParse(this.detail.applyTime)}
             })
             window.open(routerJump.href,"_blank")
         },
