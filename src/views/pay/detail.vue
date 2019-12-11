@@ -388,7 +388,7 @@ export default {
         },
         agreeBtn(){
             payFlow({
-                repayFlowId:this.$route.query.key,
+                expenseFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'yes',
                 procInsId:this.detail.procInsId 
@@ -411,7 +411,7 @@ export default {
                 return 
             }
             payFlow({
-                repayFlowId:this.$route.query.key,
+                expenseFlowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'no',
                 procInsId:this.detail.procInsId 

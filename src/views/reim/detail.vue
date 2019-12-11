@@ -18,17 +18,23 @@
                             <div class="text">{{ detail.applyPerName }}</div>
                         </div>
                         <div class="item">
-                            <div class="label">成本中心:</div>
-                            <div class="text">{{ detail.costCenterName }}</div>
-                        </div>
-                        <div class="item">
                             <div class="label">报销类型:</div>
                             <div class="text">{{ detail.applyTypeName }}</div>
                         </div>
                         <div class="item">
-                            <div class="label">项目名称:</div>
-                            <div class="text">{{ detail.projectLabel }}</div>
+                            <div class="label">收款方:</div>
+                            <div class="text">{{ detail.payeeName }}</div>
                         </div>
+                        <div class="item">
+                            <div class="label">开户行:</div>
+                            <div class="text">{{ detail.payeeOpeningBank }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">成本中心:</div>
+                            <div class="text">{{ detail.costCenterName }}</div>
+                        </div>
+                        
+                        
                         <div class="item">
                             <div class="label">费用合计:</div>
                             <div class="text">{{ detail.expenseTotal | thousands(2) }}</div>
@@ -46,6 +52,14 @@
                         <div class="item">
                             <div class="label">发票公司:</div>
                             <div class="text">{{ detail.taxCityName }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">收款帐号:</div>
+                            <div class="text">{{ detail.payeeCardNum }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">项目名称:</div>
+                            <div class="text">{{ detail.projectLabel }}</div>
                         </div>
                         <div class="item">
                             <div class="label">项目负责人:</div>
@@ -393,6 +407,7 @@
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
                     <el-button v-if="ISCOST" size="medium" type="warning" @click="setBackBtn">退回</el-button>
+                    <el-button size="small" @click="jumpRentFuel">车辆油卡费用</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -592,6 +607,13 @@ export default {
     methods: {
         showExpenseAmt(){
             this.actualInput = true
+        },
+        jumpRentFuel(){
+            let routerJump = this.$router.resolve({
+                path:"/report/rentCarDetail",
+                query: { employeeId:this.detail.employeeId,year:common.timeParse(this.detail.applyTime)}
+            })
+            window.open(routerJump.href,"_blank")
         },
         actualBtn(){
             if(this.actualAmt < 0 || !this.actualAmt){
