@@ -345,7 +345,7 @@ export default {
             token: state => state.user.token
         }),
         ISMODIFY: function() {
-            let result = this.detail.showModify  == "1" ? true : false;
+            let result = this.detail.showModify  == "1"&&this.keyWords.length>0 ? true : false;
             return result;
         },
         ISAPPLY:function(){
