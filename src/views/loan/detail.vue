@@ -340,9 +340,6 @@ export default {
                     this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
                 })
             }
-            // if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
-            //     this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
-            // }
             res.data.budgetDetailList = res.data.budgetDetailList || []
             this.budgetDetailList = res.data.budgetDetailList
             res.data.flowLogResponseList = res.data.flowLogResponseList || []

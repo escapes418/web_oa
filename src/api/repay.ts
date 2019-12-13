@@ -11,7 +11,7 @@ export function getRepaytList(parmas) {
 
 export function getLoanList(parmas) {
     return request({
-        url:'/webLoanFlow/queryMyLoanFlowList',
+        url:'/webLoanFlow/queryRelatedLoanFlows',
         method:'post',
         data:parmas
     })

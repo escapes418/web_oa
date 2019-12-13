@@ -341,9 +341,13 @@ export default {
             repayFlowId:this.$route.query.key
         }).then(res =>{
             this.detail = res.data
-            // if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
-            //     this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
-            // }
+            if (res.data.repayFlowCashAttachmentResponseList  && res.data.repayFlowCashAttachmentResponseList.length > 0) {
+                res.data.repayFlowCashAttachmentResponseList.forEach(item => {
+                    let originUrl = item.url;
+                    item.url = item.urlPrefix + item.url;
+                    this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
+                })
+            }
             res.data.budgetDetailList = res.data.budgetDetailList || []
             this.budgetDetailList = res.data.budgetDetailList
             res.data.flowLogResponseList = res.data.flowLogResponseList || []

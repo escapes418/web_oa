@@ -206,7 +206,7 @@ export default {
                 currentRepayAmount:"",// 本次还款金额 ,
                 loanFlowId:"", //关联借款流程id ,
                 remarks:"" ,
-                repayFlowCashAttachmentRequestList: [],//现金还款附件列表 ,
+                repayFlowCashAttachmentWebRequestList: [],//现金还款附件列表 ,
                 repayFlowDetailRequestList:[],// 发票还款明细列表 ,
                 repayMethod:"",
             },
@@ -273,8 +273,8 @@ export default {
                 if (res.data.repayFlowCashAttachmentResponseList  && res.data.repayFlowCashAttachmentResponseList.length > 0) {
                     res.data.repayFlowCashAttachmentResponseList.forEach(item => {
                         let originUrl = item.url;
-                        item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl ,uid:new Date().getTime()});
+                        item.url = item.urlPrefix + item.url;
+                        this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
                     })
                 }
                 
@@ -343,6 +343,7 @@ export default {
         loanSelect(data){
             this.postData.loanFlowId = data.id;
             this.procLoanName = data.procName.substring(0,20)+'...';
+            console.log(this.procLoanName)
             this.taxName = data.companyName;
             this.pendingTotal = data.unpaidAmount
         },
@@ -372,9 +373,9 @@ export default {
         submit(type) {
             // this.postData.billNum = this.billNum;
             // this.postData.expenseTotal = this.expenseTotal
-            this.expenseAttachmentWeb = [];
+            this.postData.repayFlowCashAttachmentWebRequestList = [];
             this.expenseAttachment.forEach(item => {
-                this.postData.repayFlowCashAttachmentRequestList.push({ url: item.originUrl, name: item.name })
+                this.postData.repayFlowCashAttachmentWebRequestList.push({ url: item.originUrl, name: item.name })
             })
             this.postData.repayFlowDetailRequestList = this.getItemsInStore();
             if (type == 'apply' && repayFormVali(this)) {
