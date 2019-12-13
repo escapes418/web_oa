@@ -64,7 +64,7 @@
                     <span>{{scope.row.procCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="260px" align="center" label="流程名称">
+            <el-table-column width="270px" align="center" label="流程名称">
                 <template slot-scope="scope">
                     <a>{{scope.row.procName}}</a>
                 </template>
@@ -109,12 +109,12 @@
                     <span>{{scope.row.lastRepayTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="借款审批状态">
+            <el-table-column width="110px" align="center" label="借款审批状态">
                 <template slot-scope="scope">
                     <span>{{scope.row.loanFlowStatus}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="还款状态">
+            <el-table-column width="100px" align="center" label="还款状态">
                 <template slot-scope="scope">
                     <span>{{scope.row.repayStatus}}</span>
                 </template>

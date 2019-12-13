@@ -146,10 +146,8 @@ export default {
             this.getList();
         },
         selectLoan(row) {
-            if(this.name !== row.procName){
-                this.name = row.procName;
-                this.$emit("on-select",row);
-            }
+            this.name = row.procName.substring(0,20)+'...';
+            this.$emit("on-select",row);
             this.showDialog = false;
         },
         

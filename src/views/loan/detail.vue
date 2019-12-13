@@ -332,7 +332,14 @@ export default {
         getDetail({
             loanFlowId:this.$route.query.key
         }).then(res =>{
-            this.detail = res.data
+            this.detail = res.data;
+            if (res.data.attachmentWebResponseList && res.data.attachmentWebResponseList.length > 0) {
+                res.data.attachmentWebResponseList.forEach(item => {
+                    let originUrl = item.url;
+                    item.url = res.data.urlPrefix + item.url;
+                    this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
+                })
+            }
             // if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
             //     this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
             // }
@@ -526,5 +533,12 @@ export default {
 .segment .el-table__body-wrapper {
   padding: 40px 20px 35px;
 }
-
+.img-font {
+    font-size: 14px;
+    padding-right: 10px;
+    color: #343434;
+    margin-bottom: 10px;
+    width: 400px;
+    line-height: 32px;
+}
 </style>

@@ -232,8 +232,8 @@ export default {
                 if (res.data.attachmentWebResponseList && res.data.attachmentWebResponseList.length > 0) {
                     res.data.attachmentWebResponseList.forEach(item => {
                         let originUrl = item.url;
-                        item.url = res.data.detail.urlPrefix + item.url;
-                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl ,uid:new Date().getTime()});
+                        item.url = res.data.urlPrefix + item.url;
+                        this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
                     })
                 }
                 
