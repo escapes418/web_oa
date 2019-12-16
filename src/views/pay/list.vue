@@ -161,8 +161,10 @@ export default {
             }
             return temp
         }
-
-        this.expStatuList = selectDic(dicList,"expense_status");
+        
+        this.expStatuList = selectDic(dicList,"expense_status").filter(item=>{
+            return item.value != 4
+        })
     },
     methods: {
         getList() {
