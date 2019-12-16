@@ -2,7 +2,7 @@
     <div class="department" :class="type=='form'?'formHeight':''">
         <!-- 列表样式 -->
         <div class="toolbar-item list" v-if="type == 'list'">
-            <span class="item-label">归属部门：</span>
+            <span class="item-label">{{Dlabel}}</span>
             <div class="item-value" @click="showTree">
                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                 <span style="color:#606266">{{officeName}}</span>
@@ -122,8 +122,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.tree.setChecked(this.chargeData[0],false);
-                this.chargeData = []
-                this.chargeData.push(data)
+                if(this.type =='form'&&data.status == '0'){
+                    this.$message({
+                        message: "该部门节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.tree.setChecked(data,false);
+                    return
+                }else{
+                    this.chargeData = [];
+                    this.chargeData.push(data)
+                }
             }else if(this.chargeData.length ===0&&select){
                 if(this.type =='form'&&data.status == '0'){
                     this.$message({

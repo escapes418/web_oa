@@ -35,7 +35,7 @@
             <el-collapse-transition>
                 <div v-show="toolexpand">
                     <div class="toolbar-row">
-                        <Department type="list" @on-confirm="depConfirm" :Dvalue="officeName"></Department>
+                        <Department type="list" Dlabel="申请部门：" @on-confirm="depConfirm" :Dvalue="officeName"></Department>
                         <div class="toolbar-item">
                             <span class="item-label">合同日期类型：</span>
                             <el-select clearable filterable style="width: 170px" class="filter-item" v-model="listQuery.contractTimeType" placeholder="请选择合同日期类型">
