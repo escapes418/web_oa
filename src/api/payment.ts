@@ -64,3 +64,11 @@ export function payDel(parmas) {
         method:'post',
     })
 }
+
+export function downFile(params){
+    return request({
+        url:'/commonInfo/downFiles',
+        method:'post',
+        data:params
+    })
+}

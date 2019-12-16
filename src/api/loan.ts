@@ -103,3 +103,11 @@ export function modifyLoan(params){
         data:params
     })
 }
+
+export function downFile(params){
+    return request({
+        url:'/commonInfo/downFiles',
+        method:'post',
+        data:params
+    })
+}
