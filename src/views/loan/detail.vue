@@ -220,17 +220,17 @@
             <el-table :data="loanMemberList" border fit highlight-current-row style="width: 100%">
                 <el-table-column align="center" label="开始负责时间">
                     <template slot-scope="scope">
-                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.createTime | stamp2TextDateFull}}</span>
+                        <span>{{scope.row.changeTime | stamp2TextDateFull}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="人员姓名">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.contractLeader">{{scope.row.contractLeader}}</span>
+                        <span class="ignore-detail" :title="scope.row.personName">{{scope.row.personName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="登录账号">
                     <template slot-scope="scope">
-                        <span>{{scope.row.loginName}}</span>
+                        <span>{{scope.row.personLoginName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="部门">
@@ -240,14 +240,10 @@
                 </el-table-column>
                 <el-table-column align="center" label="修改人">
                     <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.createByName">{{scope.row.createByName}}</span>
+                        <span class="ignore-detail" :title="scope.row.modifiedBy">{{scope.row.modifiedBy}}</span>
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="pagination-container">
-                <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
-                </el-pagination>
-            </div>
         </el-dialog>
 
         <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
@@ -287,7 +283,6 @@ export default {
 
             dialogLoan:false,
             loanMemberList:[],
-            total:0,
             pageNo:1,
             pageSize:10,
             listQuery:{
@@ -360,8 +355,7 @@ export default {
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }).then(res=>{
-                this.loanMemberList = res.data.list;
-                this.total = res.data.total;
+                this.loanMemberList = res.data;
             })
         },
         handleCurrentChange(val) {
