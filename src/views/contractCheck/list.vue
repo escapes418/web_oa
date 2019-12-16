@@ -263,6 +263,7 @@ export default {
             })
         },
         restCallback() {
+            this.officeName = ""
                 // 用来补充默认rest不足的问题
         },
         // 处理接口不一致情况
