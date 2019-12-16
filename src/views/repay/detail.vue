@@ -215,40 +215,6 @@
             </div>
         </div>
 
-        <el-dialog title="历史借款人" :visible.sync="dialogLoan">
-            <el-table :data="loanMemberList" border fit highlight-current-row style="width: 100%">
-                <el-table-column align="center" label="开始负责时间">
-                    <template slot-scope="scope">
-                        <span style="color:#409EFF;cursor: Pointer;">{{scope.row.createTime | stamp2TextDateFull}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="人员姓名">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.contractLeader">{{scope.row.contractLeader}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="登录账号">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.loginName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="部门">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.officeName">{{scope.row.officeName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="修改人">
-                    <template slot-scope="scope">
-                        <span class="ignore-detail" :title="scope.row.createByName">{{scope.row.createByName}}</span>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <!-- <div class="pagination-container">
-                <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
-                </el-pagination>
-            </div> -->
-        </el-dialog>
-
         <el-dialog title="图片详情" width="25%" :visible.sync="dialogImg">
             <div v-for="(val,index) in urlArr" :key="index" >
                 <div v-if="val.url != ''" class="upload-list" @click="showImg(index,2)">
@@ -272,7 +238,7 @@
 
 <script>
 import common from '@/utils/common';
-import { getDetail  , repayFlow , repayCancel , repayDel ,getLoanMember} from '@/api/repay';
+import { getDetail  , repayFlow , repayCancel , repayDel } from '@/api/repay';
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
@@ -295,13 +261,6 @@ export default {
             pathType:"",
             dialogDelVisible:false,
             finish:false,
-
-            dialogLoan:false,
-            loanMemberList:[],
-            total:0,
-            listQuery:{
-                loanFlowId:''
-            },
 
             urlArr:[],
             dialogImg:false
@@ -355,24 +314,6 @@ export default {
         })
   },
   methods:{
-        showloanMember(){
-            this.dialogLoan = true;
-            this.listQuery.loanFlowId = this.$route.query.key; 
-            this.$$queryStub = fromJS(this.listQuery);
-            this.getLoanList()
-        },
-        getLoanList(){
-            var postData = this.$$queryStub.toJS();
-            getLoanMember({
-                ...postData,
-            }).then(res=>{
-                this.loanMemberList = res.data.list;
-                this.total = res.data.total;
-            })
-        },
-        restCallback(){
-            this.$$queryStub = fromJS(this.listQuery);
-        },
         showImgDia(subConfList) {
             this.urlArr = [];
             if (subConfList) {

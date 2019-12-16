@@ -291,7 +291,7 @@ export default {
             pageNo:1,
             pageSize:10,
             listQuery:{
-                loanId:''
+                loanFlowId:''
             },
         }
     },
@@ -349,6 +349,7 @@ export default {
   methods:{
         showloanMember(){
             this.dialogLoan = true;
+            this.listQuery.loanFlowId = this.$route.query.key
             this.$$queryStub = fromJS(this.listQuery);
             this.getLoanList();
         },
@@ -362,10 +363,6 @@ export default {
                 this.loanMemberList = res.data.list;
                 this.total = res.data.total;
             })
-        },
-        restCallback(){
-            this.listQuery.loanFlowId = this.$route.query.key
-            this.$$queryStub = fromJS(this.listQuery);
         },
         handleCurrentChange(val) {
             this.pageNo = val;

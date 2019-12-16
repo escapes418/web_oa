@@ -58,11 +58,3 @@ export function repayDel(params){
         data:params
     })
 }
-
-export function getLoanMember(params){
-    return request({
-        url:'/webLoanFlow/queryLoanPersonHisList',
-        method:'post',
-        data:params
-    })
-}
