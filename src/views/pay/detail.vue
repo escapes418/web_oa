@@ -253,7 +253,7 @@
 
 <script>
 import common from '@/utils/common';
-import { getDetail  , payFlow , payCancel , payDel } from '@/api/payment';
+import { getDetail, payFlow, payCancel, payDel, downFile} from '@/api/payment';
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
@@ -377,6 +377,15 @@ export default {
             }
             // window.open(url);
         },
+         downAttach(val) {
+            downFile({ url: val.originUrl, fileName: val.name }).then(res => {
+                if (res.status == 0) {
+                    var url = `./OA${res.data}`;
+                    console.log("url", url);
+                    window.location.href = url;
+                }
+            });
+        },
         backBtn(){
             this.$router.go(-1)
         },
@@ -497,5 +506,14 @@ export default {
         float: right;
         line-height: 32px;
     }
+}
+
+.img-font {
+    font-size: 14px;
+    padding-right: 10px;
+    color: #343434;
+    margin-bottom: 10px;
+    width: 400px;
+    line-height: 32px;
 }
 </style>

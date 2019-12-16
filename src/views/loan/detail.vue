@@ -258,7 +258,7 @@
 
 <script>
 import common from '@/utils/common';
-import { getDetail  , loanFlow , loanCancel , loanDel,getLoanMember } from '@/api/loan';
+import { getDetail  , loanFlow , loanCancel , loanDel, getLoanMember, downFile} from '@/api/loan';
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
@@ -383,6 +383,15 @@ export default {
                 this.urlArr[index].viewer.show();
             }
             // window.open(url);
+        },
+        downAttach(val) {
+            downFile({ url: val.originUrl, fileName: val.name }).then(res => {
+                if (res.status == 0) {
+                    var url = `./OA${res.data}`;
+                    console.log("url", url);
+                    window.location.href = url;
+                }
+            });
         },
         createPdf(){
                 var pdfstr = document.getElementById('pdf-wrap')

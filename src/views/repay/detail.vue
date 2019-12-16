@@ -238,7 +238,7 @@
 
 <script>
 import common from '@/utils/common';
-import { getDetail  , repayFlow , repayCancel , repayDel } from '@/api/repay';
+import { getDetail, repayFlow, repayCancel, repayDel, downFile} from '@/api/repay';
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
 import { mapState } from 'vuex';
@@ -351,6 +351,15 @@ export default {
                 this.urlArr[index].viewer.show();
             }
             // window.open(url);
+        },
+        downAttach(val) {
+            downFile({ url: val.originUrl, fileName: val.name }).then(res => {
+                if (res.status == 0) {
+                    var url = `./OA${res.data}`;
+                    console.log("url", url);
+                    window.location.href = url;
+                }
+            });
         },
         createPdf(){
                 var pdfstr = document.getElementById('pdf-wrap')
@@ -475,5 +484,12 @@ export default {
 .segment .el-table__body-wrapper {
   padding: 40px 20px 35px;
 }
-
+.img-font {
+    font-size: 14px;
+    padding-right: 10px;
+    color: #343434;
+    margin-bottom: 10px;
+    width: 400px;
+    line-height: 32px;
+}
 </style>
