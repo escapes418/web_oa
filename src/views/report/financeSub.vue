@@ -3,12 +3,21 @@
         <div class="filter-container">
             <div class="toolbar-item" v-if="showSearch">
                 <span class="item-label">年份：</span>
-                <el-select clearable style="width: 220px" class="filter-item" v-model="listQuery.year" placeholder="请选择">
-                    <el-option v-for="item in yearList" :key="item.value" :label="item.label" :value="item.value">
+                <el-date-picker
+                    :clearable="false"
+                    v-model="year"
+                    align="right"
+                    type="year"
+                    placeholder="选择年">
+                </el-date-picker>
+            </div>
+            <div class="toolbar-item" v-if="showSearch">
+                <span class="item-label">费用归属：</span>
+                <el-select :clearable="false" style="width: 260px" class="filter-item" v-model="listQuery.costOwner" placeholder="请选择">
+                    <el-option v-for="item in officeList" :key="item.officeId" :label="item.officeName" :value="item.officeId">
                     </el-option>
                 </el-select>
             </div>
-            <Department type="list" @on-confirm="depConfirm" :Dvalue="officeName" v-if="showSearch"></Department>
             <div class="toolbar-item" v-if="showSearch">
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                 <el-button class="filter-item" type="warning" v-waves icon="el-icon-delete" @click="restListQuery(restCallback)">重置</el-button>
@@ -22,14 +31,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="filter-container">
-        <div class="toolbar-item">
-            <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="exportFile">导出Excel</el-button>
-        </div>
-        <div class="toolbar-item">
-            <el-button class="filter-item" v-if="!showSearch" v-waves icon="el-icon-back" @click="cleanrFilter">返回</el-button>
-        </div>
-        </div> -->
         <el-alert
             title="备注：该表单位（元），所有显示费用为已审批完结费用。"
             class="remarkInfo"
@@ -43,74 +44,74 @@
                     <span class="ignore-detail">{{scope.row.subjectName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" :label="year+'年1月'">
+            <el-table-column width="120px" align="center" :label="year.getFullYear()+'年1月'">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m1">{{scope.row.m1}}</span>
+                    <span class="ignore-detail" :title="scope.row.janCount">{{scope.row.janCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年2月'" width="120px" align="center">
+            <el-table-column :label="year.getFullYear()+'年2月'" width="120px" align="center">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m2">{{scope.row.m2}}</span>
+                    <span class="ignore-detail" :title="scope.row.febCount">{{scope.row.febCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  align="center" :label="year+'年3月'" width="120px">
+            <el-table-column  align="center" :label="year.getFullYear()+'年3月'" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m3">{{scope.row.m3}}</span>
+                    <span class="ignore-detail" :title="scope.row.marCount">{{scope.row.marCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  :label="year+'年4月'" align="center" width="120px">
+            <el-table-column  :label="year.getFullYear()+'年4月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m4">{{scope.row.m4}}</span>
+                    <span class="ignore-detail" :title="scope.row.aprCount">{{scope.row.aprCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  :label="year+'年5月'" align="center" width="120px">
+            <el-table-column  :label="year.getFullYear()+'年5月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m5">{{scope.row.m5 }}</span>
+                    <span class="ignore-detail" :title="scope.row.mayCount">{{scope.row.mayCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  :label="year+'年6月'" align="center" width="120px">
+            <el-table-column  :label="year.getFullYear()+'年6月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m6">{{scope.row.m6}}</span>
+                    <span class="ignore-detail" :title="scope.row.junCount">{{scope.row.junCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  :label="year+'年7月'" align="center" width="120px">
+            <el-table-column  :label="year.getFullYear()+'年7月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m7">{{scope.row.m7}}</span>
+                    <span class="ignore-detail" :title="scope.row.julCount">{{scope.row.julCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年8月'" align="center" width="120px">
+            <el-table-column :label="year.getFullYear()+'年8月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m8">{{scope.row.m8}}</span>
+                    <span class="ignore-detail" :title="scope.row.augCount">{{scope.row.augCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年9月'" align="center" width="120px">
+            <el-table-column :label="year.getFullYear()+'年9月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m9">{{scope.row.m9}}</span>
+                    <span class="ignore-detail" :title="scope.row.sepCount">{{scope.row.sepCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年10月'" align="center" width="120px">
+            <el-table-column :label="year.getFullYear()+'年10月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m10">{{scope.row.m10}}</span>
+                    <span class="ignore-detail" :title="scope.row.octCount">{{scope.row.octCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年11月'" align="center" width="120px">
+            <el-table-column :label="year.getFullYear()+'年11月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m11">{{scope.row.m11}}</span>
+                    <span class="ignore-detail" :title="scope.row.novCount">{{scope.row.novCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="year+'年12月'" align="center" width="120px">
+            <el-table-column :label="year.getFullYear()+'年12月'" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.m12">{{scope.row.m12}}</span>
+                    <span class="ignore-detail" :title="scope.row.decCount">{{scope.row.decCount}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="总计（行）" align="center" width="120px">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.rowTotal">{{scope.row.rowTotal}}</span>
+                    <span class="ignore-detail" :title="scope.row.yearTotal">{{scope.row.yearTotal}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="100px" align="center" label="操作" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" :disabled="scope.row.isDetail == 0">详情</el-button>
+                    <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" :disabled="scope.row.hasDetail == 0">详情</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -124,94 +125,62 @@
 
 <script>
 import common from '@/utils/common'
-import { getSubList ,downSubFile} from '@/api/report'
+import { getFinanceList ,downSubFile,getOfficeList} from '@/api/report'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import { toJS, fromJS, Map, List } from 'immutable';
-import listQueryMix from '../../mixins/listQuery.mix';
-import Department from "@/components/Department";
+import listQueryMix from '../../mixins/listQuery.mix'
 
 export default {
-    name: 'complexTable',
     directives: {
         waves
-    },
-    components: {
-        Department
     },
     mixins: [listQueryMix],
     data() {
         return {
-            officeName:"",
-            year:"",
+            year:new Date(),
             list: [],
             total: 0,
             showSearch:true,
-            yearList:[],
+            officeList:[],
             pageNo: 1,
             pageSize: 20,
             listQuery: {
-                firstCode: "",
+                costOwner: "1",
                 year: "",
-                officeId: "",
+                subjectId:""
             },
         }
     },
     created() {
         this.$$queryStub = this.$$listQuery;
-        this.year = new Date().getFullYear()
         this.getList()
     },
     mounted(){
-        //获取字典
-        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-        function selectDic(arr,type){
-            let temp = [];
-            for(var i = 0;i<arr.length;i++){
-                if(arr[i].type == type){
-                    temp.push(arr[i]);
-                };
-            }
-            return temp;
-        }
-        this.yearList = selectDic(dicList,"oa_report_year");
+       getOfficeList().then(res=>{
+           if(res.status == 0){
+               this.officeList = res.data
+           }
+       })
 
         //部门树
     },
     methods: {
         getList() {
+            this.listQuery.year = common.timeParse(this.year)
+            this.$$queryStub = fromJS(this.listQuery);
             var postData = this.$$queryStub.toJS();
-            getSubList({
+            getFinanceList({
                 ...postData,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }).then(res => {
-                if(this.pageNo == '1'){
-                res.data.amountMonthSum.isDetail = "0";
-                res.data.amountMonthSum.subjectName = "总计（列）";
-                res.data.pageResponse.list.unshift(res.data.amountMonthSum);
-                }
-                this.list = res.data.pageResponse.list;
-                this.total = res.data.pageResponse.total;
+                this.list = res.data.list;
+                this.total = res.data.total;
             })
-        },
-        depConfirm(data){
-            if(data){
-                this.listQuery.officeId = data.id;
-                this.officeName = data.name;
-            }else{
-                this.listQuery.officeId = "";
-                this.officeName = "";
-            }
         },
         handleFilter() {
             this.pageNo = 1;
-            if(!this.listQuery.year){
-                this.year = new Date().getFullYear();
-            }else{
-                this.year = this.listQuery.year;
-            }
-            this.$$queryStub = fromJS(this.listQuery);
             this.getList();
         },
         handleCurrentChange(val) {
@@ -219,30 +188,30 @@ export default {
             this.getList();
         },
         handleUpdate(row) {
-            this.listQuery.firstCode = row.subjectCode;
-            this.$$queryStub = fromJS(this.listQuery);
+            this.listQuery.subjectId = row.subjectId;
             this.getList();
             this.showSearch = false;
         },
-        restCallback(){
-            this.officeName = "";
-            this.year = new Date().getFullYear()
-        },
         cleanrFilter(){
             if(!this.$$listQuery.toJS().year){
-                this.year = new Date().getFullYear();
+                this.year = new Date()
             }else{
-                this.year = this.listQuery.year;
+                this.year = common.timeParseObj(this.listQuery.year);
             }
             this.listQuery.year = "";
+            this.listQuery.subjectId = "";
             this.$$queryStub = this.$$listQuery;
             this.showSearch = true;
             this.getList();
         },
+        restCallback(){
+            this.year = new Date()
+        },
         exportFile(){
+            this.$$queryStub = fromJS(this.listQuery);
+            var postData = this.$$queryStub.toJS();
             downSubFile({
-                firstCode:this.listQuery.firstCode,
-                year:this.listQuery.year
+                ...postData
             }).then(res=>{
                 if(res.status == 0){
                     var url = `./OA${res.data}`;
