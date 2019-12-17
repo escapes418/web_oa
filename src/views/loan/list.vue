@@ -143,7 +143,7 @@
                         v-model="newLoanPerson"
                         filterable
                         clearable
-                        placeholder="请选择商务助理">
+                        placeholder="请选择借款人">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
