@@ -25,6 +25,30 @@ export default [
                 hidden: false
             },
             {
+                path: 'financeSub',
+                id: 'report-financeSub',
+                show: false,
+                name: 'FinanceSub',
+                component: () => import('@/views/report/financeSub.vue'),
+                meta: {
+                    title: '财务费用统计',
+                    icon: 'iconfont icon-feiyongkemu'
+                },
+                hidden: false
+            },
+            // {
+            //     path: 'financedetail',
+            //     id: 'report-financedetail',
+            //     show: false,
+            //     name: 'Financedetail',
+            //     component: () => import('@/views/report/financedetail.vue'),
+            //     meta: {
+            //         title: '财务费用详情',
+            //         icon: 'iconfont icon-feiyongkemu'
+            //     },
+            //     hidden: false
+            // },
+            {
                 path: 'feeDepartment',
                 id: 'report-feeDepartment',
                 show: false,
@@ -211,6 +235,28 @@ export default [
                 meta: {
                     title: '销售工作统计',
                     icon: 'iconfont'
+                },
+                hidden: false
+            },{
+                path: 'rentCarRefuel',
+                id: 'report-rentCarRefuel',
+                show: false,
+                name: 'RentCarRefuel',
+                component: () => import('@/views/report/rentFuel.vue'),
+                meta: {
+                    title: '租车加油',
+                    icon: 'iconfont icon-xiaoshoutongji'
+                },
+                hidden: false
+            },{
+                path: 'rentFuelDetail',
+                id: 'report-rentFuelDetail',
+                show: false,
+                name: 'RentCarDetail',
+                component: () => import('@/views/report/rentFuelDetail.vue'),
+                meta: {
+                    title: '租车加油详情',
+                    icon: 'iconfont icon-xiaoshoutongji'
                 },
                 hidden: false
             }

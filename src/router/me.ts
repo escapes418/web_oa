@@ -20,7 +20,7 @@ export default [
                 name: 'ReimList',
                 component: () => import('@/views/reim/list.vue'),
                 meta: {
-                    title: '报销列表',
+                    title: '报销申请',
                     icon: 'iconfont icon-icon-test'
                 }
             },
@@ -31,7 +31,7 @@ export default [
                 name: 'ReimForm',
                 component: () => import('@/views/reim/form.vue'),
                 meta: {
-                    title: '报销申请',
+                    title: '新建报销申请',
                     icon: 'tree',
                     reGet:true
                 },
@@ -146,6 +146,114 @@ export default [
                 },
                 hidden: true
             },
+            {
+                path: 'loanList',
+                id: 'me-loanList',
+                show: false,
+                name: 'LoanList',
+                component: () => import('@/views/loan/list.vue'),
+                meta: {
+                    title: '借款申请',
+                    icon: 'iconfont icon-jiekuan',
+                   
+                }
+            },
+            {
+                path: 'loanForm',
+                id: 'me-loanForm',
+                show: false,
+                name: 'LoanForm',
+                component: () => import('@/views/loan/form.vue'),
+                meta: {
+                    title: '新建借款申请',
+                    icon: '',
+                },
+                hidden: true
+            },{
+                path: 'loanDetail',
+                id: 'me-loanDetail',
+                show: false,
+                name: 'LoanDetail',
+                component: () => import('@/views/loan/detail.vue'),
+                meta: {
+                    title: '借款申请详情',
+                    icon: ''
+                },
+                hidden: true
+            },
+            {
+                path: 'repayList',
+                id: 'me-repayList',
+                show: false,
+                name: 'RepayList',
+                component: () => import('@/views/repay/list.vue'),
+                meta: {
+                    title: '还款申请',
+                    icon: 'iconfont icon-huankuan',
+                   
+                }
+            },
+            {
+                path: 'repayForm',
+                id: 'me-repayForm',
+                show: false,
+                name: 'RepayForm',
+                component: () => import('@/views/repay/form.vue'),
+                meta: {
+                    title: '新建还款申请',
+                    icon: '',
+                },
+                hidden: true
+            },
+            {
+                path: 'repayDetail',
+                id: 'me-repayDetail',
+                show: false,
+                name: 'RepayDetail',
+                component: () => import('@/views/repay/detail.vue'),
+                meta: {
+                    title: '还款详情',
+                    icon: '',
+                },
+                hidden: true
+            },
+            {
+                path: 'paymentList',
+                id: 'me-paymentList',
+                show: false,
+                name: 'PaymentList',
+                component: () => import('@/views/pay/list.vue'),
+                meta: {
+                    title: '付款申请',
+                    icon: 'iconfont icon-fukuan',
+                   
+                }
+            },
+            {
+                path: 'paymentForm',
+                id: 'me-paymentForm',
+                show: false,
+                name: 'PaymentForm',
+                component: () => import('@/views/pay/form.vue'),
+                meta: {
+                    title: '新建付款申请',
+                    icon: '',
+                },
+                hidden: true
+            },
+            {
+                path: 'paymentDetail',
+                id: 'me-paymentDetail',
+                show: false,
+                name: 'PaymentDetail',
+                component: () => import('@/views/pay/detail.vue'),
+                meta: {
+                    title: '付款详情',
+                    icon: '',
+                },
+                hidden: true
+            },
+
             //资源申请~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 path: 'resourceList',
@@ -256,6 +364,29 @@ export default [
                 component: () => import('@/views/contractCheck/form.vue'),
                 meta: {
                     title: '新建合同审核',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
+            },
+            {
+                path: 'accountList',
+                id: 'me-accountList',
+                show: false,
+                name: 'AccountList',
+                component: () => import('@/views/account/list.vue'),
+                meta: {
+                    title: '账户管理',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
+            {
+                path: 'addAccount',
+                id: 'me-addAccount',
+                show: false,
+                name: 'AddAccount',
+                component: () => import('@/views/account/form.vue'),
+                meta: {
+                    title: '新建收款账户',
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true

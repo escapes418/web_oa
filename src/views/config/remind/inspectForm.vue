@@ -181,6 +181,15 @@ export default {
             },{
                 value:5,
                 name:"立项申请"
+            },{
+                value:6,
+                name:"借款申请"
+            },{
+                value:7,
+                name:"还款申请"
+            },{
+                value:8,
+                name:"付款申请"
             }],
             remindList:[{
                 value:"0",

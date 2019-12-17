@@ -132,3 +132,12 @@ export function delContracts(params){
       data:params
     })
 }
+
+
+export function updateKeyWord(params){
+    return request({
+      url:'/contractFlowNew/updateKeyWord',
+      method:'post',
+      data:params
+    })
+}

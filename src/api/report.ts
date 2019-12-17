@@ -294,3 +294,51 @@ export function exportSalesMan(params){
       data:params
     })
 }
+
+
+export function getRentFuel(params){
+    return request({
+      url:'/rentRefuel/query',
+      method:'post',
+      data:params
+    })
+}
+
+export function exportTemp(params){
+    return request({
+      url:'/rentRefuel/templateDownload',
+      method:'post',
+      data:params
+    })
+}
+
+export function getFuelDetail(params){
+    return request({
+      url:'/rentRefuel/refuelDetail',
+      method:'post',
+      data:params
+    })
+}
+
+export function getCarDetail(params){
+    return request({
+      url:'/rentRefuel/rentDetail',
+      method:'post',
+      data:params
+    })
+}
+
+export function getFinanceList(params){
+    return request({
+      url:'/webReport/queryFinancialSubjectCost',
+      method:'post',
+      data:params
+    })
+}
+
+export function getOfficeList(params){
+    return request({
+      url:'/commonInfo/officeSelect',
+      method:'get',
+    })
+}

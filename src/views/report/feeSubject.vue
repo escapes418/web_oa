@@ -8,6 +8,7 @@
                     </el-option>
                 </el-select>
             </div>
+            <Department type="list" @on-confirm="depConfirm" :Dvalue="officeName" v-if="showSearch"></Department>
             <div class="toolbar-item" v-if="showSearch">
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                 <el-button class="filter-item" type="warning" v-waves icon="el-icon-delete" @click="restListQuery(restCallback)">重置</el-button>
@@ -36,7 +37,7 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  max-height="660">
+        <el-table :data="list" border fit highlight-current-row style="width: 100%"  max-height="660">
             <el-table-column align="center" label="科目名称"  width="120px" fixed>
                 <template slot-scope="scope">
                     <span class="ignore-detail">{{scope.row.subjectName}}</span>
@@ -118,7 +119,6 @@
             <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
-
     </div>
 </template>
 
@@ -128,28 +128,32 @@ import { getSubList ,downSubFile} from '@/api/report'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import { toJS, fromJS, Map, List } from 'immutable';
-import listQueryMix from '../../mixins/listQuery.mix'
+import listQueryMix from '../../mixins/listQuery.mix';
+import Department from "@/components/Department";
 
 export default {
     name: 'complexTable',
     directives: {
         waves
     },
+    components: {
+        Department
+    },
     mixins: [listQueryMix],
     data() {
         return {
-            tableKey: 0,
+            officeName:"",
             year:"",
             list: [],
             total: 0,
             showSearch:true,
-            listLoading: true,
             yearList:[],
             pageNo: 1,
             pageSize: 20,
             listQuery: {
                 firstCode: "",
-                year: ""
+                year: "",
+                officeId: "",
             },
         }
     },
@@ -157,7 +161,6 @@ export default {
         this.$$queryStub = this.$$listQuery;
         this.year = new Date().getFullYear()
         this.getList()
-        this.listLoading = false
     },
     mounted(){
         //获取字典
@@ -177,7 +180,6 @@ export default {
     },
     methods: {
         getList() {
-            this.listLoading = true
             var postData = this.$$queryStub.toJS();
             getSubList({
                 ...postData,
@@ -191,35 +193,40 @@ export default {
                 }
                 this.list = res.data.pageResponse.list;
                 this.total = res.data.pageResponse.total;
-                this.listLoading = false;
             })
         },
+        depConfirm(data){
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.officeName = "";
+            }
+        },
         handleFilter() {
-            this.listQuery.firstCode = ""
+            this.pageNo = 1;
             if(!this.listQuery.year){
                 this.year = new Date().getFullYear();
             }else{
                 this.year = this.listQuery.year;
             }
             this.$$queryStub = fromJS(this.listQuery);
-            this.pageNo = 1;
             this.getList();
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val;
             this.getList();
-            this.listLoading = false;
         },
         handleUpdate(row) {
             this.listQuery.firstCode = row.subjectCode;
             this.$$queryStub = fromJS(this.listQuery);
             this.getList();
-            this.listLoading = false;
             this.showSearch = false;
         },
         restCallback(){
-
+            this.officeName = "";
+            this.year = new Date().getFullYear()
         },
         cleanrFilter(){
             if(!this.$$listQuery.toJS().year){
@@ -231,7 +238,6 @@ export default {
             this.$$queryStub = this.$$listQuery;
             this.showSearch = true;
             this.getList();
-            this.listLoading = false;
         },
         exportFile(){
             downSubFile({

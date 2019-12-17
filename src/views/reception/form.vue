@@ -16,12 +16,12 @@
                     <Project @on-select="proSelect" :Pvalue="projectName" :required="true"></Project>
                     <RedStar label="预计接待人数：" :required="true">
                         <span class="right-con">
-                          <el-input v-model.number="filter.recpNum" type="number" style="width:280px"></el-input>
+                          <el-input v-model.number="filter.recpNum" type="number" style="width:250px"></el-input>
                         </span>
                     </RedStar>
                     <RedStar label="陪客人员：" :required="true">
                         <span class="right-con">
-                            <el-select clearable multiple class="filter-item ignore-detail" filterable v-model="filter.employees" placeholder="请选择" style="width:280px;" >
+                            <el-select clearable multiple class="filter-item ignore-detail" filterable v-model="filter.employees" placeholder="请选择" style="width:250px;" >
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.loginName" :key="item.loginName">
                                 </el-option>
                             </el-select>
@@ -39,7 +39,7 @@
                     </RedStar>
                     <RedStar label="接待主题：" :required="true">
                         <span class="right-con">
-                            <el-input v-model="filter.recpTheme" style="width:280px" :maxlength="50"></el-input>
+                            <el-input v-model="filter.recpTheme" style="width:250px" :maxlength="50"></el-input>
                         </span>
                     </RedStar>
                     <RedStar label="项目负责人：">
@@ -52,7 +52,7 @@
                             <el-date-picker
                                 v-model="filter.recpTime"
                                 type="datetime"
-                                style="width:280px"
+                                style="width:250px"
                                 placeholder="选择日期时间">
                             </el-date-picker>
                         </span>
@@ -61,7 +61,7 @@
                     <RedStar label="备注：">
                         <span class="right-con">
                             <sjbtextarea placeholder="请输入"
-                            textStyle="width:280px;"
+                            textStyle="width:250px;"
                             :rows="3"
                             :max="200"
                             v-model.trim="filter.remarks"></sjbtextarea>
@@ -110,9 +110,6 @@
             <div class="pagination-container" style="margin-top:20px">
                 <el-pagination background  @current-change="recepCurrentChange" :current-page="recepQuery.pageNo" :page-size="10" layout="total, prev, pager, next, jumper" :total="recepTotal">
                 </el-pagination>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogRecepVisible = false">返回</el-button>
             </div>
         </el-dialog>
     </div>
@@ -517,7 +514,7 @@ export default {
   background: white;
   padding-left: 7px;
   line-height: 30px;
-  width: 280px
+  width: 250px
 }
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;

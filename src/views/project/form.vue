@@ -285,46 +285,46 @@
         </div>
     </div>
 
-     <div class="segment statistics">
-            <div class="segment-header">
-                <span class="left-red">*</span>
-                联系人信息
-            </div>
-            <div class="segment-area">
-                <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <el-table ref="multipleTable" border :data="contactList" tooltip-effect="dark" style="width:100%" @selection-change="handleSelectionChange">
-                        <el-table-column
-                            type="selection"
-                            width="55">
-                        </el-table-column>
-                        <el-table-column align="center" label="联系人" width="150px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanName" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="联系方式" width="180px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPhone" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="职位" width="150px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPost" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="备注（选填）" >
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.remarks" :maxlength="200"></el-input>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </div>
-            <div class="segment-foot">
-                <el-button type="primary" size="small" @click="addContact">新增</el-button>
-                <el-button type="danger" size="small" @click="delContact">删除</el-button>
+    <div class="segment statistics">
+        <div class="segment-header">
+            <span class="left-red">*</span>
+            联系人信息
+        </div>
+        <div class="segment-area">
+            <div class="el-table__body-wrapper" style="padding: 15px 0;">
+                <el-table ref="multipleTable" border :data="contactList" tooltip-effect="dark" style="width:100%" @selection-change="handleSelectionChange">
+                    <el-table-column
+                        type="selection"
+                        width="55">
+                    </el-table-column>
+                    <el-table-column align="center" label="联系人" width="150px">
+                        <template slot-scope="scope">
+                            <el-input auto-complete="off" v-model.trim="scope.row.linkmanName" :maxlength="50"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="联系方式" width="180px">
+                        <template slot-scope="scope">
+                            <el-input auto-complete="off" v-model.trim="scope.row.linkmanPhone" :maxlength="50"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="职位" width="150px">
+                        <template slot-scope="scope">
+                            <el-input auto-complete="off" v-model.trim="scope.row.linkmanPost" :maxlength="50"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="备注（选填）" >
+                        <template slot-scope="scope">
+                            <el-input auto-complete="off" v-model.trim="scope.row.remarks" :maxlength="200"></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
         </div>
+        <div class="segment-foot">
+            <el-button type="primary" size="small" @click="addContact">新增</el-button>
+            <el-button type="danger" size="small" @click="delContact">删除</el-button>
+        </div>
+    </div>
     <div class="segment statistics">
         <div class="segment-header">
             实施节点
@@ -379,15 +379,7 @@ import { fetchForm, custList, savePro , getCompanyList , getContractList } from 
 import { parseTime } from "@/utils";
 import { mapState, mapGetters } from "vuex";
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
-// import Vue from 'vue';
-// import VueAMap from 'vue-amap';
 
-
-// Vue.use(VueAMap);
-// VueAMap.initAMapApiLoader({
-//     key: 'dc6f7d81b97b1e3f13fe76a55949a503',
-//     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch','AMap.Geocoder']
-// });
 
 
 

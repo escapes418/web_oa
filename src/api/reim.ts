@@ -120,3 +120,19 @@ export function downReim(params){
         data:params
     })
 }
+
+export function getAccountList(parmas) {
+    return request({
+        url:'/commonInfo/queryMyBankCardInfoList',
+        method:'post',
+        // data:parmas
+    })
+}
+
+export function setActual(parmas) {
+    return request({
+        url:'/webExpenseFlow/backExpenseApply',
+        method:'post',
+        data:parmas
+    })
+}

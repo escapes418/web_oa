@@ -17,6 +17,12 @@
                         <RedStar label="报销人员：">
                             <span class="right-con">{{userInfo.name || ""}}</span>
                         </RedStar>
+                        <RedStar label="收款帐号：" :required="true">
+                            <el-select clearable class="filter-item " v-model="filter.receivablesAccountId" placeholder="请选择" style="width:250px;" @change="setAccount">
+                                <el-option v-for="item in bankList" :label="item.splitName" :value="item.id" :key="item.id">
+                                </el-option>
+                            </el-select>
+                        </RedStar>
                         <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :canshow="canshow" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
                         <RedStar label="报销类型：" :required="true">
                             <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:250px;" @change="clearLink">
@@ -162,9 +168,6 @@
                     <el-pagination background @current-change="recepCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="recepTotal">
                     </el-pagination>
                 </div>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogRelatVisible = false">返回</el-button>
-                </div>
             </el-dialog>
         </div>
         <div class="segment statistics">
@@ -226,6 +229,12 @@
             </div>
         </div>
 
+        <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="26%" :center="true" :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false">
+            <span class="">亲爱的用户，请在个人中心-账户管理-新增添加收款账户，让报销更便利</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="jumpAccount">前往设置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -236,7 +245,7 @@ import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbtextarea from '@/components/sjbTextarea'
 import Department from "@/components/Department";
-import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember } from '@/api/reim'
+import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember ,getAccountList} from '@/api/reim'
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils'
@@ -288,7 +297,12 @@ export default {
                 customerSituation:"",
                 travelExpenseTypeListName:[],
                 entourageListName:[],
-                relType:''
+                relType:'',
+
+                receivablesAccountId:"",
+                payeeCardNum:"",// 收款人银行卡号 ,
+                payeeName:"",// 收款人姓名 ,
+                payeeOpeningBank: "",//收款人开户行 ,
             },
             expenseAttachment: [], // 读取和提交时均做转换
             total: null,
@@ -315,7 +329,10 @@ export default {
                 endApplyTime: "",
             },
             uploadTips: config.tips,
-            userInfo:{}
+            userInfo:{},
+
+            bankList:[],
+            dialogAccount:false,
         }
     },
     async created() {
@@ -449,8 +466,37 @@ export default {
             this.memberList = res.data;
         })
 
+        getAccountList().then(res => {
+            if(res.status == 0&&res.data){
+                this.bankList = res.data;
+                res.data.forEach(i=>{
+                    if(i.defaultAccount == "1"){
+                        this.filter.receivablesAccountId = i.id;
+                        this.filter.payeeCardNum = i.accountNumber// 收款人银行卡号 ,
+                        this.filter.payeeName = i.accountName// 收款人姓名 ,
+                        this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
+                    }
+                    // return i.accountType == '1'
+                })  
+            }
+            if(this.bankList.length<1){
+                this.dialogAccount = true
+            }
+        })
     },
     methods: {
+        setAccount(){
+            this.bankList.map(item=>{
+                if(this.filter.receivablesAccountId == item.id){
+                    this.filter.payeeCardNum = item.accountNumber// 收款人银行卡号 ,
+                    this.filter.payeeName = item.accountName// 收款人姓名 ,
+                    this.filter.payeeOpeningBank = item.belongBank//收款人开户行 ,
+                }
+            })
+        },
+        jumpAccount(){
+            this.$router.push({path:"/me/addAccount"})
+        },
         depConfirm(data) {
             if(data){
                 this.costCenterName = data.name;
@@ -650,7 +696,7 @@ export default {
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/task/todo' })
+                        this.$router.go(-1)
                     }
                 })
             }

@@ -16,7 +16,7 @@
             </el-table-column> -->
             <el-table-column align="center" label="提醒类型">
                 <template slot-scope="scope">
-                    <span class="ignore-detail">{{scope.row.remindType=="0" ? "报销申请" : scope.row.remindType=="1" ? "接待申请":scope.row.remindType=="2" ? "出差申请":scope.row.remindType=="3"?"合同申请":scope.row.remindType=="4"?"协作申请":scope.row.remindType=="5"?"立项申请":""}}</span>
+                    <span class="ignore-detail">{{scope.row.remindType=="0" ? "报销申请" : scope.row.remindType=="1" ? "接待申请":scope.row.remindType=="2" ? "出差申请":scope.row.remindType=="3"?"合同申请":scope.row.remindType=="4"?"协作申请":scope.row.remindType=="5"?"立项申请":scope.row.remindType=="6"?"借款申请":scope.row.remindType=="7"?"还款申请":scope.row.remindType=="8"?"付款申请":""}}</span>
                 </template>
             </el-table-column>
             

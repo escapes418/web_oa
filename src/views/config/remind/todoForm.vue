@@ -107,14 +107,14 @@
                 </RedStar>
                 <RedStar>
                     <el-form-item label="黑名单设置：">
-                        <div class="blackList">
+                        <div class="blackList" v-if='postData.remindWays.indexOf("0") !== -1'>
                             <div class="header">黑名单内员工不会接收邮件提醒</div>
                             <el-select clearable multiple class="filter-item" filterable v-model="postData.emailBlack" placeholder="请选择人员" style="width:260px;">
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
                         </div>
-                        <div class="blackList">
+                        <div class="blackList" v-if='postData.remindWays.indexOf("1") !== -1'>
                             <div class="header">黑名单内员工不会接收短信提醒</div>
                             <el-select clearable multiple class="filter-item" filterable v-model="postData.smsBlack" placeholder="请选择人员" style="width:260px;">
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
@@ -186,6 +186,15 @@ export default {
             },{
                 value:5,
                 name:"立项申请"
+            },{
+                value:6,
+                name:"借款申请"
+            },{
+                value:7,
+                name:"还款申请"
+            },{
+                value:8,
+                name:"付款申请"
             }],
             remindList:[{
                 value:"0",
