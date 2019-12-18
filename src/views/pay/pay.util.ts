@@ -21,7 +21,7 @@ export function paymentFormVali(self) {
         toast('请付款原因！');
         flag = false;
     }else if(self.postData.payDetail.length<1){
-        toast('请添加还款明细！');
+        toast('请添加付款明细！');
         flag = false;
     }else if (!itemVali()) {
         flag = false;
