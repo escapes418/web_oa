@@ -327,6 +327,9 @@
                     </div>
                 </div>
             </div>
+            <div class="jumpBtn">
+                <el-button type="text" size="small" @click="jumpRentFuel">车辆油卡费用></el-button>
+            </div>
             <div class="segment statistics part-wrap" v-if="!ISPUTIN">
                 <div class="segment-header">
                     流转信息
@@ -407,7 +410,7 @@
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
                     <el-button v-if="ISCOST" size="medium" type="warning" @click="setBackBtn">退回</el-button>
-                    <el-button size="small" @click="jumpRentFuel">车辆油卡费用</el-button>
+                    <!-- <el-button size="small" @click="jumpRentFuel">车辆油卡费用</el-button> -->
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -921,7 +924,10 @@ export default {
     width: 400px;
     line-height: 32px;
 }
-
+.jumpBtn{
+    background: #FFFFFF;
+    margin: 25px 20px 15px;
+}
 @media screen {
     #printWrapper {
         display: none;
