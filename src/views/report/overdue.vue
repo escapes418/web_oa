@@ -178,12 +178,12 @@ export default class overdue extends Vue{
     width: 250px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>
