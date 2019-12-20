@@ -405,8 +405,9 @@
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
-                    <!-- <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
-                    <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISME&&ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
                     <el-button v-if="ISCOST" size="medium" type="warning" @click="setBackBtn">退回</el-button>
