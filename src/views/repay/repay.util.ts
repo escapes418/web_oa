@@ -36,14 +36,14 @@ export function repayFormVali(self) {
                 toast('请选择科目');
                 flag = false;
                 return;
-            }  else if (typeof item.billNum != 'number' || item.billNum<0) {
+            }  else if (!/^([0-9]{1,7})?$/.test(item.billNum)&& item.billNum == 0) {
                 toast('请正确填写票据张数！');
                 flag = false;
                 return;
             } else if (
                 !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
-                toast('请正确填写报销金额！');
+                toast('请正确填写票据金额！');
                 flag = false;
                 return;
             }  else if (item.remarks && item.remarks.length > 500) {

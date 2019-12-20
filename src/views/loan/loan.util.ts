@@ -12,7 +12,7 @@ export function loanFormVali(self) {
         toast('请选择所属公司！');
         flag = false;
     } else if (!self.postData.receivablesAccountId) {
-        toast('请选择收款账户！');
+        toast('请选择收款账号！');
         flag = false;
     } else if (self.postData.loanAmount<0 || !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(self.postData.loanAmount) || self.postData.loanAmount>99999999.9) {
         toast('请正确填写借款金额！');

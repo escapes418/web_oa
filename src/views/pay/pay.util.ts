@@ -12,13 +12,13 @@ export function paymentFormVali(self) {
         toast('请选择成本中心！');
         flag = false;
     }else if(!self.postData.taxCity){
-        toast('请选择发票公司！');
+        toast('请选择发票所属公司！');
         flag = false;
     }else if(!self.postData.bankAccountId){
-        toast('请选择收款账户！');
+        toast('请选择收款账号！');
         flag = false;
     }else if(!self.postData.payReason){
-        toast('请付款原因！');
+        toast('请填写付款原因！');
         flag = false;
     }else if(self.postData.payDetail.length<1){
         toast('请添加付款明细！');
@@ -35,14 +35,14 @@ export function paymentFormVali(self) {
                 toast('请选择科目');
                 flag = false;
                 return;
-            }  else if (!/^([0-9]{1,7})$/.test(item.billNum) && self.postData.billNum == 0) {
+            }  else if (!/^([0-9]{1,7})$/.test(item.billNum) && item.billNum == 0) {
                 toast('请正确填写票据张数！');
                 flag = false;
                 return;
             } else if (
                 !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
-                toast('请正确填写报销金额！');
+                toast('请正确填写票据金额！');
                 flag = false;
                 return;
             }  else if (item.remarks && item.remarks.length > 500) {
