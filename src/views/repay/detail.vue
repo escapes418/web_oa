@@ -51,32 +51,33 @@
                     <div class="el-table__body-wrapper">
                         <el-row>
                             <el-col :span="12" class="segment-brline">
-                                <div class="clearfix cominfo-item">
+                                <!-- <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">收款方：</span>
                                     <span class="right-con">{{ detail.payeeName }}</span>
                                 </div>
                                 <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">开户行：</span>
                                     <span class="right-con">{{ detail.payeeOpeningBank  }}</span>
-                                </div>
+                                </div> -->
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">待还款金额：</span>
                                     <span class="right-con">{{ detail.unpaidAmount }}</span>
-                                </div>
-                            </el-col>
-                            <el-col :span="12">
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">收款账号：</span>
-                                    <span class="right-con">{{ detail.payeeCardNum }}</span>
-                                </div>
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">还款方式：</span>
-                                    <span class="right-con">{{ detail.repayMethodName }}</span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">还款金额：</span>
                                     <span class="right-con">{{ detail.currentRepayAmount }}</span>
                                 </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <!-- <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">收款账号：</span>
+                                    <span class="right-con">{{ detail.payeeCardNum }}</span>
+                                </div> -->
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">还款方式：</span>
+                                    <span class="right-con">{{ detail.repayMethodName }}</span>
+                                </div>
+                                
                             </el-col>
                         </el-row>
                     </div>
