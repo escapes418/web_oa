@@ -233,7 +233,7 @@ export default [
                 name: 'SaleManStatistic',
                 component: () => import('@/views/report/saleManStatistic.vue'),
                 meta: {
-                    title: '销售工作统计',
+                    title: '销售工作统计报表',
                     icon: 'iconfont'
                 },
                 hidden: false
@@ -244,7 +244,7 @@ export default [
                 name: 'RentCarRefuel',
                 component: () => import('@/views/report/rentFuel.vue'),
                 meta: {
-                    title: '租车加油',
+                    title: '租车加油统计报表',
                     icon: 'iconfont icon-xiaoshoutongji'
                 },
                 hidden: false
