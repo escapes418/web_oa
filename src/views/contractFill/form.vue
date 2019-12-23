@@ -564,6 +564,8 @@ export default {
             this.postData.associationMainCode = "";
             this.postData.associationMainId = "";
             this.postData.projectIds = [];
+            this.postData.keyWord = [];
+            this.postData.keyWordName = [];
         },
         clearContract(){
             this.$store.dispatch('cleanInit');
