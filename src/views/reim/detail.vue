@@ -905,13 +905,12 @@ export default {
     margin-left: 40px;
     font-size: 14px;
     width: 40%;
+    line-height: 32px;
     .sum-name {
-        line-height: 32px;
         color: #99a9bf;
     }
     .sum-value {
         float: right;
-        line-height: 32px;
     }
 }
 .font-red{
