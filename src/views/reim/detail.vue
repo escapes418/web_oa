@@ -905,7 +905,7 @@ export default {
     margin-left: 40px;
     font-size: 14px;
     width: 40%;
-    line-height: 32px;
+    height: 32px;
     .sum-name {
         color: #99a9bf;
     }
