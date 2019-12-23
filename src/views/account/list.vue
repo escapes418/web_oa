@@ -161,7 +161,7 @@ export default {
             })
         },
         cancelBtn(){
-            this.dialogDefault = false;
+            this.dialogDel = false;
             this.getList()
         }
     }
