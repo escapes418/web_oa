@@ -24,8 +24,29 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同类型：</span>
-                                    <span class="right-con">{{ detail.contractTypeName }}</span>
+                                    <span class="right-con">{{ contractTypeName }}</span>
                                 </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务类型：</span>
+                                    <span class="right-con">{{ businessTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务模块：</span>
+                                    <span class="right-con">{{ businessModelName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">合同关键字：</span>
+                                    <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
+                                </li>
+                                <!-- <li class="base-li" v-if="ISMODIFY">
+                                    <span class="left-title font-gray">修改合同关键字：</span>
+                                    <span class="right-con">
+                                        <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="keyWord" placeholder="请选择合同关键字" style="width:260px;">
+                                            <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                            </el-option>
+                                        </el-select>
+                                    </span>
+                                </li> -->
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同归档时间：</span>
                                     <span class="right-con">{{ detail.createTime | stamp2TextDateFull }}</span>
@@ -264,7 +285,7 @@
                 </el-collapse-transition>
             </div> -->
 
-            <el-table :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :data="chargeList" border fit highlight-current-row style="width: 100%">
                 <el-table-column align="center" label="开始负责时间">
                     <template slot-scope="scope">
                         <span style="color:#409EFF;cursor: Pointer;">{{scope.row.createTime | stamp2TextDateFull}}</span>
@@ -294,9 +315,6 @@
             <div class="pagination-container">
                 <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
                 </el-pagination>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCharge = false">取消</el-button>
             </div>
         </el-dialog>
         <div class="segment statistics">
@@ -362,13 +380,15 @@ export default {
             total:0,
             pageNo:1,
             pageSize:10,
-            listLoading:false,
             listQuery:{
                 contractId:''
             },
 
 
-            configId:''
+            configId:'',
+            contractTypeName:'',
+            businessTypeName:"",
+            businessModelName:"",
         };
     },
     created() {
@@ -391,6 +411,11 @@ export default {
                         })
                     })
                 })
+                this.contractTypeName = respond.data.contractTypeName;
+                this.businessTypeName = respond.data.businessTypeName;
+                this.businessModelName = respond.data.businessModelName;
+                respond.data.keyWords = respond.data.keyWords || [];
+                this.keyWords = respond.data.keyWords;
                 this.associationMain = respond.data.associationMain == 1
                 this.detail.contractPartyList = respond.data.contractPartyList;
                 // this.detail
@@ -646,19 +671,12 @@ export default {
 
             this.getChangeList()
         },
-        handleProFilter(){
-            this.pageNo = 1;
-            this.$$queryStub = fromJS(this.listQuery);
-            this.getConnect();
-            this.listLoading = false;
-        },
         handleCurrentChange(val) {
             this.pageNo = val;
-            this.getConnect();
+            this.getChangeList();
             this.listLoading = false;
         },
         getChangeList(){
-            this.listLoading = true;
             var postData = this.$$queryStub.toJS();
             changeRecord({
                 ...postData,
@@ -667,7 +685,6 @@ export default {
             }).then(res=>{
                 this.chargeList = res.data.list;
                 this.total = res.data.total;
-                this.listLoading = false;
             })
         },
         restCallback(){

@@ -13,7 +13,7 @@ import log from './modules/log';
 import map from './modules/map';
 import overdue from './modules/overdue';
 import staffWork from './modules/staffWork';
-
+import repay from './modules/repay';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -26,6 +26,7 @@ const store = new Vuex.Store({
         coop,
         contract,
         reim,
+        repay,
         log,
         map,
         staffWork,

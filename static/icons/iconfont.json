@@ -125,6 +125,13 @@
       "unicode_decimal": 58947
     },
     {
+      "icon_id": "988093",
+      "name": "还款",
+      "font_class": "huankuan",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
       "icon_id": "1012779",
       "name": "提醒",
       "font_class": "iconfontzhizuobiaozhun41",
@@ -300,6 +307,13 @@
       "unicode_decimal": 58968
     },
     {
+      "icon_id": "2907313",
+      "name": "借款",
+      "font_class": "jiekuan",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
       "icon_id": "2959071",
       "name": "人员排班",
       "font_class": "renyuanpaiban",
@@ -375,6 +389,13 @@
       "font_class": "daohangtubiao_huabanfuben",
       "unicode": "e6b7",
       "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "6179354",
+      "name": "付款",
+      "font_class": "fukuan",
+      "unicode": "e650",
+      "unicode_decimal": 58960
     },
     {
       "icon_id": "6321263",

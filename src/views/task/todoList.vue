@@ -278,6 +278,24 @@ export default {
                     query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
                 })
             }
+            if (row.billType == 16) {
+                this.$router.push({
+                    path: '/me/loanDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
+            if(row.billType == 17){
+                this.$router.push({
+                    path:'/me/repayDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
+            if(row.billType == 18){
+                this.$router.push({
+                    path:'/me/paymentDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
         },
         handleCreate() {
             this.$router.push({ path: '/center/reimburseDetail' })

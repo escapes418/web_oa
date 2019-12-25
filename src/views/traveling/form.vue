@@ -25,7 +25,7 @@
                         </RedStar>
                         <RedStar label="报销分类：" :required="true">
                             <span class="right-con">
-                                <el-select class="filter-item" multiple filterable v-model="filter.travelExpenseTypeList" placeholder="请选择" style="width:280px;">
+                                <el-select class="filter-item" multiple filterable v-model="filter.travelExpenseTypeList" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -33,7 +33,7 @@
                         </RedStar>
                         <RedStar label="随行人员：" :required="false">
                             <span class="right-con">
-                                <el-select class="filter-item" multiple filterable v-model="filter.entourageList" placeholder="请选择" style="width:280px;" >
+                                <el-select class="filter-item" multiple filterable v-model="filter.entourageList" placeholder="请选择" style="width:250px;" >
                                     <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                     </el-option>
                                 </el-select>
@@ -47,7 +47,7 @@
                         </RedStar>
                         <RedStar label="关联类型：" :required="true">
                             <span class="right-con">
-                                <el-select class="filter-item" @change="changeRelType" v-model="relType" placeholder="请选择" style="width:280px;">
+                                <el-select class="filter-item" @change="changeRelType" v-model="relType" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in relTypeList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -67,7 +67,7 @@
                         <RedStar label="备注：">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
-                                textStyle="width:280px;"
+                                textStyle="width:250px;"
                                 :rows="3"
                                 :max="200"
                                 v-model.trim="filter.remarks"></sjbtextarea>
@@ -541,7 +541,7 @@ export default {
     background: white;
     padding-left: 7px;
     line-height: 30px;
-    width: 280px;
+    width: 250px;
 }
 .left-red{
     color: red;

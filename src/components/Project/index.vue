@@ -69,9 +69,6 @@
                 <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="showDialog = false">返回</el-button>
-            </div>
         </el-dialog>
     </div>
 </template>

@@ -17,6 +17,31 @@
                                 </span>
                             </RedStar>
                         </li>
+                        <li class="base-li">
+                            <RedStar label="合同类型：">
+                                <span class="right-con">{{contractTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务类型：">
+                                <span class="right-con">{{businessTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务模块：">
+                                <span class="right-con">{{businessModelName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="keyWords.length>1">
+                            <RedStar label="合同关键字：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
+                                        <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
                         <li class="base-li" v-if="associationMain">
                             <RedStar label="关联主合同编号：" :required="true">
                                 <span class="item-value" @click="showForm">
@@ -160,7 +185,7 @@
                         <li class="base-li">
                             <RedStar label="合同签约人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
+                                    <el-select clearable filterable class="filter-item ignore-detail" v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
                                         <el-option v-for="item in memberFullList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
@@ -170,13 +195,30 @@
                         <li class="base-li">
                             <RedStar label="合同负责人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
+                                    <el-select clearable filterable class="filter-item ignore-detail" v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
                                         <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
                             </RedStar>
                         </li>
+                        <!-- <li class="base-li">
+                            <RedStar label="用章类型：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable filterable multiple class="filter-item ignore-detail" v-model="postData.chapterType" placeholder="请选择用章类型" style="width:260px;">
+                                        <el-option v-for="item in chapterList" :label="item.name" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="用章份数：" :required="true">
+                                <span class="right-con">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入用章份数" v-model.number="postData.chapterNum"></el-input>
+                                </span>
+                            </RedStar>
+                        </li> -->
                     </ul>
                 </base-temp>
             </div>
@@ -262,9 +304,18 @@ export default {
             memberList:[],
 
             associationMain:false,
+            contractTypeName:"",
+            businessTypeName:"",
+            businessModelName:"",
+            keyWords:[],
+            chapterList:[],
             projectList:[],
             conInfor: [],
             postData: {//提交数据
+                chapterNum:"",
+                keyWord:[],
+                keyWordName:[],
+                // chapterType:[],
                 associationMainCode:'',
                 associationMainName:'',
                 associationMainId:'',
@@ -412,6 +463,18 @@ export default {
                 return item.userStatus == '1'
             });
         })
+
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                };
+            }
+            return temp;
+        }
+        this.chapterType = selectDic(dicList, "chapter_type")
     },
     methods: {
         showDetail(row){
@@ -438,6 +501,11 @@ export default {
                 id:id
             }).then(res=>{
                 this.associationMain = res.data.associationMain == 1
+                this.contractTypeName = res.data.contractTypeName;
+                this.businessTypeName = res.data.businessTypeName;
+                this.businessModelName = res.data.businessModelName;
+                res.data.keyWords = res.data.keyWords || [];
+                this.keyWords = res.data.keyWords;
                 res.data.contractConfigAttachmentList.forEach(item=>{
                     // if(item.attachmentType == 1){
                     //     this.contractMustCount = item.mustCount;
@@ -496,6 +564,8 @@ export default {
             this.postData.associationMainCode = "";
             this.postData.associationMainId = "";
             this.postData.projectIds = [];
+            this.postData.keyWord = [];
+            this.postData.keyWordName = [];
         },
         clearContract(){
             this.$store.dispatch('cleanInit');
@@ -507,6 +577,9 @@ export default {
             this.dataMaxCount = 0;
             this.scanMustCount = 0;
             this.scanMaxCount = 0;
+            this.contractTypeName = "";
+            this.businessTypeName = "";
+            this.businessModelName = "";
         },
         getList() {
             this.listLoading = true;
@@ -622,6 +695,12 @@ export default {
                         tempObj[i.columnName] = i.value;
                     }
                 })
+            })
+
+            this.keyWords.forEach(i=>{
+                if(this.postData.keyWord.indexOf(i.key)!=-1){
+                    this.postData.keyWordName.push(i.value)
+                }
             })
 
             this.postData.contractAttachmentRequest = [...this.dataAttachment,...this.contractAttachment,...this.scanAttachment];
