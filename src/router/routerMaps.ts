@@ -77,6 +77,11 @@ export default [
         hidden: true
     },
     {
+        path: '/cas',
+        show: false,
+        hidden: true
+    },
+    {
         path: '*',
         show: false,
         redirect: '/404',
