@@ -8,7 +8,11 @@ function toast(str) {
 }
 export function reimFormVali(self) {
     var flag = true;
-    if (!self.filter.costCenterId) {
+    if(!self.filter.receivablesAccountId){
+        toast('请选择收款账户！');
+        flag = false;
+    }
+    else if (!self.filter.costCenterId) {
         toast('请选择成本中心！');
         flag = false;
     }else if (!self.filter.applyType) {

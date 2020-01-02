@@ -1,8 +1,10 @@
 import { constantRouterMap } from '@/router';
-import { menu, fetchPermissionId } from '@/api/login';
+import { menu, fetchPermissionId,findUser } from '@/api/login';
+import{ getRunningLogin }from "@/api/cas";
 import routeMaps from '@/router/routerMaps';
 import Layout from '@/views/layout/Layout.vue';
 import { RouteConfig } from 'vue-router';
+import { getToken, setToken, removeToken } from '@/utils/auth';
 
 type myRouteConfig = RouteConfig | IF_compelteMenu;
 
@@ -216,6 +218,32 @@ const permission = {
                 resolve();
             });
             */
+        },
+
+        getRunning({commit},data){
+            return new Promise((resolve, reject) => {
+                getRunningLogin().then((res: Ajax.AjaxResponse)=>{
+                    console.log(res)
+                    // res = {
+                    //     data:"dd946ff7ba4945bd8ad6f80d0c0bf60e",
+                    //     status:0
+                    // }
+                    if(res.data.status== 0){
+                        setToken(res.data.data);
+                        commit('SET_TOKEN', res.data.data);
+                        resolve(res.data);
+                        findUser({}).then((response:Ajax.AjaxResponse)=>{
+                            localStorage.setItem(
+                                'web_oa_userInfor',
+                                JSON.stringify(response.data)
+                            );
+                            commit('SET_USERINFO', response.data);
+                        })
+                    }
+                }).catch(error=>{
+                    reject(error)
+                })
+            })
         }
     }
 };

@@ -386,6 +386,10 @@ export default {
     },
     created() {
         this.$$queryStub = this.$$listQuery;
+        if(this.$route.query.companyName){
+            this.listQuery.faint = this.$route.query.companyName;
+            this.$$queryStub = fromJS(this.listQuery);
+        }
         this.getList()
         this.listLoading = false
         getContractTemlist({}).then(res => {
