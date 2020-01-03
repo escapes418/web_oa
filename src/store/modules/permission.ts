@@ -222,24 +222,23 @@ const permission = {
 
         getRunning({commit},data){
             return new Promise((resolve, reject) => {
+                // window.location.href="../OA/cas/auth"
                 getRunningLogin().then((res: Ajax.AjaxResponse)=>{
-                    console.log(res)
-                    // res = {
-                    //     data:"dd946ff7ba4945bd8ad6f80d0c0bf60e",
-                    //     status:0
-                    // }
-                    if(res.data.status== 0){
-                        setToken(res.data.data);
-                        commit('SET_TOKEN', res.data.data);
+                    if(res.status == 200){
+                        if(res.data.status== 0){
+                            setToken(res.data.data);
+                            commit('SET_TOKEN', res.data.data);
+                            findUser({}).then((response:Ajax.AjaxResponse)=>{
+                                localStorage.setItem(
+                                    'web_oa_userInfor',
+                                    JSON.stringify(response.data)
+                                );
+                                commit('SET_USERINFO', response.data);
+                            })
+                        }
                         resolve(res.data);
-                        findUser({}).then((response:Ajax.AjaxResponse)=>{
-                            localStorage.setItem(
-                                'web_oa_userInfor',
-                                JSON.stringify(response.data)
-                            );
-                            commit('SET_USERINFO', response.data);
-                        })
                     }
+                    
                 }).catch(error=>{
                     reject(error)
                 })

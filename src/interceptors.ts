@@ -24,6 +24,13 @@ router.beforeEach(async(to, from, next) => {
                         query:{companyName:to.query.companyName}
                     })
                 }
+            }else{
+                Message({
+                    message: res.message,
+                    type: "error"
+                });
+                next('/login');
+                NProgress.done();
             }
         } 
         catch(error){ 
@@ -32,7 +39,7 @@ router.beforeEach(async(to, from, next) => {
         }      
     }else{
         if (getToken()) {
-            console.log(to)
+            console.log(to, from)
             if (to.path === '/login') {
                 next({
                     path: '/'
