@@ -8,7 +8,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同关键字：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
+                <el-input @keyup.enter.native="handleFilter" style="width: 120px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
                 </el-input>
             </div>
             <div class="toolbar-item">
