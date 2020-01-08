@@ -1,4 +1,14 @@
 @media print {
+    table
+    {
+        border-collapse:collapse;
+        margin:8px 0;
+    }
+
+    table,th, td
+    {
+        border: 1px solid #666;
+    }
     body {
         width: 100%;
         margin: 0px auto;
@@ -10,91 +20,46 @@
     .printCont {
         padding: 5px;
         .areaHead {
-            border: 1px solid #666;
-            line-height: 20px;
+            // border: 1px solid #666;
+            font-size:12pt;
+            line-height: 40px;
             padding: 0 3px;
+            text-align: center;
         }
         .areaCont {
             border: 1px solid #666;
             border-top: 0;
             line-height: 16px;
             padding: 10px 3px;
-            div.item {
-                padding: 2px;
-                display: flex;
-                div.label {
-                    flex: 0 0 70px;
-                    text-align: justify;
-                }
-                div.text {
-                    flex: 1;
-                }
+            width: 100%;
+            td.table-title{
+                width:88px;
+            }
+            td.table-left{
+                width: 207px;
+            }
+            
+        }
+        .baseInfo {
+            display: flex;
+            justify-content:flex-start;
+            div {
+                flex: 1;
+            }
+            div.assignName {
+                flex: 0 0 70px;
+            }
+            div.flowName {
+                flex: 0 1 65px;
+            }
+            div.endTime {
+                flex: 0 1 120px;
             }
         }
-        // 流程条目
-        div.flowItem {
-            padding: 6px;
-            border: 1px solid #999;
-            border-bottom: 0px;
-            .baseInfo {
-                display: flex;
-                div {
-                    flex: 1;
-                }
-                div.assignName {
-                    flex: 0 0 70px;
-                }
-                div.flowName {
-                    flex: 0 1 65px;
-                }
-                div.endTime {
-                    flex: 0 1 120px;
-                }
-            }
-            .commit {
-                padding-top: 10px;
-                font-size: 4pt;
-            }
+        .commit {
+            margin:2px;
+            font-size: 4pt;
         }
-        div.flowItem:last-child {
-            border-bottom: 1px solid #999;
-        }
-
-        div.details {
-            border-top: 1px solid #999;
-            & > div {
-                // margin: 4px 0;
-                line-height: 20px;
-            }
-            .top {
-                border-bottom: 1px dashed #999;
-                display: flex;
-                .time {
-                    flex: 0 0 150px;
-                }
-                .type {
-                    flex: 1;
-                }
-                .budget {
-                    flex: 0 0 120px;
-                }
-            }
-            .body {
-                border-bottom: 1px dashed #999;
-                display: flex;
-                .address {
-                    flex: 1;
-                }
-                .personDay {
-                    flex: 0 0 120px;
-                }
-            }
-            .bottom {
-                display: flex;
-            }
-        }
-        div.details:first-child {
-            border-top: 0;
-        }
+        
     }
 }
