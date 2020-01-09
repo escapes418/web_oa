@@ -97,16 +97,16 @@
                 <table id="partEle" class="areaCont">
                     <tbody>
                         <tr>
-                            <td class="table-title">
+                            <td class="table-title bold">
                                 <p>日期</p>
                             </td>
-                            <td class="table-left">
+                            <td class="table-left bold">
                                 <p>科目明细</p>
                             </td>
-                            <td class="table-title">
+                            <td class="table-title bold">
                                 <p>起点-终点</p>
                             </td>
-                            <td>
+                            <td class="bold">
                                 <p>&nbsp;金额</p>
                             </td>
                         </tr>
@@ -129,10 +129,10 @@
                 <table class="areaCont" v-if="subSummary.length>0">
                     <tbody>
                         <tr>
-                            <td class="table-title">
+                            <td class="table-title bold">
                                 <p>科目汇总</p>
                             </td>
-                            <td>
+                            <td class="bold">
                                 <p>金额</p>
                             </td>
                         </tr>
@@ -154,7 +154,7 @@
                             </td>
                             <td>
                                 <div class="baseInfo">
-                                    <div class="assignName bold">{{item.assigneeName}}</div>
+                                    <div class="assignName">{{item.assigneeName}}</div>
                                     <!-- 审批bug的补丁 -->
                                     <div class="flowName" v-if="index==0">{{item.activityName}}</div>
                                     <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
