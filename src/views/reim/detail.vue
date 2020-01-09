@@ -149,7 +149,7 @@
                 <table class="areaCont">
                     <tbody>
                         <tr v-for="(item,index) in printFlowLogList" :key="index">
-                            <td class="table-title" rowspan="0" v-if="index==0">
+                            <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
                                 审批流程
                             </td>
                             <td>
