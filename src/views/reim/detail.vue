@@ -157,7 +157,7 @@
                                     <div class="assignName bold">{{item.assigneeName}}</div>
                                     <!-- 审批bug的补丁 -->
                                     <div class="flowName" v-if="index==0">{{item.activityName}}</div>
-                                    <div class="flowName" v-else>{{item.comment?"已审批":"待审批"}}</div>
+                                    <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
                                     <!-- 时间 -->
                                     <div class="endTime">{{item.endTime}}</div>
                                     <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
