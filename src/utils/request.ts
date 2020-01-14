@@ -2,7 +2,7 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { Message, Loading } from 'element-ui';
 import store from '../store';
 import { getToken ,removeToken} from '@/utils/auth';
-
+import router from '@/router'
 
 // 创建axios实例
 const service: any = axios.create({
@@ -40,10 +40,13 @@ service.interceptors.response.use(
                     type: 'error',
                     duration: 1 * 1000
                 });
-                removeToken()
-                setTimeout(_=>{
-                    window.location.reload()
-                },1000)
+                removeToken();
+                router.push({
+                    path:'login'
+                })
+                // setTimeout(_=>{
+                //     window.location.reload()
+                // },1000)
             } 
             else {
                 Message({
