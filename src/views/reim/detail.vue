@@ -4,112 +4,172 @@
         <div class="printCont">
             <!-- 基本信息 -->
             <div class="areaHead">
-                基本信息
+                费用报销单
             </div>
-            <div class="areaCont">
-                <el-row>
-                    <el-col :span="12">
-                        <div class="item">
-                            <div class="label">流程编号:</div>
-                            <div class="text">{{ detail.procCode }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">报销人员:</div>
-                            <div class="text">{{ detail.applyPerName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">报销类型:</div>
-                            <div class="text">{{ detail.applyTypeName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">收款方:</div>
-                            <div class="text">{{ detail.payeeName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">开户行:</div>
-                            <div class="text">{{ detail.payeeOpeningBank }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">成本中心:</div>
-                            <div class="text">{{ detail.costCenterName }}</div>
-                        </div>
-                        
-                        
-                        <div class="item">
-                            <div class="label">费用合计:</div>
-                            <div class="text">{{ detail.expenseTotal | thousands(2) }}</div>
-                        </div>
-                    </el-col>
-                    <el-col :span="12">
-                        <div class="item">
-                            <div class="label">报销日期:</div>
-                            <div class="text">{{ detail.applyTime }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">所属岗位:</div>
-                            <div class="text">{{ detail.postName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">发票公司:</div>
-                            <div class="text">{{ detail.taxCityName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">收款帐号:</div>
-                            <div class="text">{{ detail.payeeCardNum }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">项目名称:</div>
-                            <div class="text">{{ detail.projectLabel }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">项目负责人:</div>
-                            <div class="text">{{ detail.projectPersonel }}</div>
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-            <div id="partEle">
-                 <!-- 报销明细 -->
-                <div class="areaHead">报销明细</div>
-                <div class="areaCont">
-                    <div class="details" v-for="(scope,index) in flowDetailList">
-                        <div class="top">
-                            <div class="time">{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</div>
-                            <div class="type">{{scope.firstSubName + scope.secondSubName?'/'+scope.secondSubName:""}}</div>
-                            <div class="budget">预算：{{ scope.expenseAmt | thousands(2) }}</div>
-                        </div>
-                        <div class="body">
-                            <div class="address">{{scope.startPointName | specialTrim}} - {{scope.endPointName | specialTrim}}</div>
-                            <div class="personDay">数量：{{scope.personNum}}人/{{scope.dayNum}}天/{{scope.billNum}}张</div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                备注：{{scope.remarks}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-            <!-- 流程信息 -->
-            <div class="areaHead">流转信息</div>
-            <div class="areaCont">
-                <div class="flowItem" v-for="(item,index) in flowLoglist" :key="index">
-                    <div class="baseInfo">
-                        <div class="assignName bold">{{item.assigneeName}}</div>
-                        <!-- 审批bug的补丁 -->
-                        <div class="flowName" v-if="index==0">{{item.activityName}}</div>
-                        <div class="flowName" v-else>{{item.comment?"已审批":"待审批"}}</div>
-                        <!-- 时间 -->
-                        <div class="endTime">{{item.endTime}}</div>
-                        <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
-                    </div>
-                    <div class="commit">
-                        <p v-if="item.comment">{{item.comment}}</p>
-                        <!-- <p v-if="item.comment">{{item.comment}}</p> -->
-                    </div>
-                </div>
-            </div>
+                <table class="areaCont">
+                    <tbody>
+                        <tr>
+                            <td class="table-title">
+                                <p>流程编号</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.procCode}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>报销时间</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.applyTime }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>发票公司</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.taxCityName}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>报销人</p>
+                            </td>
+                            <td>
+                                <p>{{detail.applyPerName}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>收款方</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.payeeName }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>收款账号</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.payeeCardNum }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>开户行</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.payeeOpeningBank }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>报销类型</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.applyTypeName }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>项目名称</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.projectLabel}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>成本中心</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.costCenterName }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>关联申请</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.relationThemeName }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>报销金额</p>
+                            </td>
+                            <td>
+                                <p>{{detail.expenseTotal | thousands(2)}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="partEle" class="areaCont">
+                    <tbody>
+                        <tr>
+                            <td class="table-title bold">
+                                <p>日期</p>
+                            </td>
+                            <td class="table-left bold">
+                                <p>科目明细</p>
+                            </td>
+                            <td class="table-title bold">
+                                <p>起点-终点</p>
+                            </td>
+                            <td class="bold">
+                                <p>&nbsp;金额</p>
+                            </td>
+                        </tr>
+                        <tr v-for="(scope,index) in flowDetailList">
+                            <td class="table-title">
+                                <p>{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{scope.firstSubName}}{{scope.secondSubName ? "/"+scope.secondSubName :""}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>{{scope.startPointName | specialTrim}} - {{scope.endPointName | specialTrim}}</p>
+                            </td>
+                            <td>
+                                <p>{{ scope.expenseAmt | thousands(2) }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont" v-if="subSummary.length>0">
+                    <tbody>
+                        <tr>
+                            <td class="table-title bold">
+                                <p>科目汇总</p>
+                            </td>
+                            <td class="bold">
+                                <p>金额</p>
+                            </td>
+                        </tr>
+                        <tr v-for="(item,index) in subSummary" :key="index">
+                            <td class="table-title">
+                                {{item.subName}}
+                            </td>
+                            <td>
+                                <p>{{item.subTotal}}元</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont">
+                    <tbody>
+                        <tr v-for="(item,index) in printFlowLogList" :key="index">
+                            <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
+                                审批流程
+                            </td>
+                            <td>
+                                <div class="baseInfo">
+                                    <div class="assignName">{{item.assigneeName}}</div>
+                                    <!-- 审批bug的补丁 -->
+                                    <div class="flowName" v-if="index==0">{{item.activityName}}</div>
+                                    <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
+                                    <!-- 时间 -->
+                                    <div class="endTime">{{item.endTime}}</div>
+                                    <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
+                                </div>
+                                <div class="commit">
+                                    <p v-if="item.comment">{{item.comment}}</p>
+                                    <!-- <p v-if="item.comment">{{item.comment}}</p> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
     </div>
     <div class="sjb-form-wrapper">
@@ -302,7 +362,7 @@
                             </el-table-column>
                             <el-table-column label="查看附件" prop="subConfList">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="scope.row.subConfList.length == 0">查看图片</el-button>
                                 </template>
                             </el-table-column>
                             <!-- <el-table-column label="异常分析">
@@ -500,6 +560,8 @@ export default {
             flowDetailList: [],
             flowLoglist: [],
             amtList: [],
+            subSummary:[],
+            printFlowLogList:[],
             urlArr: [],
             expenseAttachment: [],
             detail: {},
@@ -574,6 +636,9 @@ export default {
             this.detail = res.data.detail;
             res.data.flowDetailList = res.data.flowDetailList || [];
             this.flowDetailList = res.data.flowDetailList;
+            res.data.subSummary = res.data.subSummary || [];
+            this.subSummary = res.data.subSummary;
+            this.printFlowLogList = res.data.printFlowLogList
             this.flowLoglist = res.data.flowLoglist;
             this.amtList = res.data.amtList;
             if (

@@ -8,7 +8,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同关键字：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
+                <el-input @keyup.enter.native="handleFilter" style="width: 120px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -386,6 +386,10 @@ export default {
     },
     created() {
         this.$$queryStub = this.$$listQuery;
+        if(this.$route.query.companyName){
+            this.listQuery.faint = this.$route.query.companyName;
+            this.$$queryStub = fromJS(this.listQuery);
+        }
         this.getList()
         this.listLoading = false
         getContractTemlist({}).then(res => {
