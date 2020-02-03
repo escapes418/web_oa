@@ -26,7 +26,7 @@
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">所属公司：</span>
                                 <span class="right-con">
-                                {{ detail.projectName }}
+                                    {{ detail.companyName }}
                                 </span>
                             </div>
                         </el-col>
