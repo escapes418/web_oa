@@ -122,11 +122,18 @@ export function mergeCust(params){
 
 export function getMember(params){
   return request({
-    url:'/commonInfo/queryMemberInfo',
+    url:'/commonInfo/queryUserInfo',
     method:'post',
     data:params
   })
 }
+// export function getMember(params){
+//   return request({
+//     url:'/commonInfo/queryMemberInfo',
+//     method:'post',
+//     data:params
+//   })
+// }
 
 export function getMarket(params){
   return request({
