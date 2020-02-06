@@ -397,7 +397,7 @@ export default {
                     if(!item.expenseAmt){
                         item.expenseAmt = ""
                     }
-                    if(!item.billNum){
+                    if(!item.billNum&&item.billNum != 0){
                         item.billNum = ""
                     }
                 })
