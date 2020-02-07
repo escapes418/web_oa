@@ -359,6 +359,24 @@ export default {
         this.filter.applyTime = common.time.monthlast;
         // 清空store集合
         this.$store.dispatch('clearCollection');
+        // 账户信息
+        getAccountList().then(res => {
+            if(res.status == 0&&res.data){
+                this.bankList = res.data;
+                res.data.forEach(i=>{
+                    if(i.defaultAccount == "1"){
+                        this.filter.receivablesAccountId = i.id;
+                        this.filter.payeeCardNum = i.accountNumber// 收款人银行卡号 ,
+                        this.filter.payeeName = i.accountName// 收款人姓名 ,
+                        this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
+                    }
+                    // return i.accountType == '1'
+                })  
+            }
+            if(this.bankList.length<1){
+                this.dialogAccount = true
+            }
+        })
         // 编辑时
         if (this.$route.query.key) {
             getDetail({
@@ -371,7 +389,12 @@ export default {
                 this.filter.remarks = res.data.detail.remarks;
                 this.filter.customerSituation = res.data.detail.customerSituation;
                 this.filter.costCenterId = res.data.detail.costCenterId;
-                this.costCenterName = res.data.detail.costCenterName
+                this.costCenterName = res.data.detail.costCenterName;
+
+                this.filter.receivablesAccountId = res.data.detail.receivablesAccountId;
+                this.filter.payeeCardNum = res.data.detail.payeeCardNum// 收款人银行卡号 ,
+                this.filter.payeeName = res.data.detail.payeeName// 收款人姓名 ,
+                this.filter.payeeOpeningBank = res.data.detail.payeeOpeningBank//收款人开户行 ,
 
                 this.filter.id = res.data.detail.id;
                 this.filter.projectId = res.data.detail.projectId;
@@ -466,23 +489,7 @@ export default {
             this.memberList = res.data;
         })
 
-        getAccountList().then(res => {
-            if(res.status == 0&&res.data){
-                this.bankList = res.data;
-                res.data.forEach(i=>{
-                    if(i.defaultAccount == "1"){
-                        this.filter.receivablesAccountId = i.id;
-                        this.filter.payeeCardNum = i.accountNumber// 收款人银行卡号 ,
-                        this.filter.payeeName = i.accountName// 收款人姓名 ,
-                        this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
-                    }
-                    // return i.accountType == '1'
-                })  
-            }
-            if(this.bankList.length<1){
-                this.dialogAccount = true
-            }
-        })
+        
     },
     methods: {
         setAccount(){
