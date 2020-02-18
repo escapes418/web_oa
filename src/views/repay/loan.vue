@@ -136,10 +136,8 @@ export default {
         },
         handleProFilter() {
             this.pageNo = 1;
-            if(this.listQuery.procCodeOrTitle){
-                this.$$queryStub = fromJS(this.listQuery);
-                this.getList();
-            }
+            this.$$queryStub = fromJS(this.listQuery);
+            this.getList();
         },
         handleCurrentChange(val) {
             this.pageNo = val;
