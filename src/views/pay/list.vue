@@ -65,6 +65,11 @@
                     <span>{{scope.row.projectName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="付款类别">
+                <template slot-scope="scope">
+                    <span>{{scope.row.payTypeName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="申请人名称">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyPerName}}</span>
