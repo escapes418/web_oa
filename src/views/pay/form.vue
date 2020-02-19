@@ -14,7 +14,7 @@
             <div class="segment-area">
                 <el-row>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="付款人：">
+                        <RedStar label="申请人：">
                             <span class="right-con">{{userInfo.name || ""}}</span>
                         </RedStar>
                         <Department type="form" :DId="postData.costCenterId" :Dlabel="labelName" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
@@ -31,13 +31,13 @@
                         </RedStar>
                     </el-col>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="付款时间：">
+                        <RedStar label="申请时间：">
                             <span class="right-con">{{ applyTime }}</span>
                         </RedStar>
                         <RedStar label="岗位名称：">
                             <span class="right-con">{{ userInfo.postName || "" }}</span>
                         </RedStar>
-                        <RedStar label="发票所属公司：" :required="true">
+                        <RedStar label="付款公司：" :required="true">
                             <el-select clearable class="filter-item " v-model="postData.taxCity" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in taxList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>

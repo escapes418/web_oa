@@ -25,7 +25,7 @@
                         </tr>
                         <tr>
                             <td class="table-title">
-                                <p>发票公司</p>
+                                <p>付款公司</p>
                             </td>
                             <td class="table-left">
                                 <p>{{detail.taxCityName}}</p>
@@ -150,7 +150,7 @@
                                 <span class="right-con">{{  detail.costCenterName }}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">发票公司：</span>
+                                <span class="left-title font-gray">付款公司：</span>
                                 <span class="right-con">{{ detail.taxCityName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
