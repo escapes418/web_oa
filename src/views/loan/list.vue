@@ -96,12 +96,12 @@
             </el-table-column>
             <el-table-column width="90px" align="center" label="已还款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.paidAmount}}</span>
+                    <span>{{scope.row.paidAmount | thousands(2)}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="90px" align="center" label="待还款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.unpaidAmount}}</span>
+                    <span>{{scope.row.unpaidAmount | thousands(2)}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="100px" align="center" label="最新还款时间">

@@ -256,7 +256,7 @@
                             </el-table-column>
                             <el-table-column width="120px" align="center" label="查看附件">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="scope.row.subConfList.length == 0">查看图片</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
