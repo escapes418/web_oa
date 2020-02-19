@@ -50,18 +50,6 @@ export default [
                 hidden: true
             },
             {
-                path: 'reimPay',
-                id: 'me-reimPay',
-                show: false,
-                name: 'ReimPay',
-                component: () => import('@/views/reimPay/list.vue'),
-                meta: {
-                    title: '报销付款管理',
-                    icon: 'iconfont icon-changyongshili'
-                },
-                
-            },
-            {
                 path: 'payList',
                 id: 'me-payList',
                 show: false,
