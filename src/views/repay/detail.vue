@@ -1,5 +1,143 @@
 <template>
     <div class="sjb-form-wrapper">
+        <div id="printWrapper">
+            <div class="printCont">
+                <!-- 基本信息 -->
+                <div class="areaHead">
+                    还款审批单
+                </div>
+                <table class="areaCont">
+                    <tbody>
+                        <tr>
+                            <td class="table-title">
+                                <p>流程编号</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.procCode}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>还款时间</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.applyTime }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>公司</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.invoiceCompanyName}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>还款人</p>
+                            </td>
+                            <td>
+                                <p>{{detail.applyPerName}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>成本中心</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.costCenterName }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>还款金额</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.unpaidAmount | thousands(2) }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>还款方式</p>
+                            </td>
+                            <td colspan="3">
+                                <p>{{ detail.repayMethodName }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="partEle" class="areaCont" v-if="detail.repayFlowInvoiceDetailResponseList&&detail.repayFlowInvoiceDetailResponseList.length>0">
+                    <tbody>
+                        <tr>
+                            <!-- <td class="table-title bold">
+                                <p>日期</p>
+                            </td> -->
+                            <td class="table-left bold">
+                                <p>科目明细</p>
+                            </td>
+                            <!-- <td class="table-title bold">
+                                <p>起点-终点</p>
+                            </td> -->
+                            <td class="bold">
+                                <p>&nbsp;金额</p>
+                            </td>
+                        </tr>
+                        <tr v-for="(scope,index) in detail.repayFlowInvoiceDetailResponseList">
+                            <!-- <td class="table-title">
+                                <p>{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</p>
+                            </td> -->
+                            <td class="table-left">
+                                <p>{{scope.firstSubName}}{{scope.secondSubName ? "/"+scope.secondSubName :""}}</p>
+                            </td>
+                            <!-- <td class="table-title">
+                                <p>{{scope.startPointName | specialTrim}} - {{scope.endPointName | specialTrim}}</p>
+                            </td> -->
+                            <td>
+                                <p>{{ scope.expenseAmt | thousands(2) }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont" v-if="subSummary.length>0">
+                    <tbody>
+                        <tr>
+                            <td class="table-title bold">
+                                <p>科目汇总</p>
+                            </td>
+                            <td class="bold">
+                                <p>金额</p>
+                            </td>
+                        </tr>
+                        <tr v-for="(item,index) in subSummary" :key="index">
+                            <td class="table-title">
+                                {{item.subName}}
+                            </td>
+                            <td>
+                                <p>{{item.subTotal | thousands(2)}}元</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont">
+                    <tbody>
+                        <tr v-for="(item,index) in printFlowLogList" :key="index">
+                            <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
+                                审批流程
+                            </td>
+                            <td>
+                                <div class="baseInfo">
+                                    <div class="assignName">{{item.assigneeName}}</div>
+                                    <!-- 审批bug的补丁 -->
+                                    <div class="flowName" v-if="index==0">{{item.activityName}}</div>
+                                    <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
+                                    <!-- 时间 -->
+                                    <div class="endTime">{{item.endTime}}</div>
+                                    <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
+                                </div>
+                                <div class="commit">
+                                    <p v-if="item.comment">{{item.comment}}</p>
+                                    <!-- <p v-if="item.comment">{{item.comment}}</p> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="pdf-wrap">
             <div class="segment statistics part-wrap" id="part-wrap">
                 <div class="segment-header">
@@ -61,11 +199,11 @@
                                 </div> -->
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">待还款金额：</span>
-                                    <span class="right-con">{{ detail.unpaidAmount }}</span>
+                                    <span class="right-con">{{ detail.unpaidAmount | thousands(2) }}</span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">还款金额：</span>
-                                    <span class="right-con">{{ detail.currentRepayAmount }}</span>
+                                    <span class="right-con">{{ detail.currentRepayAmount | thousands(2) }}</span>
                                 </div>
                             </el-col>
                             <el-col :span="12">
@@ -107,7 +245,7 @@
                             </el-table-column>
                             <el-table-column align="center" label="票据金额">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.expenseAmt}}</span>
+                                    <span>{{scope.row.expenseAmt | thousands(2)}}</span>
                                 </template>
                             </el-table-column>
                             
@@ -199,7 +337,7 @@
                     <el-button v-if="ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
-                    <!-- <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button> -->
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
@@ -207,10 +345,12 @@
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'done'">
                     <el-button v-if="ISCANCEL" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
             </div>
@@ -247,6 +387,8 @@ import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import "viewerjs/dist/viewer.css";
 import Viewer from 'viewerjs';
 
+import "./print.scss";
+
 export default {
     name: 'complexTable',
     components: {
@@ -256,6 +398,8 @@ export default {
         return {
             expenseAttachment:[],
             flowLoglist:[],
+            subSummary:[],
+            printFlowLogList:[],
             detail:{},
             comment:'',
             taskId:0,
@@ -289,7 +433,7 @@ export default {
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.repayFlowStatus == 1  ? true:false
+            let result = this.detail.repayFlowStatus == 1 || this.detail.repayFlowStatus == 2 ? true:false
             return result
         }
     },
@@ -311,6 +455,9 @@ export default {
             res.data.budgetDetailList = res.data.budgetDetailList || []
             this.budgetDetailList = res.data.budgetDetailList
             res.data.flowLogResponseList = res.data.flowLogResponseList || []
+            res.data.subSummary = res.data.subSummary || [];
+            this.subSummary = res.data.subSummary;
+            this.printFlowLogList = res.data.printFlowLogList
             this.flowLoglist = res.data.flowLogResponseList
         })
   },
@@ -363,7 +510,7 @@ export default {
             });
         },
         createPdf(){
-                var pdfstr = document.getElementById('pdf-wrap')
+                var pdfstr = document.getElementById('printWrapper')
                 // 2. 复制给body，并执行window.print打印功能
                 var newstr = pdfstr.innerHTML
                 // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
@@ -492,5 +639,11 @@ export default {
     margin-bottom: 10px;
     width: 400px;
     line-height: 32px;
+}
+
+@media screen {
+    #printWrapper {
+        display: none;
+    }
 }
 </style>

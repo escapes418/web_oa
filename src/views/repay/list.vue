@@ -67,7 +67,7 @@
             </el-table-column>
             <el-table-column width="120px" align="center" label="还款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.currentRepayAmount}}</span>
+                    <span>{{scope.row.currentRepayAmount | thousands(2)}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="120px" align="center" label="还款方式">

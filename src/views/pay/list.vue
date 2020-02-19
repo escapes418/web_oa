@@ -77,7 +77,7 @@
             </el-table-column>
             <el-table-column width="120px" align="center" label="付款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.expenseTotal}}</span>
+                    <span>{{scope.row.expenseTotal | thousands(2)}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="120px" align="center" label="收款方">

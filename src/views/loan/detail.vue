@@ -1,5 +1,119 @@
 <template>
     <div class="sjb-form-wrapper">
+        <div id="printWrapper">
+            <div class="printCont">
+                <!-- 基本信息 -->
+                <div class="areaHead">
+                    借款审批单
+                </div>
+                <table class="areaCont">
+                    <tbody>
+                        <tr>
+                            <td class="table-title">
+                                <p>流程编号</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.procCode}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>借款时间</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.applyTime }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>公司</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.companyName}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>借款人</p>
+                            </td>
+                            <td>
+                                <p>{{detail.applyPerName}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>收款方</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.payeeName }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>收款账号</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.payeeCardNum }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>开户行</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.payeeOpeningBank }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>借款金额</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.loanAmount | thousands(2) }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>项目名称</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.projectName}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>所属部门</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.officeName }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>预计还款时间</p>
+                            </td>
+                            <td colspan="3">
+                                <p>{{ detail.planRepayTime | stamp2TextDate }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont">
+                    <tbody>
+                        <tr v-for="(item,index) in printFlowLogList" :key="index">
+                            <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
+                                审批流程
+                            </td>
+                            <td>
+                                <div class="baseInfo">
+                                    <div class="assignName">{{item.assigneeName}}</div>
+                                    <!-- 审批bug的补丁 -->
+                                    <div class="flowName" v-if="index==0">{{item.activityName}}</div>
+                                    <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
+                                    <!-- 时间 -->
+                                    <div class="endTime">{{item.endTime}}</div>
+                                    <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
+                                </div>
+                                <div class="commit">
+                                    <p v-if="item.comment">{{item.comment}}</p>
+                                    <!-- <p v-if="item.comment">{{item.comment}}</p> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="pdf-wrap">
             <div class="segment statistics part-wrap" id="part-wrap">
                 <div class="segment-header">
@@ -73,7 +187,7 @@
                                     <span class="left-title font-gray">收款账号：</span><span class="right-con">{{ detail.payeeCardNum }}</span>
                                 </div>
                                 <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">借款金额：</span><span class="right-con">{{ detail.loanAmount }}</span>
+                                    <span class="left-title font-gray">借款金额：</span><span class="right-con">{{ detail.loanAmount | thousands(2) }}</span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">借款事由：</span><span class="right-con">{{ detail.loanReason }}</span>
@@ -199,7 +313,7 @@
                     <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
-                    <!-- <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button> -->
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
@@ -207,10 +321,12 @@
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'done'">
                     <el-button v-if="ISCANCEL" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
             </div>
@@ -265,6 +381,7 @@ import { mapState } from 'vuex';
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import "viewerjs/dist/viewer.css";
 import Viewer from 'viewerjs';
+import "./print.scss";
 
 export default {
     components: {
@@ -282,6 +399,7 @@ export default {
             finish:false,
 
             dialogLoan:false,
+            printFlowLogList:[],
             loanMemberList:[],
             pageNo:1,
             pageSize:10,
@@ -316,7 +434,7 @@ export default {
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.expenseStatus == 1  ? true:false
+            let result = this.detail.loanFlowStatus == 1 || this.detail.loanFlowStatus == 2 ? true:false
             return result
         }
     },
@@ -335,10 +453,12 @@ export default {
                     this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
                 })
             }
-            res.data.budgetDetailList = res.data.budgetDetailList || []
-            this.budgetDetailList = res.data.budgetDetailList
-            res.data.flowLogResponseList = res.data.flowLogResponseList || []
-            this.flowLoglist = res.data.flowLogResponseList
+            res.data.budgetDetailList = res.data.budgetDetailList || [];
+            this.budgetDetailList = res.data.budgetDetailList;
+            res.data.flowLogResponseList = res.data.flowLogResponseList || [];
+            this.flowLoglist = res.data.flowLogResponseList;
+            res.data.printFlowLogList = res.data.printFlowLogList || [];
+            this.printFlowLogList = res.data.printFlowLogList;
         })
   },
   methods:{
@@ -394,16 +514,16 @@ export default {
             });
         },
         createPdf(){
-                var pdfstr = document.getElementById('pdf-wrap')
-                // 2. 复制给body，并执行window.print打印功能
-                var newstr = pdfstr.innerHTML
-                // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
-                var oldstr = document.body.innerHTML
-                document.body.innerHTML = newstr
-                window.print()
-                window.location.reload()
-                document.body.innerHTML = oldstr
-                return false
+            var pdfstr = document.getElementById("printWrapper");
+            // 2. 复制给body，并执行window.print打印功能
+            var newstr = pdfstr.innerHTML;
+            // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = newstr;
+            window.print();
+            window.location.reload();
+            document.body.innerHTML = oldstr;
+            return false;
         },
 
         backBtn(){
@@ -537,5 +657,10 @@ export default {
     margin-bottom: 10px;
     width: 400px;
     line-height: 32px;
+}
+@media screen {
+    #printWrapper {
+        display: none;
+    }
 }
 </style>

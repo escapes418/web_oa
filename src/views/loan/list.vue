@@ -91,7 +91,7 @@
             </el-table-column>
             <el-table-column width="80px" align="center" label="借款金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.loanAmount}}</span>
+                    <span>{{scope.row.loanAmount | thousands(2)}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="90px" align="center" label="已还款金额">
