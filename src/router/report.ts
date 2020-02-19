@@ -259,7 +259,18 @@ export default [
                     icon: 'iconfont icon-xiaoshoutongji'
                 },
                 hidden: false
-            }
+            },{
+                path: 'reimPay',
+                id: 'report-reimPay',
+                show: false,
+                name: 'ReimPay',
+                component: () => import('@/views/reimPay/list.vue'),
+                meta: {
+                    title: '报销付款管理',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                
+            },
         ]
     }
 ];

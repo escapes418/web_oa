@@ -1,5 +1,134 @@
 <template>
+    
     <div class="sjb-form-wrapper">
+        <div id="printWrapper">
+            <div class="printCont">
+                <!-- 基本信息 -->
+                <div class="areaHead">
+                    付款审批单
+                </div>
+                <table class="areaCont">
+                    <tbody>
+                        <tr>
+                            <td class="table-title">
+                                <p>流程编号</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.procCode}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>审批时间</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.applyTime }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>付款公司</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{detail.taxCityName}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>审批人</p>
+                            </td>
+                            <td>
+                                <p>{{detail.applyPerName}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>收款方</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.bankAccountName }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>收款账号</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.bankAccountNumber }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>开户行</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.belongBank }}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>银行支行</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.belongBranchBank }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>项目名称</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.projectLabel}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>成本中心</p>
+                            </td>
+                            <td>
+                                <p>{{ detail.costCenterName }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>付款金额</p>
+                            </td>
+                            <td class="table-left">
+                                <p>{{ detail.expenseTotal | thousands(2)}}</p>
+                            </td>
+                            <td class="table-title">
+                                <p>付款类别</p>
+                            </td>
+                            <td>
+                                <p>{{detail.payTypeName}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>付款原因</p>
+                            </td>
+                            <td colspan="3">
+                                <p>{{ detail.payReason }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="areaCont">
+                    <tbody>
+                        <tr v-for="(item,index) in printFlowLogList" :key="index">
+                            <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
+                                审批流程
+                            </td>
+                            <td>
+                                <div class="baseInfo">
+                                    <div class="assignName">{{item.assigneeName}}</div>
+                                    <!-- 审批bug的补丁 -->
+                                    <div class="flowName" v-if="index==0">{{item.activityName}}</div>
+                                    <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
+                                    <!-- 时间 -->
+                                    <div class="endTime">{{item.endTime}}</div>
+                                    <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
+                                </div>
+                                <div class="commit">
+                                    <p v-if="item.comment">{{item.comment}}</p>
+                                    <!-- <p v-if="item.comment">{{item.comment}}</p> -->
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="pdf-wrap">
             <div class="segment statistics part-wrap" id="part-wrap">
                 <div class="segment-header">
@@ -21,7 +150,7 @@
                                 <span class="right-con">{{  detail.costCenterName }}</span>
                             </div>
                             <div class="clearfix cominfo-item">
-                                <span class="left-title font-gray">发票公司：</span>
+                                <span class="left-title font-gray">付款公司：</span>
                                 <span class="right-con">{{ detail.taxCityName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
@@ -65,7 +194,11 @@
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">付款金额：</span>
-                                    <span class="right-con">{{ detail.expenseTotal }}</span>
+                                    <span class="right-con">{{ detail.expenseTotal | thousands(2) }}</span>
+                                </div>
+                                <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">付款事由：</span>
+                                    <span class="right-con">{{ detail.payReason }}</span>
                                 </div>
                             </el-col>
                             <el-col :span="12">
@@ -74,19 +207,20 @@
                                     <span class="right-con">{{ detail.bankAccountNumber }}</span>
                                 </div>
                                 <div class="clearfix cominfo-item">
+                                    <span class="left-title font-gray">付款类别：</span>
+                                    <span class="right-con">{{ detail.payTypeName }}</span>
+                                </div>
+                                <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">银行支行：</span>
                                     <span class="right-con">{{ detail.belongBranchBank }}</span>
                                 </div>
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">付款事由：</span>
-                                    <span class="right-con">{{ detail.payReason }}</span>
-                                </div>
+                                
                             </el-col>
                         </el-row>
                     </div>
                 </div>
             </div>
-            <div class="segment statistics">
+            <!-- <div class="segment statistics">
                 <div class="segment-header">
                     科目明细
                 </div>
@@ -121,7 +255,7 @@
                             </el-table-column>
                             <el-table-column width="120px" align="center" label="查看附件">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled=""scope.row.subConfList.length == 0">查看图片</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -138,7 +272,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="segment statistics part-wrap" id="part-wrap" v-if="!ISPUTIN">
                 <div class="segment-header">
                     流转信息
@@ -213,7 +347,7 @@
                     <el-button v-if="ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
-                    <!-- <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button> -->
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
@@ -221,10 +355,12 @@
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'done'">
                     <el-button v-if="ISCANCEL" size="medium" type="warning" @click="cancelBtn">撤销</el-button>
+                    <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
             </div>
@@ -248,7 +384,7 @@
                 <el-button @click="dialogDelVisible = false">取消</el-button>
             </span>
         </el-dialog>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -260,6 +396,7 @@ import { mapState } from 'vuex';
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import "viewerjs/dist/viewer.css";
 import Viewer from 'viewerjs';
+import "./print.scss";
 
 export default {
     name: 'complexTable',
@@ -269,7 +406,8 @@ export default {
     data() {
         return {
             expenseAttachment:[],
-            flowDetailList:[],
+            printFlowLogList:[],
+            // flowDetailList:[],
             flowLoglist:[],
             amtList:[],
             detail:{},
@@ -304,7 +442,7 @@ export default {
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.repayFlowStatus == 1  ? true:false
+            let result = this.detail.expenseStatus == 1 || this.detail.expenseStatus == 2 ? true:false
             return result
         }
     },
@@ -316,8 +454,9 @@ export default {
            this.$route.query.key
         ).then(res =>{
             this.detail = res.data.detail;
-            res.data.flowDetailList = res.data.flowDetailList || [];
-            this.flowDetailList = res.data.flowDetailList;
+            // res.data.flowDetailList = res.data.flowDetailList || [];
+            // this.flowDetailList = res.data.flowDetailList;
+            this.printFlowLogList = res.data.printFlowLogList
             this.flowLoglist = res.data.flowLoglist;
             this.amtList = res.data.amtList;
             if (
@@ -377,7 +516,7 @@ export default {
             }
             // window.open(url);
         },
-         downAttach(val) {
+        downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
                 if (res.status == 0) {
                     var url = `./OA${res.data}`;
@@ -461,7 +600,19 @@ export default {
                     this.$router.go(-1)
                 }
             })
-        }
+        },
+        createPdf() {
+            var pdfstr = document.getElementById("printWrapper");
+            // 2. 复制给body，并执行window.print打印功能
+            var newstr = pdfstr.innerHTML;
+            // 3. 还原：将旧的页面储存起来，当打印完成后返给给页面。
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = newstr;
+            window.print();
+            window.location.reload();
+            document.body.innerHTML = oldstr;
+            return false;
+        },
     },
     mounted(){
         Viewer.setDefaults({
@@ -515,5 +666,10 @@ export default {
     margin-bottom: 10px;
     width: 400px;
     line-height: 32px;
+}
+@media screen {
+    #printWrapper {
+        display: none;
+    }
 }
 </style>
