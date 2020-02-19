@@ -51,27 +51,27 @@
             </div>
         </div>
         <el-table :data="list" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="流程编号" width="150px">
+            <el-table-column align="center" label="流程编号" fixed width="150px">
                 <template slot-scope="scope">
                     <span style="color:#409EFF;cursor: Pointer;">{{scope.row.procCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="320px" align="center" label="流程名称">
+            <el-table-column width="320px" align="center" fixed label="流程名称">
                 <template slot-scope="scope">
                     <span>{{scope.row.procName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="申请人名称">
+            <el-table-column width="100px" align="center" label="申请人名称">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyPerName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="申请日期">
+            <el-table-column width="100px" align="center" label="申请日期">
                 <template slot-scope="scope">
                     <span>{{scope.row.applyTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="所属公司">
+            <el-table-column width="150px" align="center" label="所属公司">
                 <template slot-scope="scope">
                     <span>{{ scope.row.invoiceCompany }}</span>
                 </template>
@@ -121,11 +121,6 @@
                     <span>{{scope.row.paymentStatus}}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column width="120px" align="center" label="操作" class-name="small-padding fixed-width">
-                <template slot-scope="scope">
-                    <el-button type="primary" size="mini" @click="showDetail(scope.row)">详情</el-button>
-                </template>
-            </el-table-column> -->
         </el-table>
 
         <div class="pagination-container">
