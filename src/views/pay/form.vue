@@ -129,7 +129,10 @@
                 <div class="el-table__body-wrapper">
                     <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="handleRemove" :before-upload = "beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
                         <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">{{uploadTips}}</div>
+                        <div slot="tip" class="el-upload__tip">
+                            <span v-html="tipMessage"></span>
+                            {{uploadTips}}
+                        </div>
                     </el-upload>
                 </div>
             </div>
@@ -194,6 +197,68 @@ export default {
             }
             return result/100;
         },
+        tipMessage(){
+            switch (this.postData.payType){
+                case "1":
+                    return `经纪人付款流程需要上传以下资料（图片）：<br/>
+                            1、经纪人利润计算表 <br/>
+                            2、结算单（公章/结算单/财务章）<br/>
+                            3、银行回单 <br/>`
+                case "2":
+                    return `返点流程（开发票）需要上传以下资料（图片）：<br/>
+                            1、返点计算表<br/>
+                            2、发票 <br/>`
+                case "3":
+                    return `返点流程（不开发票）需要上传以下资料（图片）：<br/>
+                            1、返点计算表 <br/>`
+                case "4":
+                    return `贸易业务平台运费支付流程需要上传以下资料（图片）：<br/>
+                            1、银行回单 <br/>`
+                case "5":
+                    return `贸易业务支付货款需要上传以下资料（图片）：<br/>
+                            1、银行回单 <br/>`
+                case "6":
+                    return `业务类保证金退还需要上传以下资料（图片）：<br/>
+                            1、收款银行凭证<br/>
+                            2、服务协议<br/>`
+                case "7":
+                    return `油气充值流程需要上传以下资料（图片）：<br/>
+                            1、油气充值申请邮件 <br/>`
+                case "8":
+                    return `非托管客户提现需要上传以下资料（图片）：<br/>
+                            1、客户申请提现邮件 <br/>`
+                case "9":
+                    return `发票保证金退还需要上传以下资料（图片）：<br/>
+                            1、收款银行凭证<br/>
+                            2、客户回款银行凭证<br/>`
+                case "10":
+                    return `保险支付流程需要上传以下资料（图片）：<br/>
+                            1、与客户确认邮件 <br/>
+                            2、发票 <br/>
+                            3、保险合同 <br/>`
+                case "11":
+                    return `无车承运平台运费支付流程需要上传以下资料（图片）：<br/>
+                            1、平台还款表 <br/>
+                            2、平台还款运单列表 <br/>
+                            3、结算单 <br/>
+                            4、银行回单 <br/>`
+                case "12":
+                    return `异常单退款流程需要上传以下资料（图片）：<br/>
+                            1、申请邮件打印 <br/>
+                            2、运费存款凭证 <br/>
+                            3、退还运单明细 <br/>
+                            4、客户确认函、补充协议（仅退调度费）<br/>`
+                case "13":
+                    return `关联方转账流程需要上传以下资料（图片）：<br/>
+                            1、资金调拨明细表 <br/>`
+                case "14":
+                    return `贷款还款流程需要上传以下资料（图片）：<br/>
+                            1、提前还款申请书 <br/>
+                            2、借款合同 <br/>
+                            3、银行放款回单 <br/>`
+            }
+            
+        }
     },
     data() {
         return {
@@ -250,6 +315,7 @@ export default {
         }
         this.taxList = selectDic(dicList, "tax_city");
         this.paymentType = selectDic(dicList, "payment_type");
+        console.log(this.paymentType)
         //时间转换
         // this.$store.dispatch('getSubs');
 
