@@ -25,7 +25,7 @@
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:250px;"
                                 :rows="3"
-                                :max="700"
+                                :max="200"
                                 v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
@@ -82,7 +82,7 @@
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:250px;"
                                 :rows="3"
-                                :max="700"
+                                :max="200"
                                 v-model.trim="postData.payReason"></sjbtextarea>
                             </span>
                         </RedStar>
