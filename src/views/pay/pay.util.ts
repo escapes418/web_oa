@@ -17,49 +17,56 @@ export function paymentFormVali(self) {
     }else if(!self.postData.bankAccountId){
         toast('请选择收款账号！');
         flag = false;
+    }else if(!self.postData.payType){
+        toast('请选择付款类别！');
+        flag = false;
+    }else if(!/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(self.postData.expenseTotal)){
+        toast('请填写正确付款金额！');
+        flag = false;
     }else if(!self.postData.payReason){
         toast('请填写付款原因！');
         flag = false;
-    }else if(self.postData.payDetail.length<1){
-        toast('请添加付款明细！');
-        flag = false;
-    }else if (!itemVali()) {
-        flag = false;
-    } 
-    function itemVali() {
-        self.postData.payDetail.forEach((item) => {
-            if (
-                item.subject.length == 0 ||
-                item.subject[0] == ''
-            ) {
-                toast('请选择科目');
-                flag = false;
-                return;
-            }  else if (!/^([0-9]{1,7})$/.test(item.billNum) && item.billNum == 0) {
-                toast('请正确填写票据张数！');
-                flag = false;
-                return;
-            } else if (
-                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
-            ) {
-                toast('请正确填写票据金额！');
-                flag = false;
-                return;
-            }  else if (item.remarks && item.remarks.length > 500) {
-                toast('输入字符超出限额，请重新输入！');
-                flag = false;
-                return;
-            } else if (item.subConfList.length > 0) {
-                item.subConfList.forEach((itm, idx) => {
-                    if (itm.url == '') {
-                        toast('请上传' + itm.confDesc);
-                        flag = false;
-                    }
-                });
-            }
-        });
-        return flag;
     }
+    // else if(self.postData.payDetail.length<1){
+    //     toast('请添加付款明细！');
+    //     flag = false;
+    // }else if (!itemVali()) {
+    //     flag = false;
+    // } 
+    // function itemVali() {
+    //     self.postData.payDetail.forEach((item) => {
+    //         if (
+    //             item.subject.length == 0 ||
+    //             item.subject[0] == ''
+    //         ) {
+    //             toast('请选择科目');
+    //             flag = false;
+    //             return;
+    //         }  else if (!/^([0-9]{1,7})$/.test(item.billNum) && item.billNum == 0) {
+    //             toast('请正确填写票据张数！');
+    //             flag = false;
+    //             return;
+    //         } else if (
+    //             !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
+    //         ) {
+    //             toast('请正确填写票据金额！');
+    //             flag = false;
+    //             return;
+    //         }  else if (item.remarks && item.remarks.length > 500) {
+    //             toast('输入字符超出限额，请重新输入！');
+    //             flag = false;
+    //             return;
+    //         } else if (item.subConfList.length > 0) {
+    //             item.subConfList.forEach((itm, idx) => {
+    //                 if (itm.url == '') {
+    //                     toast('请上传' + itm.confDesc);
+    //                     flag = false;
+    //                 }
+    //             });
+    //         }
+    //     });
+    //     return flag;
+    // }
     return flag;
 }
 

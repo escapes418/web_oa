@@ -14,7 +14,7 @@
             <div class="segment-area">
                 <el-row>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="付款人：">
+                        <RedStar label="申请人：">
                             <span class="right-con">{{userInfo.name || ""}}</span>
                         </RedStar>
                         <Department type="form" :DId="postData.costCenterId" :Dlabel="labelName" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
@@ -25,19 +25,19 @@
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:250px;"
                                 :rows="3"
-                                :max="700"
+                                :max="200"
                                 v-model.trim="postData.remarks"></sjbtextarea>
                             </span>
                         </RedStar>
                     </el-col>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="付款时间：">
+                        <RedStar label="申请时间：">
                             <span class="right-con">{{ applyTime }}</span>
                         </RedStar>
                         <RedStar label="岗位名称：">
                             <span class="right-con">{{ userInfo.postName || "" }}</span>
                         </RedStar>
-                        <RedStar label="发票所属公司：" :required="true">
+                        <RedStar label="付款公司：" :required="true">
                             <el-select clearable class="filter-item " v-model="postData.taxCity" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in taxList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
@@ -60,28 +60,37 @@
                                 <el-option v-for="item in bankList" :label="item.splitName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
+                        </RedStar> 
+                        <RedStar label="付款金额：" :required="true">
+                            <span class="right-con">
+                                <el-input v-model.number="postData.expenseTotal" type="number" style="width:250px"></el-input>
+                            </span>
+                        </RedStar>
+                        
+                    </el-col>
+                    <el-col :span="12" class="segment-brline">
+                        <RedStar label="付款类别：" :required="true">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item " v-model="postData.payType" placeholder="请选择" style="width:250px;" @change="setAccount">
+                                    <el-option v-for="item in paymentType" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
                         </RedStar>
                         <RedStar label="付款原因：" :required="true">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:250px;"
                                 :rows="3"
-                                :max="700"
+                                :max="200"
                                 v-model.trim="postData.payReason"></sjbtextarea>
-                            </span>
-                        </RedStar>
-                    </el-col>
-                    <el-col :span="12" class="segment-brline">
-                        <RedStar label="付款金额：">
-                            <span class="right-con">
-                                <span>{{payTotal.toFixed(2)}}</span>
                             </span>
                         </RedStar>
                     </el-col>
                 </el-row>
             </div>
         </div>
-        <div class="segment statistics">
+        <!-- <div class="segment statistics">
             <div class="segment-header">
                 <span class="left-red">*</span>
                 付款明细
@@ -111,7 +120,7 @@
                 <el-button type="primary" size="small" @click="add">新增</el-button>
                 <el-button type="danger" size="small" @click="del">删除</el-button>
             </div>
-        </div>
+        </div> -->
         <div class="segment statistics">
             <div class="segment-header">
                 附件
@@ -120,7 +129,10 @@
                 <div class="el-table__body-wrapper">
                     <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="handleRemove" :before-upload = "beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
                         <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">{{uploadTips}}</div>
+                        <div slot="tip" class="el-upload__tip">
+                            <span v-html="tipMessage"></span>
+                            {{uploadTips}}
+                        </div>
                     </el-upload>
                 </div>
             </div>
@@ -168,10 +180,10 @@ export default {
     computed:{
         ...mapState({
             token: state => state.user.token,
-            subsTree: state => state.reim.subsTree,
-            subsList: state => state.reim.subsList,
+            // subsTree: state => state.reim.subsTree,
+            // subsList: state => state.reim.subsList,
 
-            firstSub: state => state.repay.firstSub,
+            // firstSub: state => state.repay.firstSub,
             itemList: state => state.repay.itemList,
         }),
         payTotal() {
@@ -185,6 +197,68 @@ export default {
             }
             return result/100;
         },
+        tipMessage(){
+            switch (this.postData.payType){
+                case "1":
+                    return `经纪人付款流程需要上传以下资料（图片）：<br/>
+                            1、经纪人利润计算表 <br/>
+                            2、结算单（公章/结算单/财务章）<br/>
+                            3、银行回单 <br/>`
+                case "2":
+                    return `返点流程（开发票）需要上传以下资料（图片）：<br/>
+                            1、返点计算表<br/>
+                            2、发票 <br/>`
+                case "3":
+                    return `返点流程（不开发票）需要上传以下资料（图片）：<br/>
+                            1、返点计算表 <br/>`
+                case "4":
+                    return `贸易业务平台运费支付流程需要上传以下资料（图片）：<br/>
+                            1、银行回单 <br/>`
+                case "5":
+                    return `贸易业务支付货款需要上传以下资料（图片）：<br/>
+                            1、银行回单 <br/>`
+                case "6":
+                    return `业务类保证金退还需要上传以下资料（图片）：<br/>
+                            1、收款银行凭证<br/>
+                            2、服务协议<br/>`
+                case "7":
+                    return `油气充值流程需要上传以下资料（图片）：<br/>
+                            1、油气充值申请邮件 <br/>`
+                case "8":
+                    return `非托管客户提现需要上传以下资料（图片）：<br/>
+                            1、客户申请提现邮件 <br/>`
+                case "9":
+                    return `发票保证金退还需要上传以下资料（图片）：<br/>
+                            1、收款银行凭证<br/>
+                            2、客户回款银行凭证<br/>`
+                case "10":
+                    return `保险支付流程需要上传以下资料（图片）：<br/>
+                            1、与客户确认邮件 <br/>
+                            2、发票 <br/>
+                            3、保险合同 <br/>`
+                case "11":
+                    return `无车承运平台运费支付流程需要上传以下资料（图片）：<br/>
+                            1、平台还款表 <br/>
+                            2、平台还款运单列表 <br/>
+                            3、结算单 <br/>
+                            4、银行回单 <br/>`
+                case "12":
+                    return `异常单退款流程需要上传以下资料（图片）：<br/>
+                            1、申请邮件打印 <br/>
+                            2、运费存款凭证 <br/>
+                            3、退还运单明细 <br/>
+                            4、客户确认函、补充协议（仅退调度费）<br/>`
+                case "13":
+                    return `关联方转账流程需要上传以下资料（图片）：<br/>
+                            1、资金调拨明细表 <br/>`
+                case "14":
+                    return `贷款还款流程需要上传以下资料（图片）：<br/>
+                            1、提前还款申请书 <br/>
+                            2、借款合同 <br/>
+                            3、银行放款回单 <br/>`
+            }
+            
+        }
     },
     data() {
         return {
@@ -194,6 +268,7 @@ export default {
             applyTime: common.time.monthlast, // 报销日期
             projectName:"",
             taxList:[],
+            paymentType:[],
             postData: {//筛选条件
                 applyPerCode:"",// 还款人id ,
                 costCenterId:"",// 成本中心id ,
@@ -203,9 +278,10 @@ export default {
                 remarks:"" ,
                 payReason:"",
                 expenseAttachmentWeb: [],//现金还款附件列表 ,
-                payDetail:[],// 明细列表 ,
+                payType:"",// 付款类别 ,
                 projectPersonel:"", //项目负责人
-                projectId:""
+                projectId:"",
+                expenseTotal:""
             },
             expenseAttachment: [], // 读取和提交时均做转换
 
@@ -218,7 +294,7 @@ export default {
     },
     async created() {
         // 清空store集合
-        this.$store.dispatch("cleanItemList");
+        // this.$store.dispatch("cleanItemList");
         await this.$store.dispatch('FetchDictsAndLocalstore');
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         this.postData.applyPerCode = this.userInfo.loginName;
@@ -238,8 +314,10 @@ export default {
             return temp;
         }
         this.taxList = selectDic(dicList, "tax_city");
+        this.paymentType = selectDic(dicList, "payment_type");
+        console.log(this.paymentType)
         //时间转换
-        this.$store.dispatch('getSubs');
+        // this.$store.dispatch('getSubs');
 
         if (this.$route.query.key) {
             getDetail(
@@ -248,8 +326,8 @@ export default {
             
                 this.postData = res.data.detail;
                 this.projectName = res.data.detail.projectName
-                var itemDatas = res.data.flowDetailList || [];
-                this.$store.dispatch('fillItemList',this.transDetailData(itemDatas))
+                // var itemDatas = res.data.flowDetailList || [];
+                // this.$store.dispatch('fillItemList',this.transDetailData(itemDatas))
                 if (res.data.detail.expenseAttachmentWeb && res.data.detail.expenseAttachmentWeb.length > 0) {
                     res.data.detail.expenseAttachmentWeb.forEach(item => {
                         let originUrl = item.url;
@@ -289,23 +367,23 @@ export default {
         selectAll(val){
             this.$store.dispatch("setItemChecked",val)
         },
-        add(){
-            if (this.itemList.length > 30) {
-                this.$message({
-                    message:'明细条目超出限制',
-                    type:'warning'
-                })
-            } else {
-                this.$store.dispatch("addRepay");
-            }
-        },
-        del(){
-            this.$store.dispatch('delItemListChecked');
-        },
-        changeMethod(){
-            this.$store.dispatch("cleanItemList");
-            this.postData.currentRepayAmount = "";
-        },
+        // add(){
+        //     if (this.itemList.length > 30) {
+        //         this.$message({
+        //             message:'明细条目超出限制',
+        //             type:'warning'
+        //         })
+        //     } else {
+        //         this.$store.dispatch("addRepay");
+        //     }
+        // },
+        // del(){
+        //     this.$store.dispatch('delItemListChecked');
+        // },
+        // changeMethod(){
+        //     this.$store.dispatch("cleanItemList");
+        //     this.postData.currentRepayAmount = "";
+        // },
         depConfirm(data) {
             if(data){
                 this.costCenterName = data.name;
@@ -316,31 +394,31 @@ export default {
             }
             
         },
-        transDetailData(dataArr) {
-            function createUid() {
-                return parseInt(Math.random() * 100000) + "" + new Date().getTime();
-            }
-            // 转换接口明细的数据结构
-            let detailCollection = dataArr.map(i => {
-                return {
-                    ...i,
-                    subject: [i.firstSub, i.secondSub],
-                    uid: createUid(),
-                    checked: false
-                }
-            })
-            return detailCollection;
-        },
-        getItemsInStore() {
-            let itemDetail = this.itemList.map(i => {
-                return {
-                    ...i,
-                    firstSub: i.subject[0] || '',
-                    secondSub: i.subject[1] || '',
-                }
-            })
-            return itemDetail;
-        },
+        // transDetailData(dataArr) {
+        //     function createUid() {
+        //         return parseInt(Math.random() * 100000) + "" + new Date().getTime();
+        //     }
+        //     // 转换接口明细的数据结构
+        //     let detailCollection = dataArr.map(i => {
+        //         return {
+        //             ...i,
+        //             subject: [i.firstSub, i.secondSub],
+        //             uid: createUid(),
+        //             checked: false
+        //         }
+        //     })
+        //     return detailCollection;
+        // },
+        // getItemsInStore() {
+        //     let itemDetail = this.itemList.map(i => {
+        //         return {
+        //             ...i,
+        //             firstSub: i.subject[0] || '',
+        //             secondSub: i.subject[1] || '',
+        //         }
+        //     })
+        //     return itemDetail;
+        // },
         // 附件上传成功
         handleSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
@@ -369,7 +447,7 @@ export default {
             this.expenseAttachment.forEach(item => {
                 this.postData.expenseAttachmentWeb.push({ url: item.originUrl, name: item.name })
             })
-            this.postData.payDetail = this.getItemsInStore();
+            // this.postData.payDetail = this.getItemsInStore();
             if (type == 'apply' && paymentFormVali(this)) {
                 payApply(this.postData).then(res => {
                     if (res.status == 0) {
