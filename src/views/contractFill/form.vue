@@ -32,7 +32,7 @@
                                 <span class="right-con">{{businessModelName}}</span>
                             </RedStar>
                         </li>
-                        <li class="base-li" v-if="keyWords.length>1">
+                        <li class="base-li" v-if="keyWords.length>0">
                             <RedStar label="合同关键字：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
