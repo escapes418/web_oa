@@ -18,7 +18,7 @@ export function contractFormVali(self) {
         toast('请关联主合同！');
         flag = false;
     }
-    else if(self.keyWords.length>1&&self.postData.keyWord.length<1){
+    else if(self.keyWords.length>0&&self.postData.keyWord.length<1){
         toast('请选择合同关键字！');
         flag = false;
     }
