@@ -7,50 +7,59 @@
             <div class="segment-area">
                 <el-row>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="客户名称：" :required="true">
+                        <RedStar label="客户类型：" :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custName" :maxlength="30"></el-input>
+                                <el-select clearable class="filter-item" v-model="filter.baseCustInfo.custType" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in custTypeList" :label="item.value" :value="item.key" :key="item.key">
+                                    </el-option>
+                                </el-select>
                             </span>
                         </RedStar>
-                        <RedStar label="地址：" :required="true">
+                        <RedStar label="客户简称：">
                             <span class="right-con">
-                                <region class="area" style="float:left;" v-on:back-region="selectAreaCode" :pointList="filter.custAddressCode"></region>
+                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.baseCustInfo.custAbbreviation" :maxlength="50"></el-input>
                             </span>
                         </RedStar>
-                        <RedStar label="客户来源：">
-                            <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custSource" :maxlength="200"></el-input>
+                        <RedStar label="详细地址：" :required="true">
+                             <span class="right-con">
+                                <el-input placeholder="请输入详细地址" style="width:250px;" v-model.trim="filter.baseCustInfo.custAddress" :maxlength="100"></el-input>
                             </span>
                         </RedStar>
-                        <RedStar label="所属区域：">
-                            <span class="right-con long_area">
-                                {{officeName}}
+                        <RedStar label="法定代表人：">
+                            <span class="right-con">
+                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.baseCustInfo.legalRepresentative" :maxlength="50"></el-input>
                             </span>
                         </RedStar>
                         
                     </el-col>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="客户简称：">
+                        <RedStar label="客户名称：" :required="true">
                             <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.custAbbreviation" :maxlength="50"></el-input>
+                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.baseCustInfo.custName" :maxlength="30"></el-input>
                             </span>
                         </RedStar>
-                        <RedStar label="详细地址：" :required="true">
-                             <span class="right-con">
-                                <el-input placeholder="请输入详细地址" style="width:250px;" v-model.trim="filter.custAddress" :maxlength="100"></el-input>
+                        <RedStar label="地址：" :required="true">
+                            <span class="right-con">
+                                <region class="area" style="float:left;" v-on:back-region="selectAreaCode" :pointList="filter.baseCustInfo.custAddressCode"></region>
                             </span>
                         </RedStar>
-                        <RedStar label="市场负责人：">
-                            <span class="right-con">{{leaderName}}</span>
+                        <RedStar label="统一社会信用代码：">
+                            <span class="right-con">
+                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="filter.baseCustInfo.creditCode" :maxlength="50"></el-input>
+                            </span>
                         </RedStar>
-                        <RedStar label="市场负责人手机号：">
-                            <span class="right-con">{{filter.marketLeaderPhone}}</span>
+                        <RedStar label="注册地址：">
+                            <span class="right-con">
+                                <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="filter.baseCustInfo.registeredAddress"></el-input>
+                            </span>
                         </RedStar>
                     </el-col>
                 </el-row>
             </div>
         </div>
-        <div class="segment statistics">
+
+        <!-- 无车 -->
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '1'">
             <div class="segment-header">
                 业务情况
             </div>
@@ -59,7 +68,7 @@
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="所属行业：" :required="true">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custTrades" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custTrades" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custTrades" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -67,12 +76,12 @@
                         </RedStar>
                         <RedStar label="规模（万元/月）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model.number="businessDetail.custCompanySize"></el-input>
+                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model.trim="filter.noCar.custCompanySize"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="发货方式：">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custDeliverMode" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custDeliverMode" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custDeliverMode" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -80,7 +89,7 @@
                         </RedStar>
                         <RedStar label="结算对象：">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custBalanceObj" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custBalanceObj" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custBalanceObj" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -88,7 +97,7 @@
                         </RedStar>
                         <RedStar label="支付方式：">
                             <span class="right-con">
-                                <el-select clearable multiple class="filter-item" v-model="businessDetail.payMethod" placeholder="请选择" style="width:250px;">
+                                <el-select clearable multiple class="filter-item" v-model="filter.noCar.payMethod" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.payMethod" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -98,7 +107,7 @@
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="业务类型：">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custBusinessType" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custBusinessType" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custBusinessType" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -106,7 +115,7 @@
                         </RedStar>
                         <RedStar label="运力组织方式：">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custPowerMode" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custPowerMode" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custPowerMode" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -114,7 +123,7 @@
                         </RedStar>
                         <RedStar label="收货方式：">
                             <span class="right-con">
-                                <el-select clearable class="filter-item" v-model="businessDetail.custReceiveMode" placeholder="请选择" style="width:250px;">
+                                <el-select clearable class="filter-item" v-model="filter.noCar.custReceiveMode" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in dictionary.custReceiveMode" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -122,110 +131,252 @@
                         </RedStar>
                         <RedStar label="结算周期（天）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model="businessDetail.custBalanceCycle"></el-input>
+                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model="filter.noCar.custBalanceCycle"></el-input>
                             </span>
                         </RedStar>
-                    </el-col>
-                </el-row>
-            </div>
-        </div>
-        <div class="segment statistics">
-            <div class="segment-header">
-                合同信息
-            </div>
-            <div class="segment-area">
-                <el-row>
-                    <el-col :span="12" class="segment-brline">
-                        <RedStar label="统一社会信用代码：">
-                            <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="contractInfoSaveReq.creditCode" :maxlength="50"></el-input>
-                            </span>
-                        </RedStar>
-                        <RedStar label="法定代表人：">
-                            <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" v-model.trim="contractInfoSaveReq.legalRepresentative" :maxlength="50"></el-input>
-                            </span>
-                        </RedStar>
-                    </el-col>
-                    <el-col :span="12" class="segment-brline">
                         <RedStar label="调度费比例（%）：">
                             <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" type="number" :maxlength="50" v-model.trim="contractInfoSaveReq.dispatchProportion"></el-input>
-                            </span>
-                        </RedStar>
-                        <RedStar label="注册地址：">
-                            <span class="right-con">
-                                <el-input placeholder="请输入" style="width:250px;" :maxlength="50" v-model.trim="contractInfoSaveReq.registeredAddress"></el-input>
+                                <el-input placeholder="请输入" style="width:250px;" type="number" :maxlength="50" v-model.trim="filter.noCar.dispatchProportion"></el-input>
                             </span>
                         </RedStar>
                     </el-col>
                 </el-row>
             </div>
         </div>
-        <div class="segment statistics">
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '1'">
             <div class="segment-header">
                 贸易结构
             </div>
             <div class="segment-area">
                 <div class="textStyle-title">上游：</div>
-                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.upstream" :max="200"></sjbtextarea>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="filter.noCar.upstream" :max="200"></sjbtextarea>
             </div>
             <div class="segment-area" style="margin-bottom:15px">
                 <div class="textStyle-title">下游：</div>
-                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="tradeStructure.downstream" :max="200"></sjbtextarea>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="filter.noCar.downstream" :max="200"></sjbtextarea>
             </div>
         </div>
-        <div class="segment statistics">
-            <div class="segment-header">
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '1'">
+            <div class="segment-header" style="margin-bottom: 20px;">
                 <span class="left-red">*</span>
                 联系人信息
             </div>
             <div class="segment-area">
-                <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:100%" @selection-change="handleSelectionChange">
-                        <el-table-column
-                            type="selection"
-                            width="55">
-                        </el-table-column>
-                        <el-table-column align="center" label="联系人" width="150px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanName" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="联系方式" width="180px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPhone" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="邮箱（选填）" width="180px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanMail" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="职位" width="150px">
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.linkmanPost" :maxlength="50"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="备注（选填）" >
-                            <template slot-scope="scope">
-                                <el-input auto-complete="off" v-model.trim="scope.row.remarks" :maxlength="200"></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" label="合同联系人" >
-                            <template slot-scope="scope">
-                                <el-radio v-model="radioKey" :label="scope.row.index" @change="setContact(scope.row)">设为默认的合同联系人</el-radio>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+
+                <div class="el-table__body-wrapper">
+                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="margin-bottom: 20px;">
+                        <thead>
+                            <tr class="tableTitle">
+                                <td style="text-align: center;width: 20px;padding: 0 10px 0 10px;">
+                                    <el-checkbox @change="noCarSelectAll"></el-checkbox>
+                                </td>
+                                <td class="tableTitle" style="width:300px">联系人</td>
+                                <td class="tableTitle" style="width:300px">联系方式</td>
+                                <td class="tableTitle" style="width:300px">邮箱(选填)</td>
+                                <td class="tableTitle" style="width:300px">职位</td>
+                                <td class="tableTitle" style="width:500px">备注(选填)</td>
+                                <td class="tableTitle" style="width:300px">合同联系人</td>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  v-for="(item,index) in noCarCustLinkman" :key="index">
+                                <td style="padding: 3px 10px 0 10px;">
+                                    <el-checkbox v-model="item.checked"></el-checkbox>
+                                </td>
+                                <td style="padding: 5px 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanName" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanPhone" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanMail" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanPost" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.remarks" :maxlength="200"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                <el-checkbox v-model="item.isContractLinkman" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="segment-foot">
-                <el-button type="primary" size="small" @click="add">新增</el-button>
-                <el-button type="danger" size="small" @click="del">删除</el-button>
+                <el-button type="primary" size="small" @click="noCarAdd">新增</el-button>
+                <el-button type="danger" size="small" @click="noCarDel">删除</el-button>
             </div>
         </div>
 
+        <!-- 煤链社 -->
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                业务情况
+            </div>
+            <div class="segment-area">
+                <el-row>
+                    <el-col :span="12" class="segment-brline">
+                        <RedStar label="客户分类：" :required="true">
+                            <span class="right-con">
+                                <el-select clearable multiple class="filter-item" v-model="filter.coalUnion.custSort" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in custSortList" :label="item.value" :value="item.key" :key="item.key">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="服务费比例（%）：" :required="true" v-if="filter.coalUnion.custSort.includes('2')">
+                            <span class="right-con">
+                                <el-input placeholder="请输入" style="width:250px;" type="number" :maxlength="50" v-model.trim="filter.coalUnion.serviceFee"></el-input>
+                            </span>
+                        </RedStar>
+                        
+                        <RedStar label="规模（万元/月）：">
+                            <span class="right-con">
+                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model.trim="filter.coalUnion.custCompanySize"></el-input>
+                            </span>
+                        </RedStar>
+                        <RedStar label="发货方式：">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custDeliverMode" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custDeliverMode" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="结算对象：">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custBalanceObj" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custBalanceObj" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="支付方式：">
+                            <span class="right-con">
+                                <el-select clearable multiple class="filter-item" v-model="filter.coalUnion.payMethod" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.payMethod" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                    </el-col>
+                    <el-col :span="12" class="segment-brline">
+                        <RedStar label="所属行业：" :required="true">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custTrades" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custTrades" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="业务类型：">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custBusinessType" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custBusinessType" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="运力组织方式：">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custPowerMode" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custPowerMode" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="收货方式：">
+                            <span class="right-con">
+                                <el-select clearable class="filter-item" v-model="filter.coalUnion.custReceiveMode" placeholder="请选择" style="width:250px;">
+                                    <el-option v-for="item in dictionary.custReceiveMode" :label="item.name" :value="item.value" :key="item.value">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="结算周期（天）：">
+                            <span class="right-con">
+                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model="filter.coalUnion.custBalanceCycle"></el-input>
+                            </span>
+                        </RedStar>
+                        
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                贸易结构
+            </div>
+            <div class="segment-area">
+                <div class="textStyle-title">上游：</div>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="filter.coalUnion.upstream" :max="200"></sjbtextarea>
+            </div>
+            <div class="segment-area" style="margin-bottom:15px">
+                <div class="textStyle-title">下游：</div>
+                <sjbtextarea type="textarea" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model.trim="filter.coalUnion.downstream" :max="200"></sjbtextarea>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="filter.baseCustInfo.custType == '2'">
+            <div class="segment-header" style="margin-bottom: 20px;">
+                <span class="left-red">*</span>
+                联系人信息
+            </div>
+            <div class="segment-area">
+
+                <div class="el-table__body-wrapper">
+                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="margin-bottom: 20px;">
+                        <thead>
+                            <tr class="tableTitle">
+                                <td style="text-align: center;width: 20px;padding: 0 10px 0 10px;">
+                                    <el-checkbox @change="coalUnionSelectAll"></el-checkbox>
+                                </td>
+                                <td class="tableTitle" style="width:300px">联系人</td>
+                                <td class="tableTitle" style="width:300px">联系方式</td>
+                                <td class="tableTitle" style="width:300px">邮箱(选填)</td>
+                                <td class="tableTitle" style="width:300px">职位</td>
+                                <td class="tableTitle" style="width:500px">备注(选填)</td>
+                                <td class="tableTitle" style="width:300px">合同联系人</td>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  v-for="(item,index) in coalUnionCustLinkman" :key="index">
+                                <td style="padding: 3px 10px 0 10px;">
+                                    <el-checkbox v-model="item.checked"></el-checkbox>
+                                </td>
+                                <td style="padding: 5px 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanName" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanPhone" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanMail" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.linkmanPost" :maxlength="50"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                    <el-input auto-complete="off" v-model.trim="item.remarks" :maxlength="200"></el-input>
+                                </td>
+                                <td style="padding: 0 10px 0 10px;">
+                                <el-checkbox v-model="item.isContractLinkman" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="segment-foot">
+                <el-button type="primary" size="small" @click="coalUnionAdd">新增</el-button>
+                <el-button type="danger" size="small" @click="coalUnionDel">删除</el-button>
+            </div>
+        </div>
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <el-button type="primary" size="small" @click="openConfirm('apply')">提交</el-button>
@@ -256,6 +407,7 @@ import { fetchForm, saveCust , custChange} from "@/api/customer";
 import { mapState } from "vuex";
 import RedStar from '@/components/RedStar/RedStar.vue';
 import sjbtextarea from '@/components/sjbTextarea';
+import { custBaseVali,custNoCarVali,custCoalUnionVali,linkManVali } from './cust.util';
 import { parseTime } from "@/utils";
 
 export default {
@@ -278,18 +430,101 @@ export default {
             leaderName: "",
             leaderPhone: null,
             confirmDialog: false,
+            custTypeList:[
+                {
+                key:"1",
+                value:"无车"
+                },{
+                key:"2",
+                value:"煤链社"
+                }
+            ],
+            custSortList:[
+                {
+                key:"1",
+                value:"供应商"
+                },{
+                key:"2",
+                value:"采购商"
+                },{
+                key:"3",
+                value:"经纪人"
+                }
+            ],
             filter: {
                 //筛选条件
-                custName: "",
-                remarks: "",
-                custAbbreviation: "", //简称
-                areaId: "", //所属区域
-                custAddress: "", //注册地址
-                custAddressCode: [], //注册地址编号
-                marketLeaderPhone: "", //市场负责人手机号
-                oldCustName: "",
-                custSource:""
+
+
+
+                baseCustInfo: {
+                    custType:"",
+                    id:"",
+                    custCode: "",
+                    custName: "",
+                    custAbbreviation: "",
+                    custAddressCode: [],
+                    custAddress: "",
+                    creditCode: "",
+                    legalRepresentative: "",
+                    registeredAddress: ""
+                },
+                noCar: {
+                    noCarId:"",
+                    custTrades: "",
+                    custBusinessType: "",
+                    custCompanySize: "",
+                    custPowerMode: "",
+                    custDeliverMode: "",
+                    custReceiveMode: "",
+                    custBalanceObj: "",
+                    custBalanceCycle: "",
+                    payMethod: [],
+                    dispatchProportion: "",
+                    upstream: "",
+                    downstream: "",
+                    custLinkman: []
+                },
+                coalUnion: {
+                    coalUnionId:"",
+                    custSort: [],
+                    custTrades: "",
+                    custCompanySize: "",
+                    custPowerMode: "",
+                    custDeliverMode: "",
+                    custReceiveMode: "",
+                    custBalanceObj: "",
+                    custBalanceCycle: "",
+                    payMethod: [],
+                    serviceFee: "",
+                    upstream: "",
+                    downstream: "",
+                    custLinkman: []
+                },
             },
+            noCarCustLinkman: [
+                {
+                linkmanName: '', //联系人姓名
+                linkmanPhone: '', //联系人电话
+                linkmanPost: '', //联系人职位
+                remarks: '', //备注
+                isContractLinkman: '0', //合同联系人：0否，1是
+                linkmanMail: '', //邮箱
+                checked:false,
+                id:""
+                }
+            ],
+            coalUnionCustLinkman: [
+                {
+                linkmanName: '', //联系人姓名
+                linkmanPhone: '', //联系人电话
+                linkmanPost: '', //联系人职位
+                remarks: '', //备注
+                isContractLinkman: '0', //合同联系人：0否，1是
+                linkmanMail: '', //邮箱
+                checked:false,
+                id:""
+                }
+            ],
             businessDetail: {
                 custTrades: "", // 所属行业
                 custCompanySize: "", //规模（万吨/月）
@@ -337,9 +572,9 @@ export default {
         }),
     },
     methods: {
-        setContact(row){
-            this.radioKey = row.index
-        },
+        // setContact(row){
+        //     this.radioKey = row.index
+        // },
         // openDialog(index) {
         //     // console.log(index)
         //     this.opendialog = true;
@@ -347,81 +582,19 @@ export default {
         // },
         openConfirm(type) {
             var _this = this;
-            if (!this.filter.custName || this.filter.custName == "") {
-                //客户名称为必填
-                this.$message({
-                    message: "请填写客户名称",
-                    type: "warning"
-                });
-                return;
+            if (!custBaseVali(this)) return; //校验
+            if(this.filter.baseCustInfo.custType == "1"){//无车
+                if (!custNoCarVali(this)) return; 
+                if (!linkManVali(this.noCarCustLinkman,this)) return; 
+            } else {//煤链社
+                if (!custCoalUnionVali(this)) return;
+                if (!linkManVali(this.coalUnionCustLinkman,this)) return;
             }
-            if (!this.filter.custAddressCode || this.filter.custAddressCode == "") {
-                //客户名称为必填
-                this.$message({
-                    message: "请选择地址",
-                    type: "warning"
-                });
-                return;
-            }
-            if(!this.filter.custAddress){
-                this.$message({
-                    message: "请填写详细地址",
-                    type: "warning"
-                });
-                return;
-            }
-            if (!this.businessDetail.custTrades) {
-                this.$message({
-                    message: "请填写所属行业！",
-                    type: "warning"
-                });
-                return
-            }
-            if(this.itemList.length < 1){
-                this.$message({
-                    message: "请添加合同联系人",
-                    type: "warning"
-                });
-                return;
-            }
-            var validSpace  = /^[\s]*$/; 
-            if (validSpace.test(this.filter.custName)) {
-                //客户名称为必填
-                this.$message({
-                    message: "客户名称不能为空",
-                    type: "warning"
-                });
-                return;
-            }
-            let flag = true;
-            this.itemList.forEach(item=>{
-                if(!item.linkmanName){
-                    this.$message({
-                        message: "联系人名称不能为空",
-                        type: "warning"
-                    });
-                    flag = false;
-                }
-                else if(!item.linkmanPhone || !/^1[3456789][0-9]{9}$/.test(item.linkmanPhone)){
-                    this.$message({
-                        message: "请正确填写联系人联系方式",
-                        type: "warning"
-                    });
-                    flag = false
-                }
-                else if(!item.linkmanPost){
-                    this.$message({
-                        message: "联系人职位不能为空",
-                        type: "warning"
-                    });
-                    flag = false
-                }
-                
-            })
-            if(flag&&type =="apply"){
+            console.log(this.filter)
+            if(type =="apply"){
                 this.confirmDialog = true;
             }
-            if(flag&&type =="open"){
+            if(type =="open"){
                 this.openDialog = true;
             }
         },
@@ -432,13 +605,13 @@ export default {
                     id: this.$route.query.key
                 };
             }
-            this.itemList.forEach(item=>{
-                if(this.radioKey === item.index){
-                    item.isContractLinkman = 1
-                }else{
-                    item.isContractLinkman = 0
-                }
-            })
+            // this.itemList.forEach(item=>{
+            //     if(this.radioKey === item.index){
+            //         item.isContractLinkman = 1
+            //     }else{
+            //         item.isContractLinkman = 0
+            //     }
+            // })
             saveCust({
                 ...this.filter,
                 ...this.businessDetail,
@@ -514,33 +687,76 @@ export default {
             });
         },
         selectAreaCode(data) {
-            this.filter.custAddressCode = data;
+            this.filter.baseCustInfo.custAddressCode = data;
         },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
+
+        noCarSelectAll(val) {
+            if (val) {
+                this.noCarCustLinkman.forEach((element) => {
+                    element.checked = true;
+                });
+            } else {
+                this.noCarCustLinkman.forEach((element) => {
+                    element.checked = false;
+                });
+            }
         },
-        add() {
-            this.itemList.push({ index: new Date().getTime()});
+        noCarAdd() {
+            this.noCarCustLinkman.push({
+                linkmanName: '', //联系人姓名
+                linkmanPhone: '', //联系人电话
+                linkmanPost: '', //联系人职位
+                remarks: '', //备注
+                isContractLinkman: '0', //合同联系人：0否，1是
+                linkmanMail: '', //邮箱
+                id:"",
+                checked:false
+            });
         },
-        del(){
-            var _this = this
-            var newindex = [];
-            var newBox = [];
-            _this.multipleSelection.forEach((value,idx)=>{
-                newindex.push(value.index)
-            })
-            var arrBox = JSON.parse(JSON.stringify(this.itemList||[]))
-            arrBox.forEach((val,num)=>{
-                if(newindex.indexOf(val.index) == -1){
-                    newBox.push(arrBox[num])
+        noCarDel() {
+            let newItemList = this.noCarCustLinkman.filter((i) => {
+                if (!i.checked) {
+                    return true;
                 }
-            })
-            this.itemList = newBox
+            });
+            this.noCarCustLinkman = newItemList;
+        },
+
+        coalUnionSelectAll(val) {
+            if (val) {
+                this.coalUnionCustLinkman.forEach((element) => {
+                    element.checked = true;
+                });
+            } else {
+                this.coalUnionCustLinkman.forEach((element) => {
+                    element.checked = false;
+                });
+            }
+        },
+        coalUnionAdd() {
+            this.coalUnionCustLinkman.push({
+                linkmanName: '', //联系人姓名
+                linkmanPhone: '', //联系人电话
+                linkmanPost: '', //联系人职位
+                remarks: '', //备注
+                isContractLinkman: '0', //合同联系人：0否，1是
+                linkmanMail: '', //邮箱
+                id:"",
+                checked:false
+            });
+        },
+        coalUnionDel() {
+            let newItemList = this.coalUnionCustLinkman.filter((i) => {
+                if (!i.checked) {
+                    return true;
+                }
+            });
+            this.coalUnionCustLinkman = newItemList;
         },
     },
     created() {
         var _this = this;
-        this.add();
+        // this.add();
         if (this.$route.query.key) {
             fetchForm({
                 id: this.$route.query.key
