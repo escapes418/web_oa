@@ -416,13 +416,6 @@ export default {
         sjbtextarea
     },
     data() {
-        const validatePass = (rule, value, callback) => {
-            if (value.length < 5) {
-                callback(new Error("密码不能小于5位"));
-            } else {
-                callback();
-            }
-        };
         return {
             radioKey:"",
             openDialog:false,
@@ -762,45 +755,13 @@ export default {
                 id: this.$route.query.key
             }).then(response => {
                 var data = response.data;
-                this.filter.custName = data.custName;
-                this.filter.remarks = data.remarks;
-                this.filter.custSource = data.custSource
-                this.filter.custAbbreviation = data.custAbbreviation;
-                this.filter.oldCustName = data.custName;
-                this.filter.custAddress = data.custAddress;
-                this.filter.custAddressCode = data.custAddressCode;
-
-            
-                this.filter.marketLeaderPhone = data.marketLeaderPhone;
-                this.leaderName = data.marketLeaderName;
-
-                this.businessDetail.custTrades = data.custTrades;
-                this.businessDetail.custCompanySize = Number(data.custCompanySize);
-                this.businessDetail.custDeliverMode = data.custDeliverMode;
-                this.businessDetail.custBalanceObj = data.custBalanceObj;
-                this.businessDetail.payMethod = data.payMethod || [];
-                this.businessDetail.custPowerMode = data.custPowerMode;
-                this.businessDetail.custReceiveMode = data.custReceiveMode;
-                this.businessDetail.custBalanceCycle = data.custBalanceCycle;
-                this.businessDetail.custBusinessType = data.custBusinessType;
-
-                this.tradeStructure.upstream = data.custTradeStructureResponse.upstream;
-                this.tradeStructure.downstream = data.custTradeStructureResponse.downstream;
-
-                this.itemList = data.custLinkmanResponse || [];
-
-                this.contractInfoSaveReq = data.contractInfoDetailResponse || {}
-                this.contractInfoSaveReq.oldCreditCode = data.contractInfoDetailResponse.creditCode
-                this.itemList.forEach((item, idx) => {
-                    _this.itemList[idx] = {
-                        ..._this.itemList[idx],
-                        index: idx
-                    };
-                    if(item.isContractLinkman == 1){
-                        this.radioKey = idx
-                    }
-                });
-                this.leaderPhone = response.data.leaderPhone;
+                this.filter = data;
+                if(data.noCar.custLinkman.length!= 0){
+                    this.noCarCustLinkman = data.noCar.custLinkman;
+                }
+                if(data.coalUnion.custLinkman.length!= 0){
+                    this.coalUnionCustLinkman = data.coalUnion.custLinkman;
+                }
                 this.ready = true;
             });
         } else {
