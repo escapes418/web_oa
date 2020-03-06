@@ -757,10 +757,22 @@ export default {
                 var data = response.data;
                 this.filter = data;
                 if(data.noCar.custLinkman.length!= 0){
-                    this.noCarCustLinkman = data.noCar.custLinkman;
+                    this.noCarCustLinkman = [];
+                    data.noCar.custLinkman.forEach((item,index)=>{
+                        this.noCarCustLinkman.push({
+                            checked: false,
+                            ...item
+                        })
+                    })
                 }
                 if(data.coalUnion.custLinkman.length!= 0){
-                    this.coalUnionCustLinkman = data.coalUnion.custLinkman;
+                    this.coalUnionCustLinkman = [];
+                    data.coalUnion.custLinkman.forEach((item,index)=>{
+                        this.coalUnionCustLinkman.push({
+                            checked: false,
+                            ...item
+                        })
+                    })
                 }
                 this.ready = true;
             });
