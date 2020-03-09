@@ -248,7 +248,7 @@
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:100%">
+                    <el-table ref="multipleTable" border :data="noCaritemList" tooltip-effect="dark" style="width:100%">
                         <el-table-column align="center" label="编号" width="100px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.index}}</span>
@@ -302,14 +302,14 @@
                     </el-table>
                 </div>
                 <div class="pagination-container">
-                    <el-pagination background @current-change="handleCurrentChange" :current-page="listQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
+                    <el-pagination background @current-change="handlenoCarCurrentChange" :current-page="noCarlistQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="noCartotal">
                     </el-pagination>
                 </div>
             </div>
         </div>
         <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="sjb-foot-button">
-                <el-button v-if="noCarISPICK&&!noCarISME" size="medium" type="primary" @click="getCustBack">捡入</el-button>
+                <el-button v-if="noCarISPICK&&!noCarISME" size="medium" type="primary" @click="getCustBack('1')">捡入</el-button>
                 <el-button @click="goBack" size="medium">返回</el-button>
             </div>
         </div>
@@ -483,7 +483,7 @@
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:100%">
+                    <el-table ref="multipleTable" border :data="coalUnionitemList" tooltip-effect="dark" style="width:100%">
                         <el-table-column align="center" label="编号" width="100px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.index}}</span>
@@ -537,14 +537,14 @@
                     </el-table>
                 </div>
                 <div class="pagination-container">
-                    <el-pagination background @current-change="handleCurrentChange" :current-page="listQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
+                    <el-pagination background @current-change="handlecoalUnionCurrentChange" :current-page="coalUnionlistQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="coalUniontotal">
                     </el-pagination>
                 </div>
             </div>
         </div>
         <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
             <div class="sjb-foot-button">
-                <el-button v-if="coalUnionISPICK&&!coalUnionISME" size="medium" type="primary" @click="getCustBack">捡入</el-button>
+                <el-button v-if="coalUnionISPICK&&!coalUnionISME" size="medium" type="primary" @click="getCustBack('2')">捡入</el-button>
                 <el-button @click="goBack" size="medium">返回</el-button>
             </div>
         </div>
@@ -554,7 +554,7 @@
 <script>
 import common from "@/utils/common";
 import {getRegion} from '@/api/getRegion'
-import { fetchForm, saveCust , custChange,getMaintain} from "@/api/customer";
+import { fetchForm, custChange,getMaintain} from "@/api/customer";
 import sjbtextarea from '@/components/sjbTextarea';
 import { parseTime } from "@/utils";
 
@@ -589,18 +589,29 @@ export default {
                 downstream: undefined
             },
             key:this.$route.query.key,
-            total:null,
-            itemList:[],
-            listQuery: {
+            noCartotal:null,
+            noCaritemList:[],
+            noCarlistQuery: {
                 custId:this.$route.query.key,
+                custType:'1',
                 pageNo: 1,
                 pageSize: 20
-            }
+            },
+            coalUniontotal:null,
+            coalUnionitemList:[],
+            coalUnionlistQuery: {
+                custId:this.$route.query.key,
+                custType:'2',
+                pageNo: 1,
+                pageSize: 20
+            },
         };
     },
     created() {
         this.getDetail();
-        this.getListData()
+        // this.getListData()
+        this.getnoCarListData();
+        this.getcoalUnionListData()
     },
     computed:{
         noCarISPICK:function(){
@@ -628,9 +639,7 @@ export default {
     },
     methods: {
         getDetail() {
-            fetchForm({
-                id: this.key
-            }).then(response => {
+            fetchForm(this.key).then(response => {
                 var data = response.data
                 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
                 data = {
@@ -750,19 +759,35 @@ export default {
                 // this.detailData.custReceiveMode = this.getDictionary("cust_receive_mode", data.custReceiveMode)//收货方式
             });
         },
-        handleCurrentChange(val) {
+        handlenoCarCurrentChange(val) {
             this.listQuery.pageNo = val;
-            this.getListData();
+            this.getnoCarListData();
             this.listLoading = false;
         },
-        getListData(){
-            getMaintain(this.listQuery).then(res=>{
+        handlecoalUnionCurrentChange(val) {
+            this.coalUnionlistQuery.pageNo = val;
+            this.getcoalUnionListData();
+            this.coalUnionlistLoading = false;
+        },
+        getnoCarListData(){
+            getMaintain(this.noCarlistQuery).then(res=>{
                 if(res.status == 0){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
-                    this.itemList = res.data.list;
-                    this.total = res.data.total;
+                    this.noCaritemList = res.data.list;
+                    this.noCartotal = res.data.total;
+                }
+            })
+        },
+        getcoalUnionListData(){
+            getMaintain(this.coalUnionlistQuery).then(res=>{
+                if(res.status == 0){
+                    res.data.list.forEach((item,index) =>{
+                        item.index = index + 1;
+                    });
+                    this.coalUnionitemList = res.data.list;
+                    this.coalUniontotal = res.data.total;
                 }
             })
         },
@@ -805,10 +830,11 @@ export default {
             })
             return getName;
         },
-        getCustBack(){
+        getCustBack(type){
             custChange({
                 id:this.$route.query.key,
-                isChange:2
+                isChange:2,
+                custType:type,
             }).then(res=>{
                 if(res.status == 0){
                     this.$message({

@@ -32,18 +32,33 @@ export function custChange(params) {
     })
 }
 
-export function fetchForm(params){
+export function fetchForm(data){
   return request({
-    url:'/custInfo/custInfoDetail',
+    url:'/custInfo/custInfoDetail/'+data,
     method:'post',
-    data:params
   })
 }
+
+// export function fetchForm(params){
+//   return request({
+//     url:'/custInfo/custInfoDetail',
+//     method:'post',
+//     data:{id:params}
+//   })
+// }
 
 export function deleCust(params){
   return request({
     url:'/custInfo/deleteCustInfo',
     method:'post',
+    data:params
+  })
+}
+
+export function modifyCust(params){
+  return request({
+    url:'/custInfo/saveCustInfo',
+    method:'put',
     data:params
   })
 }

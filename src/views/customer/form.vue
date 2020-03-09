@@ -200,7 +200,7 @@
                                     <el-input auto-complete="off" v-model.trim="item.remarks" :maxlength="200"></el-input>
                                 </td>
                                 <td style="padding: 0 10px 0 10px;">
-                                <el-checkbox v-model="item.isContractLinkman" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
+                                <el-checkbox v-model="item.isContractLinkman" @change="noCarSetLinkman(index)" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
                                 </td>
                             </tr>
                         </tbody>
@@ -365,7 +365,7 @@
                                     <el-input auto-complete="off" v-model.trim="item.remarks" :maxlength="200"></el-input>
                                 </td>
                                 <td style="padding: 0 10px 0 10px;">
-                                <el-checkbox v-model="item.isContractLinkman" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
+                                <el-checkbox v-model="item.isContractLinkman" @change="coalUnionSetLinkman(index)" :true-label="'1'" :false-label="'0'">设为默认的合同联系人</el-checkbox>
                                 </td>
                             </tr>
                         </tbody>
@@ -403,7 +403,7 @@
 
 <script>
 import common from "@/utils/common";
-import { fetchForm, saveCust , custChange} from "@/api/customer";
+import { fetchForm, saveCust, modifyCust, custChange} from "@/api/customer";
 import { mapState } from "vuex";
 import RedStar from '@/components/RedStar/RedStar.vue';
 import sjbtextarea from '@/components/sjbTextarea';
@@ -451,7 +451,7 @@ export default {
 
                 baseCustInfo: {
                     custType:"",
-                    id:"",
+                    id:this.$route.query.key|| "0",
                     custCode: "",
                     custName: "",
                     custAbbreviation: "",
@@ -583,6 +583,8 @@ export default {
                 if (!custCoalUnionVali(this)) return;
                 if (!linkManVali(this.coalUnionCustLinkman,this)) return;
             }
+            this.filter.noCar.custLinkman = this.noCarCustLinkman;
+            this.filter.coalUnion.custLinkman = this.coalUnionCustLinkman;
             console.log(this.filter)
             if(type =="apply"){
                 this.confirmDialog = true;
@@ -593,86 +595,94 @@ export default {
         },
         openCust(){
             if (this.$route.query.key) {
-                this.filter = {
-                    ...this.filter,
-                    id: this.$route.query.key
-                };
-            }
-            // this.itemList.forEach(item=>{
-            //     if(this.radioKey === item.index){
-            //         item.isContractLinkman = 1
-            //     }else{
-            //         item.isContractLinkman = 0
-            //     }
-            // })
-            saveCust({
-                ...this.filter,
-                ...this.businessDetail,
-                contractInfoSaveReq:this.contractInfoSaveReq,
-                custTradeStructureReq: this.tradeStructure,
-                custLinkman: this.itemList,
-                custStatus: this.custStatus
-            }).then(res=>{
-                if(res.status == 0){
-                    return new Promise((resolve, reject)=>{
-                        custChange({
-                            isChange:1,
-                            id:this.$route.query.key
-                        }).then(res=>{
-                            if(res.status == 0){
-                                this.$message({
-                                    message: res.message,
-                                    type: "success"
-                                });
-                                this.$router.push({
-                                    path: "/inforManage/customerList"
-                                });
-                                this.openDialog = false
-                            }
+                modifyCust(this.filter).then(res=>{
+                    if(res.status == 0){
+                        return new Promise((resolve, reject)=>{
+                            custChange({
+                                isChange:1,
+                                id:this.$route.query.key,
+                                custType:this.filter.baseCustInfo.custType,
+                            }).then(res=>{
+                                if(res.status == 0){
+                                    this.$message({
+                                        message: res.message,
+                                        type: "success"
+                                    });
+                                    this.$router.push({
+                                        path: "/inforManage/customerList"
+                                    });
+                                    this.openDialog = false
+                                }
+                            })
+                            resolve()
                         })
-                        resolve()
-                    })
-                }
-            });
+                    }
+                });
+            } else {
+                saveCust(this.filter).then(res=>{
+                    if(res.status == 0){
+                        return new Promise((resolve, reject)=>{
+                            custChange({
+                                isChange:1,
+                                id:this.$route.query.key
+                            }).then(res=>{
+                                if(res.status == 0){
+                                    this.$message({
+                                        message: res.message,
+                                        type: "success"
+                                    });
+                                    this.$router.push({
+                                        path: "/inforManage/customerList"
+                                    });
+                                    this.openDialog = false
+                                }
+                            })
+                            resolve()
+                        })
+                    }
+                });
+            }
+            
         },
         saveCustForm() {
             if (this.$route.query.key) {
-                this.filter = {
-                    ...this.filter,
-                    id: this.$route.query.key
-                };
+                modifyCust(this.filter).then(res => {
+                    this.confirmDialog = false;
+                    if(res.status ==0){
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.$router.push({
+                            path: "/inforManage/customerList"
+                        });
+                    } else {
+                        this.$message({
+                            message: res.message,
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                saveCust(this.filter).then(res => {
+                    this.confirmDialog = false;
+                    if(res.status ==0){
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.$router.push({
+                            path: "/inforManage/customerList"
+                        });
+                    } else {
+                        this.$message({
+                            message: res.message,
+                            type: "error"
+                        });
+                    }
+                });
             }
-            this.itemList.forEach(item=>{
-                if(this.radioKey === item.index){
-                    item.isContractLinkman = 1
-                }else{
-                    item.isContractLinkman = 0
-                }
-            })
-            saveCust({
-                ...this.filter,
-                ...this.businessDetail,
-                contractInfoSaveReq:this.contractInfoSaveReq,
-                custTradeStructureReq: this.tradeStructure,
-                custLinkman: this.itemList,
-                custStatus: this.custStatus
-            }).then(res => {
-                this.confirmDialog = false;
-                if(res.status ==0){
-                    this.$message({
-                        message: res.message,
-                        type: "success"
-                    });
-                    this.$router.push({
-                        path: "/inforManage/customerList"
-                    });
-                } else {
-                    this.$message({
-                        message: res.message,
-                        type: "error"
-                    });
-                }
-            });
+            
         },
         backStep() {
             this.$router.push({
@@ -714,7 +724,15 @@ export default {
             });
             this.noCarCustLinkman = newItemList;
         },
-
+        noCarSetLinkman(index) {
+            if (this.noCarCustLinkman[index].isContractLinkman == '1') {
+                for (let i in this.noCarCustLinkman) {
+                    if (index != i) {
+                        this.noCarCustLinkman[i].isContractLinkman = '0';
+                    }
+                }
+            }
+        },
         coalUnionSelectAll(val) {
             if (val) {
                 this.coalUnionCustLinkman.forEach((element) => {
@@ -746,14 +764,21 @@ export default {
             });
             this.coalUnionCustLinkman = newItemList;
         },
+        coalUnionSetLinkman(index) {
+            if (this.coalUnionCustLinkman[index].isContractLinkman == '1') {
+                for (let i in this.coalUnionCustLinkman) {
+                    if (index != i) {
+                        this.coalUnionCustLinkman[i].isContractLinkman = '0';
+                    }
+                }
+            }
+        },
     },
     created() {
         var _this = this;
         // this.add();
         if (this.$route.query.key) {
-            fetchForm({
-                id: this.$route.query.key
-            }).then(response => {
+            fetchForm(this.$route.query.key).then(response => {
                 var data = response.data;
                 this.filter = data;
                 if(data.noCar.custLinkman.length!= 0){
