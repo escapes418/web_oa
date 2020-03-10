@@ -82,8 +82,8 @@
         <template>
             <div style="margin-left:20px;width: 180px;">
                 <el-tabs v-model="detailData.baseCustInfo.custType">
-                    <el-tab-pane label="无车承运" name="1"></el-tab-pane>
-                    <el-tab-pane label="煤链社" name="2"></el-tab-pane>
+                    <el-tab-pane :disabled="noCarTabDisabled" label="无车承运" name="1"></el-tab-pane>
+                    <el-tab-pane :disabled="coalUnionTabDisabled" label="煤链社" name="2"></el-tab-pane>
                 </el-tabs>
             </div>
         </template>
@@ -635,14 +635,28 @@ export default {
         coalUnionISME:function(){
             let result = this.detailData.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
             return result
-        }
+        },
+        noCarTabDisabled(){
+            var flag = false
+            if(this.detailData.noCar.custTrades == ""){
+                flag = true;
+            }
+                return flag;
+        },
+        coalUnionTabDisabled(){
+            var flag = false
+            if(this.detailData.coalUnion.custTrades == ""){
+                 flag = true;
+            }
+                return flag;
+        },
     },
     methods: {
         getDetail() {
             fetchForm(this.key).then(response => {
                 var data = response.data
                 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-                data = {
+                var data = {
                     "baseCustInfo": {
                         "id": "123",
                         "custType":"2",
@@ -738,25 +752,17 @@ export default {
                     },
                 }
                 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-
+                
                 this.detailData = data;
-                // this.downstream = data.custTradeStructureResponse.downstream;
-                // this.upstream = data.custTradeStructureResponse.upstream;
-                // this.detailData.custClassify = this.getDictionary("cust_classify", data.custClassify)//客户分类
-                // this.detailData.custType = this.getDictionary("cust_type", data.custType)//客户类别
-            
-                // this.detailData.custNature = this.getDictionary("cust_nature", data.custNature)//公司性质
-                // this.detailData.custStage = this.getDictionary("cust_stage", data.custStage)//公司性质
-
-                // this.detailData.custTrades = this.getDictionary("cust_trades", data.custTrades)//所属行业
-                // this.detailData.custDeliverMode = this.getDictionary("cust_deliver_mode", data.custDeliverMode)//发货方式
-                // this.detailData.custBalanceObj = this.getDictionary("cust_balance_obj", data.custBalanceObj)//结算对象
-                // if(data.payMethod){
-                //     this.detailData.payMethod = this.getPayMent(data.payMethod)//支付方式
-                // }
-                // this.detailData.custBusinessType = this.getDictionary("cust_business_type", data.custBusinessType)//业务类型
-                // this.detailData.custPowerMode = this.getDictionary("cust_power_mode", data.custPowerMode)//业务类型
-                // this.detailData.custReceiveMode = this.getDictionary("cust_receive_mode", data.custReceiveMode)//收货方式
+                if(this.$route.query.custType == "0"){
+                   if(this.detailData.noCar.custTrades == "" &&this.detailData.coalUnion.custTrades != "") {
+                       this.detailData.baseCustInfo.custType = "2"
+                   } else{
+                       this.detailData.baseCustInfo.custType = "1"
+                   }
+                } else{
+                    this.detailData.baseCustInfo.custType = this.$route.query.custType
+                }
             });
         },
         handlenoCarCurrentChange(val) {

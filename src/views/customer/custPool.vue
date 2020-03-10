@@ -880,7 +880,7 @@ export default {
         handleDetail(row) {
             this.$router.push({
                 path: "/inforManage/customerDetail",
-                query: { key: row.id ,type:"pool"}
+                query: { key: row.id ,type:"pool", custType:"0"}
             });
         },
     }

@@ -226,7 +226,7 @@ export default {
         handleDetail(item){
             this.$router.push({
                 path: "/inforManage/customerDetail",
-                query: { key: item.childCustId}
+                query: { key: item.childCustId, custType:"0"}
             });
         }
     }

@@ -7,12 +7,17 @@
             <div class="segment-area">
                 <el-row>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="客户类型：" :required="true">
+                        <RedStar label="客户类型：" :required="true" v-if="!routeKey">
                             <span class="right-con">
                                 <el-select clearable class="filter-item" v-model="filter.baseCustInfo.custType" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in custTypeList" :label="item.value" :value="item.key" :key="item.key">
                                     </el-option>
                                 </el-select>
+                            </span>
+                        </RedStar>
+                        <RedStar label="客户类型：" v-if="routeKey">
+                            <span class="right-con">
+                                {{['无车','煤链社'][routeCustType-1]}}
                             </span>
                         </RedStar>
                         <RedStar label="客户简称：">
@@ -423,6 +428,8 @@ export default {
             leaderName: "",
             leaderPhone: null,
             confirmDialog: false,
+            routeKey: this.$route.query.key,
+            routeCustType:this.$route.query.custType,
             custTypeList:[
                 {
                 key:"1",
@@ -799,6 +806,7 @@ export default {
                         })
                     })
                 }
+                this.filter.custType = this.$route.query.custType;
                 this.ready = true;
             });
         } else {
