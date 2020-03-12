@@ -34,7 +34,7 @@ export function custChange(params) {
 
 export function fetchForm(data){
   return request({
-    url:'/custInfo/custInfoDetail/'+data,
+    url:'/custInfo/custInfoNewDetail/'+data,
     method:'post',
   })
 }
@@ -68,6 +68,14 @@ export function saveCust(params){
     url:'/custInfo/saveCustInfo',
     method:'post',
     data:params
+  })
+}
+
+export function verifyCust(params){
+  return request({
+    url:'/custInfo/verify',
+    method:'get',
+    params:params
   })
 }
 

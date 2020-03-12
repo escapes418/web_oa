@@ -408,7 +408,7 @@
 
 <script>
 import common from "@/utils/common";
-import { fetchForm, saveCust, modifyCust, custChange} from "@/api/customer";
+import { fetchForm, saveCust, modifyCust, custChange, verifyCust} from "@/api/customer";
 import { mapState } from "vuex";
 import RedStar from '@/components/RedStar/RedStar.vue';
 import sjbtextarea from '@/components/sjbTextarea';
@@ -458,7 +458,7 @@ export default {
 
                 baseCustInfo: {
                     custType:"",
-                    id:this.$route.query.key|| "0",
+                    id:this.$route.query.key,
                     custCode: "",
                     custName: "",
                     custAbbreviation: "",
@@ -593,12 +593,47 @@ export default {
             this.filter.noCar.custLinkman = this.noCarCustLinkman;
             this.filter.coalUnion.custLinkman = this.coalUnionCustLinkman;
             console.log(this.filter)
-            if(type =="apply"){
-                this.confirmDialog = true;
-            }
-            if(type =="open"){
-                this.openDialog = true;
-            }
+            verifyCust({
+                custType:this.filter.baseCustInfo.custType,
+                custName:this.filter.baseCustInfo.custName,
+                custId:this.routeKey || '0',
+            }).then(res=>{
+                if(res.status == 0){
+                    var flag = false;
+                    if(res.data.exist == 0){
+                        var title = '客户已存在，是否更新基本信息?'
+                        flag = true
+                    } else if(res.data.exist == 1){
+                        var title = '是否保存?'
+                        flag = true
+                    }else if(res.data.exist == 2){
+                        var title = '客户已存在，不可重复新增客户'
+                    }
+                    this.$confirm(title, {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    }).then(() => {
+                        if(type =="apply"){
+                            if (flag) _this.saveCustForm()
+                        }
+                        if(type =="open"){
+                            if (flag) _this.openCustDia()
+                        }
+                    }).catch(() => {      
+                });
+
+                }
+            });
+            
+        },
+        openCustDia(){
+            this.$confirm("开放客户后，将无法再捡回该客户，是否开放客户？", {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                }).then(() => {
+                    this.openCust()
+                }).catch(() => {        
+            });
         },
         openCust(){
             if (this.$route.query.key) {
