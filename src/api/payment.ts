@@ -37,7 +37,7 @@ export function payApply(parmas) {
 export function getDetail(parmas) {
     return request({
         url:'/paymentFlow/flowdetail/'+parmas,
-        method:'post',
+        method:'get',
     })
 }
 

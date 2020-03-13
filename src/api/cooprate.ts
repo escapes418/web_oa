@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function fetchList(params) {
     return request({
         url: '/needFlow/queryNeedFlowList',
-        method: 'post',
+        method:'post',
         data: params
     })
 }

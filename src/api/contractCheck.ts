@@ -48,6 +48,13 @@ export function fetchProDic(parmas) {
     })
 }
 
+export function getCust(params){
+    return request({
+        url: `/custInfo/queryCustWithBusiness/${params}`,
+        method: 'get',
+    },false)
+}
+
 export function conApply(params){
     return request({
         url: '/contractFlowNew/contractApplyNew',

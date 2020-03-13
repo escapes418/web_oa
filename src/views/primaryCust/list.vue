@@ -57,12 +57,12 @@
                         <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围" :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
-                    <div class="toolbar-item">
+                    <!-- <div class="toolbar-item">
                         <span class="item-label">所属区域：</span>
                         <el-cascader style="width: 140px" 
                             class="filter-item" :options="marketFullList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
                         </el-cascader>
-                    </div>
+                    </div> -->
                     <div class="toolbar-item">
                         <span class="item-label">行业：</span>
                         <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.custTrades" placeholder="请选择">
@@ -94,7 +94,7 @@
                     <span class="ignore-detail" :title="scope.row.mainCustName">{{scope.row.mainCustName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="客户级别" width="120px">
+            <!-- <el-table-column align="center" label="客户级别" width="120px">
                 <template slot-scope="scope">
                     <span>{{scope.row.custStageName}}</span>
                 </template>
@@ -103,12 +103,12 @@
                 <template slot-scope="scope">
                     <span>{{scope.row.custTradesName}}</span>
                 </template>
-            </el-table-column>
-            <el-table-column align="center" label="市场负责人" width="100px">
+            </el-table-column> -->
+            <!-- <el-table-column align="center" label="市场负责人" width="100px">
                 <template slot-scope="scope">
                     <span>{{scope.row.man}}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column align="center" label="商务助理" width="100px">
                 <template slot-scope="scope">
                     <span>{{scope.row.businessAssistantName}}</span>
@@ -124,17 +124,17 @@
                     <span>{{scope.row.accountLeaderName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="所属区域" width="120px">
+            <!-- <el-table-column align="center" label="所属区域" width="120px">
                 <template slot-scope="scope">
                     <span>{{scope.row.officeName}}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column align="center" label="首次跑单时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{scope.row.firstOrderTime}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="更新时间" width="140px">
+            <el-table-column align="center" label="更新时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{scope.row.time | stamp2TextDateFull}}</span>
                 </template>
@@ -147,7 +147,7 @@
             <el-table-column align="center" label="操作"  width="320px">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
-                    <el-button v-if="userInfo.name == scope.row.vipCustomerName || userInfo.name == scope.row.businessAssistantName" class="filter-item"type="primary" size="mini" @click="modifyContact(scope.row)">编辑联系人</el-button>
+                    <el-button v-if="userInfo.name == scope.row.vipCustomerName || userInfo.name == scope.row.businessAssistantName" class="filter-item" type="primary" size="mini" @click="modifyContact(scope.row)">编辑联系人</el-button>
                     <el-button v-if="userInfo.name == scope.row.vipCustomerName" type="primary" size="mini" @click="maintain(scope.row)">维护管理</el-button>
                 </template>
             </el-table-column>
@@ -162,7 +162,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectCust">
+                <span v-for="(item,index) in selectCust" :key="index">
                     <span class="select-item">{{item.custName}}</span>
                 </span>
             </div>

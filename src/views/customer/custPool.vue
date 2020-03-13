@@ -20,12 +20,12 @@
                     <span style="color:#606266">{{marketLeader}}</span>
                 </div>
             </div>
-            <div class="toolbar-item">
+            <!-- <div class="toolbar-item">
                 <span class="item-label">所属区域：</span>
                 <el-cascader style="width: 140px" 
                     class="filter-item" :options="marketFullList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
                 </el-cascader>
-            </div>
+            </div> -->
             <div class="toolbar-item">
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                 <el-button class="filter-item" type="warning" v-waves icon="el-icon-refresh" @click="restListQuery(restCallback)">重置</el-button>
@@ -88,7 +88,12 @@
                     <span class="ignore-detail">{{scope.row.creditCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="客户级别" width="120px">
+            <el-table-column align="center" label="法定代表人" width="120px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.legalRepresentative}}</span>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column align="center" label="客户级别" width="120px">
                 <template slot-scope="scope">
                     <span>{{scope.row.custStageName}}</span>
                 </template>
@@ -117,8 +122,8 @@
                 <template slot-scope="scope">
                     <span>{{scope.row.custListPlaceName}}</span>
                 </template>
-            </el-table-column>
-            <el-table-column align="center" label="更新时间" width="140px">
+            </el-table-column> -->
+            <el-table-column align="center" label="更新时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{scope.row.time | stamp2TextDateFull}}</span>
                 </template>
@@ -184,17 +189,30 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectCust">
+                <span v-for="(item,index) in selectCust" :key="index">
                     <span class="select-item">{{item.custName}}</span>
                 </span>
             </div>
             <div class="merge-item">
                 <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox>
-                <el-checkbox v-model="areaChecked" label="所属区域"></el-checkbox>
+                <!-- <el-checkbox v-model="areaChecked" label="所属区域"></el-checkbox> -->
                 <el-checkbox v-model="custChecked" label="客户级别"></el-checkbox>
             </div>
             <div class="move-select">
                 <div class="move-item">
+                    <span class="item-label">客户分类：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="custType"
+                        filterable
+                        placeholder="请选择客户分类">
+                        <el-option v-for="item in custTypeList" :key="item.value" :label="item.name" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    
                     <span class="item-label">市场负责人：</span>
                     <el-select 
                         style="width: 300px" 
@@ -206,13 +224,14 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
+
                 </div>
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">所属区域：</span>
                     <el-cascader style="width: 300px" 
                         class="filter-item" :options="marketList" filterable :props="defaultProps" v-model="marketId" :disabled="!areaChecked" placeholder="请选择所属区域">
                     </el-cascader>
-                </div>
+                </div> -->
                 <div class="move-item">
                     <span class="item-label">客户级别：</span>
                     <el-select 
@@ -232,8 +251,20 @@
             </span>
         </el-dialog>
 
-        <el-dialog title="提示" :close-on-click-modal="false" :visible.sync="dialogFreeVisible" width="25%">
-            <div class="merge-item">确定将所选客户移至公海/区域公海？
+        <el-dialog title="移至公海/区域公海" :close-on-click-modal="false" :visible.sync="dialogFreeVisible" width="25%">
+            <div class="merge-item">
+                <div class="move-item">
+                    <span class="item-label">客户分类：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="freeSeaType"
+                        filterable
+                        placeholder="请选择客户分类">
+                        <el-option v-for="item in custTypeList" :key="item.value" :label="item.name" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmFree">确认</el-button>
@@ -343,6 +374,9 @@ export default {
             custStage:"",
             memberList:[],
             marketFullList:[],
+            custTypeList:[],
+            custType:"",
+            freeSeaType:"",
             marketList:[],
             marketId:[],
             defaultProps: {
@@ -380,7 +414,7 @@ export default {
         this.custTradesList = selectDic(dicList, "cust_trades");
         this.custPlaceList = selectDic(dicList, "cust_list_place");
         this.custStageList = selectDic(dicList, "cust_stage");
-
+        this.custTypeList = selectDic(dicList, "cust_type")
         // //人员树
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
@@ -524,7 +558,6 @@ export default {
                 }
             })
             let temp = [];
-            console.log(this.childFullCust)
             this.childFullCust.forEach(item=>{
                 this.merge.childCustIds.forEach(id=>{
                     if(item.custId == id){
@@ -581,7 +614,7 @@ export default {
                     message:'请选择要移动的客户！',
                     type:"warning"
                 })
-                flag = false 
+                flag = false
             }
             if(!custVali()){
                 flag = false
@@ -616,9 +649,17 @@ export default {
             this.selectCust.forEach(item=>{
                 ids.push(item.id)
             })
+            if(!this.freeSeaType){
+                this.$message({
+                    message:'请选择客户分类！',
+                    type:'warning'
+                })
+                return
+            }
             openBatchCust({
                 ids:ids,
-                isChange:'1'
+                isChange:'1',
+                custType:this.freeSeaType
             }).then(res=>{
                 if(res.status == 0){
                     this.$message({
@@ -628,9 +669,6 @@ export default {
                     this.dialogFreeVisible = false
                 }
                 this.getListData();
-                // setTimeout(_=>{
-                //     window.location.reload();
-                // },500)
             })
         },
         freeMerge(){
@@ -711,7 +749,14 @@ export default {
             })
         },
         confirmMove(){
-            if(this.marketChecked || this.areaChecked || this.custChecked){
+            if(!this.custType){
+                this.$message({
+                    message:'请选择客户分类！',
+                    type:'warning'
+                })
+                return
+            }
+            if(this.marketChecked || this.custChecked){
                 if(this.marketChecked){
                     if(!this.marketLeaderId){
                         this.$message({
@@ -725,18 +770,6 @@ export default {
                 }else{
                     this.marketLeaderId = ""
                 }
-                if(this.areaChecked){
-                    if(this.marketId.length<1){
-                        this.$message({
-                            message:'请选择所属区域！',
-                            type:'warning'
-                        })
-                        return;
-                    }
-                    this.marketId[this.marketId.length-1] = this.marketId[this.marketId.length-1]
-                }else(
-                    this.marketId[this.marketId.length-1] = ""
-                )
                 if(this.custChecked){
                     if(!this.custStage){
                         this.$message({
@@ -757,7 +790,7 @@ export default {
                 moveBatchCust({
                     custIds:custIds,
                     custStage:this.custStage,
-                    custOfficeId:this.marketId[this.marketId.length-1],
+                    custType:this.custType,
                     marketLeaderId:this.marketLeaderId
                 }).then(res=>{
                     if(res.status == 0){
@@ -775,6 +808,7 @@ export default {
                         });
                     }
                     this.getListData();
+                    this.moveClose()
                     // setTimeout(_=>{
                     //     // this.$router.go(-1)
                     //     window.location.reload();
@@ -791,11 +825,11 @@ export default {
         moveClose(){
             this.dialogMoveVisible = false;
             this.marketChecked=false;
-            this.areaChecked=false;
+            // this.areaChecked=false;
             this.custChecked=false;
             this.marketLeaderId="";
             this.custStage="";
-            this.marketId = [];
+            this.custType = "";
             // this.$refs.multipleTable.clearSelection();
         },
         moveCancel(){
@@ -805,7 +839,7 @@ export default {
             this.custChecked=false;
             this.marketLeaderId="";
             this.custStage="";
-            this.marketId = [];
+            this.custType = "";
             // this.$refs.multipleTable.clearSelection();
         },
         mergeCancel(){

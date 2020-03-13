@@ -40,6 +40,13 @@ export function fetchForm(params){
     })
 }
 
+export function getCustDetail(params){
+    return request({
+        url:`/custInfo/custInfoNewDetail/${params}`,
+        method:'get'
+    })
+}
+
 export function getContact(params){
     return request({
         url:'/custLinkmanHisInfo/custLinkmanHisList',
