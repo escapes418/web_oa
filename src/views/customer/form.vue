@@ -17,7 +17,7 @@
                         </RedStar>
                         <RedStar label="客户类型：" v-if="routeKey">
                             <span class="right-con">
-                                {{['无车','煤链社'][routeCustType-1]}}
+                                {{['无车承运','煤链社'][routeCustType-1]}}
                             </span>
                         </RedStar>
                         <RedStar label="客户简称：">
@@ -81,7 +81,7 @@
                         </RedStar>
                         <RedStar label="规模（万元/月）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model.trim="filter.noCar.custCompanySize"></el-input>
+                                <el-input type="number" placeholder="请输入" :maxlength="50" style="width:250px;" v-model.number="filter.noCar.custCompanySize"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="发货方式：">
@@ -136,7 +136,7 @@
                         </RedStar>
                         <RedStar label="结算周期（天）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model="filter.noCar.custBalanceCycle"></el-input>
+                                <el-input type="number" placeholder="请输入" style="width:250px;" :maxlength="12" v-model="filter.noCar.custBalanceCycle"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="调度费比例（%）：">
@@ -242,7 +242,7 @@
                         
                         <RedStar label="规模（万元/月）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model.trim="filter.coalUnion.custCompanySize"></el-input>
+                                <el-input type="number" placeholder="请输入" style="width:250px;" :maxlength="50" v-model.number="filter.coalUnion.custCompanySize"></el-input>
                             </span>
                         </RedStar>
                         <RedStar label="发货方式：">
@@ -305,7 +305,7 @@
                         </RedStar>
                         <RedStar label="结算周期（天）：">
                             <span class="right-con">
-                                <el-input type="number" placeholder="请输入" style="width:250px;" v-model="filter.coalUnion.custBalanceCycle"></el-input>
+                                <el-input type="number" placeholder="请输入" style="width:250px;" :maxlength="12" v-model="filter.coalUnion.custBalanceCycle"></el-input>
                             </span>
                         </RedStar>
                         
@@ -433,7 +433,7 @@ export default {
             custTypeList:[
                 {
                 key:"1",
-                value:"无车"
+                value:"无车承运"
                 },{
                 key:"2",
                 value:"煤链社"
@@ -452,10 +452,6 @@ export default {
                 }
             ],
             filter: {
-                //筛选条件
-
-
-
                 baseCustInfo: {
                     custType:"",
                     id:this.$route.query.key,
@@ -525,30 +521,6 @@ export default {
                 id:""
                 }
             ],
-            businessDetail: {
-                custTrades: "", // 所属行业
-                custCompanySize: "", //规模（万吨/月）
-                custDeliverMode: "", //发货方式
-                custBalanceObj: "", //结算对象
-                payMethod: [], //支付方式
-                custPowerMode: "", //运力组织方式
-                custReceiveMode: "", //收货方式
-                custBalanceCycle: "", //结算周期
-                custBusinessType: "" //业务类型
-            },
-            contractInfoSaveReq:{
-                creditCode:"", //统一社会信用代码 ,
-                dispatchProportion:"5.7", //调度费比例 ,
-                legalRepresentative:"", //法定代表人 ,
-                oldCreditCode:"",
-                registeredAddress:"",//注册地址
-            },
-            tradeStructure: {
-                //贸易结构
-                upstream: "",
-                downstream: ""
-            },
-            itemList: [],
             dictionary: {
                 //字典
                 custTrades: [], //所属行业
@@ -559,10 +531,7 @@ export default {
                 custPowerMode: [], //运力组织方式
                 custReceiveMode: [] //收货方式
             },
-            dialogIndex: "",
             opendialog: false,
-            custStatus: undefined, //报备状态 0为提交(表单未填写完整)，1报备提交(表单填写完整)
-            multipleSelection:[],
             officeName:""
         };
     },
@@ -572,14 +541,6 @@ export default {
         }),
     },
     methods: {
-        // setContact(row){
-        //     this.radioKey = row.index
-        // },
-        // openDialog(index) {
-        //     // console.log(index)
-        //     this.opendialog = true;
-        //     this.dialogIndex = index;
-        // },
         openConfirm(type) {
             var _this = this;
             if (!custBaseVali(this)) return; //校验
@@ -734,7 +695,6 @@ export default {
         selectAreaCode(data) {
             this.filter.baseCustInfo.custAddressCode = data;
         },
-
         noCarSelectAll(val) {
             if (val) {
                 this.noCarCustLinkman.forEach((element) => {
@@ -823,25 +783,29 @@ export default {
             fetchForm(this.$route.query.key).then(response => {
                 var data = response.data;
                 this.filter = data;
+                this.noCarCustLinkman = [];
                 if(data.noCar.custLinkman.length!= 0){
-                    this.noCarCustLinkman = [];
                     data.noCar.custLinkman.forEach((item,index)=>{
                         this.noCarCustLinkman.push({
                             checked: false,
                             ...item
                         })
                     })
+                } else {
+                    this.noCarAdd()
                 }
+                this.coalUnionCustLinkman = [];
                 if(data.coalUnion.custLinkman.length!= 0){
-                    this.coalUnionCustLinkman = [];
                     data.coalUnion.custLinkman.forEach((item,index)=>{
                         this.coalUnionCustLinkman.push({
                             checked: false,
                             ...item
                         })
                     })
+                }else{
+                    this.coalUnionAdd()
                 }
-                this.filter.custType = this.$route.query.custType;
+                this.filter.baseCustInfo.custType = this.$route.query.custType;
                 this.ready = true;
             });
         } else {

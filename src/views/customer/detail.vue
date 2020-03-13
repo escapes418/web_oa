@@ -138,7 +138,7 @@
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">调度费比例（%）：</span>
                             <span class="right-con">
-                                {{detailData.noCar.dispatchProportion}}%
+                                {{detailData.noCar.dispatchProportion}}
                             </span>
                         </div>
                     </el-col>
@@ -373,7 +373,7 @@
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">调度费比例（%）：</span>
                             <span class="right-con">
-                                {{detailData.coalUnion.dispatchProportion}}%
+                                {{detailData.coalUnion.dispatchProportion}}
                             </span>
                         </div>
                     </el-col>
@@ -615,37 +615,37 @@ export default {
     },
     computed:{
         noCarISPICK:function(){
-            let result = this.detailData.custListPlace == 1 || this.detailData.custListPlace == 2 ? true : false 
+            let result = this.detailData.noCar.custListPlace == 1 || this.detailData.noCar.custListPlace == 2 ? true : false 
             if(this.$route.query.type){
                 result = false
             }
             return result
         },
         coalUnionISPICK:function(){
-            let result = this.detailData.custListPlace == 1 || this.detailData.custListPlace == 2 ? true : false 
+            let result = this.detailData.coalUnion.custListPlace == 1 || this.detailData.coalUnion.custListPlace == 2 ? true : false 
             if(this.$route.query.type){
                 result = false
             }
             return result
         },
         noCarISME:function(){
-            let result = this.detailData.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
+            let result = this.detailData.noCar.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
             return result
         },
         coalUnionISME:function(){
-            let result = this.detailData.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
+            let result = this.detailData.coalUnion.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
             return result
         },
         noCarTabDisabled(){
             var flag = false
-            if(this.detailData.noCar.custTrades == ""){
+            if(this.detailData.noCar.noCarId == ""){
                 flag = true;
             }
                 return flag;
         },
         coalUnionTabDisabled(){
             var flag = false
-            if(this.detailData.coalUnion.custTrades == ""){
+            if(this.detailData.coalUnion.coalUnionId == ""){
                  flag = true;
             }
                 return flag;
@@ -654,106 +654,7 @@ export default {
     methods: {
         getDetail() {
             fetchForm(this.key).then(response => {
-                var data = response.data
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-                var data = {
-                    "baseCustInfo": {
-                        "id": "123",
-                        "custType":"2",
-                        "custCode": "4201141787989",
-                        "custName": "向大大",
-                        "custAbbreviation": "xdd",
-                        "custAddressCode": ["110000", "110000"],
-                        "custAddressCodeName": "北京市,北京市",
-                        "mainCustName": "主客户名称",
-                        "custAddress": "日本大阪",
-                        "creditCode": "4201141787989",
-                        "legalRepresentative": "向大大",
-                        "registeredAddress": "地球",
-                        "vipCustomerName": "万雄波",
-                        "businessAssistantName": "万雄波",
-                        "accountLeaderName": "万雄波",
-                        "childCustList": [{
-                        "childCustId": "8c84b28aacf342d684ce0914e3c13abd",
-                        "childCustName": "向氏宗亲"
-                        }]
-                    },
-                    "noCar": {
-                        "noCarId":13564,
-                        "custTrades": "3",
-                        "custTradesAppName": "商砼",
-                        "custBusinessType": "2",
-                        "custBusinessTypeAppName": "贸易",
-                        "custCompanySize": 123,
-                        "custPowerMode": "3",
-                        "custPowerModeAppName": "信息部/第三方物流",
-                        "custDeliverMode": "3",
-                        "custDeliverModeAppName": "信息部/第三方物流",
-                        "custReceiveMode": "2",
-                        "custReceiveModeAppName": "物流方",
-                        "custBalanceObj": "2",
-                        "custBalanceObjAppName": "车队",
-                        "custBalanceCycle": "1",
-                        "payMethod": ["2", "1"],
-                        "payMethodName": "账期,预付",
-                        "dispatchProportion": "5.7",
-                        "upstream": "上海",
-                        "downstream": "下邳",
-                        "marketLeaderName": "1",
-                        "marketLeaderPhone": "1",
-                        "marketLeaderMail": "1",
-                        "marketLeaderOfficeName": "1",
-                        "marketLeaderPostName": "1",
-                        "custLinkman": [{
-                            "id": "3ea9b9c45da44e26b172be932b681811",
-                            "linkmanName": "向啊多大啊",
-                            "linkmanPhone": "19812779986",
-                            "linkmanMail": "231@qq.com",
-                            "linkmanPost": "董事",
-                            "remarks": "向大大weiwu",
-                            "isContractLinkman": "1"
-                        }]
-                    },
-                    "coalUnion": {
-                        "coalUnionId":123,
-                        "custSort": ["2", "1"],
-                        "custSortName": "供应商、采购商",
-                        "custTrades": "3",
-                        "custTradesAppName": "商砼",
-                        "custCompanySize": 123,
-                        "custPowerMode": "3",
-                        "custPowerModeAppName": "信息部/第三方物流",
-                        "custDeliverMode": "3",
-                        "custDeliverModeAppName": "信息部/第三方物流",
-                        "custReceiveMode": "2",
-                        "custReceiveModeAppName": "物流方",
-                        "custBalanceObj": "2",
-                        "custBalanceObjAppName": "车队",
-                        "custBalanceCycle": "1",
-                        "payMethod": ["2", "1"],
-                        "payMethodName": "账期,预付",
-                        "serviceFee": "5.7",
-                        "upstream": "上海",
-                        "downstream": "下邳",
-                        "marketLeaderName": "",
-                        "marketLeaderPhone": "",
-                        "marketLeaderMail": "",
-                        "marketLeaderOfficeName": "",
-                        "marketLeaderPostName": "",
-                        "custLinkman": [{
-                            "id": "3ea9b9c45da44e26b172be932b681811",
-                            "linkmanName": "向啊多大啊",
-                            "linkmanPhone": "19812779986",
-                            "linkmanMail": "231@qq.com",
-                            "linkmanPost": "董事",
-                            "remarks": "向大大weiwu",
-                            "isContractLinkman": "1"
-                        }]
-                    },
-                }
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-                
-                this.detailData = data;
+                this.detailData = response.data;
                 if(this.$route.query.custType == "0"){
                    if(this.detailData.noCar.custTrades == "" &&this.detailData.coalUnion.custTrades != "") {
                        this.detailData.baseCustInfo.custType = "2"
