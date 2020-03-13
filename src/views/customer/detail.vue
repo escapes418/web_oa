@@ -10,115 +10,85 @@
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">客户编号：</span>
                             <span class="right-con">
-                                {{detailData.custCode}}
+                                {{detailData.baseCustInfo.custCode}}
                             </span>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">客户名称：</span>
-                            <span class="right-con">{{detailData.custName}}</span>
-                        </div>
-                        <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">客户简称：</span>
-                            <span class="right-con">{{detailData.custAbbreviation}}</span>
+                            <span class="right-con">{{detailData.baseCustInfo.custAbbreviation}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">主客户名称：</span>
                             <span class="right-con">
-                                {{detailData.mainCustName}}
+                                {{detailData.baseCustInfo.mainCustName}}
                             </span>
                         </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">市场负责人：</span>
-                            <span class="right-con">
-                                {{detailData.marketLeaderName}}
-                            </span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">市场负责人手机号：</span>
-                            <span class="right-con">
-                                {{detailData.marketLeaderPhone}}
-                            </span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">清结算：</span>
-                            <span class="right-con">
-                                {{detailData.accountLeaderName}}
-                            </span>
-                        </div>
-                    </el-col>
-                    <el-col :span="12">
-                        <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">所属区域：</span>
-                            <span class="right-con">{{detailData.custOfficeName}}</span>
-                        </div>
-                        <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">客户来源：</span>
-                            <span class="right-con">{{detailData.custSource}}</span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">地址：</span>
-                            <span class="right-con">{{detailData.custAddressCodeName}}</span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">详细地址：</span>
-                            <span class="right-con" v-if="detailData.custAddressCode">
-                                {{detailData.custAddress}}
-                            </span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">VIP客服：</span>
-                            <span class="right-con">
-                                {{detailData.vipCustomerName}}
-                            </span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">商务助理：</span>
-                            <span class="right-con">
-                                {{detailData.businessAssistantName}}
-                            </span>
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-        </div>
-        <div class="segment statistics">
-            <div class="segment-header">
-                合同信息
-            </div>
-            <div class="segment-area">
-                <el-row>
-                    <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">统一社会信用代码：</span>
                             <span class="right-con">
-                                {{detailData.contractInfoDetailResponse&&detailData.contractInfoDetailResponse.creditCode}}
-                            </span>
-                        </div>
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">法定代表人：</span>
-                            <span class="right-con">
-                                {{detailData.contractInfoDetailResponse&&detailData.contractInfoDetailResponse.legalRepresentative}}
-                            </span>
-                        </div>
-                    </el-col>
-                    <el-col :span="12" class="segment-brline">
-                        <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">调度费比例（%）：</span>
-                            <span class="right-con">
-                                {{detailData.contractInfoDetailResponse&&detailData.contractInfoDetailResponse.dispatchProportion}}%
+                                {{detailData.baseCustInfo.creditCode}}
                             </span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">注册地址：</span>
                             <span class="right-con">
-                                {{detailData.contractInfoDetailResponse&&detailData.contractInfoDetailResponse.registeredAddress}}
+                                {{detailData.baseCustInfo.registeredAddress}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">商务助理：</span>
+                            <span class="right-con">
+                                {{detailData.baseCustInfo.businessAssistantName}}
+                            </span>
+                        </div>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">客户名称：</span>
+                            <span class="right-con">{{detailData.baseCustInfo.custName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">地址：</span>
+                            <span class="right-con">{{detailData.baseCustInfo.custAddressCodeName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">详细地址：</span>
+                            <span class="right-con">
+                                {{detailData.baseCustInfo.custAddress}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">法定代表人：</span>
+                            <span class="right-con">
+                                {{detailData.baseCustInfo.legalRepresentative}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">VIP客服：</span>
+                            <span class="right-con">
+                                {{detailData.baseCustInfo.vipCustomerName}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">清结算：</span>
+                            <span class="right-con">
+                                {{detailData.baseCustInfo.accountLeaderName}}
                             </span>
                         </div>
                     </el-col>
                 </el-row>
             </div>
         </div>
-        <div class="segment statistics">
+        <template>
+            <div style="margin-left:20px;width: 180px;">
+                <el-tabs v-model="detailData.baseCustInfo.custType">
+                    <el-tab-pane :disabled="noCarTabDisabled" label="无车承运" name="1"></el-tab-pane>
+                    <el-tab-pane :disabled="coalUnionTabDisabled" label="煤链社" name="2"></el-tab-pane>
+                </el-tabs>
+            </div>
+        </template>
+        <!-- 无车 -->
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="segment-header">
                 业务情况
             </div>
@@ -127,71 +97,110 @@
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">所属行业：</span>
-                            <span class="right-con">{{detailData.custTrades}}</span>
+                            <span class="right-con">{{detailData.noCar.custTradesAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">规模（万吨/月）：</span>
-                            <span class="right-con">{{detailData.custCompanySize}}</span>
+                            <span class="right-con">{{detailData.noCar.custCompanySize}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">发货方式：</span>
-                            <span class="right-con">
-                                {{detailData.custDeliverMode}}
-                            </span>
+                            <span class="right-con">{{detailData.noCar.custDeliverModeAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">结算对象：</span>
-                            <span class="right-con">
-                                {{detailData.custBalanceObj}}
-                            </span>
+                            <span class="right-con">{{detailData.noCar.custBalanceObjAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">支付方式：</span>
-                            <span class="right-con">
-                                {{detailData.payMethod}}
-                            </span>
+                            <span class="right-con">{{detailData.noCar.payMethodName}}</span>
                         </div>
                     </el-col>
                     <el-col :span="12">
                         <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">业务类型：</span>
-                            <span class="right-con">{{detailData.custBusinessType}}</span>
+                            <span class="right-con">{{detailData.noCar.custBusinessTypeAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">运力组织方式：</span>
-                            <span class="right-con">{{detailData.custPowerMode}}</span>
+                            <span class="right-con">{{detailData.noCar.custPowerModeAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">收货方式：</span>
-                            <span class="right-con">{{detailData.custReceiveMode}}</span>
+                            <span class="right-con">{{detailData.noCar.custReceiveModeAppName}}</span>
                         </div>
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">结算周期（天）：</span>
                             <span class="right-con">
-                                {{detailData.custBalanceCycle}}
+                                {{detailData.noCar.custBalanceCycle}}
                             </span>
                         </div>
-
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">调度费比例（%）：</span>
+                            <span class="right-con">
+                                {{detailData.noCar.dispatchProportion}}
+                            </span>
+                        </div>
                     </el-col>
                 </el-row>
             </div>
         </div>
-        <div class="segment statistics">
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="segment-header">
                 贸易结构
             </div>
             <div class="segment-area">
                 <div class="textStyle-title">上游：</div>
-                <sjbtextarea :readonly="true" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="upstream"></sjbtextarea>
+                <sjbtextarea :readonly="true" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="detailData.noCar.upstream"></sjbtextarea>
             </div>
             <div class="segment-area" style="margin-bottom:15px">
                 <div class="textStyle-title">下游：</div>
-                <sjbtextarea readonly :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="downstream"></sjbtextarea>
+                <sjbtextarea readonly :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="detailData.noCar.downstream"></sjbtextarea>
             </div>
         </div>
-        <div class="segment statistics">
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="segment-header">
-                联系人信息
+                市场联系人信息
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper">
+                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
+                        <thead>
+                            <tr class="tableTitle">
+                                <td class="tableTitle">市场负责人</td>
+                                <td class="tableTitle">联系方式</td>
+                                <td class="tableTitle">邮箱</td>
+                                <td class="tableTitle">所在部门</td>
+                                <td class="tableTitle">职位</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.noCar.marketLeaderName}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.noCar.marketLeaderPhone}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.noCar.marketLeaderMail}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.noCar.marketLeaderOfficeName}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.noCar.marketLeaderPostName}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
+            <div class="segment-header">
+                客户联系人信息
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper">
@@ -207,7 +216,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(itemData,index) in detailData.custLinkmanResponse">
+                            <tr v-for="(itemData,index) in detailData.noCar.custLinkman" :key="index">
                                 <td class="left" style="width:220px;text-align: center">
                                     <span class="table_text">{{itemData.linkmanName}}</span>
                                 </td>
@@ -233,13 +242,13 @@
                 </div>
             </div>
         </div>
-        <div class="segment statistics">
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="segment-header">
                 维护记录
             </div>
             <div class="segment-area">
                 <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                    <el-table ref="multipleTable" border :data="itemList" tooltip-effect="dark" style="width:100%">
+                    <el-table ref="multipleTable" border :data="noCaritemList" tooltip-effect="dark" style="width:100%">
                         <el-table-column align="center" label="编号" width="100px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.index}}</span>
@@ -293,16 +302,249 @@
                     </el-table>
                 </div>
                 <div class="pagination-container">
-                    <el-pagination background @current-change="handleCurrentChange" :current-page="listQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
+                    <el-pagination background @current-change="handlenoCarCurrentChange" :current-page="noCarlistQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="noCartotal">
                     </el-pagination>
                 </div>
             </div>
         </div>
-        <div class="segment statistics">
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '1'">
             <div class="sjb-foot-button">
-                <!-- <el-button size="medium" type="primary">同意</el-button>
-                <el-button size="medium" type="info">驳回</el-button> -->
-                <el-button v-if="ISPICK&&!ISME" size="medium" type="primary" @click="getCustBack">捡入</el-button>
+                <el-button v-if="noCarISPICK&&!noCarISME" size="medium" type="primary" @click="getCustBack('1')">捡入</el-button>
+                <el-button @click="goBack" size="medium">返回</el-button>
+            </div>
+        </div>
+
+        <!-- 煤链社 -->
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                业务情况
+            </div>
+            <div class="segment-area">
+                <el-row>
+                    <el-col :span="12" class="segment-brline">
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">客户分类：</span>
+                            <span class="right-con">{{detailData.coalUnion.custSortName}}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">所属行业：</span>
+                            <span class="right-con">{{detailData.coalUnion.custTradesAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">规模（万吨/月）：</span>
+                            <span class="right-con">{{detailData.coalUnion.custCompanySize}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">发货方式：</span>
+                            <span class="right-con">{{detailData.coalUnion.custDeliverModeAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">结算对象：</span>
+                            <span class="right-con">{{detailData.coalUnion.custBalanceObjAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">支付方式：</span>
+                            <span class="right-con">{{detailData.coalUnion.payMethodName}}</span>
+                        </div>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">服务费比例（%）：</span>
+                            <span class="right-con">{{detailData.coalUnion.serviceFee}}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">业务类型：</span>
+                            <span class="right-con">{{detailData.coalUnion.custBusinessTypeAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">运力组织方式：</span>
+                            <span class="right-con">{{detailData.coalUnion.custPowerModeAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">收货方式：</span>
+                            <span class="right-con">{{detailData.coalUnion.custReceiveModeAppName}}</span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">结算周期（天）：</span>
+                            <span class="right-con">
+                                {{detailData.coalUnion.custBalanceCycle}}
+                            </span>
+                        </div>
+                        <div class="clearfix  cominfo-item">
+                            <span class="left-title font-gray">调度费比例（%）：</span>
+                            <span class="right-con">
+                                {{detailData.coalUnion.dispatchProportion}}
+                            </span>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                贸易结构
+            </div>
+            <div class="segment-area">
+                <div class="textStyle-title">上游：</div>
+                <sjbtextarea :readonly="true" :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="detailData.coalUnion.upstream"></sjbtextarea>
+            </div>
+            <div class="segment-area" style="margin-bottom:15px">
+                <div class="textStyle-title">下游：</div>
+                <sjbtextarea readonly :rows="4" placeholder="请输入企业名称、线路、地址、据点说明信息" v-model="detailData.coalUnion.downstream"></sjbtextarea>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                市场联系人信息
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper">
+                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
+                        <thead>
+                            <tr class="tableTitle">
+                                <td class="tableTitle">市场负责人</td>
+                                <td class="tableTitle">联系方式</td>
+                                <td class="tableTitle">邮箱</td>
+                                <td class="tableTitle">所在部门</td>
+                                <td class="tableTitle">职位</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.coalUnion.marketLeaderName}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.coalUnion.marketLeaderPhone}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.coalUnion.marketLeaderMail}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.coalUnion.marketLeaderOfficeName}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{detailData.coalUnion.marketLeaderPostName}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                客户联系人信息
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper">
+                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
+                        <thead>
+                            <tr class="tableTitle">
+                                <td class="tableTitle">联系人</td>
+                                <td class="tableTitle">联系方式</td>
+                                <td class="tableTitle">邮箱</td>
+                                <td class="tableTitle">职位</td>
+                                <td class="tableTitle">备注</td>
+                                <td class="tableTitle">合同联系人</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(itemData,index) in detailData.coalUnion.custLinkman" :key="index">
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{itemData.linkmanName}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{itemData.linkmanPhone}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{itemData.linkmanMail}}</span>
+                                </td>
+                                <td class="left" style="width:220px;text-align: center">
+                                    <span class="table_text">{{itemData.linkmanPost}}</span>
+                                </td>
+                                <td class="left" style="text-align: center">
+                                    <span class="table_text">{{itemData.remarks}}</span>
+                                </td>
+                                <td class="left" style="text-align: center">
+                                    <span class="table_text">{{itemData.isContractLinkman == 1 ? "是":"否"}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="segment-header">
+                维护记录
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper" style="padding: 15px 0;">
+                    <el-table ref="multipleTable" border :data="coalUnionitemList" tooltip-effect="dark" style="width:100%">
+                        <el-table-column align="center" label="编号" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.index}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="维护时间" width="180px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custMaintenanceDate | stamp2TextDateFull}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="维护人" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custMaintenanceMan}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="维护人部门" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.maintainerDeptName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="客户级别" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custStageName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="拜访类型" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.visitTypeName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="问题归类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.issuesClassification}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="维护内容" width="200px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custMaintenanceContent}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="联系人" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.linkmanName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="备注" >
+                            <template slot-scope="scope">
+                                <span>{{scope.row.remarks}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div class="pagination-container">
+                    <el-pagination background @current-change="handlecoalUnionCurrentChange" :current-page="coalUnionlistQuery.pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="coalUniontotal">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+        <div class="segment statistics" v-show="detailData.baseCustInfo.custType == '2'">
+            <div class="sjb-foot-button">
+                <el-button v-if="coalUnionISPICK&&!coalUnionISME" size="medium" type="primary" @click="getCustBack('2')">捡入</el-button>
                 <el-button @click="goBack" size="medium">返回</el-button>
             </div>
         </div>
@@ -312,7 +554,7 @@
 <script>
 import common from "@/utils/common";
 import {getRegion} from '@/api/getRegion'
-import { fetchForm, saveCust , custChange,getMaintain} from "@/api/customer";
+import { fetchForm, custChange,getMaintain} from "@/api/customer";
 import sjbtextarea from '@/components/sjbTextarea';
 import { parseTime } from "@/utils";
 
@@ -323,6 +565,7 @@ export default {
     },
     data() {
         return {
+            activeName:"1",
             upstream:"",
             downstream:"",
             filter: {
@@ -335,78 +578,123 @@ export default {
                 targetaddresscode: null,
                 querykey: null
             },
-            detailData: {},
+            detailData: {
+                baseCustInfo:{},
+                noCar:{},
+                coalUnion:{}
+            },
             tradeStructure: {
                 //贸易结构
                 upstream: undefined,
                 downstream: undefined
             },
             key:this.$route.query.key,
-            total:null,
-            itemList:[],
-            listQuery: {
+            noCartotal:null,
+            noCaritemList:[],
+            noCarlistQuery: {
                 custId:this.$route.query.key,
+                custType:'1',
                 pageNo: 1,
                 pageSize: 20
-            }
+            },
+            coalUniontotal:null,
+            coalUnionitemList:[],
+            coalUnionlistQuery: {
+                custId:this.$route.query.key,
+                custType:'2',
+                pageNo: 1,
+                pageSize: 20
+            },
         };
     },
     created() {
         this.getDetail();
-        this.getListData()
+        // this.getListData()
+        this.getnoCarListData();
+        this.getcoalUnionListData()
     },
     computed:{
-        ISPICK:function(){
-            let result = this.detailData.custListPlace == 1 || this.detailData.custListPlace == 2 ? true : false 
+        noCarISPICK:function(){
+            let result = this.detailData.noCar.custListPlace == 1 || this.detailData.noCar.custListPlace == 2 ? true : false 
             if(this.$route.query.type){
                 result = false
             }
             return result
         },
-        ISME:function(){
-            let result = this.detailData.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
+        coalUnionISPICK:function(){
+            let result = this.detailData.coalUnion.custListPlace == 1 || this.detailData.coalUnion.custListPlace == 2 ? true : false 
+            if(this.$route.query.type){
+                result = false
+            }
             return result
-        }
+        },
+        noCarISME:function(){
+            let result = this.detailData.noCar.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
+            return result
+        },
+        coalUnionISME:function(){
+            let result = this.detailData.coalUnion.letGoMan == JSON.parse(localStorage.getItem("web_oa_userInfor")).id ? true : false 
+            return result
+        },
+        noCarTabDisabled(){
+            var flag = false
+            if(this.detailData.noCar.noCarId == ""){
+                flag = true;
+            }
+                return flag;
+        },
+        coalUnionTabDisabled(){
+            var flag = false
+            if(this.detailData.coalUnion.coalUnionId == ""){
+                 flag = true;
+            }
+                return flag;
+        },
     },
     methods: {
         getDetail() {
-            fetchForm({
-                id: this.key
-            }).then(response => {
-                var data = response.data
-                this.detailData = data;
-                this.downstream = data.custTradeStructureResponse.downstream;
-                this.upstream = data.custTradeStructureResponse.upstream;
-                this.detailData.custClassify = this.getDictionary("cust_classify", data.custClassify)//客户分类
-                this.detailData.custType = this.getDictionary("cust_type", data.custType)//客户类别
-            
-                this.detailData.custNature = this.getDictionary("cust_nature", data.custNature)//公司性质
-                this.detailData.custStage = this.getDictionary("cust_stage", data.custStage)//公司性质
-
-                this.detailData.custTrades = this.getDictionary("cust_trades", data.custTrades)//所属行业
-                this.detailData.custDeliverMode = this.getDictionary("cust_deliver_mode", data.custDeliverMode)//发货方式
-                this.detailData.custBalanceObj = this.getDictionary("cust_balance_obj", data.custBalanceObj)//结算对象
-                if(data.payMethod){
-                    this.detailData.payMethod = this.getPayMent(data.payMethod)//支付方式
+            fetchForm(this.key).then(response => {
+                this.detailData = response.data;
+                if(this.$route.query.custType == "0"){
+                   if(this.detailData.noCar.custTrades == "" &&this.detailData.coalUnion.custTrades != "") {
+                       this.detailData.baseCustInfo.custType = "2"
+                   } else{
+                       this.detailData.baseCustInfo.custType = "1"
+                   }
+                } else{
+                    this.detailData.baseCustInfo.custType = this.$route.query.custType
                 }
-                this.detailData.custBusinessType = this.getDictionary("cust_business_type", data.custBusinessType)//业务类型
-                this.detailData.custPowerMode = this.getDictionary("cust_power_mode", data.custPowerMode)//业务类型
-                this.detailData.custReceiveMode = this.getDictionary("cust_receive_mode", data.custReceiveMode)//收货方式
             });
         },
-        handleCurrentChange(val) {
+        handlenoCarCurrentChange(val) {
             this.listQuery.pageNo = val;
-            this.getListData();
+            this.getnoCarListData();
             this.listLoading = false;
         },
-        getListData(){
-            getMaintain(this.listQuery).then(res=>{
+        handlecoalUnionCurrentChange(val) {
+            this.coalUnionlistQuery.pageNo = val;
+            this.getcoalUnionListData();
+            this.coalUnionlistLoading = false;
+        },
+        getnoCarListData(){
+            getMaintain(this.noCarlistQuery).then(res=>{
                 if(res.status == 0){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
-                    this.itemList = res.data.list;
-                    this.total = res.data.total;
+                    this.noCaritemList = res.data.list;
+                    this.noCartotal = res.data.total;
+                }
+            })
+        },
+        getcoalUnionListData(){
+            getMaintain(this.coalUnionlistQuery).then(res=>{
+                if(res.status == 0){
+                    res.data.list.forEach((item,index) =>{
+                        item.index = index + 1;
+                    });
+                    this.coalUnionitemList = res.data.list;
+                    this.coalUniontotal = res.data.total;
                 }
             })
         },
@@ -449,10 +737,11 @@ export default {
             })
             return getName;
         },
-        getCustBack(){
+        getCustBack(type){
             custChange({
                 id:this.$route.query.key,
-                isChange:2
+                isChange:2,
+                custType:type,
             }).then(res=>{
                 if(res.status == 0){
                     this.$message({
