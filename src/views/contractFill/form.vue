@@ -361,6 +361,7 @@ export default {
                 procCode : '',//流程编号 ,
                 procInsId : '',//流程实例ID ,
                 projectIds : [],//关联项目ID ,
+                custIds:[],
                 remarks :'',// 备注 ,
                 businessType:'',
                 // secondAddress: '',//乙方住所 ,

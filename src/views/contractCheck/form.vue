@@ -78,8 +78,9 @@
                                         filterable
                                         remote 
                                         debounce	
+                                        multiple
                                         reserve-keyword 
-                                        v-model="postData.customerId" 
+                                        v-model="postData.custIds" 
                                         placeholder="请输入客户名称" 
                                         style="width:260px;" 
                                         :remote-method="searchCustmer">
@@ -348,7 +349,6 @@ export default {
             projectList:[],
             customerList:[],
             conInfor: [],
-            dynaData:{},
             postData: {//提交数据
                 chapterNum:"",
                 keyWord:[],

@@ -61,7 +61,7 @@
                                 </li>
                                 <li class="base-li" v-if="detail.businessType==2">
                                     <span class="left-title font-gray">关联客户：</span>
-                                    <span class="right-con">{{ detail.custName.join('，') }}</span>
+                                    <span class="right-con">{{ custNames.join('，') }}</span>
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">备注：</span>
@@ -71,7 +71,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
@@ -201,7 +201,7 @@
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
                         <el-collapse>
-                            <ul v-for="(item,index) in detail.suppResp">
+                            <ul v-for="(item,index) in detail.suppResp" :key="index">
                                 <li :key="index">
                                     <el-collapse-item :name="item.suppId">
                                         <template slot="title">
@@ -393,7 +393,7 @@ export default {
             contractTypeName:'',
             businessTypeName:"",
             businessModelName:"",
-            custName:[]
+            custNames:[]
         };
     },
     created() {
@@ -533,6 +533,9 @@ export default {
                     this.detail = res.data.contractHisDetailResponse;
                     this.detail.projectList&&this.detail.projectList.forEach(item=>{
                         this.projectName.push(item.projectName)
+                    })
+                    this.detail.custList&&this.detail.custList.forEach(item=>{
+                        this.custNames.push(item.custName)
                     })
                     if (
                         res.data.contractHisDetailResponse.contractAttachmentResponse &&
