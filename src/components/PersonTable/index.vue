@@ -117,7 +117,7 @@
                 this.id = row.id;
                 this.$router.push({
                     path:'/inforManage/maintainCust',
-                    query:{ key : row.id,custName:row.custName}
+                    query:{ key : row.id, custName:row.custName, custType:row.custType }
                 })
             },
             cancelBtn(){
