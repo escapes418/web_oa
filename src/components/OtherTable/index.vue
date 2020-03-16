@@ -32,11 +32,11 @@
                 <span>{{scope.row.officeName}}</span>
             </template>
         </el-table-column> -->
-        <el-table-column align="center" label="规模（万元/月）" width="110px">
+        <!-- <el-table-column align="center" label="规模（万元/月）" width="110px">
             <template slot-scope="scope">
                 <span>{{scope.row.custCompanySize}}</span>
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column align="center" label="行业" width="50px">
             <template slot-scope="scope">
                 <span>{{scope.row.custTradesName}}</span>
