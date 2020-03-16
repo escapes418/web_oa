@@ -627,7 +627,8 @@ export default {
                         return new Promise((resolve, reject)=>{
                             custChange({
                                 isChange:1,
-                                id:this.$route.query.key
+                                id:this.$route.query.key,
+                                custType:this.filter.baseCustInfo.custType,
                             }).then(res=>{
                                 if(res.status == 0){
                                     this.$message({
