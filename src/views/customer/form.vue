@@ -10,7 +10,7 @@
                         <RedStar label="客户类型：" :required="true" v-if="!routeKey">
                             <span class="right-con">
                                 <el-select clearable class="filter-item" v-model="filter.baseCustInfo.custType" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custTypeList" :label="item.value" :value="item.key" :key="item.key">
+                                    <el-option v-for="item in dictionary.custType" :label="item.value" :value="item.key" :key="item.key">
                                     </el-option>
                                 </el-select>
                             </span>
@@ -229,7 +229,7 @@
                         <RedStar label="客户分类：" :required="true">
                             <span class="right-con">
                                 <el-select clearable multiple class="filter-item" v-model="filter.coalUnion.custSort" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custSortList" :label="item.value" :value="item.key" :key="item.key">
+                                    <el-option v-for="item in dictionary.custSort" :label="item.value" :value="item.key" :key="item.key">
                                     </el-option>
                                 </el-select>
                             </span>
@@ -430,27 +430,6 @@ export default {
             confirmDialog: false,
             routeKey: this.$route.query.key,
             routeCustType:this.$route.query.custType,
-            custTypeList:[
-                {
-                key:"1",
-                value:"无车承运"
-                },{
-                key:"2",
-                value:"煤链社"
-                }
-            ],
-            custSortList:[
-                {
-                key:"1",
-                value:"供应商"
-                },{
-                key:"2",
-                value:"采购商"
-                },{
-                key:"3",
-                value:"经纪人"
-                }
-            ],
             filter: {
                 baseCustInfo: {
                     custType:"",
@@ -529,7 +508,9 @@ export default {
                 payMethod: [], //支付方式
                 custBusinessType: [], //业务类型
                 custPowerMode: [], //运力组织方式
-                custReceiveMode: [] //收货方式
+                custReceiveMode: [], //收货方式
+                custType: [],
+                custSort: []
             },
             opendialog: false,
             officeName:""
@@ -841,7 +822,8 @@ export default {
         this.dictionary.custBusinessType = selectDic( dicList,"cust_business_type"); //发货方式
         this.dictionary.custPowerMode = selectDic(dicList, "cust_power_mode"); //运力组织方式
         this.dictionary.custReceiveMode = selectDic(dicList, "cust_receive_mode"); //手货方式
-
+        this.dictionary.custSort = selectDic(dicList, "cust_sort");
+        this.dictionary.custType = selectDic(dicList, "cust_type");
 
         //联系人列表兼容
     }
