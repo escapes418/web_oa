@@ -62,7 +62,7 @@ export function custCoalUnionVali(self) {
         toast('请选择客户分类');
         flag = false;
     }
-    else if ((self.filter.coalUnion.custSort.includes("2"))&&(!/^([0-9]{1,5})(\.[0-9]{1,2})?$/.test(self.filter.coalUnion.serviceFee))) {
+    else if ((self.filter.coalUnion.custSort.includes("2"))&&(!/^([0-9]{1,2})(\.[0-9]{1,2})?$/.test(self.filter.coalUnion.serviceFee))) {
         toast('服务费比例填写有误');
         flag = false;
     }

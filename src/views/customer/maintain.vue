@@ -173,6 +173,7 @@ export default {
             dialogTitle: "",
             confirmDialog: false,
             custName:this.$route.query.custName,
+            custType:this.$route.query.custType,
             itemList:[],
             custTypeList:[],
             filter: {
@@ -223,6 +224,7 @@ export default {
             if(custMaintainVali(this)){
                 saveMaintain({
                     ...this.filter,
+                    custType:this.custType,
                     custMaintenanceDate:common.timeParse(this.filter.custMaintenanceDate)
                 }).then(res => {
                     this.confirmDialog = false;
