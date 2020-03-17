@@ -188,6 +188,7 @@ export default {
             total:0,
             listQuery: {
                 custId:this.$route.query.key,
+                custType:this.$route.query.custType,
                 pageNo: 1,
                 pageSize: 20
             }
