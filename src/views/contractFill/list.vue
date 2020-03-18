@@ -182,8 +182,8 @@
                         </el-select>
                     </el-form-item>
                 </RedStar>
-                <RedStar :required ="true" v-if="businessType == '1'">
-                    <el-form-item label="关联项目：">
+                <RedStar :required ="true">
+                    <el-form-item label="关联项目：" v-if="businessType == '1'">
                         <el-select 
                             class="filter-item" 
                             filterable
@@ -210,7 +210,7 @@
                             placeholder="请输入客户名称" 
                             style="width:220px;" 
                             :remote-method="searchCustmer">
-                            <el-option v-for="item in customerList" :label="item.custName" :value="item.custId" :key="item.custId">
+                            <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -400,7 +400,7 @@ export default {
             dialogMoveVisible:false,
 
             custIds:[],
-            customerList:[],
+            custList:[],
             businessType:""
         }
     },
@@ -699,7 +699,7 @@ export default {
                 })
                 this.custIds = res.data.contractHisDetailResponse.custIds || [];
                 this.custList = res.data.contractHisDetailResponse.custList || [];
-                this.businessType = res.data.contractHisDetailResponse.businessType
+                this.businessType = res.data.contractHisDetailResponse.businessType;
             })
             
         },

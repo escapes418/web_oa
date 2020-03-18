@@ -84,7 +84,7 @@
                                         placeholder="请输入客户名称" 
                                         style="width:260px;" 
                                         :remote-method="searchCustmer">
-                                        <el-option v-for="item in customerList" :label="item.custName" :value="item.custId" :key="item.custId">
+                                        <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -347,7 +347,7 @@ export default {
             keyWordName:[],
             chapterList:[],
             projectList:[],
-            customerList:[],
+            custList:[],
             conInfor: [],
             postData: {//提交数据
                 chapterNum:"",
@@ -519,13 +519,7 @@ export default {
                     this.contractTypeName = res.data.contractTypeName;
                     res.data.keyWords = res.data.keyWords || [];
                     this.keyWords = res.data.keyWords;
-
-                    // res.data.contractFlowDetailInfoNewResponse.projectList.forEach(item=>{
-                    //     let temObj = {}
-                    //     temObj.id= item.projectId
-                    //     temObj.projectName = item.projectName
-                    //     this.projectList.push(temObj)
-                    // })
+                    this.custList = res.data.contractFlowDetailInfoNewResponse.custList;
                     this.projectList =  res.data.contractFlowDetailInfoNewResponse.projectList.map(item=>{
                         return {
                             id:item.projectId,
@@ -592,7 +586,7 @@ export default {
                     //还有项目名称
                     val
                 ).then(res=>{
-                    this.customerList = res.data;
+                    this.custList = res.data;
                 })
             }
         },
