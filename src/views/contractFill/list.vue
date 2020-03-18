@@ -20,7 +20,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同负责人：</span>
-                <el-select clearable filterable class="filter-item" filterable v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
+                <el-select clearable filterable class="filter-item" v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
                     <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>

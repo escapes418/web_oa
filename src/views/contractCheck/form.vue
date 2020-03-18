@@ -520,6 +520,7 @@ export default {
                     res.data.keyWords = res.data.keyWords || [];
                     this.keyWords = res.data.keyWords;
                     this.custList = res.data.contractFlowDetailInfoNewResponse.custList;
+                    res.data.contractFlowDetailInfoNewResponse.projectList = res.data.contractFlowDetailInfoNewResponse.projectList || []
                     this.projectList =  res.data.contractFlowDetailInfoNewResponse.projectList.map(item=>{
                         return {
                             id:item.projectId,
