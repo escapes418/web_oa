@@ -256,7 +256,7 @@
                 <div class="move-item">
                     <span class="item-label">客户分类：</span>
                     <el-select 
-                        style="width: 300px" 
+                        style="width: 250px" 
                         class="filter-item" 
                         v-model="freeSeaType"
                         filterable
