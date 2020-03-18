@@ -37,9 +37,9 @@
                 <span>{{scope.row.custCompanySize}}</span>
             </template>
         </el-table-column> -->
-        <el-table-column align="center" label="行业" width="50px">
+        <el-table-column align="center" label="客户类型" width="120px">
             <template slot-scope="scope">
-                <span>{{scope.row.custTradesName}}</span>
+                <span>{{scope.row.custTypeName}}</span>
             </template>
         </el-table-column>
         <el-table-column align="center" label="市场负责人" width="120px">

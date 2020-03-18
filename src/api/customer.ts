@@ -35,7 +35,7 @@ export function custChange(params) {
 export function fetchForm(data){
   return request({
     url:'/custInfo/custInfoNewDetail/'+data,
-    method:'post',
+    method:'get',
   })
 }
 
