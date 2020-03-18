@@ -50,7 +50,7 @@
                                 </span>
                             </RedStar>
                         </li>
-                        <li class="base-li" v-if="!associationMain">
+                        <li class="base-li" v-if="postData.businessType == 1&&!associationMain">
                             <RedStar label="关联项目：" :required="true">
                                 <span class="right-con">
                                     <el-select 
@@ -65,6 +65,26 @@
                                         style="width:260px;" 
                                         :remote-method="searchProject">
                                         <el-option v-for="item in projectList" :label="item.projectName" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="postData.businessType == 2">
+                            <RedStar label="关联客户：" :required="true">
+                                <span class="right-con">
+                                    <el-select 
+                                        class="filter-item" 
+                                        filterable
+                                        remote 
+                                        debounce	
+                                        multiple
+                                        reserve-keyword 
+                                        v-model="postData.custIds" 
+                                        placeholder="请输入客户名称" 
+                                        style="width:260px;" 
+                                        :remote-method="searchCustmer">
+                                        <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -153,7 +173,7 @@
             </div>
             <div class="segment-area">
                 <template  v-for="(item,index) in initData">
-                    <base-temp :title="item.partyName">
+                    <base-temp :title="item.partyName" :key="index">
                         <dynamic-form ref="base-form" :data="item.contractPartyType"></dynamic-form>
                     </base-temp>
                 </template>
@@ -290,7 +310,7 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
 import sjbtextarea from '@/components/sjbTextarea'
 
-import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,findAllProject} from '@/api/contractCheck';
+import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,getCust} from '@/api/contractCheck';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -321,13 +341,14 @@ export default {
             associationMain:false,
             contractTypeName:"",
             businessTypeName:"",
+           
             businessModelName:"",
             keyWords:[],
             keyWordName:[],
             chapterList:[],
             projectList:[],
+            custList:[],
             conInfor: [],
-            dynaData:{},
             postData: {//提交数据
                 chapterNum:"",
                 keyWord:[],
@@ -356,6 +377,8 @@ export default {
                 procInsId : '',//流程实例ID ,
                 projectIds : [],//关联项目ID ,
                 remarks :'',// 备注 ,
+                custIds:[],//合同关联客户
+                businessType:'',
                 // secondAddress: '',//乙方住所 ,
                 // secondCreditCode : '',// 乙方统一社会信用代码 ,
                 // secondLegalRepresentative : '',// 乙方法定代表人 ,
@@ -417,6 +440,7 @@ export default {
                     })
                     this.contractTypeName = respond.data.contractTypeName;
                     this.businessTypeName = respond.data.businessTypeName;
+                    this.postData.businessType = respond.data.businessType;
                     this.businessModelName = respond.data.businessModelName;
                     respond.data.keyWords = respond.data.keyWords || [];
                     this.keyWords = respond.data.keyWords;
@@ -476,15 +500,6 @@ export default {
             return temp;
         }
         this.chapterList = selectDic(dicList, "chapter_type")
-        // findAllProject({}).then(res=>{
-        //     res.data.list.forEach(item=>{
-        //         for(let key in this.postData.projectIds){
-        //             if(item.id == this.postData.projectIds[key]){
-        //                 this.projectList.push(item)
-        //             }
-        //         }
-        //     })
-        // })
     },
     methods: {
         detailPromise(){
@@ -504,11 +519,13 @@ export default {
                     this.contractTypeName = res.data.contractTypeName;
                     res.data.keyWords = res.data.keyWords || [];
                     this.keyWords = res.data.keyWords;
-                    res.data.contractFlowDetailInfoNewResponse.projectList.forEach(item=>{
-                        let temObj = {}
-                        temObj.id= item.projectId
-                        temObj.projectName = item.projectName
-                        this.projectList.push(temObj)
+                    this.custList = res.data.contractFlowDetailInfoNewResponse.custList;
+                    res.data.contractFlowDetailInfoNewResponse.projectList = res.data.contractFlowDetailInfoNewResponse.projectList || []
+                    this.projectList =  res.data.contractFlowDetailInfoNewResponse.projectList.map(item=>{
+                        return {
+                            id:item.projectId,
+                            ...item
+                        }
                     })
                     this.postData.contractNameId = res.data.contractFlowDetailInfoNewResponse.configId;
                     this.contractStartTime = common.timeParseObj(res.data.contractFlowDetailInfoNewResponse.contractStartTime);
@@ -564,6 +581,16 @@ export default {
                 })
             }
         },
+        searchCustmer(val){
+            if(val !==''){
+                getCust(
+                    //还有项目名称
+                    val
+                ).then(res=>{
+                    this.custList = res.data;
+                })
+            }
+        },
         getConfig(id){
             getContractConfig({
                 id:id
@@ -571,6 +598,7 @@ export default {
                 this.associationMain = res.data.associationMain == 1;
                 this.contractTypeName = res.data.contractTypeName;
                 this.businessTypeName = res.data.businessTypeName;
+                this.postData.businessType = res.data.businessType;
                 this.businessModelName = res.data.businessModelName;
                 res.data.keyWords = res.data.keyWords || [];
                 this.keyWords = res.data.keyWords;
@@ -642,6 +670,7 @@ export default {
             this.postData.contractNameId = "";
             this.contractTypeName = "";
             this.businessTypeName = "";
+            this.postData.businessType = "";
             this.businessModelName = "";
         },
         getList() {

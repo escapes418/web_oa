@@ -51,9 +51,13 @@
                                     <span class="left-title font-gray">关联主合同编号：</span>
                                     <span class="right-con">{{ detail.associationMainCode }}</span>
                                 </li>
-                                <li class="base-li" v-if="!associationMain">
+                                <li class="base-li" v-if="detail.businessType == 1&&!associationMain">
                                     <span class="left-title font-gray">关联项目：</span>
                                     <span class="right-con" style="max-width:400px">{{ projectName.join(',') }}</span>
+                                </li>
+                                <li class="base-li" v-if="detail.businessType == 2">
+                                    <span class="left-title font-gray">关联客户：</span>
+                                    <span class="right-con" style="max-width:400px">{{ custNames.join(',') }}</span>
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同申请人：</span>
@@ -67,7 +71,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
@@ -328,6 +332,7 @@ export default {
             expenseAttachment: [],
             detail: {},
             projectName:[],
+            custNames:[],
             comment: "",
             taskId: "",
             dialogCanVisible: false,
@@ -443,6 +448,9 @@ export default {
                 this.detail = res.data.contractFlowDetailInfoNewResponse;
                 this.detail.projectList&&this.detail.projectList.forEach(item=>{
                     this.projectName.push(item.projectName)
+                })
+                this.detail.custList&&this.detail.custList.forEach(item=>{
+                    this.custNames.push(item.custName)
                 })
                 this.flowLoglist = res.data.flowLoglist;
                 if (

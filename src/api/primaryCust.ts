@@ -32,11 +32,25 @@ export function getMarket(params){
     })
 }
 
-export function fetchForm(params){
+// export function fetchForm(params){
+//     return request({
+//         url:'/custInfo/custInfoDetail',
+//         method:'post',
+//         data:params
+//     })
+// }
+
+export function fetchForm(data){
     return request({
-        url:'/custInfo/custInfoDetail',
-        method:'post',
-        data:params
+      url:'/custInfo/custInfoNewDetail/'+data,
+      method:'get',
+    })
+  }
+
+export function getCustDetail(params){
+    return request({
+        url:`/custInfo/custInfoNewDetail/${params}`,
+        method:'get'
     })
 }
 

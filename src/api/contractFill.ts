@@ -16,6 +16,14 @@ export function getContractTemlist(params) {
     })
 }
 
+
+export function getCust(params){
+    return request({
+        url: `custInfo/queryCustWithBusiness/${params}`,
+        method: 'get'
+    },false)
+}
+
 export function getProject(params){
     return request({
         url:'/projectInfo/projectInfoList',

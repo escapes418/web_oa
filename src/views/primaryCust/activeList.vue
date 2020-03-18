@@ -42,6 +42,11 @@
                     <span>{{scope.row.custName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="客户分类" width="150px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.custTypeName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="客户级别" width="100px">
                 <template slot-scope="scope">
                     <span>{{scope.row.custStageName}}</span>

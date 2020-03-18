@@ -17,8 +17,8 @@
                         <div class="clearfix  cominfo-item">
                             <RedStar label="客户级别：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
-                                        <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.custType" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custTypeList" :label="item.name" :value="item.value" :key="item.value">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -96,6 +96,11 @@
                                 <span>{{scope.row.maintainerDeptName}}</span>
                             </template>
                         </el-table-column>
+                        <el-table-column align="center" label="客户分类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custTypeName}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column align="center" label="客户级别" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.custStageName}}</span>
@@ -168,18 +173,22 @@ export default {
             dialogTitle: "",
             confirmDialog: false,
             custName:this.$route.query.custName,
+            custType:this.$route.query.custType,
             itemList:[],
+            custTypeList:[],
             filter: {
                 custMaintenanceType:"",
                 custMaintenanceProblem:"",
                 remarks:"",
                 custMaintenanceDate:"",
                 custPersonLiable:"",
-                custMaintenanceContent:""
+                custMaintenanceContent:"",
+                custType:""
             },
             total:0,
             listQuery: {
                 custId:this.$route.query.key,
+                custType:this.$route.query.custType,
                 pageNo: 1,
                 pageSize: 20
             }
@@ -216,6 +225,7 @@ export default {
             if(custMaintainVali(this)){
                 saveMaintain({
                     ...this.filter,
+                    custType:this.custType,
                     custMaintenanceDate:common.timeParse(this.filter.custMaintenanceDate)
                 }).then(res => {
                     this.confirmDialog = false;
@@ -270,6 +280,7 @@ export default {
         }
         this.custVisitList = selectDic(dicList, "visit_type"); //拜访类型
         this.custStageList = selectDic(dicList, "cust_stage"); //客户级别
+        this.custTypeList = selectDic(dicList,"cust_type");//客户分类
     }
 };
 </script>

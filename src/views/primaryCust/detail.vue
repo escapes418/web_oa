@@ -12,135 +12,257 @@
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">主客户：</span>
                                     <span class="right-con">
-                                        {{detailData.custName}}
+                                        {{baseData.custName}}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">客户编号：</span>
-                                    <span class="right-con">
-                                        {{detailData.custCode}}
-                                    </span>
-                                </div>
+                                
                                 <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">客户名称：</span>
-                                    <span class="right-con" v-for="(item,index) in detailData.childCustList" :key="index">
+                                    <span class="right-con" v-for="(item,index) in baseData.childCustList" :key="index">
                                         <span style="color:#409EFF;cursor: Pointer;"  @click="handleDetail(item)">
                                             {{item.childCustName}}  
                                         </span>
-                                        <span v-if="detailData.childCustList.length!=1 &&index+1 !== detailData.childCustList.length "> 、</span>
+                                        <span v-if="baseData.childCustList.length!=1 &&index+1 !== baseData.childCustList.length "> 、</span>
                                     </span>
                                     
                                 </div>
                                 <div class="clearfix cominfo-item">
                                     <span class="left-title font-gray">客户简称：</span>
-                                    <span class="right-con">{{detailData.custAbbreviation}}</span>
+                                    <span class="right-con">{{baseData.custAbbreviation}}</span>
                                 </div>
-                                
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">市场负责人：</span>
+                                    <span class="left-title font-gray">统一社会信用代码：</span>
                                     <span class="right-con">
-                                        {{detailData.marketLeaderName}}
+                                        {{baseData.creditCode}}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">市场负责人手机号：</span>
-                                    <span class="right-con">
-                                        {{detailData.marketLeaderPhone}}
+                                    <span class="left-title font-gray">注册地址：</span>
+                                    <span class="right-con" v-if="baseData.custAddressCode">
+                                        {{baseData.registeredAddress}}
                                     </span>
                                 </div>
                                  <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">清结算：</span>
                                     <span class="right-con">
-                                        {{detailData.accountLeaderName}}
+                                        {{baseData.accountLeaderName}}
                                     </span>
                                 </div>
                             </el-col>
                             <el-col :span="12">
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">所属区域：</span>
-                                    <span class="right-con">{{detailData.custOfficeName}}</span>
-                                </div>
-                                <div class="clearfix cominfo-item">
-                                    <span class="left-title font-gray">客户来源：</span>
-                                    <span class="right-con">{{detailData.custSource}}</span>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">客户编号：</span>
+                                    <span class="right-con">
+                                        {{baseData.custCode}}
+                                    </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">地址：</span>
-                                    <span class="right-con">{{detailData.custAddressCodeName}}</span>
+                                    <span class="right-con">{{baseData.custAddressCodeName}}</span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">详细地址：</span>
-                                    <span class="right-con" v-if="detailData.custAddressCode">
-                                        {{detailData.custAddress}}
+                                    <span class="right-con" v-if="baseData.custAddressCode">
+                                        {{baseData.custAddress}}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">首次跑单时间：</span>
                                     <span class="right-con">
-                                        {{detailData.firstOrderTime}}
+                                        {{baseData.firstOrderTime}}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">VIP客服：</span>
                                     <span class="right-con">
-                                        {{detailData.vipCustomerName}}
+                                        {{baseData.vipCustomerName}}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">商务助理：</span>
                                     <span class="right-con">
-                                        {{detailData.businessAssistantName}}
+                                        {{baseData.businessAssistantName}}
                                     </span>
                                 </div>
                             </el-col>
                         </el-row>
                     </div>
                 </div>
-            
-                <div class="segment statistics">
-                    <div class="segment-header">
-                        联系人信息
-                    </div>
-                    <div class="segment-area">
-                        <div class="el-table__body-wrapper">
-                            <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
-                                <thead>
-                                    <tr class="tableTitle">
-                                        <td class="tableTitle">联系人</td>
-                                        <td class="tableTitle">联系方式</td>
-                                        <td class="tableTitle">邮箱</td>
-                                        <td class="tableTitle">职位</td>
-                                        <td class="tableTitle">备注</td>
-                                        <td class="tableTitle">合同联系人</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(itemData,index) in detailData.custLinkmanResponse">
-                                        <td class="left" style="width:220px;text-align: center">
-                                            <span class="table_text">{{itemData.linkmanName}}</span>
-                                        </td>
-                                        <td class="left" style="width:220px;text-align: center">
-                                            <span class="table_text">{{itemData.linkmanPhone}}</span>
-                                        </td>
-                                        <td class="left" style="width:220px;text-align: center">
-                                            <span class="table_text">{{itemData.linkmanMail}}</span>
-                                        </td>
-                                        <td class="left" style="width:220px;text-align: center">
-                                            <span class="table_text">{{itemData.linkmanPost}}</span>
-                                        </td>
-                                        <td class="left" style="text-align: center">
-                                            <span class="table_text">{{itemData.remarks}}</span>
-                                        </td>
-                                        <td class="left" style="text-align: center">
-                                            <span class="table_text">{{itemData.isContractLinkman == 1 ? "是":"否"}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
+                <el-tabs type="border-card" v-if="nocarData.noCarId&&coalUnionData.coalUnionId">
+                    <el-tab-pane label="无车承运" v-if="nocarData.noCarId">
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                市场联系人信息
+                            </div>
+                            <div class="segment-area">
+                                <el-row>
+                                    <el-col :span="12" class="segment-brline">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">市场负责人：</span>
+                                            <span class="right-con">
+                                                {{nocarData.marketLeaderName}}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix cominfo-item">
+                                            <span class="left-title font-gray">邮箱：</span>
+                                            <span class="right-con">
+                                                {{nocarData.marketLeaderMail}}  
+                                            </span>
+                                        </div>
+                                        <div class="clearfix cominfo-item">
+                                            <span class="left-title font-gray">职位：</span>
+                                            <span class="right-con">{{nocarData.marketLeaderPostName}}</span>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">联系方式：</span>
+                                            <span class="right-con">
+                                                {{nocarData.marketLeaderPhone}}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">所在部门：</span>
+                                            <span class="right-con">{{nocarData.marketLeaderOfficeName}}</span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                客户联系人信息
+                            </div>
+                            <div class="segment-area">
+                                <div class="el-table__body-wrapper">
+                                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
+                                        <thead>
+                                            <tr class="tableTitle">
+                                                <td class="tableTitle">联系人</td>
+                                                <td class="tableTitle">联系方式</td>
+                                                <td class="tableTitle">邮箱</td>
+                                                <td class="tableTitle">职位</td>
+                                                <td class="tableTitle">备注</td>
+                                                <td class="tableTitle">合同联系人</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(itemData,index) in nocarData.custLinkman" :key="index">
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanName}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanPhone}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanMail}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanPost}}</span>
+                                                </td>
+                                                <td class="left" style="text-align: center">
+                                                    <span class="table_text">{{itemData.remarks}}</span>
+                                                </td>
+                                                <td class="left" style="text-align: center">
+                                                    <span class="table_text">{{itemData.isContractLinkman == 1 ? "是":"否"}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="煤联社" v-if="coalUnionData.coalUnionId">
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                市场联系人信息
+                            </div>
+                            <div class="segment-area">
+                                <el-row>
+                                    <el-col :span="12" class="segment-brline">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">市场负责人：</span>
+                                            <span class="right-con">
+                                                {{coalUnionData.marketLeaderName}}
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="clearfix cominfo-item">
+                                            <span class="left-title font-gray">邮箱：</span>
+                                            <span class="right-con">
+                                                <span>
+                                                    {{coalUnionData.marketLeaderMail}}  
+                                                </span>
+                                            </span>
+                                            
+                                        </div>
+                                        <div class="clearfix cominfo-item">
+                                            <span class="left-title font-gray">职位：</span>
+                                            <span class="right-con">{{coalUnionData.marketLeaderPostName}}</span>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">联系方式：</span>
+                                            <span class="right-con">
+                                                {{coalUnionData.marketLeaderPhone}}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">所在部门：</span>
+                                            <span class="right-con">{{coalUnionData.marketLeaderOfficeName}}</span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                        </div>
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                客户联系人信息
+                            </div>
+                            <div class="segment-area">
+                                <div class="el-table__body-wrapper">
+                                    <table id="expenseDetails" class="table table-striped table-bordered table-condensed" style="width:100%;margin-bottom: 20px; margin-top:15px">
+                                        <thead>
+                                            <tr class="tableTitle">
+                                                <td class="tableTitle">联系人</td>
+                                                <td class="tableTitle">联系方式</td>
+                                                <td class="tableTitle">邮箱</td>
+                                                <td class="tableTitle">职位</td>
+                                                <td class="tableTitle">备注</td>
+                                                <td class="tableTitle">合同联系人</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(itemData,index) in coalUnionData.custLinkman" :key="index">
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanName}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanPhone}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanMail}}</span>
+                                                </td>
+                                                <td class="left" style="width:220px;text-align: center">
+                                                    <span class="table_text">{{itemData.linkmanPost}}</span>
+                                                </td>
+                                                <td class="left" style="text-align: center">
+                                                    <span class="table_text">{{itemData.remarks}}</span>
+                                                </td>
+                                                <td class="left" style="text-align: center">
+                                                    <span class="table_text">{{itemData.isContractLinkman == 1 ? "是":"否"}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+                
             </el-tab-pane>
             <el-tab-pane label="主动维护记录" name="2">
                 <div class="segment statistics">
@@ -178,7 +300,7 @@
 
 <script>
 import common from "@/utils/common";
-import { fetchForm} from "@/api/primaryCust";
+import { getCustDetail} from "@/api/primaryCust";
 import sjbtextarea from '@/components/sjbTextarea';
 import activeList from './activeList';
 import passiveList from './passiveList';
@@ -194,7 +316,9 @@ export default {
     data() {
         return {
             activeName:'1',
-            detailData: {},
+            baseData: {},
+            nocarData:{},
+            coalUnionData:{},
             key:this.$route.query.key,
         };
     },
@@ -203,11 +327,12 @@ export default {
     },
     methods: {
         getDetail() {
-            fetchForm({
-                id: this.key
-            }).then(response => {
-                var data = response.data
-                this.detailData = data;
+            getCustDetail(
+                this.key
+            ).then(response => {
+                this.baseData = response.data.baseCustInfo;
+                this.nocarData = response.data.noCar;
+                this.coalUnionData = response.data.coalUnion;
             });
         },
         tabClick(value){
@@ -226,7 +351,7 @@ export default {
         handleDetail(item){
             this.$router.push({
                 path: "/inforManage/customerDetail",
-                query: { key: item.childCustId}
+                query: { key: item.childCustId, custType:"0"}
             });
         }
     }

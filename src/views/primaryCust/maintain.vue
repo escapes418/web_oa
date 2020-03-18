@@ -14,6 +14,17 @@
                                 </span>
                             </RedStar>
                         </div>
+                         <div class="clearfix cominfo-item">
+                            <RedStar label="客户分类：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="postData.custType" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custTypeList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </div>
+                        
                         <div class="clearfix cominfo-item">
                             <RedStar label="拜访类型：" :required="true">
                                 <span class="right-con">
@@ -108,6 +119,7 @@ export default {
         return {
             // dialogFormVisible: false,
             custVisitList: [],
+            custTypeList:[],
             custStageList: [],
             linkmanList:[],
             belongCust:[],
@@ -124,7 +136,7 @@ export default {
                 issuesClassification:[],//问题归类 ,
                 linkmanId:"",// 联系人id ,
                 // linkmanName:"",// 联系人name ,
-                // producSide:"",
+                custType:"",
                 remarks:"",// 备注 ,
                 visitType:"2",// 拜访类型
             },
@@ -198,6 +210,7 @@ export default {
         this.custVisitList = selectDic(dicList, "visit_type"); //拜访类型
         this.custStageList = selectDic(dicList, "cust_stage"); //客户级别
         this.issueList = selectDic(dicList, "issues_type"); 
+        this.custTypeList = selectDic(dicList,"cust_type");
     }
 };
 </script>

@@ -20,7 +20,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同负责人：</span>
-                <el-select clearable filterable class="filter-item" filterable v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
+                <el-select clearable filterable class="filter-item" v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
                     <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
@@ -176,14 +176,14 @@
                 </RedStar>
                 <RedStar :required ="true">
                     <el-form-item label="变更合同负责人：">
-                        <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
+                        <el-select clearable filterable class="filter-item ignore-detail" v-model="contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
                             <el-option v-for="item in memberPartList" :label="item.name" :value="item.id" :key="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                 </RedStar>
                 <RedStar :required ="true">
-                    <el-form-item label="关联项目：">
+                    <el-form-item label="关联项目：" v-if="businessType == '1'">
                         <el-select 
                             class="filter-item" 
                             filterable
@@ -195,6 +195,22 @@
                             style="width:220px;" 
                             :remote-method="searchProject">
                             <el-option v-for="item in projectList" :label="item.projectName" :value="item.id" :key="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="关联客户：" v-if="businessType =='2'">
+                        <el-select 
+                            class="filter-item" 
+                            filterable
+                            remote 
+                            reserve-keyword 
+                            multiple
+                            v-model="custIds" 
+                            placeholder="请输入客户名称" 
+                            style="width:220px;" 
+                            :remote-method="searchCustmer">
+                            <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -263,7 +279,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectContract">
+                <span v-for="(item,index) in selectContract" :key="index">
                     <span class="select-item">{{item.contractName}}</span>
                 </span>
             </div>
@@ -298,7 +314,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 
 import RedStar from '@/components/RedStar/RedStar.vue';
-import { fetchList ,getContractTemlist,findAllProject,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember} from '@/api/contractFill';
+import { fetchList ,getContractTemlist,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember,getCust} from '@/api/contractFill';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -381,7 +397,11 @@ export default {
             contractLeaderId:'',
             memberList:[],
             memberPartList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+
+            custIds:[],
+            custList:[],
+            businessType:""
         }
     },
     created() {
@@ -423,9 +443,9 @@ export default {
         })
 
         // this.allProject = await this.getAllProject();
-        findAllProject({}).then(res=>{
-            this.allProject = res.data.list
-        })
+        // findAllProject({}).then(res=>{
+        //     this.allProject = res.data.list
+        // })
     },
     methods: {
         // getAllProject(){
@@ -507,6 +527,16 @@ export default {
                 })
             }
         },
+        searchCustmer(val){
+            if(val !==''){
+                getCust(
+                    //还有项目名称
+                    val,
+                ).then(res=>{
+                    this.customerList = res.data;
+                })
+            }
+        },
         editFill(){
             if (!this.contractLeaderId) {
                 this.$message({
@@ -522,10 +552,18 @@ export default {
                 });
                 return;
             }
+            if (this.custIds.length<1) {
+                this.$message({
+                    message: "请关联客户！",
+                    type: "warning"
+                });
+                return;
+            }
             eidtList({
                 contractHisId:this.editId,
                 contractLeaderId:this.contractLeaderId,
-                projectIds:this.projectIds
+                projectIds:this.projectIds,
+                custIds:this.custIds
             }).then(res=>{
                 if(res.status == 0){
                     window.location.reload();
@@ -644,43 +682,32 @@ export default {
             this.listLoading = false;
         },
         showEdit(row){
-            if(this.allProject.length){
-                this.dialogEdit = true;
-                this.editId = row.id;
-                this.projectList = [];
-                getDetail({
-                    id:this.editId
-                }).then(res=>{
-                    this.contractLeaderName = res.data.contractHisDetailResponse.contractLeaderName;
-                    this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
-                    this.allProject.forEach(item=>{
-                        for(let key in this.projectIds){
-                            if(item.id == this.projectIds[key]){
-                                this.projectList.push(item)
-                            }
-                        }
-                    })
+            this.dialogEdit = true;
+            this.editId = row.id;
+            this.projectList = [];
+            getDetail({
+                id:this.editId
+            }).then(res=>{
+                this.contractLeaderName = res.data.contractHisDetailResponse.contractLeaderName;
+                this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
+                res.data.contractHisDetailResponse.projectList =  res.data.contractHisDetailResponse.projectList || [];
+                this.projectList = res.data.contractHisDetailResponse.projectList.map(item=>{
+                    return {
+                        id:item.projectId,
+                        ...item
+                    }
                 })
-            }else{
-                this.$message({
-                    message: '请求还没加载完，请稍后重试！',
-                    type: 'warning'
-                })
-            }
+                this.custIds = res.data.contractHisDetailResponse.custIds || [];
+                this.custList = res.data.contractHisDetailResponse.custList || [];
+                this.businessType = res.data.contractHisDetailResponse.businessType;
+            })
             
         },
         showDetail(row){
-        // if(row.expenseStatus == 2){
-        //     this.$router.push({
-        //       path:'/me/reimDetail',
-        //       query: { key: row.id , taskId:row.taskId}
-        //   })
-        // }else{
             this.$router.push({
                 path:'/inforManage/contractFillDetail',
                 query: { key: row.id }
             })
-        // }
         },
         showRenew(row){
             this.dialogRenew = true;

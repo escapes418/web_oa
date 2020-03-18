@@ -32,13 +32,20 @@ export function custChange(params) {
     })
 }
 
-export function fetchForm(params){
+export function fetchForm(data){
   return request({
-    url:'/custInfo/custInfoDetail',
-    method:'post',
-    data:params
+    url:'/custInfo/custInfoNewDetail/'+data,
+    method:'get',
   })
 }
+
+// export function fetchForm(params){
+//   return request({
+//     url:'/custInfo/custInfoDetail',
+//     method:'post',
+//     data:{id:params}
+//   })
+// }
 
 export function deleCust(params){
   return request({
@@ -48,11 +55,27 @@ export function deleCust(params){
   })
 }
 
+export function modifyCust(params){
+  return request({
+    url:'/custInfo/saveCustInfo',
+    method:'put',
+    data:params
+  })
+}
+
 export function saveCust(params){
   return request({
     url:'/custInfo/saveCustInfo',
     method:'post',
     data:params
+  })
+}
+
+export function verifyCust(params){
+  return request({
+    url:'/custInfo/verify',
+    method:'get',
+    params:params
   })
 }
 
