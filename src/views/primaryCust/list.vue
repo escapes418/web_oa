@@ -222,7 +222,7 @@
         </el-dialog>
 
 
-        <el-dialog title="选择市场负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true" @close="dialogMarketVisible = false">
+        <el-dialog title="选择负责人" :visible.sync="dialogMarketVisible" width="25%" :center="true" @close="dialogMarketVisible = false">
             <el-input placeholder="输入关键字进行过滤" v-model="filterMarket" style="margin-bottom:10px"></el-input>
             <el-tree node-key="id" show-checkbox check-strictly :data="treeData" :props="defaultProps" @check-change="handleMarketClick" :filter-node-method="marketNode" ref="marketTree"></el-tree>
             <div slot="footer" class="dialog-footer">
