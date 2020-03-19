@@ -88,7 +88,7 @@
                         </el-row>
                     </div>
                 </div>
-                <el-tabs type="border-card" v-if="nocarData.noCarId&&coalUnionData.coalUnionId">
+                <el-tabs type="border-card" v-if="nocarData.noCarId || coalUnionData.coalUnionId">
                     <el-tab-pane label="无车承运" v-if="nocarData.noCarId">
                         <div class="segment statistics">
                             <div class="segment-header">
@@ -173,6 +173,7 @@
                             </div>
                         </div>
                     </el-tab-pane>
+                    
                     <el-tab-pane label="煤联社" v-if="coalUnionData.coalUnionId">
                         <div class="segment statistics">
                             <div class="segment-header">
