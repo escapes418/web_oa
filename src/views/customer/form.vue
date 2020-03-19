@@ -10,7 +10,7 @@
                         <RedStar label="客户类型：" :required="true" v-if="!routeKey">
                             <span class="right-con">
                                 <el-select clearable class="filter-item" v-model="filter.baseCustInfo.custType" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in dictionary.custType" :label="item.value" :value="item.key" :key="item.key">
+                                    <el-option v-for="item in dictionary.custType" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
                             </span>
@@ -229,7 +229,7 @@
                         <RedStar label="客户分类：" :required="true">
                             <span class="right-con">
                                 <el-select clearable multiple class="filter-item" v-model="filter.coalUnion.custSort" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in dictionary.custSort" :label="item.value" :value="item.key" :key="item.key">
+                                    <el-option v-for="item in dictionary.custSort" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
                             </span>
