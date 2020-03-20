@@ -15,10 +15,10 @@
                             </RedStar>
                         </div>
                         <div class="clearfix  cominfo-item">
-                            <RedStar label="客户类型：" :required="true">
+                            <RedStar label="客户级别：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable class="filter-item" v-model.trim="filter.custType" placeholder="请选择" style="width:250px;">
-                                        <el-option v-for="item in custTypeList" :label="item.name" :value="item.value" :key="item.value">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -167,6 +167,7 @@ export default {
             dialogFormVisible: false,
             custVisitList: [],
             custStageList: [],
+            oldCustStage:"",
             linkmanList:[],
             leaderName: "",
             leaderPhone: "",
@@ -183,7 +184,8 @@ export default {
                 custMaintenanceDate:"",
                 custPersonLiable:"",
                 custMaintenanceContent:"",
-                custType:""
+                custStage:"",
+                custType:this.$route.query.custType
             },
             total:0,
             listQuery: {
@@ -208,6 +210,23 @@ export default {
                     });
                     this.itemList = res.data.list;
                     this.total = res.data.total;
+                    this.oldCustStage = this.itemList[0].custStage;
+                    if (this.oldCustStage == 'A' || this.oldCustStage == 'B' || this.oldCustStage == 'C') {
+                        this.custStageList = [
+                        {
+                            name: 'A重点客户',
+                            value: 'A',
+                        },
+                        {
+                            name: 'B上线客户',
+                            value: 'B',
+                        },
+                        {
+                            name: 'C签约客户',
+                            value: 'C',
+                        }
+                        ];
+                    }
                 }
             })
         },
@@ -259,7 +278,6 @@ export default {
         month = month<10?'0' + month: month
         day = day<10?'0'+ day: day
         this.filter.custMaintenanceDate = year + '-' + month + '-' + day +' '+ hour + ':' + minute + ':' + second
-        this.getListData()
         getLinkman({custId:this.$route.query.key}).then(res=>{
             if(res.status == 0){
                 this.linkmanList = res.data
@@ -281,6 +299,7 @@ export default {
         this.custVisitList = selectDic(dicList, "visit_type"); //拜访类型
         this.custStageList = selectDic(dicList, "cust_stage"); //客户级别
         this.custTypeList = selectDic(dicList,"cust_type");//客户分类
+        this.getListData()
     }
 };
 </script>
