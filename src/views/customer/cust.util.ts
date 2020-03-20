@@ -10,8 +10,8 @@ function toast(str) {
 }
 export function custMaintainVali(self) {
     var flag = true;
-    if (!self.filter.custType) {
-        toast('请选择客户类型！');
+    if (!self.filter.custStage) {
+        toast('请选择客户级别！');
         flag = false;
     }
     else if (!self.filter.linkmanId) {
