@@ -15,7 +15,7 @@
                             </RedStar>
                         </div>
                         <div class="clearfix  cominfo-item">
-                            <RedStar label="客户级别：" :required="true">
+                            <RedStar label="客户类型：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable class="filter-item" v-model.trim="filter.custType" placeholder="请选择" style="width:250px;">
                                         <el-option v-for="item in custTypeList" :label="item.name" :value="item.value" :key="item.value">
@@ -35,7 +35,7 @@
                             </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <RedStar label="备注：" :required="true">
+                            <RedStar label="备注：">
                                 <span class="right-con">
                                     <sjbtextarea type="textarea" :rows="3" placeholder="请输入" textStyle="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></sjbtextarea>
                                 </span>
@@ -225,7 +225,7 @@ export default {
             if(custMaintainVali(this)){
                 saveMaintain({
                     ...this.filter,
-                    custType:this.custType,
+                    // custType:this.custType,
                     custMaintenanceDate:common.timeParse(this.filter.custMaintenanceDate)
                 }).then(res => {
                     this.confirmDialog = false;
