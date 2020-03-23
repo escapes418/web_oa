@@ -200,13 +200,13 @@
             </div>
             <div class="move-select">
                 <div class="move-item">
-                    <span class="item-label">客户分类：</span>
+                    <span class="item-label">客户类型：</span>
                     <el-select 
                         style="width: 300px" 
                         class="filter-item" 
                         v-model="custType"
                         filterable
-                        placeholder="请选择客户分类">
+                        placeholder="请选择客户类型">
                         <el-option v-for="item in custTypeList" :key="item.value" :label="item.name" :value="item.value">
                         </el-option>
                     </el-select>
