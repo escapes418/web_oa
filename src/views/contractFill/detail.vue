@@ -55,11 +55,11 @@
                                     <span class="left-title font-gray">关联主合同编号：</span>
                                     <span class="right-con">{{ detail.associationMainCode }}</span>
                                 </li>
-                                <li class="base-li" v-if="detail.businessType==1&&!associationMain">
+                                <li class="base-li" v-if="businessType==1&&!associationMain">
                                     <span class="left-title font-gray">关联项目：</span>
                                     <span class="right-con">{{ projectName.join('，') }}</span>
                                 </li>
-                                <li class="base-li" v-if="detail.businessType==2">
+                                <li class="base-li" v-if="businessType==2">
                                     <span class="left-title font-gray">关联客户：</span>
                                     <span class="right-con">{{ custNames.join('，') }}</span>
                                 </li>
@@ -392,6 +392,7 @@ export default {
             configId:'',
             contractTypeName:'',
             businessTypeName:"",
+            businessType:"",
             businessModelName:"",
             custNames:[]
         };
@@ -418,6 +419,7 @@ export default {
                 })
                 this.contractTypeName = respond.data.contractTypeName;
                 this.businessTypeName = respond.data.businessTypeName;
+                this.businessType = respond.data.businessType;
                 this.businessModelName = respond.data.businessModelName;
                 respond.data.keyWords = respond.data.keyWords || [];
                 this.keyWords = respond.data.keyWords;
