@@ -15,7 +15,7 @@
                             </RedStar>
                         </div>
                          <div class="clearfix cominfo-item">
-                            <RedStar label="客户分类：" :required="true">
+                            <RedStar label="客户类型：" :required="true">
                                 <span class="right-con">
                                     <el-select clearable class="filter-item" v-model.trim="postData.custType" placeholder="请选择" style="width:250px;">
                                         <el-option v-for="item in custTypeList" :label="item.name" :value="item.value" :key="item.value">
