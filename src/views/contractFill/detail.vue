@@ -392,6 +392,7 @@ export default {
             configId:'',
             contractTypeName:'',
             businessTypeName:"",
+            businessType:"",
             businessModelName:"",
             custNames:[]
         };
@@ -418,6 +419,7 @@ export default {
                 })
                 this.contractTypeName = respond.data.contractTypeName;
                 this.businessTypeName = respond.data.businessTypeName;
+                this.businessType = respond.data.businessType;
                 this.businessModelName = respond.data.businessModelName;
                 respond.data.keyWords = respond.data.keyWords || [];
                 this.keyWords = respond.data.keyWords;
