@@ -22,7 +22,7 @@ export function contractFormVali(self) {
         toast('请关联项目！');
         flag = false;
     }
-    else if(self.businessType==1&&self.postData.custIds.length<1){
+    else if(self.postData.businessType==1&&self.postData.custIds.length<1){
         toast('请选择关联客户！');
         flag = false;
     }
