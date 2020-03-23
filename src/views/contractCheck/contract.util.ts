@@ -10,6 +10,7 @@ function toast(str) {
 }
 export function contractFormVali(self) {
     var flag = true;
+    console.log(self.postData)
     if (!self.postData.contractNameId) {
         toast('请选择合同名称！');
         flag = false;
@@ -22,11 +23,11 @@ export function contractFormVali(self) {
         toast('请选择合同关键字！');
         flag = false;
     }
-    else if(self.businessType==2&&!self.associationMain&&self.postData.projectIds.length<1){
+    else if(self.businessType==1&&!self.associationMain&&self.postData.projectIds.length<1){
         toast('请关联项目！');
         flag = false;
     }
-    else if(self.businessType==1&&self.postData.custIds.length<1){
+    else if(self.postData.businessType==2&&self.postData.custIds.length<1){
         toast('请选择关联客户！');
         flag = false;
     }
