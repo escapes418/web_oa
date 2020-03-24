@@ -569,7 +569,7 @@ export default {
                     this.$message({
                         message: res.message,
                         type: "success"
-                    });
+                    })
                     window.location.reload();
                     // this.dialogEdit = false
                 }
