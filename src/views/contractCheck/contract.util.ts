@@ -23,7 +23,7 @@ export function contractFormVali(self) {
         toast('请选择合同关键字！');
         flag = false;
     }
-    else if(self.businessType==1&&!self.associationMain&&self.postData.projectIds.length<1){
+    else if(self.postData.businessType==1&&!self.associationMain&&self.postData.projectIds.length<1){
         toast('请关联项目！');
         flag = false;
     }
