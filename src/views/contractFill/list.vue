@@ -566,6 +566,10 @@ export default {
                 custIds:this.custIds
             }).then(res=>{
                 if(res.status == 0){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
                     window.location.reload();
                     // this.dialogEdit = false
                 }
