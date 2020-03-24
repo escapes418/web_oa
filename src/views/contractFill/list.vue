@@ -545,14 +545,14 @@ export default {
                 });
                 return;
             }
-            if (this.projectIds.length<1) {
+            if (this.businessType ==1 &&this.projectIds.length<1) {
                 this.$message({
                     message: "请关联项目！",
                     type: "warning"
                 });
                 return;
             }
-            if (this.custIds.length<1) {
+            if (this.businessType ==2 &&this.custIds.length<1) {
                 this.$message({
                     message: "请关联客户！",
                     type: "warning"
