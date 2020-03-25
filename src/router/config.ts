@@ -63,7 +63,27 @@ export default [
                         icon: ''
                     },
                 }]
-            },
+            },{
+                path: 'flowList',
+                id: 'config-flowList',
+                show: false,
+                name: 'FlowList',
+                component: () => import('@/views/flow/list.vue'),
+                meta: {
+                    title: '流程管理',
+                    icon: 'iconfont icon-xiezuoxing'
+                }
+            },{
+                path: 'flowForm',
+                id: 'config-flowForm',
+                show: false,
+                name: 'FlowForm',
+                component: () => import('@/views/flow/form.vue'),
+                meta: {
+                    title: '流程编辑',
+                    icon: 'iconfont icon-xiezuoxing'
+                }
+            }
         ]
     }
 ];
