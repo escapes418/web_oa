@@ -14,8 +14,12 @@ var loading;
 // request拦截器
 service.interceptors.request.use(
     (config:AxiosRequestConfig) => {
+        config.headers['Content-Tab'] = 'Micro'
         if (store.getters.token) {
             config.headers['sessionid'] = getToken() || ''; // 让每个请求携带自定义token 请根据实际情况自行修改
+        }
+        if(config.url=='/auth/login'){
+            config.baseURL = './OA'
         }
         return config;
     },
@@ -31,10 +35,10 @@ service.interceptors.response.use(
     (response: AxiosResponse) => {
         if (response.status == 200) {
             var rtnObj = response.data;
-            if (rtnObj.status == 0 || rtnObj.status == 2) {
+            if (rtnObj.code == 200) {
                 return rtnObj;
             }
-            if(rtnObj.status == 20){
+            if(rtnObj.code == 20){
                 Message({
                     message: rtnObj.message,
                     type: 'error',

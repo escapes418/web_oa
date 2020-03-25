@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getRegion(parmas) {
     return request({
-        url:'/commonInfo/queryAreaInfo',
+        url:'/webCommonInfo//queryAreaInfo',
         method:'post',
         data:parmas
     })

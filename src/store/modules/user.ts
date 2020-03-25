@@ -53,8 +53,8 @@ const user = {
             return new Promise((resolve, reject) => {
                 login(username, userInfo.password)
                     .then((res: Ajax.AjaxResponse) => {
-                        setToken(res.data.sessionid);
-                        commit('SET_TOKEN', res.data.sessionid);
+                        setToken(res.data);
+                        commit('SET_TOKEN', res.data);
                         findUser({}).then((res:Ajax.AjaxResponse)=>{
                             localStorage.setItem(
                                 'web_oa_userInfor',

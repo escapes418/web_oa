@@ -7,7 +7,7 @@ import request from "@/utils/request";
  */
 export function login(username, password) {
     return request({
-        url: "/login",
+        url: "/auth/login",
         method: "post",
         data: {
             username,
@@ -17,7 +17,7 @@ export function login(username, password) {
 }
 export function fetchPermissionId() {
     return request({
-        url: "/permission",
+        url: "/webCommonInfo/permission",
         method: "post"
     },false);
 }
@@ -31,7 +31,7 @@ export function menu() {
 
 export function getDic(params){
     return request({
-        url: "/commonInfo/queryDict",
+        url: "/webCommonInfo/queryDict",
         method: 'post',
         data:params
     },false);
@@ -47,7 +47,7 @@ export function expApply(params){
 
 export function getMember(params){
     return request({
-        url:"/commonInfo/orgAndUserInfo",
+        url:"/webCommonInfo/orgAndUserInfo",
         method:"post",
         data:params
     },false)
@@ -69,7 +69,7 @@ export function getMenu() {
 
 export function findUser(params) {
     return request({
-        url: "/commonInfo/findUserRealTimeInfo",
+        url: "/webCommonInfo/findUserRealTimeInfo",
         method: "post",
         data:params
     });
