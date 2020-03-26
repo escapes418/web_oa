@@ -117,9 +117,9 @@
                     </el-pagination>
                 </div>
                 
-                <div slot="footer" class="dialog-footer">
+                <!-- <div slot="footer" class="dialog-footer">
                     <el-button @click="showThemeForm = false">返回</el-button>
-                </div>
+                </div> -->
             </el-dialog>
         </div>
         <div class="segment statistics">
@@ -175,7 +175,6 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import Project from '@/components/Project';
 import sjbtextarea from '@/components/sjbTextarea';
 import {
-    fetchProList, //项目管理-查询列表
     travelApply, //Web端出差申请-发起申请
     saveTravelFlowInfo, // Web端出差申请-单据保存草稿.
     retravelFlowDetail,//Web出差申请-查询审批流程详情
@@ -363,13 +362,7 @@ export default {
         this.expTypeList = selectDic(dicList, "travel_expense_type");
         this.getTheme()
         getMember({}).then(res => {
-            if(res.status == 0){
-                this.memberList = res.data;
-                // // //列表是非离职人员
-                // this.memberPartList = res.data.filter((item)=>{
-                //     return item.userStatus == '1'
-                // })
-            }
+            this.memberList = res.data;
         })
     },
     methods: {
@@ -426,29 +419,6 @@ export default {
             this.filter.projectId = data.id;
             this.projectLeaderName = data.projectLeaderName;
         },
-        // selectRow(row) {
-        //     this.projectName = row.projectName;
-        //     this.projectLeaderName = row.projectLeaderName;
-        //     this.filter.projectId = row.id;
-        //     this.dialogFormVisible = false;
-        // },
-        // getList() {
-        //     this.listLoading = true;
-        //     var {applyTimeStart,applyTimeEnd } = common.rangeObjToTimestamp(this.timeRange)
-        //     fetchProList({
-        //         ...this.listQuery,
-        //         applyTimeStart,
-        //         applyTimeEnd,
-        //         }).then(res => {
-        //         this.list = res.data.list;
-        //         this.total = res.data.total;
-        //         this.listLoading = false;
-        //     });
-        // },
-        // handleCurrentChange(val) {
-        //     this.listQuery.pageNo = val;
-        //     this.getList();
-        // },
         getItemsInStore() {
             let demandBudgetList = this.detailCollection.map(i => {
                 return {
@@ -471,7 +441,7 @@ export default {
                 travelApply({
                     ...this.filter
                 }).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -484,7 +454,7 @@ export default {
                 saveTravelFlowInfo({
                     ...this.filter
                 }).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: "success"

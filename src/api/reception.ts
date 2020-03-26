@@ -26,18 +26,11 @@ export function fetchProList(params) {
 
 export function getSubjects(parmas) {
     return request({
-        url: '/commonInfo/querySubInfo',
+        url: '/webCommonInfo/querySubInfo',
         method: 'post',
         data:parmas
     },false)
 }
-export function getSubjectsNew(parmas) {
-    return request({
-        url: '/commonInfo/querySubInfoNew',
-        method: 'post',
-        data:parmas
-    },false)
-  }
 
 export function recepApply(params){
     return request({

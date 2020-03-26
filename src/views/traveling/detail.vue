@@ -85,14 +85,14 @@
                                 <span>{{scope.row.startDate | stamp2TextDate}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="起点" prop="startPointName">
+                        <el-table-column label="起点" prop="startPointNames">
                         </el-table-column>
                         <el-table-column label="结束日期">
                             <template slot-scope="scope">
                                 <span>{{scope.row.endDate | stamp2TextDate}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="终点" prop="endPointName">
+                        <el-table-column label="终点" prop="endPointNames">
                         </el-table-column>
                         <el-table-column label="一级科目" prop="firstSubName" width="120">
                         </el-table-column>
@@ -229,7 +229,7 @@ export default {
             return result
         },
         ISDEL:function(){
-            let result = this.detail.recpStatus == 2 || this.detail.recpStatus == 3 || this.detail.recpStatus == 4 ? true : false
+            let result = this.detail.travelStatus == 2 || this.detail.travelStatus == 3 || this.detail.travelStatus == 4 ? true : false
             return result
         },
         ISEDIT:function(){
@@ -237,15 +237,15 @@ export default {
             return result
         },
         ISPUTIN:function(){
-            let result = this.detail.recpStatus == 4 ? true :false
+            let result = this.detail.travelStatus == 4 ? true :false
             return result
         },
         ISCANCEL:function(){
-            let result = this.detail.recpStatus == 2 ? true:false
+            let result = this.detail.travelStatus == 2 ? true:false
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.recpStatus == 1  ? true:false
+            let result = this.detail.travelStatus == 1  ? true:false
             return result
         }
     },
@@ -273,7 +273,7 @@ export default {
         //             expenseFlowId: this.$route.query.key,
         //             procInsId: this.detail.procInsId
         //         }).then(res => {
-        //             if (res.status == 0) {
+        //             if (res.code == 200) {
         //                 this.$message({
         //                     message: res.message,
         //                     type: "success"
@@ -303,7 +303,7 @@ export default {
                 flag: "yes",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -334,7 +334,7 @@ export default {
                 flag: "no",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -349,7 +349,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -374,7 +374,7 @@ export default {
             travelFlowRepealApply({
                 travelFlowId: this.$route.query.key
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"

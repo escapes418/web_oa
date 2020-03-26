@@ -18,7 +18,7 @@ export function travelFormVali(self) {
         toast('请选择项目名称！');
         flag = false;
     } 
-    else if (self.filter.travelExpenseTypeList.length <= 0){
+    else if (self.filter.travelExpenseTypeList.length < 1){
         toast('请选择报销分类！');
         flag = false;
     } 
@@ -36,8 +36,8 @@ export function travelFormVali(self) {
                 toast('请选择正确的发生日期！');
                 key = false;
             } else if (
-                item.startPoint.length == 0 ||
-                item.startPoint.indexOf('') != -1
+                item.startPoints.length == 0 ||
+                item.startPoints.indexOf('') != -1
             ) {
                 toast('请选择起点！');
                 key = false;
@@ -47,8 +47,8 @@ export function travelFormVali(self) {
                 key = false;
                 
             } else if (
-                item.endPoint.length == 0 ||
-                item.endPoint.indexOf('') != -1
+                item.endPoints.length == 0 ||
+                item.endPoints.indexOf('') != -1
             ) {
                 toast('请选择终点！');
                 key = false;
