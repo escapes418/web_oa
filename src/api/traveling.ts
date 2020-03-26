@@ -1,28 +1,13 @@
 import request from '@/utils/request'
 
-export function fetchList(params) {
-  return request({
-    url: '/webRecpFlow/queryMyRecpFlowList',
-    method: 'post',
-    data: params
-  })
-}
-
 export function getMember(params){
   return request({
-    url:'/commonInfo/queryUserInfo',
+    url:'/webRecpFlow/escortEmployee',
     method:'post',
     data:params
   })
 }
 
-export function recepSave(params){
-  return request({
-    url:'/webRecpFlow/saveRecpFlowInfo',
-    method:'post',
-    data:params
-  })
-}
 
 export function fetchProDic(parmas) { //获取字典信息,tax_city:发票所属城市,oa_project:项目,oa_expense_type:报销类型
   return request({
@@ -31,67 +16,6 @@ export function fetchProDic(parmas) { //获取字典信息,tax_city:发票所属
     data:parmas
   })
 }
-
-export function fetchProList(params) { //项目管理-查询列表
-  return request({
-    url: '/projectInfo/projectInfoList',
-    method: 'post',
-    data: params
-  })
-}
-
-
-
-export function recepApply(params){ //Web端接待申请-发起申请
-  return request({
-    url: '/webRecpFlow/recpApply',
-    method: 'post',
-    data:params
-  })
-}
-
-
-export function getDetail(params){ //接待申请-查询审批流程详情
-  return request({
-    url:'/webRecpFlow/recpFlowDetail',
-    method:'post',
-    data:params
-  })
-}
-
-export function startRecep(params){
-  return request({
-    url:'/webRecpFlow/recpFlowStartWorkFlow',
-    method:'post',
-    data:params
-  })
-}
-
-export function recepFlow(params){//接待申请-同意/驳回
-  return request({
-    url:'/webRecpFlow/recpFlowCompleteTask',
-    method:'post',
-    data:params
-  })
-}
-
-export function recepDel(params){ //接待删除
-  return request({
-    url:'/webRecpFlow/recpFlowRepealApply',
-    method:'post',
-    data:params
-  })
-}
-
-export function recepCancel(params){ //接待撤销
-  return request({
-    url:'/webRecpFlow/recpFlowRepealTask',
-    method:'post',
-    data:params
-  })
-}
-
-
 
 export function queryMyTravelFlowList(params){ //Web端出差申请-查询列表
   return request({
