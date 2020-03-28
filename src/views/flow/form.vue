@@ -30,7 +30,7 @@ export default {
     methods: {
         getInitData(){
             getDetail(this.id).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.initData = res.data
                     console.log(this.initData)
                 }

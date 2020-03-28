@@ -455,7 +455,7 @@ export default {
                     ...this.postData,
                     detail:this.itemList
                 }).then(res=>{
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

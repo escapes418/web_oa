@@ -122,7 +122,7 @@ export default {
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.list = res.data.list;
                     this.total = res.data.total;
                 }
@@ -145,7 +145,7 @@ export default {
         //     downApprove({
         //         ...postData,
         //     }).then(res=>{
-        //         if(res.status == 0){
+        //         if(res.code == 200){
         //             var url = `./OA${res.data}`;
         //             window.location.href = url;
         //             this.$message({

@@ -85,14 +85,14 @@
                                 <span>{{scope.row.startDate | stamp2TextDate}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="起点" prop="startPointNames">
+                        <el-table-column label="起点" prop="startPointName">
                         </el-table-column>
                         <el-table-column label="结束日期">
                             <template slot-scope="scope">
                                 <span>{{scope.row.endDate | stamp2TextDate}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="终点" prop="endPointNames">
+                        <el-table-column label="终点" prop="endPointName">
                         </el-table-column>
                         <el-table-column label="一级科目" prop="firstSubName" width="120">
                         </el-table-column>
@@ -206,7 +206,6 @@ import { travelDetailVali } from './travel.util';
 import sjbtextarea from '@/components/sjbTextarea';
 
 export default {
-    name: "complexTable",
     components: {
         sjbtextarea
     },
@@ -267,22 +266,6 @@ export default {
         backBtn() {
             this.$router.go(-1)
         },
-        // expBtn() {
-        //     if(travelDetailVali(this)){
-        //         travelFlowStartWorkFlow({
-        //             expenseFlowId: this.$route.query.key,
-        //             procInsId: this.detail.procInsId
-        //         }).then(res => {
-        //             if (res.code == 200) {
-        //                 this.$message({
-        //                     message: res.message,
-        //                     type: "success"
-        //                 });
-        //                 this.$router.push({ path: "/me/travelingList" });
-        //             }
-        //         });
-        //     }
-        // },
         editBtn() {
             this.$router.push({
                 path: "/me/travelingForm",
@@ -290,13 +273,6 @@ export default {
             });
         },
         agreeBtn() {
-            // if(this.comment.length>100) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
             travelFlowCompleteTask({
                 travelFlowId: this.$route.query.key,
                 comment: this.comment,
@@ -320,13 +296,6 @@ export default {
                 });
                 return
             }
-            // if(this.comment.length>300) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
             
             travelFlowCompleteTask({
                 travelFlowId : this.$route.query.key,
@@ -344,7 +313,6 @@ export default {
             });
         },
         cancelBtn() {
-            // console.log(this.taskId);
             travelFlowRepealTask({
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0

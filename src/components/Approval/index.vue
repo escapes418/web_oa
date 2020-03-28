@@ -8,14 +8,14 @@
             </el-date-picker>
         </td>
         <td style="padding: 0 10px 0 10px;">
-            <region style="width:133px" v-on:back-region="selectStartCode" :pointList="itemData.startPoints"></region>
+            <region style="width:133px" v-on:back-region="selectStartCode" :pointList="itemData.startPoint"></region>
         </td>
         <td>
             <el-date-picker style="width:133px" v-model="itemData.endDate" type="date" placeholder="选择日期">
             </el-date-picker>
         </td>
         <td>
-            <region style="width:133px" v-on:back-region="selectEndCode" :pointList="itemData.endPoints"></region>
+            <region style="width:133px" v-on:back-region="selectEndCode" :pointList="itemData.endPoint"></region>
         </td>
         <td>
             <el-cascader :options="subsTree" v-model="itemData.selectedSubject" @change="subjectOnChange" label="value" :clearable="true">

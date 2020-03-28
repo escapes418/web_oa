@@ -170,7 +170,7 @@ import BaseTemp from '@/components/BaseTemp';
 import RedStar from '@/components/RedStar/RedStar.vue';
 import sjbtextarea from '@/components/sjbTextarea';
 
-import {getTypeList,addProgress,getPlan} from '@/api/cooprate';
+import {addProgress,getPlan} from '@/api/cooprate';
 
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -274,7 +274,7 @@ export default {
             this.postData.trainTime = common.timeParse(this.trainTime);
             if (coopPlanVali(this)) {
                 addProgress(this.postData).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

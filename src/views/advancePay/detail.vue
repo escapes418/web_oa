@@ -211,7 +211,7 @@ export default {
                     id: this.$route.query.key,
                     bringAmount: this.payNum
                 }).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: "success"

@@ -433,7 +433,7 @@ export default {
         this.dateTypeList = selectDic(dicList,"date_type")
 
         getMember({}).then(res => {
-            if(res.status == 0){
+            if(res.code == 200){
                 this.memberList = res.data;
                 //列表是非离职人员
                 this.memberPartList = res.data.filter((item)=>{
@@ -491,7 +491,7 @@ export default {
                     contractHisIds:contractIds,
                     contractLeaderId:this.contractLeaderId,
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.moveClose();
                         this.$message({
                             message: res.message,
@@ -565,7 +565,7 @@ export default {
                 projectIds:this.projectIds,
                 custIds:this.custIds
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -603,7 +603,7 @@ export default {
                 contractEndTime:timestamp,
                 contractAttachmentRequest:this.renewAttachment,
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -624,7 +624,7 @@ export default {
                 contractHisId:this.abandonId,
                 contractAttachmentRequest:this.abandonAttachment,
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     // this.abandonAttachment = []
                     // this.dialogAbandon = false
                     this.$message({

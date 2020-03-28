@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function saveAccount(parmas) {
     return request({
-        url:'/commonInfo/saveBankCardInfo',
+        url:'/webCommonInfo/saveBankCardInfo',
         method:'post',
         data:parmas
     })
@@ -10,7 +10,7 @@ export function saveAccount(parmas) {
 
 export function getAccountList(parmas) {
     return request({
-        url:'/commonInfo/queryMyBankCardInfoList',
+        url:'/webCommonInfo/queryMyBankCardInfoList',
         method:'post',
         // data:parmas
     })
@@ -18,7 +18,7 @@ export function getAccountList(parmas) {
 
 export function setDefaultAccount(parmas) {
     return request({
-        url:'/commonInfo/updateDefaultAccount',
+        url:'/webCommonInfo/updateDefaultAccount',
         method:'post',
         data:parmas
     })
@@ -26,7 +26,7 @@ export function setDefaultAccount(parmas) {
 
 export function delAccount(parmas) {
     return request({
-        url:'/commonInfo/deleteAccount',
+        url:'/webCommonInfo/deleteAccount',
         method:'post',
         data:parmas
     })
@@ -34,7 +34,7 @@ export function delAccount(parmas) {
 
 export function queryBank(parmas) {
     return request({
-        url:'/commonInfo/queryMyBankCardInfo',
+        url:'/webCommonInfo/queryMyBankCardInfo',
         method:'post',
         data:parmas
     })
@@ -42,7 +42,7 @@ export function queryBank(parmas) {
 
 export function getBankList(parmas) {
     return request({
-        url:'/commonInfo/queryBankList',
+        url:'/webCommonInfo/queryBankList',
         method:'post',
         data:parmas
     })

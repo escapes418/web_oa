@@ -540,7 +540,7 @@ export default {
                 custName:this.filter.baseCustInfo.custName,
                 custId:this.routeKey || '0',
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var flag = false;
                     if(res.data.exist == 0){
                         var title = '客户已存在，是否更新基本信息?'
@@ -580,14 +580,14 @@ export default {
         openCust(){
             if (this.$route.query.key) {
                 modifyCust(this.filter).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         return new Promise((resolve, reject)=>{
                             custChange({
                                 isChange:1,
                                 id:this.$route.query.key,
                                 custType:this.filter.baseCustInfo.custType,
                             }).then(res=>{
-                                if(res.status == 0){
+                                if(res.code == 200){
                                     this.$message({
                                         message: res.message,
                                         type: "success"
@@ -604,14 +604,14 @@ export default {
                 });
             } else {
                 saveCust(this.filter).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         return new Promise((resolve, reject)=>{
                             custChange({
                                 isChange:1,
                                 id:this.$route.query.key,
                                 custType:this.filter.baseCustInfo.custType,
                             }).then(res=>{
-                                if(res.status == 0){
+                                if(res.code == 200){
                                     this.$message({
                                         message: res.message,
                                         type: "success"

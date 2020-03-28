@@ -325,9 +325,9 @@ export default class maForm extends Vue {
             getCustList({
                 custName:val,
             }).then((res:Ajax.AjaxResponse)=>{
-                if(res.status == 0){
+                // if(res.code == 200){
                     this.custList = res.data
-                }
+                // }
             })
         }
     };
@@ -355,7 +355,7 @@ export default class maForm extends Vue {
             saveMaLog({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     // localStorage.setItem(
                     //     'web_ma_sendToList',
                     //     JSON.stringify(this.postData.sendToList)

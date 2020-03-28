@@ -155,7 +155,7 @@
                 <div>
                     已选择参与人：
                 </div>
-                <span v-for="(item,index) in partList">
+                <span v-for="(item,index) in partList" :key="index">
                     <span class="select-item">{{item.name}}</span>
                     <span class="blank"> </span>
                 </span>
@@ -180,7 +180,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectCoop">
+                <span v-for="(item,index) in selectCoop" :key="index">
                     <span class="select-item">{{item.title}}</span>
                 </span>
             </div>
@@ -416,7 +416,7 @@ export default {
             }
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     //列表是非离职人员
                     this.memberList = res.data.filter((item)=>{
                         return item.userStatus == '1'
@@ -447,7 +447,7 @@ export default {
                     needFlowIds:coopIds,
                     principal:this.coopLeaderId,
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.moveClose();
                         this.$message({
                             message: res.message,
@@ -476,7 +476,7 @@ export default {
                 tab:this.coopListPlace,
                 exportContent:type 
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
@@ -614,7 +614,7 @@ export default {
                 needFlowId:this.needFlowId,
                 content:this.comment
             }).then(res=>{
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -630,10 +630,8 @@ export default {
             this.partList = [];
             this.defaultList = [];
             this.dialogPart = true;
-            let res = await getPart({
-                needFlowId:this.needFlowId
-            })
-            if(res.status == 0){
+            let res = await getPart(this.needFlowId)
+            if(res.code == 200){
                 // let arr = res.data.filter((element, index, self)=>{
                 //     return self.findIndex(item=>item.userId == element.userId) == index
                 // })

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 export function getRepaytList(parmas) {
     return request({
-        url:'/repayFlow/queryMyRepayFlowList',
+        url:'/webRepayFlow/queryMyRepayFlowList',
         method:'post',
         data:parmas
     })
@@ -19,7 +19,7 @@ export function getLoanList(parmas) {
 
 export function repayApply(parmas) {
     return request({
-        url:'/repayFlow/apply',
+        url:'/webRepayFlow/apply',
         method:'post',
         data:parmas
     })
@@ -28,7 +28,7 @@ export function repayApply(parmas) {
 
 export function getDetail(parmas) {
     return request({
-        url:'/repayFlow/queryMyRepayFlowDetail',
+        url:'/webRepayFlow/queryMyRepayFlowDetail',
         method:'post',
         data:parmas
     })
@@ -37,7 +37,7 @@ export function getDetail(parmas) {
 
 export function repayFlow(params){
     return request({
-        url:'/repayFlow/completeTask',
+        url:'/webRepayFlow/completeTask',
         method:'post',
         data:params
     })
@@ -45,7 +45,7 @@ export function repayFlow(params){
 
 export function repayCancel(params){
     return request({
-        url:'/repayFlow/repealTask',
+        url:'/webRepayFlow/repealTask',
         method:'post',
         data:params
     })
@@ -53,7 +53,7 @@ export function repayCancel(params){
 
 export function repayDel(params){
     return request({
-        url:'/repayFlow/repealApply',
+        url:'/webRepayFlow/repealApply',
         method:'post',
         data:params
     })

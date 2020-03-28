@@ -80,7 +80,7 @@
                                 <el-input type="number" placeholder="请输入" style="width:250px;" v-model.number="postData.loanAmount"></el-input>
                             </span>
                         </RedStar>
-                        <RedStar label="借款事由：":required="true">
+                        <RedStar label="借款事由：" :required="true">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
                                 textStyle="width:250px;"
@@ -229,8 +229,8 @@ export default {
                 this.postData = res.data;
                 this.planRepayTime = common.timeParseObj(res.data.planRepayTime);
                 this.applyTime = common.formatDateTime(res.data.applyTime)
-                if (res.data.attachmentWebResponseList && res.data.attachmentWebResponseList.length > 0) {
-                    res.data.attachmentWebResponseList.forEach(item => {
+                if (res.data.attachmentResponseList && res.data.attachmentResponseList.length > 0) {
+                    res.data.attachmentResponseList.forEach(item => {
                         let originUrl = item.url;
                         item.url = res.data.urlPrefix + item.url;
                         this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
@@ -244,7 +244,7 @@ export default {
     async mounted() {
         
         getAccountList().then(res => {
-            if(res.status == 0&&res.data){
+            if(res.code == 200&&res.data){
                 this.bankList = res.data;
             }
             if(this.bankList.length<1){
@@ -319,7 +319,7 @@ export default {
             })
             if (type == 'apply' && loanFormVali(this)) {
                 loanApply(this.postData).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
@@ -330,7 +330,7 @@ export default {
             }
             if(type == 'save') {
                 loanSave(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

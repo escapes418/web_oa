@@ -171,7 +171,7 @@ export default {
         },
         deployBtn(){
             deployFlow(this.id).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -185,7 +185,7 @@ export default {
         },
         delBtn(){
             delFlow(this.id).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -215,7 +215,7 @@ export default {
             createFlow(
                 this.postData
             ).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"

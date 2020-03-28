@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getMember(params){
     return request({
-        url:'/commonInfo/queryUserInfo',
+        url:'/webCommonInfo/queryUserInfo',
         method:'post',
         data:params
     },false)

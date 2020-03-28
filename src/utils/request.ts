@@ -19,7 +19,7 @@ service.interceptors.request.use(
             config.headers['sessionid'] = getToken() || ''; // 让每个请求携带自定义token 请根据实际情况自行修改
         }
         if(config.url=='/auth/login'){
-            config.baseURL = './OA'
+            config.baseURL = config.baseURL.replace(/api/,"")
         }
         return config;
     },

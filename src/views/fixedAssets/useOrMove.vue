@@ -166,18 +166,13 @@ export default class maForm extends Vue {
             pickOrTransferAsset({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
                     this.$router.go(-1);
 
-                } else{
-                  this.$message({
-                        message: res.message,
-                        type: 'error'
-                    });
                 }
             });
         }

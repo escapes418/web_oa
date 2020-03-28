@@ -775,7 +775,7 @@ export default {
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
             if (contractFormVali(this)) {
                 conApply({...this.postData,...temObj}).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

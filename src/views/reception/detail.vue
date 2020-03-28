@@ -238,7 +238,7 @@ export default {
     computed:{
         ...mapState({
             subsList: state => state.reim.subsList,
-            subslistKeyVal:state => state.reim.subsListKeyVal,
+            // subslistKeyVal:state => state.reim.subsListKeyVal,
             firstSub:state => state.reim.firstSub,
             token:state => state.user.token,
         }),
@@ -268,33 +268,32 @@ export default {
         }
     },
     created(){
-        console.log(this.getAllSubjects)
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if(this.$route.query.taskId) this.taskId = this.$route.query.taskId
         if(this.$route.query.pathType) this.pathType = this.$route.query.pathType
-        if(this.subsList.length ==0){
-            this.getAllSubjects().then(rtn => {
-                this.$store.dispatch('setSubs', rtn);
-                var resetArr = [];
-                var map = rtn.reduce((acc, val) => { // key->value
-                    acc[val.value] = val
-                    return acc
-                }, {});
-                rtn.forEach(val => {
-                    if (val.parent != '0') {
-                        var parent = map[val.parent]
-                        if (!parent.children) {
-                            parent.children = [val]
-                        } else {
-                            parent.children.push(val)
-                        }
-                    } else {
-                        resetArr.push(val)
-                    }
-                })
-                this.$store.dispatch('subslistKeyVal', map);
-            });
-        }
+        // if(this.subsList.length ==0){
+        //     this.getAllSubjects().then(rtn => {
+        //         this.$store.dispatch('setSubs', rtn);
+        //         var resetArr = [];
+        //         var map = rtn.reduce((acc, val) => { // key->value
+        //             acc[val.value] = val
+        //             return acc
+        //         }, {});
+        //         rtn.forEach(val => {
+        //             if (val.parent != '0') {
+        //                 var parent = map[val.parent]
+        //                 if (!parent.children) {
+        //                     parent.children = [val]
+        //                 } else {
+        //                     parent.children.push(val)
+        //                 }
+        //             } else {
+        //                 resetArr.push(val)
+        //             }
+        //         })
+        //         this.$store.dispatch('subslistKeyVal', map);
+            // });
+        // }
         getDetail({
             recpFlowId:this.$route.query.key
         }).then(res =>{
@@ -309,17 +308,17 @@ export default {
         })
   },
   methods:{
-        getAllSubjects() { // 报销所有所有科目
-            return new Promise((resolve, reject) => {
-                getSubjects({
-                    isFirst: '0',
-                    parSubCode: ''
-                }).then(res =>{
-                    // console.log(res)
-                    resolve(res.data.list);
-                })
-            })
-        },
+        // getAllSubjects() { // 报销所有所有科目
+        //     return new Promise((resolve, reject) => {
+        //         getSubjects({
+        //             isFirst: '0',
+        //             parSubCode: ''
+        //         }).then(res =>{
+        //             // console.log(res)
+        //             resolve(res.data);
+        //         })
+        //     })
+        // },
         createPdf(){
                 var pdfstr = document.getElementById('pdf-wrap')
                 // 2. 复制给body，并执行window.print打印功能

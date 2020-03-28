@@ -458,7 +458,7 @@ export default {
         this.marketFullList = newArr
 
         // getMarket({queryType:"1"}).then(res=>{
-        //     if(res.status == 0){
+        //     if(res.code == 200){
         //         var newArr = [];
         //         common.transToTree(res.data, newArr);
         //         // common.mapAndAddChildren(newArr);
@@ -467,7 +467,7 @@ export default {
         // })
 
         // getMarket({queryType:"2"}).then(res=>{
-        //     if(res.status == 0){
+        //     if(res.code == 200){
         //         var newArr = [];
         //         common.transToTree(res.data, newArr);
         //         common.mapAndAddChildren(newArr);
@@ -595,7 +595,7 @@ export default {
             common.transToTree(departList, newArr);
             this.marketList = newArr;
             // getMarket({queryType:"1"}).then(res=>{
-            //     if(res.status == 0){
+            //     if(res.code == 200){
             //         var newArr = [];
             //         res.data = res.data.filter(item=>{
             //             return item.status == 1
@@ -661,7 +661,7 @@ export default {
                 isChange:'1',
                 custType:this.freeSeaType
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -690,7 +690,7 @@ export default {
             unboundCust({
                 custIds:ids
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -706,7 +706,7 @@ export default {
                     custType:'1',
                     custName:val
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.mainCust = res.data
                     }
                 })
@@ -718,7 +718,7 @@ export default {
                     custType:'2',
                     custName:val
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.childCust = res.data;
                         if(res.data&&res.data.length>0){
                             this.childFullCust.push(...res.data)
@@ -731,7 +731,7 @@ export default {
             mergeCust({
                 ...this.merge
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.dialogMergeVisible = false;
                     this.dialogVisible = false;
                     this.$message({
@@ -793,7 +793,7 @@ export default {
                     custType:this.custType,
                     marketLeaderId:this.marketLeaderId
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.dialogMoveVisible = false;
                         this.$message({
                             message: res.message,

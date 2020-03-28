@@ -252,7 +252,7 @@ export default {
       })
       if(type == 1){
         getMember().then(res=>{
-          if(res.status == 0){
+          if(res.code == 200){
             this.nodeDetail = res.data
           }
         })

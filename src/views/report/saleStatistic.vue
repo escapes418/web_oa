@@ -210,7 +210,7 @@ export default {
             exportSalesOffice({
                 ...postData
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({

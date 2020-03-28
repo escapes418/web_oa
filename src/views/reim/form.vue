@@ -361,7 +361,7 @@ export default {
         this.$store.dispatch('clearCollection');
         // 账户信息
         getAccountList().then(res => {
-            if(res.status == 0&&res.data){
+            if(res.code == 200&&res.data){
                 this.bankList = res.data;
                 res.data.forEach(i=>{
                     if(i.defaultAccount == "1"){
@@ -698,7 +698,7 @@ export default {
             this.filter.expenseDetail = this.getItemsInStore();
             if (type == 'apply' && reimFormVali(this)) {
                 expApply(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
@@ -709,7 +709,7 @@ export default {
             }
             if(type == 'save') {
                 expSave(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

@@ -109,7 +109,7 @@ export default {
             //     id:"123456788"
             // }]
             getAccountList({}).then(res => {
-                if(res.status == 0){
+                if(res.code == 200){
                     this.list = res.data;
                     res.data.map(i=>{
                         if(i.defaultAccount=="1"){
@@ -130,7 +130,7 @@ export default {
         },
         delBtn(){
             delAccount({id:this.id}).then(res => {
-                if(res.status == 0){
+                if(res.code == 200){
                     this.dialogDel = false;
                     this.$message({
                         message: res.message,
@@ -150,7 +150,7 @@ export default {
         },
         setBtn(){
             setDefaultAccount({id:this.id}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.dialogDefault = false
                     this.$message({
                         message: res.message,

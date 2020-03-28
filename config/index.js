@@ -3,36 +3,44 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require("path");
-const devEnvConfig = require("./dev.env");
+// const devEnvConfig = require("./dev.env");
 
 //说明：dev模式 命令行执行的是node build/dev-server.js dev-server.js引用了config/index.js(本文件) 故可直接获取命令行参数
-const argv = process.argv[2];
-let target = "";
-if (argv == "test") {
-    target = devEnvConfig.BASE_HOST_TEST + "/OA";
-} else if (argv == "prod") {
-    target = devEnvConfig.BASE_HOST_PROD + "/OA";
-} else {
-    target = devEnvConfig.BASE_HOST_INNER + "/OA";
-}
+// const argv = process.argv[2];
+// let target = "";
+// if (argv == "test") {
+//     target = devEnvConfig.BASE_HOST_TEST + "/OA";
+// } else if (argv == "prod") {
+//     target = devEnvConfig.BASE_HOST_PROD + "/OA";
+// } else {
+//     target = devEnvConfig.BASE_HOST_INNER + "/OA";
+// }
+// if (argv == "test") {
+//     target = devEnvConfig.BASE_HOST_TEST;
+// } else if (argv == "prod") {
+//     target = devEnvConfig.BASE_HOST_PROD;
+// } else {
+//     target = devEnvConfig.BASE_HOST_INNER;
+// }
 
 module.exports = {
     dev: {
         // Paths
         assetsSubDirectory: "static",
         assetsPublicPath: "/",
-        proxyTable: {
-            "/OA": {
-                target,
-                changeOrigin: true,
-                pathRewrite: {
-                    "^/OA": ""
-                }
-            }
-        },
+        // proxyTable: {
+        //     "/OA": {
+        //         target,
+        //         changeOrigin: true,
+        //         pathRewrite: {
+        //             "^/OA": ""
+        //         }
+        //     }
+        // },
 
         // Various Dev Server settings
-        host: "192.168.12.97", // can be overwritten by process.env.HOST
+        host: "192.168.0.106", // can be overwritten by process.env.HOST
+        // host: "192.168.12.97", // can be overwritten by process.env.HOST
         port: 9529, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: true,
         errorOverlay: true,

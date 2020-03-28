@@ -460,7 +460,7 @@ export default {
                 ...this.filter,
                 recpTime:common.timeParse(this.filter.recpTime),
             }).then(res =>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.saveLoading = false
                     this.$message({
                         message: res.message,

@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })
@@ -18,7 +18,7 @@ export function fetchProDic(parmas) {
 
 export function fetchProList(params) {
     return request({
-        url: '/projectInfo/projectInfoList',
+        url: '/webProjectInfo/projectInfoList',
         method: 'post',
         data: params
     })
@@ -82,9 +82,9 @@ export function expFlow(params){
 
 export function expDel(params){
     return request({
-        url:'/webExpenseFlow/repealApply',
-        method:'post',
-        data:params
+        url:`/webExpenseFlow/repealApply/${params}`,
+        method:'delete',
+        // data:params
     })
 }
 
@@ -107,7 +107,7 @@ export function fetchThemeList(params){
 
 export function getMember(params){
     return request({
-        url:'/commonInfo/queryUserInfo',
+        url:'/webCommonInfo/queryUserInfo',
         method:'post',
         data:params
     },false)
@@ -131,7 +131,7 @@ export function downReim(params){
 
 export function getAccountList(parmas) {
     return request({
-        url:'/commonInfo/queryMyBankCardInfoList',
+        url:'/webCommonInfo/queryMyBankCardInfoList',
         method:'post',
         // data:parmas
     })

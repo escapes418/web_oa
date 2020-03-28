@@ -269,7 +269,7 @@ export default {
             //     exportGood({
             //         ...postData
             //     }).then(res=>{
-            //         if(res.status == 0){
+            //         if(res.code == 200){
             //             var url = `./OA${res.data.downloadUrl}`;
             //             window.location.href = url;
             //             this.$message({
@@ -288,7 +288,7 @@ export default {
             exportTemp({
                 rentRefuelType:this.rentRefuelType
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
@@ -334,7 +334,7 @@ export default {
                     duration:10000
                 })
             }
-            if(res.status == 0){
+            if(res.code == 200){
                 this.$message({
                     message: res.message,
                     type: 'success'

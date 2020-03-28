@@ -247,14 +247,14 @@ export default class FuntionList extends Vue {
             ...postData,
             exportContent:type 
         }).then((res:Ajax.AjaxResponse)=>{
-            if(res.status == 0){
+            // if(res.code == 200){
                 var url = `./OA${res.data}`;
                 window.location.href = url;
                 this.$message({
                     message:res.message,
                     type:'success'
                 })
-            }
+            // }
         })
         
     };

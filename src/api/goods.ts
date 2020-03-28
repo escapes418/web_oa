@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getSubjectsNew(parmas) {
     return request({
-        url: '/commonInfo/querySubInfoNew',
+        url: '/webCommonInfo/querySubInfoNew',
         method: 'post',
         data:parmas
     },false)

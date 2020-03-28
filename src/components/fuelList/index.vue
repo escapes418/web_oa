@@ -73,7 +73,7 @@ export default {
                 employeeId:this.employeeId,
                 year:this.year
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.list= res.data
                 }
             })

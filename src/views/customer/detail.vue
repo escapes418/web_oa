@@ -678,7 +678,7 @@ export default {
         },
         getnoCarListData(){
             getMaintain(this.noCarlistQuery).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
@@ -689,7 +689,7 @@ export default {
         },
         getcoalUnionListData(){
             getMaintain(this.coalUnionlistQuery).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
@@ -743,7 +743,7 @@ export default {
                 isChange:2,
                 custType:type,
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 export function fetchProList(params) { //项目管理-查询列表
   return request({
-    url: '/projectInfo/projectInfoList',
+    url: '/webProjectInfo/projectInfoList',
     method: 'post',
     data: params
   })
@@ -86,7 +86,7 @@ export function resourcesHandleFlowRepealTask(params){ //Web端资源办理-流�
 
 export function fetchProDic(parmas) { //获取字典信息,tax_city:发票所属城市,oa_project:项目,oa_expense_type:报销类型
   return request({
-    url: '/commonInfo/queryDictInfo',
+    url: '/webCommonInfo/queryDictInfo',
     method: 'post',
     data:parmas
   })

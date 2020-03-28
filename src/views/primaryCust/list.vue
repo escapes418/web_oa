@@ -383,7 +383,7 @@ export default {
         this.treeData = newArr;
 
         getMarket({queryType:"1"}).then(res=>{
-            if(res.status == 0){
+            if(res.code == 200){
                 var newArr = [];
                 common.transToTree(res.data, newArr);
                 // common.mapAndAddChildren(newArr);
@@ -529,7 +529,7 @@ export default {
                     vipCustomerId:this.vipCustomerId,
                     accountLeaderId:this.accountLeaderId
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.moveClose();
                     this.$message({
                         message: res.message,
