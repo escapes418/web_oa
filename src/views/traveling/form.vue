@@ -366,19 +366,6 @@ export default {
         })
     },
     methods: {
-        // handleProFilter(){
-        //     this.listQuery.pageNo = 1
-        //     this.getList()
-        // },
-        // chioceProTime: function(val) {
-        //     if (val && val.length > 0) {
-        //         this.listQuery.applyTimeStart =val[0];
-        //         this.listQuery.applyTimeEnd = val[1];
-        //     } else {
-        //         this.listQuery.applyTimeStart = 0;
-        //         this.listQuery.applyTimeEnd = 0;
-        //     }
-        // },
         transDetailData(dataArr) {
             function createUid() {
                 return parseInt(Math.random() * 100000) + "" + new Date().getTime();
@@ -410,11 +397,6 @@ export default {
         del() {
             this.$store.dispatch('delDetailCollectionChecked');
         },
-        // showForm() {
-        //     this.dialogFormVisible = true;
-        //     this.listLoading = false;
-        //     this.getList();
-        // },
         proSelect(data){
             this.filter.projectId = data.id;
             this.projectLeaderName = data.projectLeaderName;

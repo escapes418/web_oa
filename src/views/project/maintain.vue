@@ -137,7 +137,7 @@ export default {
         },
         getListData(){
             getMaintain(this.listQuery).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     res.data.list.forEach((item,index) => {
                         item.index = index + 1;
                     });

@@ -10,7 +10,7 @@ export function getLoan(params) {
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })
@@ -26,7 +26,7 @@ export function payApplay(params){
 
 export function getAccountList(params){
     return request({
-        url:'/commonInfo/queryMyBankCardInfoList',
+        url:'/webCommonInfo/queryMyBankCardInfoList',
         method:'post',
         data:params
     })
@@ -50,9 +50,9 @@ export function loanSave(params){
 
 export function getDetail(params){
     return request({
-        url:'/webLoanFlow/queryMyLoanFlowDetail',
-        method:'post',
-        data:params
+        url:`/webLoanFlow/queryMyLoanFlowDetail/${params}`,
+        method:'get',
+        // data:params
     })
 }
 
@@ -74,9 +74,9 @@ export function loanCancel(params){
 
 export function loanDel(params){
     return request({
-        url:'/webLoanFlow/repealApply',
-        method:'post',
-        data:params
+        url:`/webLoanFlow/repealApply/${params}`,
+        method:'delete',
+        // data:params
     })
 }
 
@@ -90,7 +90,7 @@ export function getLoanMember(params){
 
 export function getMember(params){
     return request({
-        url:'/commonInfo/queryUserInfo',
+        url:'/webCommonInfo/queryUserInfo',
         method:'post',
         data:params
     })

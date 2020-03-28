@@ -437,7 +437,7 @@ export default {
             }
             if (remindFormVali(this)) {
                 saveRemind(this.postData).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

@@ -343,9 +343,9 @@ export default class imForm extends Vue {
             getProject({
                 projectName:val,
             }).then((res:Ajax.AjaxResponse)=>{
-                if(res.status == 0){
+                // if(res.code == 200){
                     this.projectList = res.data
-                }
+                // }
             })
         }
     }
@@ -384,7 +384,7 @@ export default class imForm extends Vue {
             saveImLog({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     // localStorage.setItem(
                     //     'web_im_sendToUserList',
                     //     JSON.stringify(this.postData.sendToUserList)

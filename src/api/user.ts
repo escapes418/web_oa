@@ -10,7 +10,7 @@ export function modifyPwd(parmas) {
 
 export function fetchList(parmas) {
   return request({
-    url:'/commonInfo/findMessagePage',
+    url:'/webCommonInfo/findMessagePage',
     method:'post',
     data:parmas
   })
@@ -18,7 +18,7 @@ export function fetchList(parmas) {
 
 export function getRedCount(parmas) {
   return request({
-    url:'/commonInfo/findRedCount',
+    url:'/webCommonInfo/findRedCount',
     method:'post',
     data:parmas
   })

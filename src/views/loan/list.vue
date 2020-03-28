@@ -130,7 +130,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectLoanMember">
+                <span v-for="(item,index) in selectLoanMember" :key="index">
                     <span class="select-item">{{item.procName}}</span>
                 </span>
             </div>
@@ -249,7 +249,7 @@ export default {
                 loanFlowIds:loanFlowIds,
                 newLoanPerson:this.newLoanPerson
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.modifyClose();
                     this.$message({
                         message: res.message,

@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })

@@ -84,7 +84,7 @@ export default {
     // },
     getInitData(){
         getDetail(this.id).then(res=>{
-            if(res.status == 0){
+            if(res.code == 200){
                 if(res.data&&Object.keys(res.data).length>0){
                   this.graph.read(res.data);
                 }

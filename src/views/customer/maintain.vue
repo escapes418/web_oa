@@ -204,7 +204,7 @@ export default {
         },
         getListData(){
             getMaintain(this.listQuery).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
@@ -248,7 +248,7 @@ export default {
                     custMaintenanceDate:common.timeParse(this.filter.custMaintenanceDate)
                 }).then(res => {
                     this.confirmDialog = false;
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -279,7 +279,7 @@ export default {
         day = day<10?'0'+ day: day
         this.filter.custMaintenanceDate = year + '-' + month + '-' + day +' '+ hour + ':' + minute + ':' + second
         getLinkman({custId:this.$route.query.key}).then(res=>{
-            if(res.status == 0){
+            if(res.code == 200){
                 this.linkmanList = res.data
             }
         })

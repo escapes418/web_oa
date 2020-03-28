@@ -341,7 +341,7 @@ export default {
     },
     async mounted() {
         getAccountList().then(res => {
-            if(res.status == 0&&res.data){
+            if(res.code == 200&&res.data){
                 this.bankList = res.data;
             }
             if(this.bankList.length<1){
@@ -450,7 +450,7 @@ export default {
             // this.postData.payDetail = this.getItemsInStore();
             if (type == 'apply' && paymentFormVali(this)) {
                 payApply(this.postData).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

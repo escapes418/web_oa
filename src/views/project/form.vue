@@ -258,7 +258,7 @@
                     </RedStar>
                     <RedStar label="账期：" :required="true">
                         <span class="right-con">
-                            <el-select clearable class="filter-item"v-model="specialRequire.accountPeriod" placeholder="请选择" style="width:250px;" >
+                            <el-select clearable class="filter-item" v-model="specialRequire.accountPeriod" placeholder="请选择" style="width:250px;" >
                                 <el-option v-for="item in yesNo" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
                             </el-select>
@@ -681,7 +681,7 @@ export default {
                     pageSize: 20,
                     companyName:val
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.comList = res.data.list
                     }
                 })

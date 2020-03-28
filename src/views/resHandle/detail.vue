@@ -300,7 +300,7 @@ export default {
                 expenseFormId: this.$route.query.key,
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -336,7 +336,7 @@ export default {
                 assignList: reqTabData,
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -373,7 +373,7 @@ export default {
                 flag: "no",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -387,7 +387,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -400,7 +400,7 @@ export default {
             deleteResourcesHandleInfo({
                 resHandleFlowId: this.$route.query.key
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"

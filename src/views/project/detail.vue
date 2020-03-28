@@ -458,7 +458,7 @@ import common from "@/utils/common";
 import Department from "@/components/Department";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
-import { fetchForm, custList, savePro , getCompanyList , getContractList ,getNodeList,getImList,downFile} from "@/api/project";
+import { fetchForm, custList, savePro  , getContractList ,getNodeList,getImList,downFile} from "@/api/project";
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -679,7 +679,7 @@ export default {
                 ...postData,
                 projectId:this.$route.query.key
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({

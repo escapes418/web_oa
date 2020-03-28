@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/projectInfo/projectInfoList',
+        url: '/webProjectInfo/projectInfoList',
         method: 'post',
         data:params
     })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchForm(params){
     return request({
-        url:'/projectInfo/projectInfoDetail',
+        url:'/webProjectInfo/projectInfoDetail',
         method:'post',
         data:params
     })
@@ -18,7 +18,7 @@ export function fetchForm(params){
 
 export function saveCust(params){
   return request({
-    url:'/custInfo/saveCustInfo',
+    url:'/webCustInfo/saveCustInfo',
     method:'post',
     data:params
   })
@@ -26,7 +26,7 @@ export function saveCust(params){
 
 export function custList(params){
     return request({
-        url: '/custInfo/custInfos',
+        url: '/webCustInfo/custInfos',
         method: 'post',
         data:params
     },false)
@@ -34,7 +34,7 @@ export function custList(params){
 
 export function savePro(params){
     return request({
-        url:'/projectInfo/saveProjectInfo',
+        url:'/webProjectInfo/saveProjectInfo',
         method:'post',
         data:params
     })
@@ -42,7 +42,7 @@ export function savePro(params){
 
 export function getMaintain(params){
     return request({
-        url:'/projectInfo/projectMaintenanceList',
+        url:'/webProjectInfo/projectMaintenanceList',
         method:'post',
         data:params
     })
@@ -50,7 +50,7 @@ export function getMaintain(params){
 
 export function saveMaintain(params){
     return request({
-        url:'/projectInfo/saveProjectMaintenance',
+        url:'/webProjectInfo/saveProjectMaintenance',
         method:'post',
         data:params
     })
@@ -66,7 +66,7 @@ export function getCompanyList(params){
 
 export function getContractList(params){
     return request({
-        url:'/projectInfo/queryProjectContractHis',
+        url:'/webProjectInfo/queryProjectContractHis',
         method:'post',
         data:params
     })
@@ -74,7 +74,7 @@ export function getContractList(params){
 
 export function getNodeList(params){
     return request({
-        url:'/projectInfo/pagedQueryNodeList',
+        url:'/webProjectInfo/pagedQueryNodeList',
         method:'post',
         data:params
     })
@@ -82,7 +82,7 @@ export function getNodeList(params){
 
 export function getImList(params){
     return request({
-        url:'/projectInfo/projectImplyStatusList',
+        url:'/webProjectInfo/projectImplyStatusList',
         method:'post',
         data:params
     })
@@ -90,7 +90,7 @@ export function getImList(params){
 
 export function downFile(params){
     return request({
-        url:'/projectInfo/exportProjectImplyStatus',
+        url:'/webProjectInfo/exportProjectImplyStatus',
         method:'post',
         data:params
     })
@@ -99,7 +99,7 @@ export function downFile(params){
 
 export function getMember(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
+      url:'/webCommonInfo/queryUserInfo',
       method:'post',
       data:params
     })
@@ -108,7 +108,7 @@ export function getMember(params){
 
 export function moveProjects(params){
     return request({
-      url:'/projectInfo/projectBatchMove',
+      url:'/webProjectInfo/projectBatchMove',
       method:'post',
       data:params
     })

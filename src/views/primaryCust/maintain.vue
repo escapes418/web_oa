@@ -164,7 +164,7 @@ export default {
                 saveMaintain({
                     ...this.postData,
                 }).then(res => {
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -183,13 +183,13 @@ export default {
     },
     created() {
         getLinkman({custId:this.$route.query.key}).then(res=>{
-            if(res.status == 0){
+            if(res.code == 200){
                 this.linkmanList = res.data
             }
         })
 
         getBelongCust({masterCustId:this.$route.query.key}).then(res => {
-            if(res.status == 0){
+            if(res.code == 200){
                 this.belongCust = res.data
             }
         })

@@ -284,14 +284,14 @@ export default class LogList extends Vue {
                 queryType:this.queryType,
                 dailyTemplate:type 
             }).then((res:Ajax.AjaxResponse)=>{
-                if(res.status == 0){
+                // if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
                         message:res.message,
                         type:'success'
                     })
-                }
+                // }
             })
         }
         if(type == 2){
@@ -300,14 +300,14 @@ export default class LogList extends Vue {
                 queryType:this.queryType,
                 dailyTemplate:type 
             }).then((res:Ajax.AjaxResponse)=>{
-                if(res.status == 0){
+                // if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
                         message:res.message,
                         type:'success'
                     })
-                }
+                // }
             })
         }
         

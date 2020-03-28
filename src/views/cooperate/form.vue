@@ -94,7 +94,7 @@
                 <div>
                     已选择参与人：
                 </div>
-                <span v-for="(item,index) in partList">
+                <span v-for="(item,index) in partList" :key="index">
                     <span class="select-item">{{item.name}}</span>
                     <span class="blank"> </span>
                 </span>
@@ -340,7 +340,7 @@ export default {
                 addCoop({
                     ...this.postData
                 }).then(res=>{
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

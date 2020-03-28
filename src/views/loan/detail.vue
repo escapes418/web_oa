@@ -442,12 +442,12 @@ export default {
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if(this.$route.query.taskId) this.taskId = this.$route.query.taskId
         if(this.$route.query.pathType) this.pathType = this.$route.query.pathType
-        getDetail({
-            loanFlowId:this.$route.query.key
-        }).then(res =>{
+        getDetail(
+            this.$route.query.key
+        ).then(res =>{
             this.detail = res.data;
-            if (res.data.attachmentWebResponseList && res.data.attachmentWebResponseList.length > 0) {
-                res.data.attachmentWebResponseList.forEach(item => {
+            if (res.data.attachmentResponseList && res.data.attachmentResponseList.length > 0) {
+                res.data.attachmentResponseList.forEach(item => {
                     let originUrl = item.url;
                     item.url = res.data.urlPrefix + item.url;
                     this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
@@ -506,7 +506,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     console.log("url", url);
                     window.location.href = url;
@@ -606,10 +606,10 @@ export default {
             })
         },
         delBtn(){
-            loanDel({
-                loanFlowId:this.$route.query.key
-            }).then(res =>{
-                if(res.status ==0){
+            loanDel(
+                this.$route.query.key
+            ).then(res =>{
+                if(res.code == 200){
                     this.dialogDelVisible = false
                     this.$message({
                         message: res.message,

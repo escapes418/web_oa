@@ -31,7 +31,7 @@
                 </template>
             </el-table-column>
             <el-table-column width="160px" align="center" label="提醒对象">
-                <template slot-scope="scope">
+                <template>
                     <span>当前审批人</span>
                 </template>
             </el-table-column>
@@ -148,7 +148,7 @@ export default {
                 id:this.id,
                 remindCategory:0
             }).then(res=>{
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'

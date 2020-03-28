@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })
@@ -18,7 +18,7 @@ export function fetchProDic(parmas) {
 
 export function fetchProList(params) {
     return request({
-        url: '/projectInfo/projectInfoList',
+        url: '/webProjectInfo/projectInfoList',
         method: 'post',
         data: params
     })
@@ -90,7 +90,7 @@ export function recepCancel(params){
 
 export function getMember(params){
     return request({
-        url:'/commonInfo/queryUserInfo',
+        url:'/webCommonInfo/queryUserInfo',
         method:'post',
         data:params
     })

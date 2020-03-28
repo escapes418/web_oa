@@ -703,7 +703,7 @@ export default {
                 id:this.detail.id,
                 actualExpenseTotal: this.actualAmt
             }).then(res => {
-                if(res.status == 0){
+                if(res.code == 200){
                     this.actualInput = false;
                     this.$message({
                         message: res.message,
@@ -791,7 +791,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     console.log("url", url);
                     window.location.href = url;
@@ -835,7 +835,7 @@ export default {
                 flag: "yes",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -868,7 +868,7 @@ export default {
                 flag: "no",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -891,7 +891,7 @@ export default {
                 flag: "back",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -905,7 +905,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -916,10 +916,10 @@ export default {
             });
             },
         delBtn() {
-            expDel({
-                expenseFlowId: this.$route.query.key
-            }).then(res => {
-                if (res.status == 0) {
+            expDel(
+                this.$route.query.key
+            ).then(res => {
+                if (res.code == 200) {
                     this.dialogDelVisible = false;
                     this.$message({
                         message: res.message,

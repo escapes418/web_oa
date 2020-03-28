@@ -380,7 +380,7 @@ export default {
             this.postData.repayFlowDetailRequestList = this.getItemsInStore();
             if (type == 'apply' && repayFormVali(this)) {
                 repayApply(this.postData).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
@@ -391,7 +391,7 @@ export default {
             }
             if(type == 'save') {
                 expSave(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

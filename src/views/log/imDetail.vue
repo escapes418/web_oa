@@ -239,14 +239,14 @@ export default class imDetail extends Vue{
             dailyId:this.$route.query.key,
             comment:this.critique
         }).then((res:Ajax.AjaxResponse)=>{
-            if(res.status == 0){
+            // if(res.code == 200){
                 this.$message({
                     message:res.message,
                     type:'success'
                 })
                 this.dialogCritique = false;
                 this.critiqueDetail()
-            }
+            // }
         })
     }
 }

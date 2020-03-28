@@ -78,7 +78,7 @@ export default {
                 this.$confirm('确认修改？')
             .then(_ => {
                 modifyPwd(_this.psd).then(res => {
-                    if(res.status == 0){
+                    if(res.code == 200){
                         _this.$message({
                             message: res.message || "修改密码成功",
                             type: 'success'

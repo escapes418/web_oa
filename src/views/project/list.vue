@@ -135,7 +135,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectProject">
+                <span v-for="(item,index) in selectProject" :key="index">
                     <span class="select-item">{{item.projectName}}</span>
                 </span>
             </div>
@@ -365,7 +365,7 @@ export default {
             }
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     //列表是非离职人员
                     this.memberList = res.data.filter((item)=>{
                         return item.userStatus == '1'
@@ -456,7 +456,7 @@ export default {
                     vipCustomerId:this.vipCustomerId,
                     accountLeaderId:this.accountLeaderId
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.moveClose();
                         this.$message({
                             message: res.message,

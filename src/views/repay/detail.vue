@@ -76,7 +76,7 @@
                                 <p>&nbsp;金额</p>
                             </td>
                         </tr>
-                        <tr v-for="(scope,index) in detail.repayFlowInvoiceDetailResponseList">
+                        <tr v-for="(scope,index) in detail.repayFlowInvoiceDetailResponseList" :key="index">
                             <!-- <td class="table-title">
                                 <p>{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</p>
                             </td> -->
@@ -502,7 +502,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     console.log("url", url);
                     window.location.href = url;

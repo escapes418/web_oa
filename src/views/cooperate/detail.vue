@@ -328,9 +328,9 @@ export default {
         };
     },
     created() {
-        getDetail({
-            id:this.$route.query.key
-        }).then(res=>{
+        getDetail(
+            this.$route.query.key
+        ).then(res=>{
             this.detail = res.data
         })
         this.getComment()

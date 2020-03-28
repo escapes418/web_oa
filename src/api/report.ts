@@ -174,7 +174,7 @@ export function exportOverdue(params){
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })
@@ -182,7 +182,7 @@ export function fetchProDic(parmas) {
 
 export function getSubjectsNew(parmas) {
     return request({
-        url: '/commonInfo/querySubInfoNew',
+        url: '/webCommonInfo/querySubInfoNew',
         method: 'post',
         data:parmas
     },false)
@@ -257,7 +257,7 @@ export function getVipCustomer(parmas) {
 
 export function getMember(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
+      url:'/webCommonInfo/queryUserInfo',
       method:'post',
       data:params
     })
@@ -298,7 +298,7 @@ export function exportSalesMan(params){
 
 export function getRentFuel(params){
     return request({
-      url:'/rentRefuel/query',
+      url:'/webRentRefuel/query',
       method:'post',
       data:params
     })
@@ -306,7 +306,7 @@ export function getRentFuel(params){
 
 export function exportTemp(params){
     return request({
-      url:'/rentRefuel/templateDownload',
+      url:'/webRentRefuel/templateDownload',
       method:'post',
       data:params
     })
@@ -314,7 +314,7 @@ export function exportTemp(params){
 
 export function getFuelDetail(params){
     return request({
-      url:'/rentRefuel/refuelDetail',
+      url:'/webRentRefuel/refuelDetail',
       method:'post',
       data:params
     })
@@ -322,7 +322,7 @@ export function getFuelDetail(params){
 
 export function getCarDetail(params){
     return request({
-      url:'/rentRefuel/rentDetail',
+      url:'/webRentRefuel/rentDetail',
       method:'post',
       data:params
     })
@@ -338,7 +338,7 @@ export function getFinanceList(params){
 
 export function getOfficeList(params){
     return request({
-      url:'/commonInfo/officeSelect',
+      url:'/webCommonInfo/officeSelect',
       method:'get',
     })
 }

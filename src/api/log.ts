@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/marketDaily/findPage',
+        url: '/webMarketDaily/findPage',
         method: 'post',
         data:params
     })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function getMaDetail(params){
     return request({
-        url:'/marketDaily/getMarketDailyById',
+        url:'/webMarketDaily/getMarketDailyById',
         method:'post',
         data:params
     })
@@ -18,7 +18,7 @@ export function getMaDetail(params){
 
 export function getMaCust(params){
     return request({
-        url:'/marketDaily/getDailyCustMaintenance',
+        url:'/webMarketDaily/getDailyCustMaintenance',
         method:'post',
         data:params
     })
@@ -26,7 +26,7 @@ export function getMaCust(params){
 
 export function saveMaLog(params){
     return request({
-        url:'/marketDaily/saveMarketDaily',
+        url:'/webMarketDaily/saveMarketDaily',
         method:'post',
         data:params
     })
@@ -34,7 +34,7 @@ export function saveMaLog(params){
 
 export function getCustList(params){
     return request({
-        url:'/marketDaily/queryDailyCustMaintenance',
+        url:'/webMarketDaily/queryDailyCustMaintenance',
         method:'post',
         data:params
     })
@@ -42,7 +42,7 @@ export function getCustList(params){
 
 export function getMember(params){
     return request({
-        url:'/commonInfo/queryUserInfo',
+        url:'/webCommonInfo/queryUserInfo',
         method:'post',
         data:params
     })
@@ -50,7 +50,7 @@ export function getMember(params){
 
 export function exportFile(parmas) {
     return request({
-        url: '/marketDaily/marketDailyExport',
+        url: '/webMarketDaily/marketDailyExport',
         method: 'post',
         data:parmas
     },false)
@@ -59,7 +59,7 @@ export function exportFile(parmas) {
 
 export function exportImFile(parmas) {
     return request({
-        url: '/implyDaily/implyDailyExport',
+        url: '/webImplyDaily/implyDailyExport',
         method: 'post',
         data:parmas
     },false)
@@ -67,7 +67,7 @@ export function exportImFile(parmas) {
 
 export function saveImLog(params){
     return request({
-        url:'/implyDaily/saveImplyDaily',
+        url:'/webImplyDaily/saveImplyDaily',
         method:'post',
         data:params
     })
@@ -75,7 +75,7 @@ export function saveImLog(params){
 
 export function getProject(params){
     return request({
-        url:'/projectInfo/queryProjectInfo',
+        url:'/webProjectInfo/queryProjectInfo',
         method:'post',
         data:params
     })
@@ -83,7 +83,7 @@ export function getProject(params){
 
 export function getNode(params){
     return request({
-        url:'/implyDaily/queryProjectNodeList',
+        url:'/webImplyDaily/queryProjectNodeList',
         method:'post',
         data:params
     })
@@ -91,7 +91,7 @@ export function getNode(params){
 
 export function getImDetail(params){
     return request({
-        url:'/implyDaily/queryImplyDailyDetail',
+        url:'/webImplyDaily/queryImplyDailyDetail',
         method:'post',
         data:params
     })
@@ -99,7 +99,7 @@ export function getImDetail(params){
 
 export function saveCritique(params){
     return request({
-        url:'/marketDaily/saveDailyComment',
+        url:'/webMarketDaily/saveDailyComment',
         method:'post',
         data:params
     })
@@ -107,7 +107,7 @@ export function saveCritique(params){
 
 export function getCritique(params){
     return request({
-        url:'/marketDaily/queryDailyComment',
+        url:'/webMarketDaily/queryDailyComment',
         method:'post',
         data:params
     })
@@ -115,7 +115,7 @@ export function getCritique(params){
 
 export function getSend(params){
     return request({
-        url:'/marketDaily/querySendToByUserId',
+        url:'/webMarketDaily/querySendToByUserId',
         method:'post',
         data:params
     })

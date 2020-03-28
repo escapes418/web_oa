@@ -509,7 +509,7 @@ export default {
                 keyWord:this.keyWord,
                 keyWordName:this.keyWordName
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -561,7 +561,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                 }
@@ -633,7 +633,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 contractAttachmentList:[...this.scanAttachment]
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -667,7 +667,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 contractAttachmentList:[...this.scanAttachment]
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -683,7 +683,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -697,7 +697,7 @@ export default {
             expDel({
                 contractFlowId: this.$route.query.key
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.dialogDelVisible = false;
                     this.$message({
                         message: res.message,

@@ -37,7 +37,7 @@ export function delFlow(params) {
 
 export function getMember(params){
     return request({
-      url:`/commonInfo/queryUserInfo`,
+      url:`/webCommonInfo/queryUserInfo`,
       method:'post',
       data:params
     })
