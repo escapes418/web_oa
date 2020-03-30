@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/contractFlowNew/queryMyContractFlowList',
+        url: '/webContractFlowNew/queryMyContractFlowList',
         method: 'post',
         data: params
     })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function getContractTemlist(params) {
     return request({
-        url: '/contractFlowNew/queryContractTempletList',
+        url: '/webContractFlowNew/queryContractTempletList',
         method: 'post',
         data: params
     })
@@ -26,7 +26,7 @@ export function getProject(params){
 
 export function getContractConfig(params) {
     return request({
-        url: '/contractFlowNew/queryContractConfig',
+        url: '/webContractFlowNew/queryContractConfig',
         method: 'post',
         data: params
     })

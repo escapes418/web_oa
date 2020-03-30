@@ -36,8 +36,8 @@ export function travelFormVali(self) {
                 toast('请选择正确的发生日期！');
                 key = false;
             } else if (
-                item.startPoints.length == 0 ||
-                item.startPoints.indexOf('') != -1
+                item.startPoint.length == 0 ||
+                item.startPoint.indexOf('') != -1
             ) {
                 toast('请选择起点！');
                 key = false;
@@ -47,8 +47,8 @@ export function travelFormVali(self) {
                 key = false;
                 
             } else if (
-                item.endPoints.length == 0 ||
-                item.endPoints.indexOf('') != -1
+                item.endPoint.length == 0 ||
+                item.endPoint.indexOf('') != -1
             ) {
                 toast('请选择终点！');
                 key = false;
@@ -84,43 +84,3 @@ export function travelFormVali(self) {
     return flag;
 }
 
-export function travelDetailVali(self) {
-    var flag = true;
-    if (self.budgetDetailList.length < 1) {
-        toast('请填写申请明细！');
-        flag = false;
-    }
-    self.budgetDetailList.forEach((item) => {
-        if (item.startDate == '') {
-            toast('请选择发生日期！');
-            flag = false;
-        } else if (item.startPointName == '') {
-            toast('请选择起点！');
-            flag = false;
-        } else if (item.endDate == '') {
-            toast('请选择结束日期！');
-            flag = false;
-        } else if (item.endPointName == '') {
-            toast('请选择终点！');
-            flag = false;
-        } else if (item.firstSubName == '') {
-            toast('请选择科目');
-            flag = false;
-        } else if (item.personNum == '') {
-            toast('请正确填写报销人数！');
-            flag = false;
-        } else if (item.dayNum == '') {
-            toast('请正确填写报销天数！');
-            flag = false;
-        } else if (item.expenseAmt == '') {
-            toast('请正确填写预算金额！');
-            flag = false;
-        } else if (new Date(item.startDate) > new Date(item.endDate)) {
-            toast('结束日期不能早于发生日期！');
-            flag = false;
-        } else {
-            flag = true;
-        }
-    });
-    return flag;
-}

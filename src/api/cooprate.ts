@@ -27,7 +27,7 @@ export function getLabelList(params){
 
 export function getTypeList(params){
     return request({
-        url:`/needFlow/queryNeedType/${params}`,
+        url:`/needFlow/queryNeedType`,
         method:'get',
         // data:params
     })
