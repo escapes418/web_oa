@@ -475,7 +475,7 @@ export default {
             this.dialogMoveVisible = true;
             //获取当前登陆人的部门和区域
             getMember({}).then(res=>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.memberList = res.data.filter(item=>{
                         return item.userStatus == 1
                     })

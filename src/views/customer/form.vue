@@ -633,7 +633,7 @@ export default {
             if (this.$route.query.key) {
                 modifyCust(this.filter).then(res => {
                     this.confirmDialog = false;
-                    if(res.status ==0){
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -651,7 +651,7 @@ export default {
             } else {
                 saveCust(this.filter).then(res => {
                     this.confirmDialog = false;
-                    if(res.status ==0){
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
