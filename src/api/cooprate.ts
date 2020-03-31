@@ -19,15 +19,15 @@ export function addCoop(params){
 
 export function getLabelList(params){
     return request({
-        url:'/webNeedFlow/queryNeedLabel',
-        method:'post',
-        data:params
+        url:`/webNeedFlow/queryNeedLabel`,
+        method:'get',
+        // data:params
     })
 }
 
 export function getTypeList(params){
     return request({
-        url:`/needFlow/queryNeedType`,
+        url:`/webNeedFlow/queryNeedType`,
         method:'get',
         // data:params
     })

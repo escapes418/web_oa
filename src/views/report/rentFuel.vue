@@ -215,7 +215,7 @@ export default {
             
             attachment:[],
             dialogUpload:false,
-            fileURL: process.env.BASE_API + '/rentRefuel/rentRefuelImport',
+            fileURL: process.env.BASE_API + '/webRentRefuel/rentRefuelImport',
             uploadTips: config.tips,
         }
     },

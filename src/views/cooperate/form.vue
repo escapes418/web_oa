@@ -186,7 +186,7 @@ export default {
     },
     async mounted() {
         
-        getLabelList({}).then(res=>{
+        getLabelList().then(res=>{
             this.labelList = res.data
         })
         
