@@ -82,9 +82,9 @@ export function loanDel(params){
 
 export function getLoanMember(params){
     return request({
-        url:'/webLoanFlow/queryLoanPersonHisList',
-        method:'post',
-        data:params
+        url:`/webLoanFlow/queryLoanPersonHisList/${params}`,
+        method:'get',
+        // data:params
     })
 }
 
