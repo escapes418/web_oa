@@ -465,22 +465,16 @@ export default {
         showloanMember(){
             this.dialogLoan = true;
             this.listQuery.loanFlowId = this.$route.query.key
-            this.$$queryStub = fromJS(this.listQuery);
+            // this.$$queryStub = fromJS(this.listQuery);
             this.getLoanList();
         },
         getLoanList(){
-            var postData = this.$$queryStub.toJS();
-            getLoanMember({
-                ...postData,
-                pageNo:this.pageNo,
-                pageSize:this.pageSize
-            }).then(res=>{
+            // var postData = this.$$queryStub.toJS();
+            getLoanMember(
+                this.listQuery.loanFlowId
+            ).then(res=>{
                 this.loanMemberList = res.data;
             })
-        },
-        handleCurrentChange(val) {
-            this.pageNo = val;
-            this.getLoanList();
         },
         showImg(index, type) {
             if (type == 1) {
