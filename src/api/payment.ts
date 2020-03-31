@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 export function getPaytList(parmas) {
     return request({
-        url:'/webPaymentFlow//queryPaymentList',
+        url:'/webPaymentFlow/queryPaymentList',
         method:'post',
         data:parmas
     })
@@ -43,7 +43,7 @@ export function getDetail(parmas) {
 
 export function payFlow(parmas) {
     return request({
-        url:'/webPaymentFlow//completeTask',
+        url:'/webPaymentFlow/completeTask',
         method:'post',
         data:parmas
     })
@@ -52,7 +52,7 @@ export function payFlow(parmas) {
 
 export function payCancel(parmas) {
     return request({
-        url:'/webPaymentFlow//repealTask',
+        url:'/webPaymentFlow/repealTask',
         method:'post',
         data:parmas
     })
@@ -60,7 +60,7 @@ export function payCancel(parmas) {
 
 export function payDel(parmas) {
     return request({
-        url:'/webPaymentFlow//repealApply/'+parmas,
+        url:'/webPaymentFlow/repealApply/'+parmas,
         method:'post',
     })
 }
