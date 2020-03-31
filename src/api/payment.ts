@@ -28,7 +28,7 @@ export function getAccountList(parmas) {
 
 export function payApply(parmas) {
     return request({
-        url:'/webPaymentFlow//paymentApply',
+        url:'/webPaymentFlow/paymentApply',
         method:'post',
         data:parmas
     })
