@@ -61,7 +61,7 @@ export function payCancel(parmas) {
 export function payDel(parmas) {
     return request({
         url:'/webPaymentFlow/repealApply/'+parmas,
-        method:'post',
+        method:'delete',
     })
 }
 

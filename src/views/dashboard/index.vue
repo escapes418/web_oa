@@ -1,8 +1,10 @@
 <template>
     <div :class="$style['dashboard-container']">
         <div :class="$style['dashboard-text']">{{userInfo&&userInfo.name || ""}},欢迎使用司机宝管理助手</div>
-        
-        <!-- <button v-longpress="incrementPlusTen" @click="incrementPlusOne">{{value}}</button> -->
+
+        <!-- <G6Editor mode="edit">
+
+        </G6Editor> -->
     </div>
 </template>
 
@@ -10,73 +12,79 @@
 import { mapState, mapGetters } from "vuex";
 import mixin from '../../mixins/common.mix';
 import { getToken ,removeToken} from '@/utils/auth';
-// import longpress from '@/directive/longpress' // 水波纹指令
 import common from '@/utils/common'
+import G6Editor from '@/components/vue-g6-editor/G6Editor'
 
-// export default common.firstHide({
-//     mixins: [mixin],
-//     directives: {
-//       longpress
-//     },
-//     computed:{
-//         ...mapState({
-        
-//         })
-//     },
-//     data() {
-//         return {
-//             value: 10
-//         };
-//     },
-//     created() {
-       
-//     },
-//     mounted() {
-//       // return new Promise((resolve)=>{
-//       //   resolve()
-//       // })    
-//     },
-//     methods: {
-//         incrementPlusOne() {
-//             this.value++
-//         },
-//         // increment value plus 10
-//         incrementPlusTen() {
-//             this.value += 10
-//         }
-//     }
-// });
+
 export default {
-    // mixins: [mixin],
-    // directives: {
-    //   longpress
-    // },
     computed:{
         ...mapState({
           userInfo: state =>state.user.userInfo
         })
     },
+    components:{G6Editor},
     data() {
+        let self = this;
         return {
-            value: 10
-        };
+          data:{
+            nodes:[{
+              name: "测试节点",
+              label: "测试节点",
+              size:["170","34"],
+              type: "node",
+              x: 272.99998474121094,
+              y: 91.999996185302734,
+              shape: "customNode",
+              color: "#1890ff",
+              image: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
+              inPoints: [[0,0.5]],
+              outPoints: [[1,0.5]],
+              offsetX: 581,
+              offsetY: 23,
+              id: "modify",
+            },{
+              name: "测试节点",
+              label: "测试节点",
+              size:["170","34"],
+              type: "node",
+              x: 272.99998474121094,
+              y: 151.999996185302734,
+              shape: "customNode",
+              color: "#1890ff",
+              image: "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
+              inPoints: [[0,0.5]],
+              outPoints: [[1,0.5]],
+              offsetX: 581,
+              offsetY: 23,
+              id: "node125",
+            }],
+            edges:[{
+              id: "edge198",
+              primaryKey: "8888",
+              source: "modify",
+              target: "node125",
+              sourceId: "modify",
+              targetId: "node125",
+              start: {x: 0, y: 17},
+              end: {x: 0, y: -17},
+              shape: "customEdge",
+              type: "edge",
+              label: "条件节点",
+              condition: {name: "", type: "", id: "", detailId: "", detailIds: []},
+              startPoint: {x: 263.8216651750663, y: 109.49999618530273},
+              endPoint: {x: 207.17831956614464, y: 217.5},
+            }]
+          }
+        }
     },
     created() {
-       
+      
     },
     mounted() {
-      // return new Promise((resolve)=>{
-      //   resolve()
-      // })    
+  
     },
     methods: {
-        incrementPlusOne() {
-            this.value++
-        },
-        // increment value plus 10
-        incrementPlusTen() {
-            this.value += 10
-        }
+      
     }
 };
 </script>

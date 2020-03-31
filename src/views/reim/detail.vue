@@ -804,7 +804,7 @@ export default {
         //             expenseFlowId:this.$route.query.key,
         //             procInsId:this.detail.procInsId
         //         }).then(res =>{
-        //             if(res.status ==0){
+        //             if(res.code == 200){
         //                 this.$message({
         //                     message: res.message,
         //                     type: 'success'

@@ -145,7 +145,7 @@ export default {
                 custLinkmanHisList: this.itemList,
             }).then(res => {
                 this.confirmDialog = false;
-                if(res.status ==0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
