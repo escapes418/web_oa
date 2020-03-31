@@ -386,7 +386,7 @@ export default {
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
         
-        getLabelList({}).then(res=>{
+        getLabelList().then(res=>{
             this.labelList = res.data
         })
         

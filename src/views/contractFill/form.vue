@@ -391,7 +391,7 @@ export default {
                 faint:"",
             },
 
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             uploadTips: config.tips,
             tipsUpload1:'预签合同图片（该处上传已签约合同照片）',
             tipsUpload2:'附件资料图片（该处上传营业执照和法人身份证正反面，需原件照片或复印件盖章）',
