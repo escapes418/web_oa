@@ -176,10 +176,8 @@ export default {
                         message: res.message,
                         type: "success"
                     })
-                    this.$router.push({
-                        path: "/config/flowList"
-                    });
                     this.dialogDeploy = false;
+                   
                 }
             })
         },
@@ -190,10 +188,8 @@ export default {
                         message: res.message,
                         type: "success"
                     })
-                    this.$router.push({
-                        path: "/config/flowList"
-                    });
                     this.dialogDel = false;
+                    this.getList()
                 }
             })
         },
