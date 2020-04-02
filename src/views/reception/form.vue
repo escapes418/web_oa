@@ -214,7 +214,7 @@ export default {
             expTypeList:[],
             expenseAttachment:[],
             taxList:[],
-            fileURL:process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL:process.env.BASE_API + '/webCommonInfo/fileUpload',
             listLoading:false,
             list:[],
             recep:[],

@@ -372,7 +372,7 @@ export default {
             scanConAttachment:[],
             renewAttachment:[],
             abandonAttachment:[],
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             uploadTips: config.tips,
             detail: {},
             projectName:[],

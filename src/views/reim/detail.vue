@@ -556,7 +556,7 @@ export default {
     },
     data() {
         return {
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             flowDetailList: [],
             flowLoglist: [],
             amtList: [],
@@ -635,6 +635,7 @@ export default {
         }).then(res => {
             this.detail = res.data.detail;
             res.data.flowDetailList = res.data.flowDetailList || [];
+            console.log(flowDetailList)
             this.flowDetailList = res.data.flowDetailList;
             res.data.subSummary = res.data.subSummary || [];
             this.subSummary = res.data.subSummary;
