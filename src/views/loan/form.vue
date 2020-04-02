@@ -223,9 +223,9 @@ export default {
         // 清空store集合
         // 编辑时
         if (this.$route.query.key) {
-            getDetail({
-                loanFlowId: this.$route.query.key
-            }).then(res => {
+            getDetail(
+                this.$route.query.key
+            ).then(res => {
                 this.postData = res.data;
                 this.planRepayTime = common.timeParseObj(res.data.planRepayTime);
                 this.applyTime = common.formatDateTime(res.data.applyTime)
