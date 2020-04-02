@@ -183,7 +183,7 @@ export default {
                 projectName:"",// 关联项目名称 ,
                 receivablesAccountId:"",// 收款账户id ,
                 remarks: "",//备注 ,
-                loanAttachmentWeb:[]
+                loanAttachment:[]
             },
             expenseAttachment: [], // 读取和提交时均做转换
             bankList:[],
@@ -313,9 +313,9 @@ export default {
         // 提交
         submit(type) {
             this.postData.planRepayTime = common.timeParse(this.planRepayTime)
-            this.postData.loanAttachmentWeb = [];
+            this.postData.loanAttachment = [];
             this.expenseAttachment.forEach(item => {
-                this.postData.loanAttachmentWeb.push({ url: item.originUrl, name: item.name })
+                this.postData.loanAttachment.push({ url: item.originUrl, name: item.name })
             })
             if (type == 'apply' && loanFormVali(this)) {
                 loanApply(this.postData).then(res => {
