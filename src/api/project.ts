@@ -58,7 +58,7 @@ export function saveMaintain(params){
 
 export function getCompanyList(params){
     return request({
-        url:'/company/queryListByNameAndState',
+        url:'/webCommonInfo/queryListByNameAndState',
         method:'post',
         data:params
     })
