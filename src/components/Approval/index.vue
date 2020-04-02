@@ -75,7 +75,7 @@ export default {
         return {
             // selectedSubject: [], //  新的科目选中值[01,0101] 办公用品采购/办公用品
             dialogVisible: false,
-            uploadApi: process.env.BASE_API + '/commonInfo/fileUpload',
+            uploadApi: process.env.BASE_API + '/webCommonInfo/fileUpload',
             current:0,
         }
     },

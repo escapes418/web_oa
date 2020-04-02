@@ -286,7 +286,7 @@ export default {
             expenseAttachment: [], // 读取和提交时均做转换
 
             bankList:[],
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
 
             uploadTips: config.tips,
             userInfo:{},

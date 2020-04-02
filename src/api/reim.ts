@@ -99,7 +99,7 @@ export function expCancel(params){
 
 export function fetchThemeList(params){
     return request({
-        url:'/commonInfo/flowRevencelist',
+        url:'/webCommonInfo/flowRevencelist',
         method:'post',
         data:params
     })
@@ -115,7 +115,7 @@ export function getMember(params){
 
 export function downFile(params){
     return request({
-        url:'/commonInfo/downFiles',
+        url:'/webCommonInfo/downFiles',
         method:'post',
         data:params
     })

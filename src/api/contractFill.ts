@@ -115,7 +115,7 @@ export function changeRecord(params){
 
 export function downFile(params){
     return request({
-        url:'/commonInfo/downFiles',
+        url:'/webCommonInfo/downFiles',
         method:'post',
         data:params
     })

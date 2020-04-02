@@ -221,7 +221,7 @@ export default {
                 value:"2",
                 name:"现金还款"
             }],
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
 
             uploadTips: config.tips,
             userInfo:{},
