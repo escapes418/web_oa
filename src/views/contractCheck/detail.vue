@@ -101,7 +101,7 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">用章份数：</span>
-                                    <span class="right-con">{{ detail.contractLeaderName }}</span>
+                                    <span class="right-con">{{ detail.chapterNum }}</span>
                                 </li>
                             </ul>
                         </base-temp>
