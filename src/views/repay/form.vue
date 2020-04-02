@@ -206,8 +206,8 @@ export default {
                 currentRepayAmount:"",// 本次还款金额 ,
                 loanFlowId:"", //关联借款流程id ,
                 remarks:"" ,
-                repayFlowCashAttachmentWebRequestList: [],//现金还款附件列表 ,
-                repayFlowDetailRequestList:[],// 发票还款明细列表 ,
+                repayFlowCashAttachmentList: [],//现金还款附件列表 ,
+                repayFlowInvoiceList:[],// 发票还款明细列表 ,
                 repayMethod:"",
             },
             expenseAttachment: [], // 读取和提交时均做转换
@@ -373,11 +373,11 @@ export default {
         submit(type) {
             // this.postData.billNum = this.billNum;
             // this.postData.expenseTotal = this.expenseTotal
-            this.postData.repayFlowCashAttachmentWebRequestList = [];
+            this.postData.repayFlowCashAttachmentList = [];
             this.expenseAttachment.forEach(item => {
-                this.postData.repayFlowCashAttachmentWebRequestList.push({ url: item.originUrl, name: item.name })
+                this.postData.repayFlowCashAttachmentList.push({ url: item.originUrl, name: item.name })
             })
-            this.postData.repayFlowDetailRequestList = this.getItemsInStore();
+            this.postData.repayFlowInvoiceList = this.getItemsInStore();
             if (type == 'apply' && repayFormVali(this)) {
                 repayApply(this.postData).then(res => {
                     if (res.code == 200) {
