@@ -281,7 +281,8 @@ export default {
                 payType:"",// 付款类别 ,
                 projectPersonel:"", //项目负责人
                 projectId:"",
-                expenseTotal:""
+                expenseTotal:"",
+                procInsId:""
             },
             expenseAttachment: [], // 读取和提交时均做转换
 

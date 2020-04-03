@@ -209,6 +209,7 @@ export default {
                 repayFlowCashAttachmentList: [],//现金还款附件列表 ,
                 repayFlowInvoiceList:[],// 发票还款明细列表 ,
                 repayMethod:"",
+                procInsId:""
             },
             expenseAttachment: [], // 读取和提交时均做转换
 
@@ -262,7 +263,7 @@ export default {
                 this.postData.currentRepayAmount = res.data.currentRepayAmount;
                 this.postData.loanFlowId = res.data.loanFlowId;
                 this.postData.remarks = res.data.remarks
-
+                this.postData.procInsId = res.data.procInsId 
                 this.procLoanName = res.data.loanFlowProcName.substring(0,20)+'...';
                 this.costCenterName = res.data.costCenterName;
                 this.taxName = res.data.invoiceCompanyName;
@@ -389,17 +390,17 @@ export default {
                     }
                 })
             }
-            if(type == 'save') {
-                expSave(this.filter).then(res => {
-                    if (res.code == 200) {
-                        this.$message({
-                            message: res.message,
-                            type: 'success'
-                        })
-                        this.$router.go(-1)
-                    }
-                })
-            }
+            // if(type == 'save') {
+            //     expSave(this.filter).then(res => {
+            //         if (res.code == 200) {
+            //             this.$message({
+            //                 message: res.message,
+            //                 type: 'success'
+            //             })
+            //             this.$router.go(-1)
+            //         }
+            //     })
+            // }
         }
     }
 }
