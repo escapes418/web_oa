@@ -183,7 +183,8 @@ export default {
                 projectName:"",// 关联项目名称 ,
                 receivablesAccountId:"",// 收款账户id ,
                 remarks: "",//备注 ,
-                loanAttachment:[]
+                loanAttachment:[],
+                procInsId:""
             },
             expenseAttachment: [], // 读取和提交时均做转换
             bankList:[],
