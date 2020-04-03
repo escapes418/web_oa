@@ -18,7 +18,7 @@ export function repayFormVali(self) {
     }else if (!self.postData.repayMethod) {
         toast('请选择还款方式！');
         flag = false;
-    }else if(self.postData.repayMethod=="1"&&self.postData.repayFlowDetailRequestList.length<1){
+    }else if(self.postData.repayMethod=="1"&&self.postData.repayFlowInvoiceList.length<1){
         toast('请添加还款明细！');
         flag = false;
     }else if (self.postData.repayMethod=="2"&&!/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(self.postData.currentRepayAmount)){
@@ -28,7 +28,7 @@ export function repayFormVali(self) {
         flag = false;
     } 
     function itemVali() {
-        self.postData.repayFlowDetailRequestList.forEach((item) => {
+        self.postData.repayFlowInvoiceList.forEach((item) => {
             if (
                 item.subject.length == 0 ||
                 item.subject[0] == ''
