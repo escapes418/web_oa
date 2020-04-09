@@ -831,7 +831,7 @@ export default {
             //     return;
             // }
             expFlow({
-                expenseFlowId: this.$route.query.key,
+                flowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "yes",
                 procInsId: this.detail.procInsId
@@ -864,7 +864,7 @@ export default {
             //     return;
             // }
             expFlow({
-                expenseFlowId: this.$route.query.key,
+                flowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "no",
                 procInsId: this.detail.procInsId
