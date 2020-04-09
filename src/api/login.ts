@@ -55,8 +55,8 @@ export function getMember(params){
 
 export function logout() {
     return request({
-        url: "/logout",
-        method: "post"
+        url: "/auth/logout",
+        method: "get"
     });
 }
 
