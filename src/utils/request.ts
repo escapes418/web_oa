@@ -9,7 +9,7 @@ const service: any = axios.create({
     baseURL: process.env.BASE_API, // api的base_url
     timeout: 15000 // 请求超时时间
 });
-
+// console.log(process.env)
 var loading;
 // request拦截器
 service.interceptors.request.use(
@@ -18,8 +18,11 @@ service.interceptors.request.use(
         if (store.getters.token) {
             config.headers['sessionid'] = getToken() || ''; // 让每个请求携带自定义token 请根据实际情况自行修改
         }
-        if(config.url=='/auth/login'){
-            config.baseURL = config.baseURL.replace(/api/,"")
+        console.log(process.argv[2])
+        if(process.argv.length>0){
+            if(config.url=='/auth/login' || config.url == '/auth/logout'){
+                config.baseURL = config.baseURL.replace(/api/,"")
+            }
         }
         return config;
     },
