@@ -46,7 +46,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
