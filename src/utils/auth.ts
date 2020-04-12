@@ -1,4 +1,4 @@
-const TokenKey = "web_oa_sessionid";
+const TokenKey = "web_oa_token";
 
 export function getToken() {
     return localStorage.getItem(TokenKey);

@@ -16,7 +16,7 @@ service.interceptors.request.use(
     (config:AxiosRequestConfig) => {
         config.headers['Content-Tab'] = 'Micro'
         if (store.getters.token) {
-            config.headers['sessionid'] = getToken() || ''; // 让每个请求携带自定义token 请根据实际情况自行修改
+            config.headers['Auth-Token'] = getToken() || ''; // 让每个请求携带自定义token 请根据实际情况自行修改
         }
         if(config.url=='/auth/login' || config.url == '/auth/logout'){
             config.baseURL = config.baseURL.replace(/api/,"")
@@ -38,7 +38,7 @@ service.interceptors.response.use(
             if (rtnObj.code == 200) {
                 return rtnObj;
             }
-            if(rtnObj.code == 20){
+            if(rtnObj.code == 10010){
                 Message({
                     message: rtnObj.message,
                     type: 'error',
