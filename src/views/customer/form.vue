@@ -385,7 +385,7 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <el-button type="primary" size="small" @click="openConfirm('apply')">提交</el-button>
-                <el-button v-if="$route.query.key&&custListPlace == 4" type="danger" size="small" @click="openConfirm('open')">开放客户</el-button>
+                <el-button v-if="$route.query.key&&custListPlace == 4" type="danger" size="small" @click="openCustDia">开放客户</el-button>
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
@@ -558,9 +558,9 @@ export default {
                         if(type =="apply"){
                             if (flag) _this.saveCustForm()
                         }
-                        if(type =="open"){
-                            if (flag) _this.openCustDia()
-                        }
+                        // if(type =="open"){
+                        //     if (flag) _this.openCustDia()
+                        // }
                     }).catch(() => {      
                 });
 
@@ -569,6 +569,17 @@ export default {
             
         },
         openCustDia(){
+            var _this = this;
+            if (!custBaseVali(this)) return; //校验
+            if(this.filter.baseCustInfo.custType == "1"){//无车
+                if (!custNoCarVali(this)) return; 
+                if (!linkManVali(this.noCarCustLinkman,this)) return; 
+            } else {//煤链社
+                if (!custCoalUnionVali(this)) return;
+                if (!linkManVali(this.coalUnionCustLinkman,this)) return;
+            }
+            this.filter.noCar.custLinkman = this.noCarCustLinkman;
+            this.filter.coalUnion.custLinkman = this.coalUnionCustLinkman;
             this.$confirm("开放客户后，将无法再捡回该客户，是否开放客户？", {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
