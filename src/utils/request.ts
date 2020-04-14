@@ -4,11 +4,14 @@ import store from '../store';
 import { getToken ,removeToken} from '@/utils/auth';
 import router from '@/router'
 
+axios.defaults.withCredentials = true
 // 创建axios实例
 const service: any = axios.create({
     baseURL: process.env.BASE_API, // api的base_url
     timeout: 15000 // 请求超时时间
 });
+
+
 // console.log(process.env)
 var loading;
 // request拦截器
