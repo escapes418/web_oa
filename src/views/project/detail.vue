@@ -311,7 +311,6 @@
                 </div>
                 <div class="segment statistics">
                     <div class="segment-header">
-                        <span class="left-red">*</span>
                         实施节点
                     </div>
                     <div class="segment-area">
