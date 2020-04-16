@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+// import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
 import json from './testjson.js';
 
@@ -151,7 +151,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      const { data } = await fetchList(this.listQuery)
+      // const { data } = await fetchList(this.listQuery)
       this.list = data.items
       console.log(this.list,this.jsonData);
       this.list = this.jsonData.data;
