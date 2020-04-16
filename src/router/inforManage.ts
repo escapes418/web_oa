@@ -311,6 +311,18 @@ export default [
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true
+            },
+            {
+                path: 'pmsDeploy',
+                id: 'inforManage-contractFillForm',
+                show: false,
+                name: 'pmsDeploy',
+                component: () => import('@/views/pms/pmsDeploy.vue'),
+                meta: {
+                    title: 'PMS配置',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
             }
         ]
     }

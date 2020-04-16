@@ -1,0 +1,292 @@
+<template>
+  <div class="app-container">
+      <div @click="add">新增</div>
+    <div>{{ list }}</div>
+    <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="sequenceNumber" border fit highlight-current-row style="width: 100%">
+      <el-table-column align="center" label="" width="65">
+        <template slot-scope="{row}">
+          <span>{{ row.sequenceNumber }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="角色编号">
+        <template slot-scope="{row}">
+          <span>{{ row.roleCode }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="成员角色名称">
+        <template slot-scope="{row}">
+          <template v-if="row.edit&&row.roleType=='2'">
+            <el-input v-model="row.roleName" class="edit-input" size="small" />
+            
+          </template>
+          <span v-else>{{ row.roleName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="角色类型">
+        <template slot-scope="{row}">
+          <span>{{ row.roleTypeName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="负责人">
+        <template slot-scope="{row}">
+          <template v-if="row.edit&&row.roleType=='2'">
+            <el-select filterable style="width: 150px" size="small" class="filter-item" v-model="row.isPrincipal" placeholder="请选择">
+                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.value">
+                </el-option>
+            </el-select>
+          </template>
+          <span v-else>{{ row.isPrincipalName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="备注">
+        <template slot-scope="{row}">
+          <template v-if="row.edit">
+            <el-input v-model="row.remark" class="edit-input" size="small" />
+            
+          </template>
+          <span v-else>{{ row.remark }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180px" align="center" label="更新时间">
+        <template slot-scope="{row}">
+          <span>{{ row.updateTime }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="操作" width="200">
+        <template slot-scope="{row}">
+          <el-button
+            v-if="row.edit"
+            type="success"
+            size="small"
+            icon="el-icon-circle-check-outline"
+            @click="confirmEdit(row)"
+          >
+            保存
+          </el-button>
+          <el-button
+            v-if="!row.edit"
+            type="primary"
+            size="small"
+            icon="el-icon-edit"
+            @click="row.edit=!row.edit"
+          >
+            编辑
+          </el-button>
+          <el-button
+              v-if="row.edit"
+              class="cancel-btn"
+              size="small"
+              icon="el-icon-refresh"
+              type="warning"
+              @click="cancelEdit(row)"
+            >
+              取消
+            </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="移动" width="80">
+        <template slot-scope="{}">
+          <svg-icon class="drag-handler" icon-class="drag" />
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="show-d"  @click="add">
+      <el-tag>The default order :</el-tag> {{ oldList }}
+    </div>
+    <div class="show-d">
+      <el-tag>The after dragging order :</el-tag> {{ newList }}
+    </div>
+  </div>
+</template>
+
+<script>
+import { fetchList } from '@/api/article'
+import Sortable from 'sortablejs'
+import json from './testjson.js';
+
+export default {
+  name: 'DragTable',
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      list: null,
+      total: null,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 10
+      },
+      options: [{
+          value: '0',
+          name: '否'
+        },{
+          value: '1',
+          name: '是'
+        }],
+      sortable: null,
+      oldList: [],
+      newList: [],
+      jsonData: json
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+      this.listLoading = true
+      const { data } = await fetchList(this.listQuery)
+      this.list = data.items
+      console.log(this.list,this.jsonData);
+      this.list = this.jsonData.data;
+      this.list.forEach((el, index) => {
+        this.$set(el, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+        // el.originalTitle = el.title; //  will be used when user click the cancel botton
+        // el.input = index;
+        // el.sequenceNumber = index+1;
+        el.originalroleName = el.roleName;
+        el.originalisPrincipal = el.isPrincipal;
+        el.originalisPrincipalName = el.isPrincipalName;
+        el.originalremark = el.remark;
+      })
+    //   this.total = data.total
+      this.listLoading = false
+      this.oldList = this.list.map(v => v.sequenceNumber)
+      console.log(this.list,'list')
+      this.newList = this.oldList.slice()
+      this.$nextTick(() => {
+        this.setSort()
+      })
+    },
+    setSort() {
+      const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = Sortable.create(el, {
+        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
+        setData: function(dataTransfer) {
+          // to avoid Firefox bug
+          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+          dataTransfer.setData('Text', '')
+        },
+        onEnd: evt => {
+          const targetRow = this.list.splice(evt.oldIndex, 1)[0]
+          this.list.splice(evt.newIndex, 0, targetRow)
+
+          // for show the changes, you can delete in you code
+          const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+          this.newList.splice(evt.newIndex, 0, tempIndex)
+          console.log(1111)
+        }
+      })
+    },
+    cancelEdit(row) {
+    //   row.title = row.originalTitle;
+      row.roleName = row.originalroleName;
+      row.isPrincipal = row.originalisPrincipal;
+      row.remark = row.originalremark;
+      row.isPrincipalName = row.originalisPrincipalName;
+      row.edit = false
+      this.$message({
+        message: 'The title has been restored to the original value',
+        type: 'warning'
+      })
+    },
+    confirmEdit(row) {
+      row.edit = false
+      var isPrincipalName = ""
+      this.options.forEach((el,idx)=>{
+          if(el.value == row.isPrincipal){
+              isPrincipalName = el.name;
+          }
+      })
+      console.log(isPrincipalName);
+    //   row.originalTitle = row.title;
+      row.originalroleName = row.roleName;
+      row.originalisPrincipal = row.isPrincipal;
+      row.originalremark = row.remark;
+      row.isPrincipalName = isPrincipalName;
+      row.originalisPrincipalName = isPrincipalName;
+      row.updateTime = this.fitchTime()
+      this.$message({
+        message: 'The title has been edited',
+        type: 'success'
+      })
+    },
+    add(){
+        var list = this.list.map(v => v.sequenceNumber)
+        var max = Math.max.apply(null, list);
+        console.log(max);
+        this.list.push({
+            roleType:'2',
+            edit:false,
+            roleCode:"",
+            roleName:'',
+            roleTypeName:'人工',
+            isPrincipal:'0',
+            isPrincipalName:'否',
+            // title:"1111",
+            remark:'',
+            updateTime:this.fitchTime(),
+            sequenceNumber: max+1,
+            originalroleName:"",
+            originalisPrincipal:"0",
+            originalisPrincipalName :"否",
+            originalremark:"",
+
+        })
+    },
+    fitchTime(date){
+        date ? (date = new Date(date)) : (date = new Date());
+        var Y = date.getFullYear();
+        var M = date.getMonth() + 1;
+        M = M < 10 ? '0' + M : M;
+        var D = date.getDate();
+        D = D < 10 ? '0' + D : D;
+        var h = date.getHours();
+        h = h < 10 ? '0' + h : h;
+        var m = date.getMinutes();
+        m = m < 10 ? '0' + m : m;
+        var s = date.getSeconds();
+        s = s < 10 ? '0' + s : s;
+        return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s;
+    }
+  }
+}
+</script>
+
+<style>
+.sortable-ghost{
+  opacity: .8;
+  color: #fff!important;
+  background: #cdecfe!important;
+}
+</style>
+
+<style scoped>
+.icon-star{
+  margin-right:2px;
+}
+.drag-handler{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.show-d{
+  margin-top: 15px;
+}
+</style>
