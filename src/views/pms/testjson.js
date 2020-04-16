@@ -8,7 +8,7 @@ export default {
             isPrincipal:'1',
             isPrincipalName:'是',
             remark:'',
-            更新时间:"2020-02-19 18:34:24",
+            updateTime:"2020-02-19 18:34:24",
             sequenceNumber:"1"
         },
         {
@@ -19,7 +19,7 @@ export default {
             isPrincipal:'0',
             isPrincipalName:'否',
             remark:'',
-            更新时间:"2020-02-19 18:34:24",
+            updateTime:"2020-02-19 18:34:24",
             sequenceNumber:"2"
         },
         {
@@ -30,7 +30,7 @@ export default {
             isPrincipal:'1',
             isPrincipalName:'是',
             remark:'',
-            更新时间:"2020-02-19 18:34:24",
+            updateTime:"2020-02-19 18:34:24",
             sequenceNumber:"3"
         },
         {
@@ -41,7 +41,7 @@ export default {
             isPrincipal:'1',
             isPrincipalName:'是',
             remark:'',
-            更新时间:"2020-02-19 18:34:24",
+            updateTime:"2020-02-19 18:34:24",
             sequenceNumber:"4"
         }
         

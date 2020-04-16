@@ -1,7 +1,8 @@
 <template>
-  <div class="app-container">
-      <div @click="add">新增</div>
-    <div>{{ list }}</div>
+  <div class="sjb-container calendar-list-container">
+      <!-- <div @click="add">新增</div>
+    <div>{{ list }}</div> -->
+    <el-button class="topBtn" type="primary" v-waves icon="el-icon-search" @click="add">新增成员角色</el-button>
     <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="sequenceNumber" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="" width="65">
         <template slot-scope="{row}">
@@ -43,7 +44,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="180px" align="center" label="备注">
+      <el-table-column align="center" label="备注">
         <template slot-scope="{row}">
           <template v-if="row.edit">
             <el-input v-model="row.remark" class="edit-input" size="small" />
@@ -62,15 +63,6 @@
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="{row}">
           <el-button
-            v-if="row.edit"
-            type="success"
-            size="small"
-            icon="el-icon-circle-check-outline"
-            @click="confirmEdit(row)"
-          >
-            保存
-          </el-button>
-          <el-button
             v-if="!row.edit"
             type="primary"
             size="small"
@@ -78,6 +70,24 @@
             @click="row.edit=!row.edit"
           >
             编辑
+          </el-button>
+          <el-button
+            v-if="!row.edit"
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="del(row)"
+          >
+            删除
+          </el-button>
+          <el-button
+            v-if="row.edit"
+            type="success"
+            size="small"
+            icon="el-icon-circle-check-outline"
+            @click="confirmEdit(row)"
+          >
+            保存
           </el-button>
           <el-button
               v-if="row.edit"
@@ -93,7 +103,7 @@
       </el-table-column>
       <el-table-column align="center" label="移动" width="80">
         <template slot-scope="{}">
-          <svg-icon class="drag-handler" icon-class="drag" />
+          <i class="el-icon-rank"></i>
         </template>
       </el-table-column>
     </el-table>
@@ -110,6 +120,7 @@
 // import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
 import json from './testjson.js';
+import { getPmsDeployList, projectTasklistUpdate} from "@/api/pms";
 
 export default {
   name: 'DragTable',
@@ -151,60 +162,72 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      // const { data } = await fetchList(this.listQuery)
-      this.list = data.items
-      console.log(this.list,this.jsonData);
-      this.list = this.jsonData.data;
-      this.list.forEach((el, index) => {
-        this.$set(el, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-        // el.originalTitle = el.title; //  will be used when user click the cancel botton
-        // el.input = index;
-        // el.sequenceNumber = index+1;
-        el.originalroleName = el.roleName;
-        el.originalisPrincipal = el.isPrincipal;
-        el.originalisPrincipalName = el.isPrincipalName;
-        el.originalremark = el.remark;
-      })
-    //   this.total = data.total
-      this.listLoading = false
-      this.oldList = this.list.map(v => v.sequenceNumber)
-      console.log(this.list,'list')
-      this.newList = this.oldList.slice()
-      this.$nextTick(() => {
-        this.setSort()
-      })
+      // getPmsDeployList().then(res => {
+          // this.list = res.data;
+          this.list = this.jsonData.data;
+          this.list.forEach((el, index) => {
+            this.$set(el, 'edit', false)
+            el.originalroleName = el.roleName;
+            el.originalisPrincipal = el.isPrincipal;
+            el.originalisPrincipalName = el.isPrincipalName;
+            el.originalremark = el.remark;
+          })
+          this.listLoading = false
+          this.oldList = this.list.map(v => v.sequenceNumber)
+          console.log(this.list,'list')
+          this.newList = this.oldList.slice()
+          this.$nextTick(() => {
+            this.setSort()
+          })
+      // });
+      
     },
     setSort() {
       const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = Sortable.create(el, {
-        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
+        ghostClass: 'sortable-ghost', 
         setData: function(dataTransfer) {
-          // to avoid Firefox bug
-          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
           dataTransfer.setData('Text', '')
         },
         onEnd: evt => {
           const targetRow = this.list.splice(evt.oldIndex, 1)[0]
           this.list.splice(evt.newIndex, 0, targetRow)
-
-          // for show the changes, you can delete in you code
           const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
           this.newList.splice(evt.newIndex, 0, tempIndex)
-          console.log(1111)
+          // console.log(1111)
+          this.updateList()
+
         }
       })
     },
+    updateList(){
+      return new Promise((resolve, reject) => {
+        projectTasklistUpdate({
+            list:this.list
+        }).then(rtn => {
+            resolve(rtn.data);
+        })
+      });
+    },
     cancelEdit(row) {
-    //   row.title = row.originalTitle;
       row.roleName = row.originalroleName;
       row.isPrincipal = row.originalisPrincipal;
       row.remark = row.originalremark;
       row.isPrincipalName = row.originalisPrincipalName;
       row.edit = false
-      this.$message({
-        message: 'The title has been restored to the original value',
-        type: 'warning'
-      })
+      // this.$message({
+      //   message: 'The title has been restored to the original value',
+      //   type: 'warning'
+      // })
+    },
+    del(row){
+      console.log(row);
+      for(var i = 0; i < this.list.length; i++){
+          if(this.list[i].sequenceNumber === row.sequenceNumber){
+              this.list.splice(i,1);
+          }
+      }
+      this.updateList()
     },
     confirmEdit(row) {
       row.edit = false
@@ -215,13 +238,13 @@ export default {
           }
       })
       console.log(isPrincipalName);
-    //   row.originalTitle = row.title;
       row.originalroleName = row.roleName;
       row.originalisPrincipal = row.isPrincipal;
       row.originalremark = row.remark;
       row.isPrincipalName = isPrincipalName;
       row.originalisPrincipalName = isPrincipalName;
       row.updateTime = this.fitchTime()
+      this.updateList()
       this.$message({
         message: 'The title has been edited',
         type: 'success'
@@ -247,8 +270,8 @@ export default {
             originalisPrincipal:"0",
             originalisPrincipalName :"否",
             originalremark:"",
-
         })
+        this.updateList()
     },
     fitchTime(date){
         date ? (date = new Date(date)) : (date = new Date());
@@ -288,5 +311,8 @@ export default {
 }
 .show-d{
   margin-top: 15px;
+}
+.topBtn{
+  margin-bottom: 20px;
 }
 </style>

@@ -323,6 +323,18 @@ export default [
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true
+            },
+            {
+                path: 'projectTasklist',
+                id: 'inforManage-contractFillForm',
+                show: false,
+                name: 'projectTasklist',
+                component: () => import('@/views/pms/projectTasklist.vue'),
+                meta: {
+                    title: 'PMS配置',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
             }
         ]
     }
