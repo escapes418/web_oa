@@ -177,7 +177,6 @@ export default {
                         type: "success"
                     })
                     this.dialogDeploy = false;
-
                 }
             })
         },

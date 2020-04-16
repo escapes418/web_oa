@@ -363,7 +363,7 @@
         </el-dialog>
 
         <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
-            <span>确认删除该报销单吗？</span>
+            <span>确认删除该借款单吗？</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="delBtn">确认</el-button>
                 <el-button @click="dialogDelVisible = false">取消</el-button>
@@ -532,7 +532,7 @@ export default {
         },
         agreeBtn(){
             loanFlow({
-                loanFlowId:this.$route.query.key,
+                flowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'yes',
                 procInsId:this.detail.procInsId 
@@ -565,7 +565,7 @@ export default {
             //     return 
             // }
             loanFlow({
-                loanFlowId:this.$route.query.key,
+                flowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'no',
                 procInsId:this.detail.procInsId 

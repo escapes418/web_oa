@@ -261,7 +261,7 @@ export default {
           processType:"1",
           type:type
         }).then(res=>{
-          if(res.status==0){
+          if(res.code == 200){
             this.nodeDetail = res.data
           }
         })
@@ -285,7 +285,7 @@ export default {
         processType:"2",
         type:type
       }).then(res=>{
-        if(res.status==0){
+        if(res.code == 200){
           this.edgeDetail = res.data
         }
       })
@@ -317,12 +317,12 @@ export default {
     },
     getOptions(){
         getConfig("1").then(res=>{
-          if(res.status==0){
+          if(res.code == 200){
             this.nodeOptions = res.data
           }
         })
         getConfig("2").then(res=>{
-          if(res.status==0){
+          if(res.code == 200){
             this.edgeOptions = res.data
           }
         })

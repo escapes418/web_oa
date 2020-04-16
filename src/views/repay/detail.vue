@@ -60,7 +60,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table id="partEle" class="areaCont" v-if="detail.repayFlowInvoiceDetailResponseList&&detail.repayFlowInvoiceDetailResponseList.length>0">
+                <table id="partEle" class="areaCont" v-if="detail.repayFlowInvoiceList&&detail.repayFlowInvoiceList.length>0">
                     <tbody>
                         <tr>
                             <!-- <td class="table-title bold">
@@ -76,7 +76,7 @@
                                 <p>&nbsp;金额</p>
                             </td>
                         </tr>
-                        <tr v-for="(scope,index) in detail.repayFlowInvoiceDetailResponseList" :key="index">
+                        <tr v-for="(scope,index) in detail.repayFlowInvoiceList" :key="index">
                             <!-- <td class="table-title">
                                 <p>{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</p>
                             </td> -->
@@ -221,13 +221,13 @@
                     </div>
                 </div>
             </div>
-            <div class="segment statistics" v-if="detail.repayFlowInvoiceDetailResponseList&&detail.repayFlowInvoiceDetailResponseList.length>0">
+            <div class="segment statistics" v-if="detail.repayFlowInvoiceList&&detail.repayFlowInvoiceList.length>0">
                 <div class="segment-header">
                     还款信息
                 </div>
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
-                        <el-table :data="detail.repayFlowInvoiceDetailResponseList" border fit highlight-current-row style="width: 100%">
+                        <el-table :data="detail.repayFlowInvoiceList" border fit highlight-current-row style="width: 100%">
                             <el-table-column align="center" label="一级科目" width="150px">
                                 <template slot-scope="scope">
                                     <span>{{scope.row.firstSubName}}</span>
@@ -368,7 +368,7 @@
             </span>
         </el-dialog>
         <el-dialog title="系统提示？" width="25%" :visible.sync="dialogDelVisible">
-            <span>确认删除该报销单吗？</span>
+            <span>确认删除该还款单吗？</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="delBtn">确认</el-button>
                 <el-button @click="dialogDelVisible = false">取消</el-button>
@@ -445,8 +445,8 @@ export default {
             repayFlowId:this.$route.query.key
         }).then(res =>{
             this.detail = res.data
-            if (res.data.repayFlowCashAttachmentResponseList  && res.data.repayFlowCashAttachmentResponseList.length > 0) {
-                res.data.repayFlowCashAttachmentResponseList.forEach(item => {
+            if (res.data.repayFlowCashAttachmentList  && res.data.repayFlowCashAttachmentList.length > 0) {
+                res.data.repayFlowCashAttachmentList.forEach(item => {
                     let originUrl = item.url;
                     item.url = item.urlPrefix + item.url;
                     this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
@@ -532,7 +532,7 @@ export default {
         },
         agreeBtn(){
             repayFlow({
-                repayFlowId:this.$route.query.key,
+                flowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'yes',
                 procInsId:this.detail.procInsId 
@@ -555,7 +555,7 @@ export default {
                 return 
             }
             repayFlow({
-                repayFlowId:this.$route.query.key,
+                flowId:this.$route.query.key,
                 comment:this.comment,
                 flag:'no',
                 procInsId:this.detail.procInsId 

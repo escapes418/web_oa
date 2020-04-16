@@ -269,10 +269,10 @@ export default {
                 this.taxName = res.data.invoiceCompanyName;
                 this.pendingTotal = res.data.unpaidAmount
 
-                var itemDatas = res.data.repayFlowInvoiceDetailResponseList || [];
+                var itemDatas = res.data.repayFlowInvoiceList || [];
                 this.$store.dispatch('fillItemList',this.transDetailData(itemDatas))
-                if (res.data.repayFlowCashAttachmentResponseList  && res.data.repayFlowCashAttachmentResponseList.length > 0) {
-                    res.data.repayFlowCashAttachmentResponseList.forEach(item => {
+                if (res.data.repayFlowCashAttachmentList  && res.data.repayFlowCashAttachmentList.length > 0) {
+                    res.data.repayFlowCashAttachmentList.forEach(item => {
                         let originUrl = item.url;
                         item.url = item.urlPrefix + item.url;
                         this.expenseAttachment.push({ url: item.url, name: item.name, originUrl: originUrl ,uid:new Date().getTime()});
