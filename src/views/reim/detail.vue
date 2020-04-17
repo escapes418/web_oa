@@ -635,7 +635,6 @@ export default {
         }).then(res => {
             this.detail = res.data.detail;
             res.data.flowDetailList = res.data.flowDetailList || [];
-            console.log(flowDetailList)
             this.flowDetailList = res.data.flowDetailList;
             res.data.subSummary = res.data.subSummary || [];
             this.subSummary = res.data.subSummary;
