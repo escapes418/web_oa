@@ -56,7 +56,7 @@ export function getCustDetail(params){
 
 export function getContact(params){
     return request({
-        url:'/custLinkmanHisInfo/custLinkmanHisList',
+        url:'/webCustLinkmanHisInfo/custLinkmanHisList',
         method:'post',
         data:params
     })
@@ -64,7 +64,7 @@ export function getContact(params){
 
 export function getPassContact(params){
     return request({
-        url:'/custLinkmanHisInfo/custLinkmanList',
+        url:'/webCustLinkmanHisInfo/custLinkmanList',
         method:'post',
         data:params
     })
@@ -73,7 +73,7 @@ export function getPassContact(params){
 
 export function saveContact(params){
     return request({
-        url:'/custLinkmanHisInfo/saveCustLinkman',
+        url:'/webCustLinkmanHisInfo/saveCustLinkman',
         method:'post',
         data:params
     })
