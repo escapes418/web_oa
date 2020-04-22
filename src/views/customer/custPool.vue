@@ -63,7 +63,7 @@
                 <el-button v-if="ids.indexOf('inforManage-custPool-unbindBtn')!==-1" class="filter-item" type="primary" v-waves @click="freeMerge">解除合并客户</el-button>
             </div>
         </div>
-        <el-table ref="multipleTable" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :key='tableKey' :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column
                 type="selection"
                 width="55">
@@ -324,8 +324,6 @@ export default {
             tableKey: 0,
             list: [],
             total: null,
-            loading: false,
-            listLoading: false,
             pageNo: 1,
             pageSize: 20,
 
@@ -398,7 +396,6 @@ export default {
     },
     activated() {
         this.getListData();
-        this.listLoading = false;
     },
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -877,7 +874,6 @@ export default {
         },
         getListData() {
             var _this = this;
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             getCustPool({
                 ...postData,
@@ -886,7 +882,6 @@ export default {
             }).then(response => {
                 this.list = response.data.list;
                 this.total = response.data.total;
-                this.listLoading = false;
             });
         },
         reduceParams($$imData) {
@@ -904,12 +899,10 @@ export default {
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getListData();
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val;
             this.getListData();
-            this.listLoading = false;
         },
         handleDetail(row) {
             this.$router.push({
