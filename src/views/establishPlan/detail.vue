@@ -480,9 +480,9 @@ export default {
         if(this.$route.query.key) this.projectApprovalFlowId = this.$route.query.key
         // if (this.$route.query.key) {
         this.showNum = true;
-        getDetail({
-            projectApprovalFlowId: this.projectApprovalFlowId
-        }).then(res => {
+        getDetail(
+            this.projectApprovalFlowId
+        ).then(res => {
             this.detail = res.data.projectApprovalFlowResp;
             this.flowLoglist = res.data.flowLoglist;
             this.contactList = res.data.projectApprovalFlowResp.projectApprovalLinkman&&res.data.projectApprovalFlowResp.projectApprovalLinkman.map((i,key)=>{

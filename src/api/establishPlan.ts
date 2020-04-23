@@ -2,9 +2,9 @@ import request from '@/utils/request'
 
 export function getDetail(params){
     return request({
-        url:'/webProjectApprovalFlow/flowdetail',
-        method:'post',
-        data:params
+        url:`/webProjectApprovalFlow/flowdetail/${params}`,
+        method:'get',
+        // data:params
     })
 }
 
