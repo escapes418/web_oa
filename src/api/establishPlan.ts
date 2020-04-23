@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDetail(params){
     return request({
-        url:'/projectApprovalFlow/flowdetail',
+        url:'/webProjectApprovalFlow/flowdetail',
         method:'post',
         data:params
     })
@@ -10,7 +10,7 @@ export function getDetail(params){
 
 export function proFlow(params){
     return request({
-        url:'/projectApprovalFlow/completeTask',
+        url:'/webProjectApprovalFlow/completeTask',
         method:'post',
         data:params
     })
@@ -19,7 +19,7 @@ export function proFlow(params){
 
 export function proCancel(params){
     return request({
-        url:'/projectApprovalFlow/repealTask',
+        url:'/webProjectApprovalFlow/repealTask',
         method:'post',
         data:params
     })
@@ -28,7 +28,7 @@ export function proCancel(params){
 
 export function proDel(params){
     return request({
-        url:'/projectApprovalFlow/repealApply',
+        url:'/webProjectApprovalFlow/repealApply',
         method:'post',
         data:params
     })
