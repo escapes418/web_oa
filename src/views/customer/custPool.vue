@@ -791,18 +791,21 @@ export default {
                     marketLeaderId:this.marketLeaderId
                 }).then(res=>{
                     if(res.code == 200){
-                        this.dialogMoveVisible = false;
-                        this.$message({
-                            message: res.message,
-                            type: "success"
-                        });
-                    }
-                    if(res.status == 2){
-                        this.dialogMoveVisible = false;
-                        this.$message({
-                            message: res.message,
-                            type: "warning"
-                        });
+                        if(res.data.status == 0){
+                            this.dialogMoveVisible = false;
+                            this.$message({
+                                message: res.message,
+                                type: "success"
+                            });
+                        }
+                        if(res.data.status == 2){
+                             this.dialogMoveVisible = false;
+                            this.$message({
+                                message: res.message,
+                                type: "warning"
+                            });
+                        }
+                        
                     }
                     this.getListData();
                     this.moveClose()
