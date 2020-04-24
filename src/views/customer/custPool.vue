@@ -794,14 +794,14 @@ export default {
                         if(res.data.status == 0){
                             this.dialogMoveVisible = false;
                             this.$message({
-                                message: res.message,
+                                message: res.data.message,
                                 type: "success"
                             });
                         }
                         if(res.data.status == 2){
-                             this.dialogMoveVisible = false;
+                            this.dialogMoveVisible = false;
                             this.$message({
-                                message: res.message,
+                                message: res.data.message,
                                 type: "warning"
                             });
                         }
