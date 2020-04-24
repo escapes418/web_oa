@@ -665,7 +665,7 @@ export default {
                     needFlowId:this.needFlowId,
                     userId:id
                 })
-                if(res.status==0){
+                if(res.code == 200){
                     this.chargeData = []
                     this.$refs.chargeTree.setCheckedKeys([]);
                     this.dialogCharge = false
@@ -753,7 +753,7 @@ export default {
                     needFlowId:this.needFlowId,
                     userIdList:[...tempId]
                 })
-                if(res.status==0){
+                if(res.code == 200){
                     this.partList = [];
                     this.$refs.partTree.setCheckedKeys([])
                     this.dialogPart = false;

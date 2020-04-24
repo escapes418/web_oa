@@ -36,7 +36,7 @@ const user = {
             state.userInfo = obj;
         },
         SET_REDCOUNT:(state,res) =>{
-            if(res.status=="0"){
+            if(res.code == 200){
                 state.count = res.data.redCount
             }
         },

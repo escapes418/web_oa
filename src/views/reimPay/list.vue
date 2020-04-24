@@ -307,13 +307,6 @@ export default {
         },
         storeSuccess(res, file, fileList){
             this.attachment = fileList;
-            if(res.status == 1){
-                this.$message({
-                    message: res.message,
-                    type: 'error',
-                    duration:10000
-                })
-            }
             if(res.code == 200){
                 this.$message({
                     message: res.message,
@@ -321,6 +314,12 @@ export default {
                 })
                 this.dialogUpload = false;
                 this.getList()
+            }else{
+                this.$message({
+                    message: res.message,
+                    type: 'error',
+                    duration:10000
+                })
             }
             this.attachment = []
         },
