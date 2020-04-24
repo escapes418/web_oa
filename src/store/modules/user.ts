@@ -3,6 +3,8 @@ import { getRegion } from '@/api/getRegion';
 import { fetchList,getRedCount } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import { Message } from 'element-ui';
+import SockJS from  'sockjs-client';
+import  Stomp from 'stompjs';
 
 import common from '@/utils/common';
 import { resolve } from 'url';
@@ -16,7 +18,7 @@ const user = {
         roles: [],
         userInfo: null,
         count:0,
-        reTry:false
+        // reTry:false
     },
 
     mutations: {
@@ -35,10 +37,9 @@ const user = {
         SET_USERINFO: (state, obj) => {
             state.userInfo = obj;
         },
-        SET_REDCOUNT:(state,res) =>{
-            if(res.code == 200){
-                state.count = res.data.redCount
-            }
+        SET_REDCOUNT:(state,data) =>{
+            console.log(data,2222)
+            state.count = data.redCount
         },
         SET_RETRY:(state,data) =>{
             state.reTry = data
@@ -205,52 +206,71 @@ const user = {
         },
         fetchCount({commit,state},userInfor){
             return new Promise((resolve)=>{
-                let websocket = null;
                 let url;
-                if('WebSocket' in window) {
-                    const argv = process.env.NODE_ENV;
-                    if (argv == "test") {
-                        url  = 'ws://oa.sijibao.co/OA/websocket/myHandler?userId='+ userInfor.mobile;
-                    } else if (argv == "production") {
-                        url  = 'wss://oa.sijibao.com/OA/websocket/myHandler?userId='+ userInfor.mobile;
-                    } else {
-                        url  = 'ws://192.168.12.134/OA/websocket/myHandler?userId='+ userInfor.mobile; 
-                    }
-                    websocket = new WebSocket(url);
-                    websocket.onopen = function (event) {
-                        commit('SET_RETRY',false);
-                        console.log('建立连接');
-                    }
-        
-                    websocket.onclose = function (event) {
-                        console.log('连接关闭');
-                        commit('SET_RETRY',true);
-                        // websocket = new WebSocket(url);
-                    }
-        
-                    websocket.onmessage = function (event) {
-                        console.log('收到消息:' + event.data);
-                        commit('SET_REDCOUNT', JSON.parse(event.data));
-                        // resolve(JSON.parse(event.data))
-                    }
-        
-                    websocket.onerror = function (event) {
-                        // alert('websocket通信发生错误！');
-                        Message({
-                            message: '通讯断掉，已重连接!',
-                            type: 'warning'
-                            // duration: 2 * 1000
-                        });
-                    }
-                    resolve()
-                }else {
-                    // alert('该浏览器不支持websocket!');
-                    Message({
-                        message: '该浏览器不支持websocket!',
-                        type: 'warning'
-                        // duration: 2 * 1000
-                    });
+                const argv = process.env.NODE_ENV;
+                if (argv == "test") {
+                    url  = "http://oa.sijibao.co/ma";
+                } else if (argv == "production") {
+                    url  = "https://oa.sijibao.com/ma"
+                } else {
+                    url  = "http://192.168.12.147:9090/ma"
                 }
+                let socket =  new SockJS(url)
+                let stompClient  = Stomp.over(socket)
+                stompClient.connect({},()=>{
+                    stompClient.send(`/queryRedCount/${userInfor.id}`);
+                    stompClient.subscribe(`/topic/redCount/${userInfor.id}`,(data)=>{
+                        commit('SET_REDCOUNT', JSON.parse(data.body));
+                        console.log(data.body)
+                    })
+                    
+                })
+                
+                resolve()
+                // if('WebSocket' in window) {
+                //     const argv = process.env.NODE_ENV;
+                //     if (argv == "test") {
+                //         url  = 'ws://oa.sijibao.co/OA/websocket/myHandler?userId='+ userInfor.mobile;
+                //     } else if (argv == "production") {
+                //         url  = 'wss://oa.sijibao.com/OA/websocket/myHandler?userId='+ userInfor.mobile;
+                //     } else {
+                //         url  = 'ws://192.168.12.134/OA/websocket/myHandler?userId='+ userInfor.mobile; 
+                //     }
+                //     websocket = new WebSocket(url);
+                //     websocket.onopen = function (event) {
+                //         commit('SET_RETRY',false);
+                //         console.log('建立连接');
+                //     }
+        
+                //     websocket.onclose = function (event) {
+                //         console.log('连接关闭');
+                //         commit('SET_RETRY',true);
+                //         // websocket = new WebSocket(url);
+                //     }
+        
+                //     websocket.onmessage = function (event) {
+                //         console.log('收到消息:' + event.data);
+                //         commit('SET_REDCOUNT', JSON.parse(event.data));
+                //         // resolve(JSON.parse(event.data))
+                //     }
+        
+                //     websocket.onerror = function (event) {
+                //         // alert('websocket通信发生错误！');
+                //         Message({
+                //             message: '通讯断掉，已重连接!',
+                //             type: 'warning'
+                //             // duration: 2 * 1000
+                //         });
+                //     }
+                //     resolve()
+                // }else {
+                //     // alert('该浏览器不支持websocket!');
+                //     Message({
+                //         message: '该浏览器不支持websocket!',
+                //         type: 'warning'
+                //         // duration: 2 * 1000
+                //     });
+                // }
             })
         }
     }
