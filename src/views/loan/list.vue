@@ -86,7 +86,7 @@
             </el-table-column>
             <el-table-column width="100px" align="center" label="预计还款时间">
                 <template slot-scope="scope">
-                    <span>{{scope.row.applyTime | stamp2TextDate}}</span>
+                    <span>{{scope.row.planRepayTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="80px" align="center" label="借款金额">
