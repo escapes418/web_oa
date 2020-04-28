@@ -104,7 +104,7 @@ export default {
         },
         ...mapState({
             count: state => state.user.count,
-            reTry: state=> state.user.reTry
+            // reTry: state=> state.user.reTry
         })
     },
     // watch:{
@@ -167,7 +167,7 @@ export default {
         },
         getList(){
             this.$store.dispatch('fetchMessage',this.listQuery).then((res)=>{
-                this.$store.commit("SET_REDCOUNT",res)
+                this.$store.commit("SET_REDCOUNT",res.data)
                 // this.count = res.data.redCount;
                 this.listData = res.data.list;
                 this.total = res.data.total || 0;

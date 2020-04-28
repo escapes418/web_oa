@@ -9,7 +9,15 @@ import  Stomp from 'stompjs';
 import common from '@/utils/common';
 import { resolve } from 'url';
 
-
+function selectDic(arr, type) {
+    let temp = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == type) {
+            temp.push(arr[i]);
+        };
+    }
+    return temp;
+}
 const user = {
     state: {
         token: getToken(),
@@ -213,7 +221,10 @@ const user = {
                 } else if (argv == "production") {
                     url  = "https://oa.sijibao.com/ma"
                 } else {
-                    url  = "http://192.168.12.147:9090/ma"
+                    let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+                    const [{key,name,value}] = selectDic(dicList, "websocket_url");
+                    url = value
+                    // url  = "http://192.168.12.233:9090/ma"
                 }
                 let socket =  new SockJS(url)
                 let stompClient  = Stomp.over(socket)
