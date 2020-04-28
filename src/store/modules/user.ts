@@ -215,17 +215,17 @@ const user = {
         fetchCount({commit,state},userInfor){
             return new Promise((resolve)=>{
                 let url;
-                const argv = process.env.NODE_ENV;
-                if (argv == "test") {
-                    url  = "http://oa.sijibao.co/ma";
-                } else if (argv == "production") {
-                    url  = "https://oa.sijibao.com/ma"
-                } else {
-                    let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-                    const [{key,name,value}] = selectDic(dicList, "websocket_url");
-                    url = value
+                // const argv = process.env.NODE_ENV;
+                // if (argv == "test") {
+                //     url  = "http://oa.sijibao.co/ma";
+                // } else if (argv == "production") {
+                //     url  = "https://oa.sijibao.com/ma"
+                // } else {
+                let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+                const [{key,name,value}] = selectDic(dicList, "websocket_url");
+                url = value
                     // url  = "http://192.168.12.233:9090/ma"
-                }
+                // }
                 let socket =  new SockJS(url)
                 let stompClient  = Stomp.over(socket)
                 stompClient.connect({},()=>{
