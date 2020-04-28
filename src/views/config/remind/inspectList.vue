@@ -20,20 +20,20 @@
                 </template>
             </el-table-column>
             
-            <el-table-column align="center" label="频率" width="200px">
-                <template>
+            <el-table-column align="center" label="频率" width="200px" prop="rate">
+                <!-- <template>
                     <span>即时发送</span>
-                </template>
+                </template> -->
             </el-table-column>
             <el-table-column width="160px" align="center" label="提醒方式">
                 <template slot-scope="scope">
                     <span>{{scope.row.remindWayName.join(', ')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="160px" align="center" label="提醒对象">
-                <template>
-                    <span>当前审批人</span>
-                </template>
+            <el-table-column width="160px" align="center" label="提醒对象" prop="remindObj">
+                <!-- <template>
+                    <span>{{scope.row.remindObj}}</span>
+                </template> -->
             </el-table-column>
             <el-table-column width="160px" align="center" label="最新修改对象">
                 <template slot-scope="scope">
@@ -88,7 +88,6 @@ export default {
     created() {
         this.$$queryStub = this.$$listQuery;
         this.getList()
-
     },
     mounted() {
         
@@ -103,7 +102,9 @@ export default {
                 remindCategory:1
             }).then(res => {
                 this.list = res.data.list.map(item=>{
-                    let remindWayName = []
+                    let remindWayName = [];
+                    let remindObj = "当前审批人";
+                    let rate = "即时发送"
                     item.remindWays&&item.remindWays.forEach(i=>{
                         if(i=="0"){
                             remindWayName.push("邮件")
@@ -114,9 +115,12 @@ export default {
                     })
                     return{
                         ...item,
+                        rate,
+                        remindObj,
                         remindWayName
                     }
                 })
+                console.log(this.list)
                 this.total = res.data.total
             })
         },

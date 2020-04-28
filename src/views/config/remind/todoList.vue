@@ -30,10 +30,10 @@
                     <span>{{scope.row.remindWayName.join(', ')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="160px" align="center" label="提醒对象">
-                <template>
+            <el-table-column width="160px" align="center" label="提醒对象" prop="remindObj">
+                <!-- <template>
                     <span>当前审批人</span>
-                </template>
+                </template> -->
             </el-table-column>
             <el-table-column width="160px" align="center" label="最新修改对象">
                 <template slot-scope="scope">
@@ -105,6 +105,7 @@ export default {
             }).then(res => {
                 this.list = res.data.list.map(item=>{
                     let remindWayName = []
+                    let remindObj = "当前审批人"
                     item.remindWays&&item.remindWays.forEach(i=>{
                         if(i=="0"){
                             remindWayName.push("邮件")
@@ -115,6 +116,7 @@ export default {
                     })
                     return{
                         ...item,
+                        remindObj,
                         remindWayName
                     }
                 })
