@@ -886,7 +886,7 @@ export default {
                 return;
             }
             expFlow({
-                expenseFlowId: this.$route.query.key,
+                flowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "back",
                 procInsId: this.detail.procInsId
