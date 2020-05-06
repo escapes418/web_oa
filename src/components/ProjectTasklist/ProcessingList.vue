@@ -94,7 +94,7 @@
                 </RedStar>
                 <RedStar :required ="true">
                     <el-form-item label="请选择需要导入的excel文件：">
-                        <el-upload ref="upload" class="upload-img" :before-upload="beforeUpload" :headers='{sessionid:token}' :on-remove="handleRemove" :action="fileURL" :auto-upload="false" :file-list="pmsAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="5">
+                        <el-upload ref="upload" class="upload-img" :before-upload="beforeUpload" :headers='{sessionid:token}' :on-remove="handleRemove" :action="fileURL"  :file-list="pmsAttachment" :on-success="handleSuccess" :limit="5">
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">
                                 只能上传png、gif、jpeg、jpg , pdf、ppt、xls、xlsx、pptx、doc、docx格式文件！
@@ -167,7 +167,7 @@
                     id:"",
                     pmsAttachment:[]
                 },
-                fileURL: process.env.BASE_API + '/asset/assetImport',
+                fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
                 pmsAttachment: [], 
 
             }
@@ -307,7 +307,7 @@
                         type: 'error'
                     })
                 }
-                this.pmsAttachment.pop()
+                // this.pmsAttachment.pop()
             },
             confirmUpload(){
                 // this.$refs.upload.submit()

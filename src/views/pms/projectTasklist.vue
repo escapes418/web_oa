@@ -98,7 +98,6 @@ import { getRegion } from "@/api/getRegion";
 import AllList from '@/components/ProjectTasklist/AllList.vue'
 import InitiatedByMeList from '@/components/ProjectTasklist/InitiatedByMeList.vue'
 import ProcessingList from '@/components/ProjectTasklist/ProcessingList.vue'
-import { mapState } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix'
 
@@ -148,8 +147,8 @@ export default {
                 startTimeEnd:"",
                 endTimeBegin:"",
                 endTimeEnd:"",
-                finishTime:"",
-                finishEnd:"",
+                finishTimeBegin:"",
+                finishTimeEnd:"",
                 timeRangeStart: [],
                 timeRangeEnd: [],
                 timeRangeFinish: [],
@@ -170,21 +169,6 @@ export default {
         };
     },
     computed:{
-        ...mapState({
-            custListPlace:state => state.cust.custListPlace,
-        }),
-        ISSEA:function(){
-            let result = this.custListPlace == 1 || this.custListPlace == 2 ? true : false
-            return result
-        },
-        ISPERSON:function(){
-            let result = this.custListPlace == 4 || this.custListPlace == 5 ? true : false
-            return result
-        },
-        ISOTHER:function(){
-            let result = this.custListPlace == 3 ? true : false
-            return result
-        }
     },
     watch: {
         filterMarket(val) {
@@ -193,9 +177,7 @@ export default {
     },
     created() {
         this.$$queryStub = this.$$listQuery;
-        // this.activeName = this.custListPlace
         this.getListData();
-        // this.listLoading = false;
     },
     activated() {
         this.getListData();
@@ -316,16 +298,103 @@ export default {
             this.listLoading = true;
             console.log(11111);
             var postData = this.reduceParams(this.$$queryStub);
-            getProjectTasklist({
-                ...postData,
-                pageNum:this.pageNum,
-                pageSize:this.pageSize,
-                taskType:this.activeName
-            }).then(response => {
-                this.list = response.data.list;
-                this.total = response.data.total;
-                this.listLoading = false;
-            });
+            // getProjectTasklist({
+            //     ...postData,
+            //     pageNum:this.pageNum,
+            //     pageSize:this.pageSize,
+            //     taskType:this.activeName
+            // }).then(response => {
+            //     this.list = response.data.list;
+            //     this.total = response.data.total;
+            //     this.listLoading = false;
+            // });
+            this.list = [
+      {
+        "id": 32294628.352829322,
+        "projectName": "Excepteur occaecat sit magna",
+        "taskCode": "non",
+        "taskName": "aliquip qui cupidatat quis",
+        "parentTaskCode": "esse culpa elit",
+        "stageName": "dolore Lorem pariatur et",
+        "taskStatusName": "consectetur deserunt",
+        "taskStatus": -13177326.997404218,
+        "principalName": "irure non aute",
+        "taskCreateName": "velit aliqua qui ad",
+        "startTime": -80596703.80635917,
+        "endTime": -29263015.518891096,
+        "finishTime": -19993111.62505366,
+        "participantNames": "ea laborum culpa velit Excepteur",
+        "taskProgress": 10315726.486168623
+      },
+      {
+        "id": 74600219.06357256,
+        "projectName": "Ut eiusmod anim irure",
+        "taskCode": "sit sint dolor cupidatat aliquip",
+        "taskName": "exercitation nisi ad",
+        "parentTaskCode": "dolore ut sint magna fugiat",
+        "stageName": "laboris",
+        "taskStatusName": "nisi Lorem",
+        "taskStatus": 14606817.399130195,
+        "principalName": "laborum",
+        "taskCreateName": "quis mollit exercitation in",
+        "startTime": -67456308.79186195,
+        "endTime": -89819317.03526431,
+        "finishTime": 79728961.07953128,
+        "participantNames": "Lorem est tempor eiusmod",
+        "taskProgress": 13584609.815108985
+      },
+      {
+        "id": -16436385.335110381,
+        "projectName": "nostrud eiusmod cillum",
+        "taskCode": "cillum eu id enim sunt",
+        "taskName": "commodo dolor velit Lorem minim",
+        "parentTaskCode": "mollit quis cupidatat",
+        "stageName": "officia est aliqua veniam",
+        "taskStatusName": "in reprehenderit dolore",
+        "taskStatus": -66887927.94055538,
+        "principalName": "non velit Duis magna",
+        "taskCreateName": "consectetur sed dolor consequat",
+        "startTime": -78495462.02243887,
+        "endTime": 46303147.68990323,
+        "finishTime": 92974259.96564734,
+        "participantNames": "quis nostrud",
+        "taskProgress": 79585346.69909176
+      },
+      {
+        "id": 39681692.36908832,
+        "projectName": "qui pariatur sed",
+        "taskCode": "enim eu incididunt",
+        "taskName": "officia est",
+        "parentTaskCode": "id",
+        "stageName": "cillum commodo in velit dolor",
+        "taskStatusName": "enim",
+        "taskStatus": 69039100.04797074,
+        "principalName": "ad",
+        "taskCreateName": "exercitation Excepteur in",
+        "startTime": 59634755.81477785,
+        "endTime": -34940978.76999662,
+        "finishTime": 28945014.11438264,
+        "participantNames": "et cillum quis Excepteur tempor",
+        "taskProgress": -91413711.36941095
+      },
+      {
+        "id": -22024236.005187392,
+        "projectName": "ea exercitation dolore sunt ullamco",
+        "taskCode": "id aute",
+        "taskName": "culpa deserunt sit",
+        "parentTaskCode": "et ullamco mollit nisi",
+        "stageName": "et",
+        "taskStatusName": "Excepteur consectetur sint laborum",
+        "taskStatus": 29988987.946961433,
+        "principalName": "consequat id aute non",
+        "taskCreateName": "quis Excepteur non ea",
+        "startTime": -84624810.98437178,
+        "endTime": 95940822.37622154,
+        "finishTime": -78879479.98598932,
+        "participantNames": "pariatur consectetur irure occaecat tempor",
+        "taskProgress": 66115232.9586336
+      }
+    ]
         },
         reduceParams($$imData) {
             if (!$$imData || $$imData.size == 0) return {};
@@ -334,8 +403,8 @@ export default {
                 .set('startTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRangeStart').toJS()).applyTimeEnd)
                 .set('endTimeBegin', common.rangeObjToTimestamp($$imData.get('timeRangeEnd').toJS()).applyTimeStart)
                 .set('endTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRangeEnd').toJS()).applyTimeEnd)
-                .set('finishTime', common.rangeObjToTimestamp($$imData.get('timeRangeFinish').toJS()).applyTimeStart)
-                .set('finishEnd', common.rangeObjToTimestamp($$imData.get('timeRangeFinish').toJS()).applyTimeEnd)
+                .set('finishTimeBegin', common.rangeObjToTimestamp($$imData.get('timeRangeFinish').toJS()).applyTimeStart)
+                .set('finishTimeEnd', common.rangeObjToTimestamp($$imData.get('timeRangeFinish').toJS()).applyTimeEnd)
                 .delete('timeRange').delete('timeRangeStart').delete('timeRangeEnd').delete('timeRangeFinish')
             return $$postData.toJS();
         },

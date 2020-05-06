@@ -314,7 +314,7 @@ export default [
             },
             {
                 path: 'pmsDeploy',
-                id: 'inforManage-contractFillForm',
+                id: 'pmsDeploy',
                 show: false,
                 name: 'pmsDeploy',
                 component: () => import('@/views/pms/pmsDeploy.vue'),
@@ -322,11 +322,10 @@ export default [
                     title: 'PMS配置',
                     icon: 'iconfont icon-changyongshili'
                 },
-                hidden: true
             },
             {
                 path: 'projectTasklist',
-                id: 'inforManage-contractFillForm',
+                id: 'projectTasklist',
                 show: false,
                 name: 'projectTasklist',
                 component: () => import('@/views/pms/projectTasklist.vue'),
@@ -334,11 +333,10 @@ export default [
                     title: '项目任务管理',
                     icon: 'iconfont icon-changyongshili'
                 },
-                hidden: true
             },
             {
                 path: 'signContract',
-                id: 'inforManage-contractFillForm',
+                id: 'signContract',
                 show: false,
                 name: 'signContract',
                 component: () => import('@/views/pms/signContract.vue'),
@@ -346,7 +344,6 @@ export default [
                     title: '签约合同',
                     icon: 'iconfont icon-changyongshili'
                 },
-                hidden: true
             },
         ]
     }
