@@ -173,6 +173,30 @@ export default [
                 hidden: true
             },
             {
+                path: 'addProgress',
+                id: 'inforManage-addProgress',
+                show: false,
+                name: 'AddProgress',
+                component: () => import('@/views/project/addMission.vue'),
+                meta: {
+                    title: '新增任务',
+                    icon: ''
+                },
+                hidden: true
+            },
+            {
+                path: 'changeMission',
+                id: 'inforManage-changeMission',
+                show: false,
+                name: 'ChangeMission',
+                component: () => import('@/views/project/changeMission.vue'),
+                meta: {
+                    title: '变更任务',
+                    icon: ''
+                },
+                hidden: true
+            },
+            {
                 path: 'projectDetail',
                 id: 'inforManage-projectDetail',
                 show: false,

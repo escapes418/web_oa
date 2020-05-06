@@ -1,6 +1,150 @@
 <template>
   <div class="sjb-form-wrapper">
-        <el-tabs v-model="activeName" @tab-click="tabClick" class="tabs">
+        <el-tabs type="card" class="tabs" v-model="activeTop" @tab-click="tabClick">
+            <el-tab-pane label="综合信息" name="0">
+                <el-row>
+                    <el-col :span="12">
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                基本信息
+                                <span class="jumpPro"  @click="tabClick">
+                                    >
+                                </span>
+                                
+                            </div>
+                            <div class="segment-area">
+                                <el-row>
+                                    <el-col :span="24" class="segment-brline">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">项目编号：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.projectCode }}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">项目名称：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.projectName }}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">项目等级：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.projectLevel }}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">项目负责人：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.projectPrincipal }}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">归属部门：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.officeName }}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">归属部门负责人：</span>
+                                            <span class="right-con">
+                                                {{ baseInfo.officePrincipal }}
+                                            </span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="segment statistics">
+                            <div class="segment-header">
+                                进程
+                                <span class="jumpPro">
+                                    >
+                                </span>
+                            </div>
+                            <div class="segment-area">
+                                <el-row>
+                                    <el-col>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">任务进度</span>
+                                            <div class="progress">
+                                                <div class="progress-bar" :style="{width:progressInfor.taskProgress}"></div>
+                                            </div>
+                                            <span class="progress-info">
+                                                {{progressInfor.taskProgress}}                                           
+                                            </span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col>
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">阶段 ------ 总数：</span>
+                                            <span class="right-con">
+                                                {{ progressInfor.stageNum }}
+                                            </span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12" class="segment-brline">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">任务 ------ 总数：</span>
+                                            <span class="right-con">
+                                                {{ progressInfor.taskNum }}
+                                            </span>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <div class="clearfix  cominfo-item">
+                                            <span class="left-title font-gray">已完成：</span>
+                                            <span class="right-con">
+                                                {{ progressInfor.finishTaskNum }}
+                                            </span>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+                
+                <el-row>
+                    <el-col>
+                        <el-tabs type="card" class="tabs" v-model="activePost" @tab-click="postClick">
+                            <el-tab-pane label="项目级动态" name="1">
+                                <div>
+                                    <sjbtextarea
+                                        :rows="3"
+                                        textStyle="margin-top:20px;margin-bottom:20px"
+                                        placeholder="请输入内容"
+                                        :max="200"
+                                        @textBlur="postBlur"
+                                        v-model.trim="dynamicInfo">
+                                    </sjbtextarea>
+                                </div>
+                                <div>
+                                     <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="handleRemove" :before-upload = "beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
+                                        附件（{{expenseAttachment.length}}）个
+                                        <i class="iconfont icon-fujian avatar-uploader-icon"></i>
+                                        <div slot="tip" class="el-upload__tip">{{uploadTips}}</div>
+                                    </el-upload>
+                                </div>
+                                <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList1"></postList>
+                            </el-tab-pane>
+                            <el-tab-pane label="任务动态" name="2">
+                                <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList2"></postList>
+                            </el-tab-pane>
+                            <el-tab-pane label="成员动态" name="3">
+                                <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList3"></postList>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
             <el-tab-pane label="基本信息" name="1">
                 <div class="segment statistics">
                     <div class="segment-header">
@@ -46,12 +190,7 @@
                                         {{ detail.projectLevel }}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">承运货物：</span>
-                                    <span class="right-con">
-                                        {{ goodsNames.join('，')}}
-                                    </span>
-                                </div>
+                                
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">计划上线时间：</span>
                                     <span class="right-con">
@@ -64,18 +203,8 @@
                                         {{ detail.onLineDate | stamp2TextDate}}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">首次跑单时间：</span>
-                                    <span class="right-con">
-                                        {{ detail.firstOrderTime }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">商务助理：</span>
-                                    <span class="right-con">
-                                        {{ detail.businessAssistantName }}
-                                    </span>
-                                </div>
+                                
+                               
                                 
                             </el-col>
                             <el-col :span="12" class="segment-brline">
@@ -85,18 +214,8 @@
                                         {{ detail.projectTypeName }}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">月开票频次(次/月)：</span>
-                                    <span class="right-con">
-                                        {{ detail.invoicingFrequency }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">计划月运费(万元/月)：</span>
-                                    <span class="right-con">
-                                        {{ detail.transExpenssPlan }}
-                                    </span>
-                                </div>
+                                
+                                
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">项目负责人：</span>
                                     <span class="right-con">
@@ -115,22 +234,40 @@
                                         {{ detail.officeLeaderName }}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
+                                <!-- <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">项目管理负责人：</span>
                                     <span class="right-con">
                                         {{ detail.projectManager }}
                                     </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
+                                </div> -->
+                                <!-- <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">实施负责人：</span>
                                     <span class="right-con">
                                         {{ detail.impleLeaderName }}
                                     </span>
-                                </div>
+                                </div> -->
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">清结算：</span>
                                     <span class="right-con">
                                         {{ detail.accountLeaderName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">商务助理：</span>
+                                    <span class="right-con">
+                                        {{ detail.businessAssistantName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">商务助理：</span>
+                                    <span class="right-con">
+                                        {{ detail.vipCustomerName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">首次跑单时间：</span>
+                                    <span class="right-con">
+                                        {{ detail.firstOrderTime }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item" v-if="processFlag">
@@ -155,18 +292,36 @@
                                         {{ detail.generalRequireResponse&&detail.generalRequireResponse.invoiceModeName }}
                                     </span>
                                 </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">托管：</span>
+                                    <span class="right-con">
+                                        {{ detail.generalRequireResponse&&detail.generalRequireResponse.projectTrusteeshiptName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">账期：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.accountPeriodName }}
+                                    </span>
+                                </div>
+                            </el-col>
+                            <el-col :span="12" class="segment-brline">
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">月开票频次(次/月)：</span>
+                                    <span class="right-con">
+                                        {{ detail.invoicingFrequency }}
+                                    </span>
+                                </div>
                                 <div class="clearfix  cominfo-item" v-if="detail.generalRequireResponse&&detail.generalRequireResponse.projectTrusteeshipt == 1">
                                     <span class="left-title font-gray">托管渠道：</span>
                                     <span class="right-con">
                                         {{ detail.generalRequireResponse&&detail.generalRequireResponse.trusteeshiptChannelName }}
                                     </span>
                                 </div>
-                            </el-col>
-                            <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">托管：</span>
+                                    <span class="left-title font-gray">网商：</span>
                                     <span class="right-con">
-                                        {{ detail.generalRequireResponse&&detail.generalRequireResponse.projectTrusteeshiptName }}
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.networkBusinessName }}
                                     </span>
                                 </div>
                             </el-col>
@@ -181,17 +336,18 @@
                         <el-row>
                             <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">承运货物：</span>
+                                    <span class="right-con">
+                                        {{ goodsNames.join('，')}}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">自营：</span>
                                     <span class="right-con">
                                         {{ detail.specialRequireResponse&&detail.specialRequireResponse.selfMarketingName }}
                                     </span>
                                 </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">经纪人：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectAgentName }}
-                                    </span>
-                                </div>
+                                
                                 <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">油气：</span>
                                     <span class="right-con">
@@ -199,41 +355,9 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">贸易：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTradeName }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">网商：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.networkBusinessName }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">托盘：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTrayName }}
-                                    </span>
-                                </div>
-                            </el-col>
-                            <el-col :span="12" class="segment-brline">
-                                <div class="clearfix  cominfo-item">
                                     <span class="left-title font-gray">返点：</span>
                                     <span class="right-con">
                                         {{ detail.specialRequireResponse&&detail.specialRequireResponse.returnPointName }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item" v-if="detail.specialRequireResponse&&detail.specialRequireResponse.returnPoint == 1">
-                                    <span class="left-title font-gray">返点比例（%）：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.returnPointProportion }}
-                                    </span>
-                                </div>
-                                <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">车队长：</span>
-                                    <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.truckLeaderName }}
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
@@ -242,32 +366,52 @@
                                         {{ detail.specialRequireResponse&&detail.specialRequireResponse.callTruckName }}
                                     </span>
                                 </div>
+                                
+                            </el-col>
+                            <el-col :span="12" class="segment-brline">
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">账期：</span>
+                                    <span class="left-title font-gray">计划月运费(万元/月)：</span>
                                     <span class="right-con">
-                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.accountPeriodName }}
+                                        {{ detail.transExpenssPlan }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">经纪人：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectAgentName }}
                                     </span>
                                 </div>
                                 
+                                <div class="clearfix  cominfo-item" v-if="detail.specialRequireResponse&&detail.specialRequireResponse.returnPoint == 1">
+                                    <span class="left-title font-gray">返点比例（%）：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.returnPointProportion }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">贸易：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTradeName }}
+                                    </span>
+                                </div>
+                                
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">托盘：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.projectTrayName }}
+                                    </span>
+                                </div>
+                                <div class="clearfix  cominfo-item">
+                                    <span class="left-title font-gray">车队长：</span>
+                                    <span class="right-con">
+                                        {{ detail.specialRequireResponse&&detail.specialRequireResponse.truckLeaderName }}
+                                    </span>
+                                </div>
                             </el-col>
                         </el-row>
                     </div>
                 </div>
-                <div class="segment statistics">
-                    <div class="segment-header">
-                        备注：
-                    </div>
-                    <div class="segment-area">
-                        <sjbtextarea
-                            :rows="3"
-                            textStyle="margin-top:20px;margin-bottom:20px"
-                            placeholder="请输入内容"
-                            :max="200"
-                            :readonly="true"
-                            v-model.trim="detail.remarks">
-                        </sjbtextarea>
-                    </div>
-                </div>
+                
                 <div class="segment statistics">
                     <div class="segment-header">
                         <span class="left-red">*</span>
@@ -339,8 +483,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="segment statistics">
+                    <div class="segment-header">
+                        备注：
+                    </div>
+                    <div class="segment-area">
+                        <sjbtextarea
+                            :rows="3"
+                            textStyle="margin-top:20px;margin-bottom:20px"
+                            placeholder="请输入内容"
+                            :max="200"
+                            :readonly="true"
+                            v-model.trim="detail.remarks">
+                        </sjbtextarea>
+                    </div>
+                </div>
             </el-tab-pane>
-            <el-tab-pane label="签约合同" name="2">
+            <el-tab-pane label="成员" name="2">
+                <member :projectId="$route.query.key"></member>
+            </el-tab-pane>
+            <el-tab-pane label="进程" name="3">
+                <el-tabs type="card" class="tabs" v-model="activeProcesss" @tab-click="processClick">
+                    <el-tab-pane label="阶段" name="0">
+                        <stage></stage>
+                    </el-tab-pane>
+                    <el-tab-pane label="进行中任务" name="1">
+                        <ongoingMission></ongoingMission>
+                    </el-tab-pane>
+                    <el-tab-pane label="全部任务" name="2">
+                        <allMission></allMission>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-tab-pane>
+            <el-tab-pane label="签约合同">
                 <div class="segment statistics">
                     <div class="segment-header">
                         签约合同
@@ -392,7 +567,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="实施情况" name="3">
+            <el-tab-pane label="实施情况">
                 <div class="segment statistics">
                     <div class="segment-header">
                         实施情况
@@ -457,25 +632,47 @@ import common from "@/utils/common";
 import Department from "@/components/Department";
 import RedStar from "@/components/RedStar/RedStar.vue";
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
-import { fetchForm, custList, savePro  , getContractList ,getNodeList,getImList,downFile} from "@/api/project";
+import postList from "./postList"
+import member from "./member"
+import stage from "./stage"
+import ongoingMission from "./ongoingMission"
+import allMission from "./allMission"
+import { fetchForm, custList, savePro  , getContractList ,getNodeList,getImList,downFile,getBaseInfo,getProgress,addDynamic} from "@/api/project";
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
+import config from '@/utils/config';
+import utils from '@/utils/utils';
+import { mapState, mapGetters } from "vuex";
 
 export default {
     components: {
         Department,
         RedStar,
-        sjbtextarea
+        sjbtextarea,
+        postList,
+        member,
+        stage,
+        ongoingMission,
+        allMission
     },
     mixins: [listQueryMix],
     data() {
         let self = this;
         return {
-            activeName:'1',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
+            expenseAttachment:[],
+            postList:[],
+            
+            uploadTips: config.tips,
+            activePost:"1",
+            activeTop:'0',
+            activeProcesss:"0",
             detail:{},
             showNum: false,
-
+            baseInfo:{},
+            progressInfor:{},
+            dynamicInfo:"",
             dialogMarketVisible: false,
             dialogImpleVisible: false,
             filterDepart: "",
@@ -555,19 +752,33 @@ export default {
             companyList:[],
             contactList:[],
             goodsNames:[],
-            processFlag:""
+            processFlag:"",
+
+            count:0,
         };
     },
     watch: {
         
     },
+    computed: {
+        ...mapState({
+            token: state => state.user.token,
+        }),
+    },
     created() {
         if (this.$route.query.key) {
+            getBaseInfo(this.$route.query.key).then(res=>{
+                this.baseInfo = res.data
+            })
+            getProgress(this.$route.query.key).then(res=>{
+                this.progressInfor = res.data
+            })
             this.showNum = true;
             fetchForm({
                 id: this.$route.query.key
             }).then(res => {
                 this.detail = res.data;
+                this.detail.taskProgress = "80%"
                 this.processFlag = res.data.processFlag || ""
                 res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
                     this.goodsNames.push(item.carrierGoodName)
@@ -593,11 +804,75 @@ export default {
         }
     },
     mounted() {
-        
+        this.$refs.postList1.getList()
     },
     methods: {
+        postBlur(){
+            let pmsAttachment = []
+            this.expenseAttachment.forEach(item=>{
+                let obj = {}
+                obj.fileName = item.name
+                obj.attachmentUrl = item.originUrl
+                pmsAttachment.push(obj)
+            })
+            if(!this.dynamicInfo){
+                this.$message({
+                    message:"请正确填写动态信息",
+                    type:'error'
+                })
+                return
+            }
+            addDynamic({
+                projectId:this.$route.query.key,
+                dynamicInfo:this.dynamicInfo,
+                pmsAttachment:pmsAttachment
+            }).then(res=>{
+                if(res.code == 200){
+                    this.$message({
+                        message:res.message,
+                        type:'success'
+                    })
+                    this.$refs.postList1.getList()
+                }
+            })
+        },
+        handleSuccess(res, file, fileList) {
+            if(res.data.resCode == 1){
+                let url =res.data.storfiles.serverUrl + res.data.storfiles.url
+                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
+            }
+        },
+        // 附件移除
+        handleRemove(file, fileList) {
+            this.expenseAttachment.map((item, index) => {
+                if (item.uid == file.uid) {
+                    this.expenseAttachment.splice(index, 1)
+                }
+            })
+        },
+        beforeUpload(file) {
+            return utils.handleImgError(file)
+        },
         tabClick(value){
-            this.activeName = value.name;
+            this.activeTop= value.name;
+        },
+        postClick(value){
+            this.activePost = value.name;
+            this.$nextTick(_=>{
+                if(this.activePost ==1){
+                    this.$refs.postList1.getList()
+                }
+                if(this.activePost ==2){
+                    this.$refs.postList2.getList()
+                }
+                if(this.activePost ==3){
+                    this.$refs.postList3.getList()
+                }
+            })
+            
+        },
+        processClick(value){
+            this.activeProcesss = value.name;
         },
         handleCurrentChange(val) {
             this.pageNo = val;
@@ -710,6 +985,53 @@ export default {
 .amap-con{
     margin-top: 10px;
     height:450px
+}
+.upload-img{
+    width: 500px;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    // text-align: center;
+    vertical-align: middle;
+}
+.jumpPro{
+    float: right;
+    font-size: 20px;
+    color: #409EFF;
+    cursor: Pointer;
+    margin-right: 5px;
+}
+.progress{
+    position: absolute;
+    left: 20%;
+    top: 35%;
+    right: 30%;
+    height: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #e9f2fb;
+    border-radius: 3px;
+}
+.progress-bar{
+    // width: 49%;
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    background-color: #0c64eb;
+    border-radius: 3px;
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+.progress-info{
+    float: right;
 }
 .item-value {
     display: inline-block;
