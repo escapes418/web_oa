@@ -331,9 +331,6 @@
             },
         },
         created() {
-            fetchComInfoList({}).then(res =>{
-                this.comInfor = res.data
-            })
         },
     }
 </script>

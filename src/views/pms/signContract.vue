@@ -310,6 +310,7 @@ export default {
         getAddList(){
             this.addListLoading = true;
             var postData = this.$$queryStub.toJS();
+            console.log(postData);
             getContractlist({
                 ...postData,
                 pageNo:this.addPageNo,

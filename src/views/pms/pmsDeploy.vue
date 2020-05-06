@@ -222,12 +222,30 @@ export default {
     },
     del(row){
       console.log(row);
-      for(var i = 0; i < this.list.length; i++){
-          if(this.list[i].sequenceNumber === row.sequenceNumber){
-              this.list.splice(i,1);
+      if(row){
+        this.$confirm(`确认删除${row.roleName}？删除后，将不可找回！`, '确认删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          for(var i = 0; i < this.list.length; i++){
+              if(this.list[i].sequenceNumber === row.sequenceNumber){
+                this.list.splice(i,1);
+              }
           }
+          this.updateList()
+        }).catch(() => {        
+        });
+      } else{
+        this.$confirm(`${row.roleName}已被项目成员关联，不可删除！`, '确认删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        }).catch(() => {        
+        });
       }
-      this.updateList()
+      
     },
     confirmEdit(row) {
       row.edit = false

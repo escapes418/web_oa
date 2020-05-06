@@ -49,9 +49,7 @@ export function getContractlist(params) {
     return request({
         url: '/webPms/contract',
         method: 'post',
-        data:{
-            contractIds:params.contractIds
-        }
+        data:params
     })
 }
 
@@ -59,7 +57,9 @@ export function saveContractRelation(params) {
     return request({
         url: '/webPms/saveContractRelation/'+params.id,
         method: 'post',
-        data:params.ids
+        data:{
+            contractIds:params.contractIds
+        }
     })
 }
 

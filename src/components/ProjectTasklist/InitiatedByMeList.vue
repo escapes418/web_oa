@@ -115,15 +115,6 @@
                     <el-button type="primary" @click="confirmUpload">确定</el-button>
                     <el-button @click="cancelBtn">取消</el-button>
                 </el-form-item>
-                <!-- <RedStar :required ="true">
-                    <el-form-item label="批量入库模板：">
-                        <el-button size="small" @click="DLmodel">下载模版</el-button>
-                    </el-form-item>
-                </RedStar>
-                <el-form-item>
-                    <el-button type="primary" @click="confirmUpload">立即创建</el-button>
-                    <el-button @click="cancelBtn">取消</el-button>
-                </el-form-item> -->
             </el-form>
         </el-dialog>
 
@@ -211,12 +202,6 @@
                     query:{ key : row.id, custName:row.custName, custType:row.custType }
                 })
             },
-            // cancelBtn(){
-            //     this.downLoadId =""
-            //     this.contractCompanyCode = ""
-            //     this.secondPartyName = ""
-            //     this.dialogVisible = false;
-            // },
             confirmDownLoad() {
                 this.dialogVisible = false;
                 if(!this.contractCompanyCode){
@@ -338,9 +323,6 @@
             },
         },
         created() {
-            fetchComInfoList({}).then(res =>{
-                this.comInfor = res.data
-            })
         },
     }
 </script>
