@@ -331,11 +331,23 @@ export default [
                 name: 'projectTasklist',
                 component: () => import('@/views/pms/projectTasklist.vue'),
                 meta: {
-                    title: 'PMS配置',
+                    title: '项目任务管理',
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true
-            }
+            },
+            {
+                path: 'signContract',
+                id: 'inforManage-contractFillForm',
+                show: false,
+                name: 'signContract',
+                component: () => import('@/views/pms/signContract.vue'),
+                meta: {
+                    title: '签约合同',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
+            },
         ]
     }
 ];

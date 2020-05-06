@@ -107,12 +107,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="show-d"  @click="add">
+    <!-- <div class="show-d"  @click="add">
       <el-tag>The default order :</el-tag> {{ oldList }}
     </div>
     <div class="show-d">
       <el-tag>The after dragging order :</el-tag> {{ newList }}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -162,9 +162,9 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      // getPmsDeployList().then(res => {
-          // this.list = res.data;
-          this.list = this.jsonData.data;
+      getPmsDeployList().then(res => {
+          this.list = res.data;
+          // this.list = this.jsonData.data;
           this.list.forEach((el, index) => {
             this.$set(el, 'edit', false)
             el.originalroleName = el.roleName;
@@ -179,7 +179,7 @@ export default {
           this.$nextTick(() => {
             this.setSort()
           })
-      // });
+      });
       
     },
     setSort() {

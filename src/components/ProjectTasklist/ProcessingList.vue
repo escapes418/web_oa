@@ -61,7 +61,7 @@
             </el-table-column>
             <el-table-column align="center" label="操作" width="320px">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini" @click="showSchedule = true">填写进度</el-button>
+                    <el-button type="primary" size="mini" @click="openSchedule(scope.row.id)">填写进度</el-button>
                     <el-button type="primary" size="mini" @click="handleSubtasks(scope.row)">新建子任务</el-button>
                     <el-button type="primary" size="mini" @click="handleChange(scope.row)">变更</el-button>
                 </template>
@@ -94,16 +94,16 @@
                 </RedStar>
                 <RedStar :required ="true">
                     <el-form-item label="请选择需要导入的excel文件：">
-                        <el-upload ref="upload" class="upload-img" :before-upload="beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="pmsAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="5">
+                        <el-upload ref="upload" class="upload-img" :before-upload="beforeUpload" :headers='{sessionid:token}' :on-remove="handleRemove" :action="fileURL" :auto-upload="false" :file-list="pmsAttachment" :on-success="handleSuccess" :on-exceed="handleExceed" :limit="5">
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">
-                                只能上传xls、xlsx格式文件！
+                                只能上传png、gif、jpeg、jpg , pdf、ppt、xls、xlsx、pptx、doc、docx格式文件！
                             </div>
                         </el-upload>
                     </el-form-item>
                 </RedStar>
                 <el-form-item>
-                    <el-button type="primary" @click="confirmUpload">立即创建</el-button>
+                    <el-button type="primary" @click="confirmUpload">确定</el-button>
                     <el-button @click="cancelBtn">取消</el-button>
                 </el-form-item>
                 <!-- <RedStar :required ="true">
@@ -138,13 +138,16 @@
     </div>
 </template>
 <script>
+    import RedStar from '@/components/RedStar/RedStar.vue'
     import { mapState } from "vuex";
     import {  fetchComInfoList,downLoadContract} from "@/api/customer";
+    import config from '@/utils/config';
     import sjbtextarea from '@/components/sjbTextarea';
-    // import utils from '@/utils/utils'
+    import utils from '@/utils/utils'
     export default {
         components: {
-            sjbtextarea
+            sjbtextarea,
+            RedStar
         },
         data() {
             return {
@@ -156,10 +159,13 @@
                 today:Date.parse(new Date()),
                 comInfor:[],
                 isSchedule:"",
+                uploadTips: config.tips,
                 schedule:{
                     taskProgress:"",
                     isFinish:"",
                     progressDesc:"",
+                    id:"",
+                    pmsAttachment:[]
                 },
                 fileURL: process.env.BASE_API + '/asset/assetImport',
                 pmsAttachment: [], 
@@ -242,29 +248,31 @@
             // },
             vail(){
                 var flag = true;
-                if (this.schedule.isFinish == "") {
-                    toast('请选择是否完成！');
+                if (this.schedule.isFinish === "") {
+                    this.$message({
+                        message: "请选择是否完成！",
+                        type: "warning"
+                    });
                     return (flag = false);
                 }
                 if (this.schedule.taskProgress == "") {
-                    toast('请填写进度！');
+                    this.$message({
+                        message: "请填写进度！",
+                        type: "warning"
+                    });
                     return (flag = false);
                 }
                 if (this.schedule.progressDesc == "") {
-                    toast('请填写进度说明！');
+                    this.$message({
+                        message: "请填写进度说明！",
+                        type: "warning"
+                    });
                     return (flag = false);
                 }
                 return flag;
             },
             beforeUpload(file) {
-            const isImage = ["application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"].indexOf(file.type) !== -1
-                if(!isImage){
-                    this.$message({
-                        message: "只能上传xls、xlsx格式文件",
-                        type: 'error'
-                    })
-                }
-                return isImage
+                return utils.handleImgError(file)
             },
             handleExceed(){
                 this.$message({
@@ -272,13 +280,17 @@
                     type: 'error'
                 })
             },
-            // handleRemove(file, fileList) {
-            //     this.expenseAttachment.map((item, index) => {
-            //         if (item.name == file.name) {
-            //             this.expenseAttachment.splice(index, 1)
-            //         }
-            //     })
-            // },
+            handleRemove(file, fileList) {
+                this.pmsAttachment.map((item, index) => {
+                    if (item.name == file.name) {
+                        this.pmsAttachment.splice(index, 1)
+                    }
+                })
+            },
+            openSchedule(id){
+                this.showSchedule = true;
+                this.schedule.id = id
+            },
             handleSuccess(res, file, fileList) {
                 this.pmsAttachment.push({ name:file.name})
                 if(res.code == 200){
@@ -300,6 +312,9 @@
             confirmUpload(){
                 // this.$refs.upload.submit()
                 if( !this.vail()) return;
+                this.showSchedule = false;
+                this.schedule.pmsAttachment = this.pmsAttachment
+                this.$emit("on-upload",this.schedule);
             },
             cancelBtn(){
                 this.showSchedule= false;

@@ -62,13 +62,13 @@
             </el-tabs>
         </template>
         <template v-if="activeName == 0">
-            <ProcessingList :list="list"></ProcessingList>
+            <ProcessingList :list="list" @on-upload="onUpload"></ProcessingList>
         </template>
         <template v-if="activeName == 1">
-            <AllList :list="list"></AllList>
+            <AllList :list="list" @on-upload="onUpload"></AllList>
         </template>
         <template v-if="activeName == 2">
-            <InitiatedByMeList :list="list"></InitiatedByMeList>
+            <InitiatedByMeList :list="list" @on-upload="onUpload"></InitiatedByMeList>
         </template>
         
             
@@ -90,7 +90,7 @@
 
 <script>
 import common from "@/utils/common";
-import { getProjectTasklist} from "@/api/pms";
+import { getProjectTasklist, reqUpload} from "@/api/pms";
 import { queryAssetList, queryAssetTypeTree,assetExport,assetImportModel,deleteAssetById } from '@/api/fixedAssets'
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
@@ -194,7 +194,7 @@ export default {
     created() {
         this.$$queryStub = this.$$listQuery;
         // this.activeName = this.custListPlace
-        // this.getListData();
+        this.getListData();
         // this.listLoading = false;
     },
     activated() {
@@ -363,7 +363,15 @@ export default {
             }
             this.$router.push({ path: "/inforManage/customerForm" });
         },
-        
+        onUpload(el){
+            reqUpload({
+                ...el,
+                taskId:el.id
+            }).then(response => {
+                this.getListData()
+                this.listLoading = false
+            });
+        }
     }
 };
 </script>
