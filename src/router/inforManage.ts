@@ -368,6 +368,7 @@ export default [
                     title: '签约合同',
                     icon: 'iconfont icon-changyongshili'
                 },
+                hidden: true
             },
         ]
     }

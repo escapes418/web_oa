@@ -117,6 +117,9 @@
                         <el-tabs type="card" class="tabs" v-model="activePost" @tab-click="postClick">
                             <el-tab-pane label="项目级动态" name="1">
                                 <div>
+                                    <SopDetail></SopDetail>
+                                </div>
+                                <div>
                                     <sjbtextarea
                                         :rows="3"
                                         textStyle="margin-top:20px;margin-bottom:20px"
@@ -515,12 +518,14 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-tab-pane>
+            
             <el-tab-pane label="签约合同">
                 <div class="segment statistics">
                     <div class="segment-header">
                         签约合同
                     </div>
-                    <div class="segment-area">
+                    <signContract></signContract>
+                    <!-- <div class="segment-area">
                         <div class="el-table__body-wrapper" style="padding: 15px 0;">
                             <el-table ref="multipleTable" border :data="connectList" tooltip-effect="dark" style="width:100%">
                                 <el-table-column align="center" label="合同编号" width="200px">
@@ -564,7 +569,7 @@
                             <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
                             </el-pagination>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </el-tab-pane>
             <el-tab-pane label="实施情况">
@@ -642,6 +647,8 @@ import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
 import config from '@/utils/config';
+import signContract from "@/components/signContract";
+import SopDetail from "@/components/SopDetail";
 import utils from '@/utils/utils';
 import { mapState, mapGetters } from "vuex";
 
@@ -653,7 +660,9 @@ export default {
         postList,
         member,
         stage,
+        signContract,
         ongoingMission,
+        SopDetail,
         allMission
     },
     mixins: [listQueryMix],
