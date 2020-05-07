@@ -81,7 +81,7 @@
             </el-table-column>
             <el-table-column width="120px" align="center" label="截止日期">
                 <template slot-scope="scope">
-                    <span>{{scope.row.endTime | stamp2TextDate}}</span>
+                    <span :class="scope.row.endTime<today?['ignore-detail','red']:'ignore-detail'">{{scope.row.endTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="80px" align="center" label="参与人">
@@ -232,7 +232,10 @@ export default {
             return $$postData.toJS();
         },
         showDetail(row){
-
+            this.$router.push({
+                path: "/inforManage/pmsSonDetail",
+                query: { key: row.id}
+            });
         },
         handleFilter() {
             this.pageNum = 1
