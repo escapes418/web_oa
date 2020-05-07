@@ -43,21 +43,21 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle">变更前</div>
-                        <div>{{detail.taskCode}}</div>
-                        <div>{{detail.parentTaskCode}}</div>
-                        <div>{{detail.taskName}}</div>
-                        <div>{{detail.projectStageName}}</div>
-                        <div>{{detail.principalName}}</div>
-                        <div>{{memberNames.join('，')}}</div>
-                        <div>{{detail.startTime | stamp2TextDate}}</div>
-                        <div>{{detail.endTime | stamp2TextDate}}</div>
-                        <div>{{detail.taskDesc}}</div>
-                        <div>{{detail.remark}}</div>
+                        <div style="height:32px">{{detail.taskCode}}</div>
+                        <div style="height:32px">{{detail.parentTaskCode}}</div>
+                        <div style="height:32px">{{detail.taskName}}</div>
+                        <div style="height:32px">{{detail.projectStageName}}</div>
+                        <div style="height:32px">{{detail.principalName}}</div>
+                        <div style="height:32px">{{memberNames.join('，')}}</div>
+                        <div style="height:32px">{{detail.startTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{detail.endTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{detail.taskDesc}}</div>
+                        <div style="height:32px">{{detail.remark}}</div>
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle red">变更后</div>
                         <div>{{detail.taskCode}}</div>
-                        <div>{{detail.parentTaskCode}}</div>
+                        <div style="height:32px">{{detail.parentTaskCode}}</div>
                         <div>
                             <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName"></el-input>
                         </div>
@@ -238,9 +238,22 @@ export default {
                         message: res.message,
                         type: "success"
                     })
+                    this.initData()
                     this.getDetail()
                 }
             })
+        },
+        initData(){
+            this.postData.projectStageId = "";
+            this.postData.parentTaskCode = "";
+            this.postData.taskName = "";
+            this.postData.principalId = "";
+            this.postData.principalName = "";
+            this.postData.memberIds = [];
+            this.startTime = "";
+            this.endTime = "";
+            this.postData.taskDesc = "";
+            this.postData.remark = "";
         },
         getDetail(){
             getChange(this.$route.query.taskId).then(res=>{
@@ -250,7 +263,6 @@ export default {
                 this.postData.taskName = res.data.taskName;
                 this.postData.principalId = res.data.principalId;
                 this.postData.principalName = res.data.principalName;
-                // this.postData.memberIds = res.data.memberIds;
                 res.data.memberIds.forEach(item => {
                     this.memberNames.push(item.memberUserName)
                     this.postData.memberIds.push(item.memberId)
@@ -271,7 +283,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;
-
+    
 }
 .segment-area{
     font-size: 13px;
