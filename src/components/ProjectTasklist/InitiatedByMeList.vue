@@ -118,23 +118,6 @@
             </el-form>
         </el-dialog>
 
-        <el-dialog title="选择合同模版" :visible.sync="dialogVisible" width="25%">
-            <div class="toolbar-item">
-                <span class="item-label">合同名称：</span>
-                <el-select filterable style="width: 220px" class="filter-item" v-model="contractCompanyCode" placeholder="请输入项目名称" @change="selectContract">
-                    <el-option v-for="item in comInfor" :key="item.contractCompanyCode" :label="item.contractName" :value="item.contractCompanyCode">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="toolbar-item">
-                <span class="item-label">乙方名称：</span>
-                <span class="right-con">{{secondPartyName}}</span>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="confirmDownLoad">确认</el-button>
-                <el-button @click="cancelBtn">取消</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 <script>
@@ -183,46 +166,11 @@
             listLoading:Boolean
         },
         methods:{
-            handleUpdate(row) {
-                this.$router.push({
-                    path: "/inforManage/customerForm",
-                    query: { key: row.id, custType:row.custType}
-                });
-            },
             handleDetail(row) {
                 this.$router.push({
                     path: "/inforManage/pmsSonDetail",
                     query: { key: row.id}
                 });
-            },
-            maintain(row) {
-                this.id = row.id;
-                this.$router.push({
-                    path:'/inforManage/maintainCust',
-                    query:{ key : row.id, custName:row.custName, custType:row.custType }
-                })
-            },
-            confirmDownLoad() {
-                this.dialogVisible = false;
-                if(!this.contractCompanyCode){
-                    this.$message({
-                        message: "请选择合同名称",
-                        type: "warning"
-                    });
-                    return;
-                }
-                downLoadContract({
-                    custId: this.downLoadId,
-                    contractCompanyCode:this.contractCompanyCode
-                }).then(res => {
-                    if (res.code == 200) {
-                        var url = `./OA${res.data}`;
-                        window.location.href = url;
-                    }
-                });
-                this.downLoadId ="";
-                this.contractCompanyCode = "";
-                this.secondPartyName = "";
             },
             selectContract(){
                 this.comInfor.forEach(item=>{
@@ -231,14 +179,6 @@
                     }
                 })
             },
-            downLoadContractDiaLog(row){
-                this.downLoadId = row.id
-                this.dialogVisible = true
-            },
-            // handleSchedule(el){
-            //     this.showSchedule = true;
-            //     this.isSchedule = el.taskStatus
-            // },
             openSchedule(id){
                 this.showSchedule = true;
                 this.schedule.id = id
