@@ -4,7 +4,7 @@
             <div class="toolbar-item">
                 <span class="item-label">所属阶段：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.stageId" placeholder="请选择">
-                    <el-option v-for="item in stageList" :key="item.value" :label="item.name" :value="item.value">
+                    <el-option v-for="item in stageList" :label="item.stageName" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
             </div>
@@ -145,7 +145,7 @@
 
 <script>
 import common from '@/utils/common'
-import { getRunPage,addProgress } from '@/api/project'
+import { getRunPage,addProgress,getMissionStage } from '@/api/project'
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils'
 import { mapState, mapGetters } from "vuex";
@@ -200,18 +200,11 @@ export default {
         this.getList()
     },
     mounted(){
-        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-        function selectDic(arr,type){
-            let temp = [];
-            for(var i = 0;i<arr.length;i++){
-                if(arr[i].type == type){
-                    temp.push(arr[i])
-                };
+        getMissionStage(this.$route.query.key).then(res=>{
+            if(res.code == 200){
+                this.stageList = res.data
             }
-            return temp
-        }
-
-        this.stageList = selectDic(dicList,"expense_status")
+        })
     },
     methods: {
         getList() {

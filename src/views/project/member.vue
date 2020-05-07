@@ -14,7 +14,7 @@
                 <el-table :data="longList" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"  @selection-change="handleSelectionChange">
                     <el-table-column
                         type="selection"
-                        width="55">
+                        width="55px">
                     </el-table-column>
                     <el-table-column align="center" label="成员姓名"  width="220px">
                         <template slot-scope="scope">
