@@ -129,7 +129,7 @@ export default {
         jumpChange(item){
             getdetailChangeRecord({
                 businessType:"2",
-                businessId:this.projectId,
+                businessId:item.id,
             }).then(res => {
                 this.preTaskInfo = res.data.preTaskInfo;
                 this.postTaskInfo = res.data.postTaskInfo;
