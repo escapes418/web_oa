@@ -72,7 +72,7 @@
             编辑
           </el-button>
           <el-button
-            v-if="!row.edit"
+            v-if="!row.edit&&row.roleType=='2'"
             type="danger"
             size="small"
             icon="el-icon-delete"
@@ -215,14 +215,10 @@ export default {
       row.remark = row.originalremark;
       row.isPrincipalName = row.originalisPrincipalName;
       row.edit = false
-      // this.$message({
-      //   message: 'The title has been restored to the original value',
-      //   type: 'warning'
-      // })
     },
     del(row){
       console.log(row);
-      if(row){
+      if(!row.isAssociatedWithMember){
         this.$confirm(`确认删除${row.roleName}？删除后，将不可找回！`, '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

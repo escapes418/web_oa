@@ -45,7 +45,7 @@
                             <el-date-picker v-model="listQuery.timeRangeEnd" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
                             </el-date-picker>
                         </div>
-                        <div class="toolbar-item">
+                        <div class="toolbar-item" v-if="activeName != 0">
                             <span class="item-label">完成日期：</span>
                             <el-date-picker v-model="listQuery.timeRangeFinish" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
                             </el-date-picker>
@@ -195,7 +195,7 @@ export default {
         }
         this.custTradesList = selectDic(dicList, "cust_trades");
         this.custMaxList = selectDic(dicList, "cust_max_count");
-        this.expStatuList = selectDic(dicList,"expense_status")
+        this.expStatuList = selectDic(dicList,"pms_task_status")
 
 
         //人员树

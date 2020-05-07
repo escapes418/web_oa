@@ -14,8 +14,7 @@
             </el-table-column>
             <el-table-column align="center" label="任务名称" width="120px">
                 <template slot-scope="scope" >
-                    <span v-if="custListPlace == 3" class="ignore-detail">{{scope.row.taskName}}</span>
-                    <span v-else class="ignore-detail" style="color:#409EFF;cursor: Pointer;"  @click="handleDetail(scope.row)" :title="scope.row.custCode">{{scope.row.custCode}}</span>
+                    <span class="ignore-detail">{{scope.row.taskName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="上级任务编号">
