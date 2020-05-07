@@ -4,7 +4,7 @@
             <li v-html="item.operateInfo"></li>
             <i v-if="item.operateType ==3" class="el-icon-plus" @click="jumpChange(item)"></i>
         </ul>
-        <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
+        <el-pagination style="margin-left:20px" background  @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
         <el-dialog title="新建关联合同" :visible.sync="dialogFormVisible">
             <el-row>
@@ -105,7 +105,7 @@ export default {
         },
     },
     created() {
-        // this.getList();
+        this.getList();
     },
     mounted() {
     
