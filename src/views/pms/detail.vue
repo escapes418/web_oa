@@ -271,9 +271,8 @@ export default {
         ).then(res =>{
             this.detail = res.data.taskInfo
             this.getListData();
+            this.getSonListData();
         });
-        
-        this.getSonListData();
   },
   methods:{
         backBtn(){
@@ -379,7 +378,7 @@ export default {
         },
         getSonListData(){
             taskDetailInfoSubTask({
-                taskCode:this.$route.query.key,
+                taskCode:this.detail.taskCode,
                 pageNum:this.sonpageNum,
                 pageSize:this.sonPageSize
             }).then(response => {
