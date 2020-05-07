@@ -1,6 +1,6 @@
 <template>
     <div class="postContain">
-       <ul v-for="(item,index) in list" :key="index">
+       <ul v-for="(item,index) in list" :key="index" style="margin-left:20px">
             <li v-html="item.operateInfo"></li>
             <i v-if="item.operateType ==3" class="el-icon-plus" @click="jumpChange(item)"></i>
         </ul>
@@ -113,8 +113,8 @@ export default {
     methods: {
         getList() {
             getdetailDynamic({
-                dynamicType:this.dynamicType,
-                projectId:this.projectId,
+                // dynamicType:this.dynamicType,
+                taskId:this.projectId,
                 pageNum:this.pageNum,
                 pageSize:this.pageSize,
             }).then(res => {
