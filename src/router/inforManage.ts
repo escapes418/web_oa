@@ -195,6 +195,18 @@ export default [
                     icon: ''
                 },
                 hidden: true
+            }, 
+            {
+                path: 'changeDetail',
+                id: 'inforManage-changeDetail',
+                show: false,
+                name: 'ChangeDetail',
+                component: () => import('@/views/project/changeDetail.vue'),
+                meta: {
+                    title: '变更任务',
+                    icon: ''
+                },
+                hidden: true
             },
             {
                 path: 'projectDetail',
