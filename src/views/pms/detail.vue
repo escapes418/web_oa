@@ -270,8 +270,9 @@ export default {
         taskDetailInfo(this.$route.query.key
         ).then(res =>{
             this.detail = res.data.taskInfo
+            this.getListData();
         });
-        this.getListData();
+        
         this.getSonListData();
   },
   methods:{
@@ -331,7 +332,7 @@ export default {
         },
         getListData(){
             taskDetailInfoAttachmentlist({
-                taskCode:this.$route.query.key,
+                taskCode:this.detail.taskCode,
                 pageNum:this.pageNum,
                 pageSize:this.pageSize
             }).then(response => {
