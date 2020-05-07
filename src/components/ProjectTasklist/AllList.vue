@@ -178,7 +178,7 @@
         methods:{
             handleDetail(row) {
                 this.$router.push({
-                    path: "/inforManage/pmsSonDetail",
+                    path: "/inforManage/pmsDetail",
                     query: { key: row.id}
                 });
             },
