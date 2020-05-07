@@ -350,7 +350,7 @@ export default [
             },
             {
                 path: 'pmsDeploy',
-                id: 'pmsDeploy',
+                id: 'inforManage-pmsDeploy',
                 show: false,
                 name: 'pmsDeploy',
                 component: () => import('@/views/pms/pmsDeploy.vue'),
@@ -361,7 +361,7 @@ export default [
             },
             {
                 path: 'projectTasklist',
-                id: 'projectTasklist',
+                id: 'inforManage-projectTasklist',
                 show: false,
                 name: 'projectTasklist',
                 component: () => import('@/views/pms/projectTasklist.vue'),
@@ -369,19 +369,7 @@ export default [
                     title: '项目任务管理',
                     icon: 'iconfont icon-changyongshili'
                 },
-            },
-            {
-                path: 'signContract',
-                id: 'signContract',
-                show: false,
-                name: 'signContract',
-                component: () => import('@/views/pms/signContract.vue'),
-                meta: {
-                    title: '签约合同',
-                    icon: 'iconfont icon-changyongshili'
-                },
-                hidden: true
-            },
+            }
         ]
     }
 ];

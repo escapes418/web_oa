@@ -116,9 +116,9 @@
                     <el-col>
                         <el-tabs type="card" class="tabs" v-model="activePost" @tab-click="postClick">
                             <el-tab-pane label="项目级动态" name="1">
-                                <div>
+                                <!-- <div>
                                     <SopDetail></SopDetail>
-                                </div>
+                                </div> -->
                                 <div>
                                     <sjbtextarea
                                         :rows="3"
@@ -519,108 +519,12 @@
                 </el-tabs>
             </el-tab-pane>
             
-            <el-tab-pane label="签约合同">
+            <el-tab-pane label="签约合同" name="4">
                 <div class="segment statistics">
                     <div class="segment-header">
                         签约合同
                     </div>
                     <signContract></signContract>
-                    <!-- <div class="segment-area">
-                        <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                            <el-table ref="multipleTable" border :data="connectList" tooltip-effect="dark" style="width:100%">
-                                <el-table-column align="center" label="合同编号" width="200px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractCode}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="合同名称" width="220px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractName}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="合同开始日期" width="220px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="合同结束日期">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractEndTime | stamp2TextDate}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="合同负责人">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractLeader}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="合同状态" width="220px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.contractHisStatusName}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="操作" width="220px">
-                                    <template slot-scope="scope">
-                                        <el-button type="primary" size="mini" @click="showDetail(scope.row)">详情</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                        <div class="pagination-container">
-                            <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
-                            </el-pagination>
-                        </div>
-                    </div> -->
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="实施情况">
-                <div class="segment statistics">
-                    <div class="segment-header">
-                        实施情况
-                    </div>
-                    <div class="segment-area">
-                        <div class="filter-container" style="margin-top:10px">
-                            <span class="toolbar-item">
-                                <span class="item-label">选择日期：</span>
-                                <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
-                                </el-date-picker>
-                            </span>
-                            <span class="toolbar-item">
-                                <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleImFilter">搜索</el-button>
-                                <el-button class="filter-item" type="warning" icon="el-icon-refresh" @click="restListQuery(restCallback)">重置</el-button>
-                            </span>
-                            <span class="toolbar-item">
-                                <el-button class="filter-item" type="primary" icon="el-icon-download"  @click="exportFile">导出excel</el-button>
-                            </span>
-                        </div>
-                        <div class="el-table__body-wrapper" style="padding: 15px 0;">
-                            <el-table ref="multipleTable" border :data="imList" tooltip-effect="dark" style="width:100%">
-                                <el-table-column align="center" label="日期" width="200px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.date | stamp2TextDate}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="节点" width="220px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.nodeName}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="汇报人" width="220px">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.reporter}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="具体异常情况">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.anomalyDescription}}</span>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                        <div class="pagination-container">
-                            <el-pagination background @current-change="handleImChange" :current-page="pageImNo" :page-size="pageImSize" layout="total, prev, pager, next, jumper" :total="imTotal">
-                            </el-pagination>
-                        </div>
-                    </div>
                 </div>
             </el-tab-pane>
         </el-tabs>
