@@ -336,14 +336,7 @@ export default {
             this.listLoading = false;
         },
         handleCreate() {
-            if(this.custCount.ownNum >this.custMaxList[0].name || this.custCount.ownNum == this.custMaxList[0].name){
-                this.$message({
-                    message: "个人客户数量不能超过" + this.custMaxList[0].name,
-                    type: "warning"
-                })
-                return;
-            }
-            this.$router.push({ path: "/inforManage/customerForm" });
+            this.$router.push({ path: "/inforManage/projectForm" });
         },
         onUpload(el){
             reqUpload({

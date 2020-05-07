@@ -369,6 +369,30 @@ export default [
                     title: '项目任务管理',
                     icon: 'iconfont icon-changyongshili'
                 },
+            },
+            {
+                path: 'pmsDetail',
+                id: 'inforManage-pmsDetail',
+                show: false,
+                name: 'pmsDetail',
+                component: () => import('@/views/pms/detail.vue'),
+                meta: {
+                    title: '项目任务管理详情',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
+            },
+            {
+                path: 'pmsSonDetail',
+                id: 'inforManage-pmsSonDetail',
+                show: false,
+                name: 'pmsSonDetail',
+                component: () => import('@/views/pms/sonDetail.vue'),
+                meta: {
+                    title: '项目任务管理详情',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
             }
         ]
     }

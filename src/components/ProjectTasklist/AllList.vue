@@ -14,7 +14,8 @@
             </el-table-column>
             <el-table-column align="center" label="任务名称" width="120px">
                 <template slot-scope="scope" >
-                    <span class="ignore-detail">{{scope.row.taskName}}</span>
+                    <!-- <span class="ignore-detail">{{scope.row.taskName}}</span> -->
+                    <el-button type="text"  @click="handleDetail(scope.row)">{{scope.row.taskName}}</el-button>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="上级任务编号">
@@ -201,8 +202,8 @@
             },
             handleDetail(row) {
                 this.$router.push({
-                    path: "/inforManage/customerDetail",
-                    query: { key: row.id, custType:row.custType}
+                    path: "/inforManage/pmsSonDetail",
+                    query: { key: row.id}
                 });
             },
             maintain(row) {

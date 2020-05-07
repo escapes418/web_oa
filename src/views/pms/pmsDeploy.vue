@@ -218,7 +218,7 @@ export default {
     },
     del(row){
       console.log(row);
-      if(!row.isAssociatedWithMember){
+      if(!row.associatedWithMember){
         this.$confirm(`确认删除${row.roleName}？删除后，将不可找回！`, '确认删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
