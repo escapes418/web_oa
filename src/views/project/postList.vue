@@ -155,6 +155,7 @@ export default {
         display:inline-block;
     }
 }
+
 .segment-area{
     font-size: 13px;
 }
