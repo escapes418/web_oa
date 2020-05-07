@@ -233,7 +233,7 @@ export default {
         },
         showDetail(row){
             this.$router.push({
-                path: "/inforManage/pmsDetail",
+                path: "/inforManage/pmsSonDetail",
                 query: { key: row.id}
             });
         },
