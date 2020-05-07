@@ -253,7 +253,7 @@ export default {
             })
         },
         addMission(row){
-             this.$router.push({
+            this.$router.push({
                 path:'/inforManage/addProgress',
                 query: { projectId:this.$route.query.key, parentTaskCode: row.taskCode }
             })

@@ -2,7 +2,7 @@
     <div class="postContain">
        <ul v-for="(item,index) in list" :key="index">
             <li v-html="item.operateInfo"></li>
-            <i v-if="item.operateType ==3" class="el-icon-plus"></i>
+            <i v-if="item.operateType ==3" class="el-icon-plus" @click="jumpChange(item)"></i>
         </ul>
         <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
@@ -54,6 +54,12 @@ export default {
             this.pageNo = val;
             this.getList();
         },
+        jumpChange(item){
+            this.$router.push({
+                path: "/inforManage/changeDetail",
+                query: { businessType:"1", businessId: item.dynamicInfoId }
+            });
+        }
     }
 };
 </script>
