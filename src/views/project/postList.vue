@@ -57,7 +57,7 @@ export default {
         jumpChange(item){
             this.$router.push({
                 path: "/inforManage/changeDetail",
-                query: { businessType:"1", businessId: item.dynamicInfoId }
+                query: { businessType:"1", businessId: item.id }
             });
         }
     }
