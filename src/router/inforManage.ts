@@ -335,7 +335,40 @@ export default [
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true
-            }
+            },
+            {
+                path: 'pmsDeploy',
+                id: 'pmsDeploy',
+                show: false,
+                name: 'pmsDeploy',
+                component: () => import('@/views/pms/pmsDeploy.vue'),
+                meta: {
+                    title: 'PMS配置',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
+            {
+                path: 'projectTasklist',
+                id: 'projectTasklist',
+                show: false,
+                name: 'projectTasklist',
+                component: () => import('@/views/pms/projectTasklist.vue'),
+                meta: {
+                    title: '项目任务管理',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
+            {
+                path: 'signContract',
+                id: 'signContract',
+                show: false,
+                name: 'signContract',
+                component: () => import('@/views/pms/signContract.vue'),
+                meta: {
+                    title: '签约合同',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
         ]
     }
 ];
