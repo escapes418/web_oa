@@ -51,7 +51,7 @@
         </el-table>
 
         <div class="pagination-container">
-            <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
+            <el-pagination background @current-change="handleCurrentChange" :current-page="pageNum" :page-size="20" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
 
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="pagination-container" style="margin-top:20px">
-                    <el-pagination background @current-change="handleAddCurrentChange" :current-page="addPageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="addTotal">
+                    <el-pagination background @current-change="handleAddCurrentChange" :current-page="addpageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="addTotal">
                     </el-pagination>
                 </div>
                 <div slot="footer" class="dialog-footer">
@@ -152,11 +152,11 @@ export default {
                 children: 'userInfo',
                 label: 'name'
             },
-            pageNo: 1,
+            pageNum: 1,
             pageSize: 20,
             listLoading: true,
             addList: null,
-            addPageNo: 1,
+            addpageNum: 1,
             addPageSize: 20,
             addTotal:null,
             addListLoading: true,
@@ -225,7 +225,7 @@ export default {
             getSignContractlist({
                 // ...postData,
                 id:this.$route.query.id,
-                pageNo:this.pageNo,
+                pageNum:this.pageNum,
                 pageSize:this.pageSize
             }).then(response => {
                 this.list = response.data.list
@@ -250,13 +250,13 @@ export default {
             contractRelationDel({
                 id:row.id,
             }).then(response => {
-                this.pageNo = 1;
+                this.pageNum = 1;
                 this.getList()
                 this.listLoading = false;
             })
         },
         handleFilter() {
-            this.pageNo = 1
+            this.pageNum = 1
             if(!this.listQuery.timeRange){
                 this.listQuery.timeRange = []
             }
@@ -265,7 +265,7 @@ export default {
             this.listLoading = false;
         },
         handleCurrentChange(val) {
-            this.pageNo = val
+            this.pageNum = val
             this.getList()
             this.listLoading = false;
         },
@@ -297,13 +297,13 @@ export default {
             })
         },
         handleProFilter(){
-            this.addPageNo = 1;
+            this.addpageNum = 1;
             this.$$queryStub = fromJS(this.listQuery);
             this.getAddList();
             this.addListLoading = false;
         },
         handleAddCurrentChange(val) {
-            this.addPageNo = val;
+            this.addpageNum = val;
             this.getAddList();
             this.addListLoading = false;
         },
@@ -313,7 +313,7 @@ export default {
             console.log(postData);
             getContractlist({
                 ...postData,
-                pageNo:this.addPageNo,
+                pageNum:this.addpageNum,
                 pageSize:this.addPageSize
             }).then(res => {
                 this.addList = res.data.list;
@@ -346,7 +346,7 @@ export default {
                 id:this.$route.query.id,
                 contractIds:ids
             }).then(res => {
-                this.pageNo = 1
+                this.pageNum = 1
                 this.getList()
                 this.listLoading = false;
                 this.addListLoading = false;

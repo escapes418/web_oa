@@ -113,7 +113,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination-container">
-            <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
+            <el-pagination background @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
           </div>
@@ -187,7 +187,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination-container">
-            <el-pagination background @current-change="handleSonCurrentChange" :current-page="sonPageNo" :page-size="sonPageSize" layout="total, prev, pager, next, jumper" :total="sonTotal">
+            <el-pagination background @current-change="handleSonCurrentChange" :current-page="sonpageNum" :page-size="sonPageSize" layout="total, prev, pager, next, jumper" :total="sonTotal">
             </el-pagination>
         </div>
           </div>
@@ -239,12 +239,12 @@ export default {
             pathType:"",
             dialogDelVisible:false,
             finish:false,
-            pageNo: 1,
+            pageNum: 1,
             pageSize: 10,
             list: [],
             total: 0,
             urlArr: {},
-            sonPageNo: 1,
+            sonpageNum: 1,
             sonPageSize: 10,
             sonList: [],
             sonTotal: 0,
@@ -286,13 +286,13 @@ export default {
             this.urlArr.viewer.show();
         },
         handleCurrentChange(){
-            this.pageNo = val;
+            this.pageNum = val;
             this.getListData();
         },
         getListData(){
             taskDetailInfoAttachmentlist({
                 taskCode:this.$route.query.key,
-                pageNo:this.pageNo,
+                pageNum:this.pageNum,
                 pageSize:this.pageSize
             }).then(response => {
                 this.list = response.data.list;
@@ -313,13 +313,13 @@ export default {
 
         },
         handleSonCurrentChange(){
-            this.sonPageNo = val;
+            this.sonpageNum = val;
             this.getSonListData();
         },
         getSonListData(){
             taskDetailInfoSubTask({
                 taskCode:this.$route.query.key,
-                pageNo:this.sonPageNo,
+                pageNum:this.sonpageNum,
                 pageSize:this.sonPageSize
             }).then(response => {
                 this.sonList = response.data.list;

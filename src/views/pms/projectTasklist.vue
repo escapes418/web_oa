@@ -125,7 +125,7 @@ export default {
             list: [],
             total: null,
             listLoading: true,
-            pageNo: 1,
+            pageNum: 1,
             pageSize: 20,
 
             dialogMarketVisible:false,
@@ -300,7 +300,7 @@ export default {
             var postData = this.reduceParams(this.$$queryStub);
             getProjectTasklist({
                 ...postData,
-                pageNo:this.pageNo,
+                pageNum:this.pageNum,
                 pageSize:this.pageSize,
                 taskType:this.activeName
             }).then(response => {
@@ -322,7 +322,7 @@ export default {
             return $$postData.toJS();
         },
         handleFilter() {
-            this.pageNo = 1;
+            this.pageNum = 1;
             if(!this.listQuery.timeRange){
                 this.listQuery.timeRange = []
             }
@@ -331,7 +331,7 @@ export default {
             this.listLoading = false;
         },
         handleCurrentChange(val) {
-            this.pageNo = val;
+            this.pageNum = val;
             this.getListData();
             this.listLoading = false;
         },
