@@ -107,9 +107,6 @@ export default {
                 this.preTaskInfo = res.data.preTaskInfo;
                 this.postTaskInfo = res.data.postTaskInfo
             })
-        },
-        backStep(){
-            this.$router.go(-1); 
         }
     }
 }

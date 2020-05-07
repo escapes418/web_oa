@@ -6,11 +6,81 @@
         </ul>
         <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
+        <el-dialog title="任务基本信息" :visible.sync="dialogChange">
+             <!-- <div class="segment-header">
+                任务基本信息
+            </div> -->
+            <!-- <div class="segment-area"> -->
+                <el-row>
+                    <el-col :span="8" class="segment-brline">
+                        <div class="changeTitle">
+                            变更项
+                        </div>
+                        <div style="height:32px">
+                            任务编号
+                        </div>
+                        <div  style="height:32px">
+                            上级任务编号
+                        </div>
+                        <div  style="height:32px">
+                            任务名称
+                        </div>
+                        <div  style="height:32px">
+                            所属阶段
+                        </div>
+                        <div  style="height:32px">
+                            任务责任人
+                        </div>
+                        <div  style="height:32px">
+                            参与人
+                        </div>
+                        <div  style="height:32px">
+                            开始日期
+                        </div>
+                        <div  style="height:32px">
+                            截止日期
+                        </div>
+                        <div  style="height:32px">
+                            任务详细说明
+                        </div>
+                        <div  style="height:32px">
+                            备注
+                        </div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="changeTitle">变更前</div>
+                        <div style="height:32px">{{preTaskInfo.taskCode}}</div>
+                        <div style="height:32px">{{preTaskInfo.parentTaskCode}}</div>
+                        <div style="height:32px">{{preTaskInfo.taskName}}</div>
+                        <div style="height:32px">{{preTaskInfo.projectStageName}}</div>
+                        <div style="height:32px">{{preTaskInfo.principalName}}</div>
+                        <div style="height:32px">{{preTaskInfo.participantNames}}</div>
+                        <div style="height:32px">{{preTaskInfo.startTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{preTaskInfo.endTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{preTaskInfo.taskDesc}}</div>
+                        <div style="height:32px">{{preTaskInfo.remark}}</div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="changeTitle red">变更后</div>
+                        <div style="height:32px">{{postTaskInfo.taskCode}}</div>
+                        <div style="height:32px">{{postTaskInfo.parentTaskCode}}</div>
+                        <div style="height:32px">{{postTaskInfo.taskName}}</div>
+                        <div style="height:32px">{{postTaskInfo.projectStageName}}</div>
+                        <div style="height:32px">{{postTaskInfo.principalName}}</div>
+                        <div style="height:32px">{{postTaskInfo.participantNames}}</div>
+                        <div style="height:32px">{{postTaskInfo.startTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{postTaskInfo.endTime | stamp2TextDate}}</div>
+                        <div style="height:32px">{{postTaskInfo.taskDesc}}</div>
+                        <div style="height:32px">{{postTaskInfo.remark}}</div>
+                    </el-col>
+                </el-row>
+            <!-- </div> -->
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { getDynamic } from "@/api/project";
+import { getDynamic,getChangeDetail } from "@/api/project";
 
 
 export default {
@@ -20,6 +90,13 @@ export default {
             pageNum: 1,
             pageSize: 20,
             total: 0,
+            preTaskInfo:{
+
+            },
+            postTaskInfo:{
+                
+            },
+            dialogChange:false
         };
     },
     props:{
@@ -55,11 +132,18 @@ export default {
             this.getList();
         },
         jumpChange(item){
-            this.$router.push({
-                path: "/inforManage/changeDetail",
-                query: { businessType:"1", businessId: item.id }
-            });
-        }
+            this.dialogChange = true
+            getChangeDetail("1",item.id).then(res=>{
+                this.preTaskInfo = res.data.preTaskInfo;
+                this.postTaskInfo = res.data.postTaskInfo
+            })
+        },
+        // getDetail(){
+        //     getChangeDetail(this.$route.query.businessType,this.$route.query.businessId).then(res=>{
+        //         this.preTaskInfo = res.data.preTaskInfo;
+        //         this.postTaskInfo = res.data.postTaskInfo
+        //     })
+        // }
     }
 };
 </script>
@@ -70,5 +154,18 @@ export default {
         line-height: 28px;
         display:inline-block;
     }
+}
+
+.segment-area{
+    font-size: 13px;
+}
+.changeTitle{
+    text-align: center;
+    background: rgb(238,241,246);
+    margin-top: 15px;
+    font-size: 16px;
+}
+.red{
+    color: red;
 }
 </style>
