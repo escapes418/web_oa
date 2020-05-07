@@ -147,4 +147,20 @@ export default {
         display:inline-block;
     }
 }
+.segment .el-table__body-wrapper {
+    padding: 40px 20px 35px;
+    
+}
+.segment-area{
+    font-size: 13px;
+}
+.changeTitle{
+    text-align: center;
+    background: rgb(238,241,246);
+    margin-top: 15px;
+    font-size: 16px;
+}
+.red{
+    color: red;
+}
 </style>
