@@ -61,7 +61,7 @@
                         <div class="segment statistics">
                             <div class="segment-header">
                                 进程
-                                <span class="jumpPro"  @click="jumpClick('2')">
+                                <span class="jumpPro"  @click="jumpClick('3')">
                                     >
                                 </span>
                             </div>
@@ -858,6 +858,9 @@ export default {
         },
         jumpClick(value){
             this.activeTop = value
+            if(value == 3){
+                this.activeProcesss = "1"
+            }
         },
         postClick(value){
             this.activePost = value.name;
