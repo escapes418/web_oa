@@ -116,9 +116,6 @@
                     <el-col>
                         <el-tabs type="card" class="tabs" v-model="activePost" @tab-click="postClick">
                             <el-tab-pane label="项目级动态" name="1">
-                                <!-- <div>
-                                    <SopDetail></SopDetail>
-                                </div> -->
                                 <div>
                                     <sjbtextarea
                                         :rows="3"
