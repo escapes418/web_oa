@@ -329,7 +329,7 @@ export default {
         },
         getListData(){
             taskDetailInfoAttachmentlist({
-                taskCode:this.detail.taskCode,
+                taskCode:this.$route.query.taskCode,
                 pageNum:this.pageNum,
                 pageSize:this.pageSize
             }).then(response => {

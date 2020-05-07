@@ -350,7 +350,7 @@ export default [
             },
             {
                 path: 'pmsDeploy',
-                id: 'inforManage-pmsDeploy',
+                id: 'pmsDeploy',
                 show: false,
                 name: 'pmsDeploy',
                 component: () => import('@/views/pms/pmsDeploy.vue'),
@@ -361,7 +361,7 @@ export default [
             },
             {
                 path: 'projectTasklist',
-                id: 'inforManage-projectTasklist',
+                id: 'projectTasklist',
                 show: false,
                 name: 'projectTasklist',
                 component: () => import('@/views/pms/projectTasklist.vue'),

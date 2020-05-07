@@ -353,7 +353,7 @@ export default {
         goSon(row){
             this.$router.push({
                 path: "/inforManage/pmsSonDetail",
-                query: { key: row.id}
+                query: { key: row.id,taskCode:this.detail.taskCode}
             });
         },
         handleSuccess(res, file, fileList) {

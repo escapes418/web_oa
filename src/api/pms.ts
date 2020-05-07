@@ -15,6 +15,22 @@ export function reqUpload(params) {
     })
 }
 
+export function getdetailDynamic(params){
+    return request({
+        url:`/webPms/task/dynamic/info`,
+        method:'post',
+        data:params
+    })
+}
+
+export function getdetailChangeRecord(params){
+    return request({
+        url:`/webPms/task/change/record/`+params.businessType+"/"+params.businessId,
+        method:'get',
+    })
+}
+
+
 export function getPmsDeployList(parmas) {
     return request({
         url:'/webPms/role',

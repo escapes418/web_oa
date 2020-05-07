@@ -262,6 +262,13 @@ export function getDynamic(params){
     })
 }
 
+export function getdetailDynamic(params){
+    return request({
+        url:`/webPms/task/dynamic/info`,
+        method:'post',
+        data:params
+    })
+}
 export function addDynamic(params){
     return request({
         url:`/webPms/generalMsg/project/dynamic/add`,
