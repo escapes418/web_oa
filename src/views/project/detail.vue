@@ -7,7 +7,7 @@
                         <div class="segment statistics">
                             <div class="segment-header">
                                 基本信息
-                                <span class="jumpPro"  @click="tabClick">
+                                <span class="jumpPro"  @click="jumpClick('1')">
                                     >
                                 </span>
                                 
@@ -61,7 +61,7 @@
                         <div class="segment statistics">
                             <div class="segment-header">
                                 进程
-                                <span class="jumpPro">
+                                <span class="jumpPro"  @click="jumpClick('2')">
                                     >
                                 </span>
                             </div>
@@ -855,6 +855,9 @@ export default {
         },
         tabClick(value){
             this.activeTop= value.name;
+        },
+        jumpClick(value){
+            this.activeTop = value
         },
         postClick(value){
             this.activePost = value.name;

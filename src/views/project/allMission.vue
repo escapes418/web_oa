@@ -274,6 +274,9 @@ export default {
                 .delete('finishTimeRange')
             return $$postData.toJS();
         },
+        showDetail(row){
+
+        },
         handleFilter() {
             this.pageNum = 1
             if(!this.listQuery.endTimeRange){

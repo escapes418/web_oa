@@ -68,6 +68,12 @@
                             </el-select>
                         </div>
                         <div>
+                            <el-select clearable filterable class="filter-item " v-model="postData.principalId" placeholder="请选择" style="width:250px;">
+                                <el-option v-for="item in memberList" :label="item.memberUserName" :value="item.memberUserId" :key="item.memberUserId">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div>
                             <el-select clearable multiple filterable class="filter-item " v-model="postData.memberIds" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in memberList" :label="item.memberUserName" :value="item.id" :key="item.id">
                                 </el-option>
@@ -217,6 +223,11 @@ export default {
                 });
                 return;
             }
+            this.memberList.forEach(item=>{
+                if(this.postData.principalId == item.memberUserId){
+                    this.postData.principalName = item.memberUserName
+                }
+            })
             this.postData.startTime = common.timeParse(this.startTime)
             this.postData.endTime = common.timeParse(this.endTime)
             saveChange(this.$route.query.taskId,{

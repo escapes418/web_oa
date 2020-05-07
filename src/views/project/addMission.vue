@@ -7,8 +7,8 @@
             <div class="segment-area">
                 <el-row>
                     <el-col :span="12" class="segment-brline">
-                        <RedStar label="上级任务编号：">
-                            <span class="right-con">{{this.$route.query.parentTaskCode || ""}}</span>
+                        <RedStar label="上级任务编号：" v-if="$route.query.parentTaskCode">
+                            <span class="right-con">{{$route.query.parentTaskCode || ""}}</span>
                         </RedStar>
                         <RedStar label="任务名称：" :required="true">
                             <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName"></el-input>

@@ -238,6 +238,9 @@ export default {
                 .delete('timeRange')
             return $$postData.toJS();
         },
+        showDetail(row){
+
+        },
         handleFilter() {
             this.pageNum = 1
             if(!this.listQuery.timeRange){
