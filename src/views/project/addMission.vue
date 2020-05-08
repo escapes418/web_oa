@@ -175,6 +175,7 @@ export default {
                     this.postData.principalName = item.memberUserName
                 }
             })
+            this.postData.parentTaskCode = this.$route.query.parentTaskCode
             if(!this.postData.taskName){
                 this.$message({
                     message: "请填写任务名称",
