@@ -17,11 +17,11 @@
                 <a>{{scope.row.contractName}}</a>
             </template>
         </el-table-column>
-        <el-table-column width="320px" align="center" label="项目名称">
+        <!-- <el-table-column width="320px" align="center" label="项目名称">
             <template slot-scope="scope">
                 <a>{{scope.row.projectName}}</a>
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column align="center" label="合同开始日期">
             <template slot-scope="scope">
                 <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
