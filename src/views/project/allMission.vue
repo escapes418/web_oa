@@ -100,7 +100,7 @@
             </el-table-column>
             <el-table-column width="120px" align="center" label="截止日期">
                 <template slot-scope="scope">
-                    <span :class="scope.row.endTime<today?['ignore-detail','red']:'ignore-detail'">{{scope.row.endTime | stamp2TextDate}}</span>
+                    <span :class="scope.row.endTime < Date.parse(new Date())?['ignore-detail','red']:'ignore-detail'">{{scope.row.endTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="120px" align="center" label="完成日期">
@@ -119,9 +119,9 @@
                 </template>
             </el-table-column>
             <el-table-column width="300px" align="center" label="操作" class-name="small-padding fixed-width">
-                <template slot-scope="scope">
+                <template slot-scope="scope" v-if="scope.row.taskStatus == 0">
                     <el-button type="primary" size="mini" @click="showProgress(scope.row)">填写进度</el-button>
-                    <el-button type="primary" size="mini" @click="addMission(scope.row)">新增子任务</el-button>
+                    <el-button v-if="!scope.row.parentTaskCode" type="primary" size="mini" @click="addMission(scope.row)">新增子任务</el-button>
                     <el-button type="danger" size="mini" @click="showChange(scope.row)">变更</el-button>
                 </template>
             </el-table-column>
