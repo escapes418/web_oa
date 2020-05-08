@@ -128,7 +128,7 @@ export default {
             });
         },
         handleCurrentChange(val) {
-            this.pageNo = val;
+            this.pageNum = val;
             this.getList();
         },
         jumpChange(item){
