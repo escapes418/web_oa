@@ -1,7 +1,5 @@
 <template>
   <div class="sjb-container calendar-list-container">
-      <!-- <div @click="add">新增</div>
-    <div>{{ list }}</div> -->
     <el-button class="topBtn" type="primary" v-waves icon="el-icon-search" @click="add">新增成员角色</el-button>
     <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="sequenceNumber" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="" width="65">
@@ -107,19 +105,11 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <div class="show-d"  @click="add">
-      <el-tag>The default order :</el-tag> {{ oldList }}
-    </div>
-    <div class="show-d">
-      <el-tag>The after dragging order :</el-tag> {{ newList }}
-    </div> -->
   </div>
 </template>
 
 <script>
-// import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
-import json from './testjson.js';
 import { getPmsDeployList, projectTasklistUpdate} from "@/api/pms";
 
 export default {
@@ -164,7 +154,6 @@ export default {
       this.listLoading = true
       getPmsDeployList().then(res => {
           this.list = res.data;
-          // this.list = this.jsonData.data;
           this.list.forEach((el, index) => {
             this.$set(el, 'edit', false)
             el.originalroleName = el.roleName;
@@ -174,7 +163,6 @@ export default {
           })
           this.listLoading = false
           this.oldList = this.list.map(v => v.sequenceNumber)
-          console.log(this.list,'list')
           this.newList = this.oldList.slice()
           this.$nextTick(() => {
             this.setSort()
@@ -194,7 +182,6 @@ export default {
           this.list.splice(evt.newIndex, 0, targetRow)
           const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
           this.newList.splice(evt.newIndex, 0, tempIndex)
-          // console.log(1111)
           this.updateList()
 
         }
@@ -251,7 +238,6 @@ export default {
               isPrincipalName = el.name;
           }
       })
-      console.log(isPrincipalName);
       row.originalroleName = row.roleName;
       row.originalisPrincipal = row.isPrincipal;
       row.originalremark = row.remark;
@@ -267,7 +253,6 @@ export default {
     add(){
         var list = this.list.map(v => v.sequenceNumber)
         var max = Math.max.apply(null, list);
-        console.log(max);
         this.list.push({
             roleType:'2',
             edit:false,
@@ -276,7 +261,6 @@ export default {
             roleTypeName:'人工',
             isPrincipal:'0',
             isPrincipalName:'否',
-            // title:"1111",
             remark:'',
             updateTime:this.fitchTime(),
             sequenceNumber: max+1,
