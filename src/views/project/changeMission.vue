@@ -137,7 +137,9 @@ export default {
     data(){
         return{
             postData:{
+                taskCode:"",
                 projectStageId:"",
+                projectStageName:"",
                 parentTaskCode:"",
                 taskName:"",
                 principalId:"",
@@ -228,6 +230,11 @@ export default {
                     this.postData.principalName = item.memberUserName
                 }
             })
+            this.stageList.forEach(item=>{
+                if(this.postData.projectStageId == item.id){
+                    this.postData.projectStageName = item.stageName
+                }
+            })
             this.postData.startTime = common.timeParse(this.startTime)
             this.postData.endTime = common.timeParse(this.endTime)
             saveChange(this.$route.query.taskId,{
@@ -258,6 +265,7 @@ export default {
         getDetail(){
             getChange(this.$route.query.taskId).then(res=>{
                 this.detail = res.data;
+                this.postData.taskCode = res.data.taskCode;
                 this.postData.projectStageId = res.data.projectStageId;
                 this.postData.parentTaskCode = res.data.parentTaskCode;
                 this.postData.taskName = res.data.taskName;
