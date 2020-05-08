@@ -56,7 +56,7 @@
 
       <el-table-column width="180px" align="center" label="更新时间">
         <template slot-scope="{row}">
-          <span>{{ row.updateTime }}</span>
+          <span>{{ row.updateTime | stamp2TextDateFull}}</span>
         </template>
       </el-table-column>
 
@@ -287,20 +287,8 @@ export default {
         })
         this.updateList()
     },
-    fitchTime(date){
-        date ? (date = new Date(date)) : (date = new Date());
-        var Y = date.getFullYear();
-        var M = date.getMonth() + 1;
-        M = M < 10 ? '0' + M : M;
-        var D = date.getDate();
-        D = D < 10 ? '0' + D : D;
-        var h = date.getHours();
-        h = h < 10 ? '0' + h : h;
-        var m = date.getMinutes();
-        m = m < 10 ? '0' + m : m;
-        var s = date.getSeconds();
-        s = s < 10 ? '0' + s : s;
-        return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s;
+    fitchTime(){
+        return Date.parse(new Date());
     }
   }
 }
