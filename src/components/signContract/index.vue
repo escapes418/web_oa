@@ -246,9 +246,7 @@ export default {
             return $$postData.toJS();
         },
         del(row){
-            contractRelationDel({
-                id:row.id,
-            }).then(response => {
+            contractRelationDel(row.id).then(response => {
                 this.pageNum = 1;
                 this.getList()
                 this.listLoading = false;
