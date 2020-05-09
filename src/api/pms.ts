@@ -1,103 +1,131 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 export function getProjectTasklist(params) {
     return request({
-        url: '/webPms/task/my/getPage',
-        method: 'post',
-        data:params
-    })
+        url: "/webPms/task/my/getPage",
+        method: "post",
+        data: params
+    });
 }
 export function reqUpload(params) {
     return request({
-        url: '/webPms/task/progress/update/'+params.id,
-        method: 'PUT',
-        data:params
-    })
+        url: "/webPms/task/progress/update/" + params.id,
+        method: "PUT",
+        data: params
+    });
 }
 
-export function getdetailDynamic(params){
+export function getdetailDynamic(params) {
     return request({
-        url:`/webPms/task/dynamic/info`,
-        method:'post',
-        data:params
-    })
+        url: `/webPms/task/dynamic/info`,
+        method: "post",
+        data: params
+    });
 }
 
-export function getdetailChangeRecord(params){
+export function getdetailChangeRecord(params) {
     return request({
-        url:`/webPms/task/change/record/`+params.businessType+"/"+params.businessId,
-        method:'get',
-    })
+        url:
+            `/webPms/task/change/record/` +
+            params.businessType +
+            "/" +
+            params.businessId,
+        method: "get"
+    });
 }
-
 
 export function getPmsDeployList(parmas) {
     return request({
-        url:'/webPms/role',
-        method:'get',
-    })
+        url: "/webPms/role",
+        method: "get"
+    });
 }
 
 export function projectTasklistUpdate(params) {
     return request({
-        url: '/webPms/role',
-        method: 'put',
-        data:params
-    })
+        url: "/webPms/role",
+        method: "put",
+        data: params
+    });
+}
+/**
+ * 创建 role
+ * @param params
+ */
+export function projectTasklistCreate(params) {
+    return request({
+        url: "/webPms/role",
+        method: "post",
+        data: params
+    });
+}
+/**
+ * 更新序号
+ * @param params
+ */
+export function updateRoleIndex(id, index) {
+    return request({
+        url: `/webPms/role/sort`,
+        method: "put",
+        data: {
+            id,
+            index
+        }
+    });
 }
 
 export function getSignContractlist(params) {
     return request({
-        url: '/webPms/contractRelation',
-        method: 'post',
-        data:params
-    })
+        url: "/webPms/contractRelation",
+        method: "post",
+        data: params
+    });
 }
 
 export function contractRelationDel(params) {
     return request({
-        url:'/webPms/contractRelation/'+params,
-        method:'delete',
-    })
+        url: "/webPms/contractRelation/" + params,
+        method: "delete"
+    });
 }
 
 export function getContractlist(params) {
     return request({
-        url: '/webPms/contract',
-        method: 'post',
-        data:params
-    })
+        url: "/webPms/contract",
+        method: "post",
+        data: params
+    });
 }
 
 export function saveContractRelation(params) {
     return request({
-        url: '/webPms/saveContractRelation/'+params.id,
-        method: 'post',
-        data:{
-            contractIds:params.contractIds
+        url: "/webPms/saveContractRelation/" + params.id,
+        method: "post",
+        data: {
+            contractIds: params.contractIds
         }
-    })
+    });
 }
 
 export function taskDetailInfo(params) {
     return request({
-        url: '/webPms/task/detailInfo/'+params,
-        method: 'get',
-    })
+        url: "/webPms/task/detailInfo/" + params,
+        method: "get"
+    });
 }
 
 export function taskDetailInfoAttachmentlist(params) {
     return request({
-        url: '/webPms/task/detailInfo/attachmentlist',
-        method: 'post',
-        data:params
-    })
+        url: "/webPms/task/detailInfo/attachmentlist",
+        method: "post",
+        data: params
+    });
 }
 
 export function taskDetailInfoSubTask(params) {
     return request({
-        url: '/webPms/task/detailInfo/subTask',
-        method: 'post',
-        data:params
-    })
+        url: "/webPms/task/detailInfo/subTask",
+        method: "post",
+        data: params
+    });
 }
