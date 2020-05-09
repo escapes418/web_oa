@@ -223,7 +223,7 @@ export default {
           });
           return code;
         })
-        .then(id => this.updateRoleIndex(id, row.index));
+        .then(id => row.new && this.updateRoleIndex(id, row.index));
     },
     updateRoleIndex(id, index) {
       return updateRoleIndex(id, index + 1);
