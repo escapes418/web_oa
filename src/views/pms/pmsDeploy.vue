@@ -28,7 +28,7 @@
       <el-table-column width="180px" align="center" label="成员角色名称">
         <template slot-scope="{ row }">
           <template v-if="row.edit && row.roleType == '2'">
-            <el-input v-model="row.roleName" class="edit-input" size="small" />
+            <el-input v-model="row.roleName" class="edit-input" size="small" :maxlength="32" />
           </template>
           <span v-else>{{ row.roleName }}</span>
         </template>
@@ -58,10 +58,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="备注">
+      <el-table-column align="center" label="备注" :show-overflow-tooltip="true">
         <template slot-scope="{ row }">
           <template v-if="row.edit">
-            <el-input v-model="row.remark" class="edit-input" size="small" />
+            <el-input v-model="row.remark" class="edit-input" size="small" :maxlength="200" />
           </template>
           <span v-else>{{ row.remark }}</span>
         </template>
