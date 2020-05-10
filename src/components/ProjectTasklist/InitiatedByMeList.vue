@@ -119,8 +119,8 @@
             ></sjbtextarea>
           </el-form-item>
         </RedStar>
-        <RedStar :required="true">
-          <el-form-item label="请选择需要导入的excel文件：">
+        <RedStar :required="false">
+          <el-form-item label="附件">
             <el-upload
               ref="upload"
               class="upload-img"
@@ -258,7 +258,11 @@ export default {
       });
     },
     handleSuccess(res, file, fileList) {
-      this.pmsAttachment.push({ name: file.name });
+      this.pmsAttachment.push({
+        name: file.name,
+        fileName: res.data.storfiles.fileName,
+        attachmentUrl: res.data.storfiles.url
+      });
       if (res.code == 200) {
         this.$message({
           message: res.message,
