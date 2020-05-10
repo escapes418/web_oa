@@ -10,70 +10,69 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column align="center" label="项目名称">
+      <el-table-column align="center" label="项目名称" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.projectName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务编号">
+      <el-table-column align="center" label="任务编号" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.taskCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务名称" width="120px">
+      <el-table-column align="center" label="任务名称" width="120px" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <!-- <span class="ignore-detail">{{scope.row.taskName}}</span> -->
-          <el-button type="text" @click="handleDetail(scope.row)">{{ scope.row.taskName }}</el-button>
+          <span style="color:#409EFF;cursor: Pointer;" @click="handleDetail(scope.row)">{{ scope.row.taskName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="上级任务编号">
+      <el-table-column align="center" label="上级任务编号" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.parentTaskCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="所属阶段">
+      <el-table-column align="center" label="所属阶段" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.stageName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态">
+      <el-table-column align="center" label="状态" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.taskStatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务责任人">
+      <el-table-column align="center" label="任务责任人" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.principalName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务发布人">
+      <el-table-column align="center" label="任务发布人" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.taskCreateName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="开始日期">
+      <el-table-column align="center" label="开始日期" width="140px">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.startTime | stamp2TextDateFull }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="截止日期">
+      <el-table-column align="center" label="截止日期" width="140px">
         <template slot-scope="scope">
           <span :class="scope.row.endTime < today ? ['ignore-detail', 'red'] : 'ignore-detail'">{{
             scope.row.endTime | stamp2TextDateFull
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="完成日期">
+      <el-table-column align="center" label="完成日期" width="140px">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.finishTime | stamp2TextDateFull }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="参与人">
+      <el-table-column align="center" label="参与人" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.participantNames }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="进度">
+      <el-table-column align="center" label="进度" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span class="ignore-detail">{{ scope.row.taskProgress }}</span>
         </template>
