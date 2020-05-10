@@ -41,6 +41,13 @@ export function getPmsDeployList(parmas) {
     });
 }
 
+export function delPmsDeployList(parmas) {
+    return request({
+        url: "/webPms/role/" + parmas,
+        method: "delete"
+    });
+}
+
 export function projectTasklistUpdate(params) {
     return request({
         url: "/webPms/role",
@@ -55,7 +62,7 @@ export function projectTasklistUpdate(params) {
 export function projectTasklistCreate(params) {
     return request({
         url: "/webPms/role",
-        method: "post",
+        method: "put",
         data: params
     });
 }

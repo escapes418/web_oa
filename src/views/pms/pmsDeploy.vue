@@ -119,7 +119,13 @@
 
 <script>
 import Sortable from "sortablejs";
-import { getPmsDeployList, projectTasklistUpdate, projectTasklistCreate, updateRoleIndex } from "@/api/pms";
+import {
+  getPmsDeployList,
+  projectTasklistUpdate,
+  projectTasklistCreate,
+  updateRoleIndex,
+  delPmsDeployList
+} from "@/api/pms";
 
 export default {
   name: "DragTable",
@@ -249,7 +255,7 @@ export default {
                 this.list.splice(i, 1);
               }
             }
-            this.updateList();
+            delPmsDeployList(row.id).then(rtn => {});
           })
           .catch(() => {});
       } else {
