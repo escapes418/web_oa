@@ -291,10 +291,10 @@ export default {
       } else {
         this.updateList(row);
       }
-      this.$message({
-        message: "The title has been edited",
-        type: "success"
-      });
+      //   this.$message({
+      //     message: "The title has been edited",
+      //     type: "success"
+      //   });
     },
     add() {
       var list = this.list.map(v => v.sequenceNumber);
