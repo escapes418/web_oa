@@ -1,8 +1,6 @@
 <template>
   <div class="sjb-container calendar-list-container">
-    <!-- v-waves -->
     <el-button class="topBtn" type="primary" icon="el-icon-search" @click="add">新增成员角色</el-button>
-    <div>{{ list }}</div>
     <el-table
       ref="dragTable"
       v-loading="listLoading"
@@ -14,11 +12,7 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column align="center" label="" width="65" type="index">
-        <!--<template slot-scope="{ row }">
-          <span>{{ row.sequenceNumber }}</span>
-        </template> -->
-      </el-table-column>
+      <el-table-column align="center" label="" width="65" type="index"> </el-table-column>
 
       <el-table-column width="180px" align="center" label="角色编号">
         <template slot-scope="{ row }">
