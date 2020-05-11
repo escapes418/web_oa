@@ -281,7 +281,7 @@
                 </div>
                 <div class="segment statistics">
                     <div class="segment-header">
-                        一般要求
+                        资金及开票信息
                     </div>
                     <div class="segment-area">
                         <el-row>
@@ -330,7 +330,7 @@
                 </div>
                 <div class="segment statistics">
                     <div class="segment-header">
-                        特殊要求
+                        业务信息
                     </div>
                     <div class="segment-area">
                         <el-row>

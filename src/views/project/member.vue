@@ -301,16 +301,20 @@ export default {
         },
         modifyRole(){
             if(this.selectMember.length>0){
+                let key = true
                 this.selectMember.some(item=>{
                     if(item.projectRoleType == 1){
                         this.$message({
                             type:"warning",
                             message:"选择修改角色的成员包含系统角色，无法修改，请重新选择！"
                         })
+                        key = false;
                         return true
                     }
                 })
-                this.dialogModify = true;
+                if(key){
+                    this.dialogModify = true;
+                }
             }else{
                 this.$message({
                     message: "请选择需要修改角色的成员",
