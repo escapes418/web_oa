@@ -203,10 +203,17 @@ export default {
   },
   methods: {
     handleDetail(row) {
-      this.$router.push({
-        path: "/inforManage/pmsDetail",
-        query: { key: row.id }
-      });
+      if (row.parentTaskCode == "") {
+        this.$router.push({
+          path: "/inforManage/pmsDetail",
+          query: { key: row.id }
+        });
+      } else {
+        this.$router.push({
+          path: "/inforManage/pmsSonDetail",
+          query: { key: row.id, taskCode: row.taskCode }
+        });
+      }
     },
     downLoadContractDiaLog(row) {
       this.downLoadId = row.id;
