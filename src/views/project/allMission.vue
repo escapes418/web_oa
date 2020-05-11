@@ -12,7 +12,7 @@
             
             <div class="toolbar-item">
                 <span class="item-label">任务名称：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程编号/标题" v-model.trim="listQuery.taskName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入任务名称" v-model.trim="listQuery.taskName">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -24,7 +24,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">任务责任人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程名称" v-model="listQuery.principalName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入任务责任人" v-model="listQuery.principalName">
                 </el-input>
             </div>
             <div class="toolbar-item">
