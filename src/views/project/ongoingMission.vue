@@ -122,7 +122,7 @@
                 </div>
                 <div class="move-item">
                     <RedStar label="上传附件">
-                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :headers='{sessionid:token}' :action="fileURL" :auto-upload="false" :file-list="attachment" :on-success="storeSuccess" :on-exceed="storeExceed" :limit="1">
+                        <el-upload ref="upload" class="upload-img" :before-upload = "beforeUpload" :headers='{sessionid:token}' :action="fileURL" :file-list="attachment" :on-success="storeSuccess" :on-exceed="storeExceed" :limit="5">
                             <el-button size="small" type="primary">上传</el-button>
                             <div slot="tip" class="el-upload__tip">
                                 最多可上传5个附件，支持jpg,jpeg,png,doc,docx,xls,xlsx,pdf格式
@@ -153,6 +153,7 @@ import listQueryMix from '../../mixins/listQuery.mix';
 import RedStar from "@/components/RedStar/RedStar.vue";
 import sjbtextarea from '@/components/sjbTextarea/index.vue';
 import config from '@/utils/config';
+import utils from '@/utils/utils';
 
 export default {
     mixins: [listQueryMix],
@@ -180,7 +181,7 @@ export default {
             },
             stageList:[],
             dialogProgress:false,
-            fileURL: process.env.BASE_API + '/consumables/consumablesImport',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             uploadTips: config.tips,
             attachment:[],
             postData:{
@@ -284,36 +285,29 @@ export default {
         beforeUpload(file) {
             return utils.handleImgError(file)
         },
-        handleCreate() {
-            this.$router.push({path: '/me/reimForm'})
-        },
         storeExceed(){
             this.$message({
-                message: "批量上传文件一次只能上传一个文件！",
+                message: "批量上传文件一次只能上传五个文件！",
                 type: 'error'
             })
         },
         storeSuccess(res, file, fileList){
-            this.attachment = fileList;
-            if(res.code == 200){
+            if(res.data.resCode == 1){
                 this.$message({
-                    message: res.message,
+                    message: res.data.resDesc,
                     type: 'success'
                 })
-                this.dialogUpload = false;
-                this.getList()
+                let url =res.data.storfiles.serverUrl + res.data.storfiles.url
+                this.attachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
             }else{
                 this.$message({
-                    message: res.message,
+                    message:  res.data.resDesc,
                     type: 'error',
                     duration:10000
                 })
+                this.attachment = []
             }
-            this.attachment = []
         },
-        exportFile(){
-            this.dialogProgress = true;
-        }
     }
 }
 </script>

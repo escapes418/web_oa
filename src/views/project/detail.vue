@@ -500,18 +500,18 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="成员" name="2">
-                <member :projectId="$route.query.key"></member>
+                <member ref="memberList" :projectId="$route.query.key"></member>
             </el-tab-pane>
             <el-tab-pane label="进程" name="3">
                 <el-tabs type="card" class="tabs" v-model="activeProcesss" @tab-click="processClick">
                     <el-tab-pane label="阶段" name="0">
-                        <stage></stage>
+                        <stage ref="stageList"></stage>
                     </el-tab-pane>
                     <el-tab-pane label="进行中任务" name="1">
-                        <ongoingMission></ongoingMission>
+                        <ongoingMission ref="ongoingMissionList"></ongoingMission>
                     </el-tab-pane>
                     <el-tab-pane label="全部任务" name="2">
-                        <allMission></allMission>
+                        <allMission ref="allMissionList"></allMission>
                     </el-tab-pane>
                 </el-tabs>
             </el-tab-pane>
@@ -521,7 +521,7 @@
                     <div class="segment-header">
                         签约合同
                     </div>
-                    <signContract></signContract>
+                    <signContract ref="signContractList"></signContract>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -707,8 +707,8 @@ export default {
                 })
             });
             this.$$queryStub = this.$$listQuery;
-            this.getIm()
-            this.getConnect();
+            // this.getIm()
+            // this.getConnect();
             this.getNode();
 
         }
@@ -765,6 +765,71 @@ export default {
         },
         tabClick(value){
             this.activeTop= value.name;
+            if(this.activeTop==0){
+                getBaseInfo(this.$route.query.key).then(res=>{
+                    this.baseInfo = res.data
+                })
+                getProgress(this.$route.query.key).then(res=>{
+                    this.progressInfor = res.data
+                })
+                // this.$nextTick(_=>{
+                    if(this.activePost ==1){
+                        this.$refs.postList1.getList()
+                    }
+                    if(this.activePost ==2){
+                        this.$refs.postList2.getList()
+                    }
+                    if(this.activePost ==3){
+                        this.$refs.postList3.getList()
+                    }
+                // })
+            }
+            if(this.activeTop ==1){
+                this.showNum = true;
+                fetchForm({
+                    id: this.$route.query.key
+                }).then(res => {
+                    this.detail = res.data;
+                    this.detail.taskProgress = "80%"
+                    this.processFlag = res.data.processFlag || ""
+                    res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
+                        this.goodsNames.push(item.carrierGoodName)
+                    })
+                    res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
+                        this.companyList.push(item.companyName)
+                    })
+                    // res.data.projectLinkmanDetailResponse.forEach((item,index)=>{
+                    //     item.index = index+1
+                    // })
+                    this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map((i,key)=>{
+                        return {
+                            ...i,
+                            index:key+1
+                        }
+                    })
+                });
+                this.getNode();
+            }
+            if(this.activeTop ==2){
+                this.$refs.memberList.getList()
+            }
+            if(this.activeTop ==3){
+                console.log(55555)
+                // this.$nextTick(_=>{
+                    if(this.activeProcesss ==1){
+                        this.$refs.stageList.getList()
+                    }
+                    if(this.activeProcesss ==2){
+                        this.$refs.ongoingMissionList.getList()
+                    }
+                    if(this.activeProcesss ==3){
+                        this.$refs.allMissionList.getList()
+                    }
+                // })
+            }
+            if(this.activeTop ==4){
+                this.$refs.signContractList.getList()
+            }
         },
         jumpClick(value){
             this.activeTop = value
@@ -790,10 +855,10 @@ export default {
         processClick(value){
             this.activeProcesss = value.name;
         },
-        handleCurrentChange(val) {
-            this.pageNo = val;
-            this.getConnect();
-        },
+        // handleCurrentChange(val) {
+        //     this.pageNo = val;
+        //     this.getConnect();
+        // },
         handleNodeChange(val){
             this.pageNodeNo = val;
             this.getNode();
@@ -811,29 +876,29 @@ export default {
                 this.nodeTotal = res.data.total;
             })
         },
-        getConnect() {
-            getContractList({
-                projectId:this.$route.query.key,
-                pageNo:this.pageNo,
-                pageSize:this.pageSize
-            }).then(res => {
-                this.connectList = res.data.list;
-                this.total = res.data.total;
-            })
-        },
+        // getConnect() {
+        //     getContractList({
+        //         projectId:this.$route.query.key,
+        //         pageNo:this.pageNo,
+        //         pageSize:this.pageSize
+        //     }).then(res => {
+        //         this.connectList = res.data.list;
+        //         this.total = res.data.total;
+        //     })
+        // },
 
-        getIm(){
-            var postData = this.reduceParams(this.$$queryStub);
-            getImList({
-                ...postData,
-                projectId:this.$route.query.key,
-                pageNo:this.pageImNo,
-                pageSize:this.pageImSize
-            }).then(res=>{
-                this.imList = res.data.list;
-                this.imTotal = res.data.total
-            })
-        },
+        // getIm(){
+        //     var postData = this.reduceParams(this.$$queryStub);
+        //     getImList({
+        //         ...postData,
+        //         projectId:this.$route.query.key,
+        //         pageNo:this.pageImNo,
+        //         pageSize:this.pageImSize
+        //     }).then(res=>{
+        //         this.imList = res.data.list;
+        //         this.imTotal = res.data.total
+        //     })
+        // },
         reduceParams($$imData) {
             if (!$$imData || $$imData.size == 0) return {};
             const $$postData = $$imData

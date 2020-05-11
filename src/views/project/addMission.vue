@@ -44,13 +44,13 @@
                                 </el-option>
                             </el-select>
                         </RedStar>
-                        <RedStar label="参与人：" :required="true">
+                        <RedStar label="参与人：">
                             <el-select clearable multiple filterable class="filter-item " v-model="postData.memberIds" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in memberList" :label="item.memberUserName" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
                         </RedStar>
-                        <RedStar label="截止日期：">
+                        <RedStar label="截止日期：" :required="true">
                             <el-date-picker
                                 v-model="endTime"
                                 style="width:250px;"
@@ -231,7 +231,7 @@ export default {
     }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;
 }
