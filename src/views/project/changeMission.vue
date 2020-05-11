@@ -43,21 +43,21 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle">变更前</div>
-                        <div style="height:32px">{{detail.taskCode}}</div>
-                        <div style="height:32px">{{detail.parentTaskCode}}</div>
-                        <div style="height:32px">{{detail.taskName}}</div>
-                        <div style="height:32px">{{detail.projectStageName}}</div>
-                        <div style="height:32px">{{detail.principalName}}</div>
-                        <div style="height:32px">{{memberNames.join('，')}}</div>
-                        <div style="height:32px">{{detail.startTime | stamp2TextDate}}</div>
-                        <div style="height:32px">{{detail.endTime | stamp2TextDate}}</div>
-                        <div style="height:32px">{{detail.taskDesc}}</div>
-                        <div style="height:32px">{{detail.remark}}</div>
+                        <div style="height:35px">{{detail.taskCode}}</div>
+                        <div style="height:35px">{{detail.parentTaskCode}}</div>
+                        <div style="height:35px">{{detail.taskName}}</div>
+                        <div style="height:35px">{{detail.projectStageName}}</div>
+                        <div style="height:35px">{{detail.principalName}}</div>
+                        <div style="height:35px">{{memberNames.join('，')}}</div>
+                        <div style="height:35px">{{detail.startTime | stamp2TextDate}}</div>
+                        <div style="height:35px">{{detail.endTime | stamp2TextDate}}</div>
+                        <div style="height:35px">{{detail.taskDesc}}</div>
+                        <div style="height:35px">{{detail.remark}}</div>
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle red">变更后</div>
                         <div>{{detail.taskCode}}</div>
-                        <div style="height:32px">{{detail.parentTaskCode}}</div>
+                        <div style="height:35px">{{detail.parentTaskCode}}</div>
                         <div>
                             <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName" :maxlength="32"></el-input>
                         </div>
@@ -245,23 +245,24 @@ export default {
                         message: res.message,
                         type: "success"
                     })
-                    this.initData()
-                    this.getDetail()
+                    this.$router.go(-1);
+                    // this.initData()
+                    // this.getDetail()
                 }
             })
         },
-        initData(){
-            this.postData.projectStageId = "";
-            this.postData.parentTaskCode = "";
-            this.postData.taskName = "";
-            this.postData.principalId = "";
-            this.postData.principalName = "";
-            this.postData.memberIds = [];
-            this.startTime = "";
-            this.endTime = "";
-            this.postData.taskDesc = "";
-            this.postData.remark = "";
-        },
+        // initData(){
+        //     this.postData.projectStageId = "";
+        //     this.postData.parentTaskCode = "";
+        //     this.postData.taskName = "";
+        //     this.postData.principalId = "";
+        //     this.postData.principalName = "";
+        //     this.postData.memberIds = [];
+        //     this.startTime = "";
+        //     this.endTime = "";
+        //     this.postData.taskDesc = "";
+        //     this.postData.remark = "";
+        // },
         getDetail(){
             getChange(this.$route.query.taskId).then(res=>{
                 this.detail = res.data;
