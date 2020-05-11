@@ -208,6 +208,13 @@
       </el-upload>
     </div>
     <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList1"></postList>
+    <div class="segment statistics">
+      <div class="sjb-foot-button">
+        <template>
+          <el-button size="medium" @click="backBtn">返回</el-button>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -300,6 +307,9 @@ export default {
       }
       this.urlArr.viewer = new Viewer(event.target, {});
       this.urlArr.viewer.show();
+    },
+    backBtn() {
+      this.$router.go(-1);
     },
     showImg(index, type) {
       if (type == 1) {

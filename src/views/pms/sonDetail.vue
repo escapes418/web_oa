@@ -219,6 +219,13 @@
       </el-upload>
     </div>
     <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList1"></postList>
+    <div class="segment statistics">
+      <div class="sjb-foot-button">
+        <template>
+          <el-button size="medium" @click="backBtn">返回</el-button>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -399,6 +406,9 @@ export default {
         let url = res.data.storfiles.serverUrl + res.data.storfiles.url;
         this.expenseAttachment.push({ originUrl: res.data.storfiles.url, name: file.name, url: url, uid: file.uid });
       }
+    },
+    backBtn() {
+      this.$router.go(-1);
     },
     // 附件移除
     handleRemove(file, fileList) {
