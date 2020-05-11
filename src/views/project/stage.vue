@@ -6,18 +6,18 @@
             </div>
         </div>
         <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="阶段名称">
+            <el-table-column align="center" label="阶段名称" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.stageName" class="edit-input" size="small" />
+                        <el-input v-model="scope.row.stageName" class="edit-input" size="small" :maxlength="32" />
                     </template>
                     <span  v-else class="ignore-detail" :title="scope.row.stageName">{{scope.row.stageName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="阶段描述">
+            <el-table-column align="center" label="阶段描述" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                     <template v-if="scope.row.edit">
-                        <el-input v-model="scope.row.stageDesc" class="edit-input" size="small" />
+                        <el-input v-model="scope.row.stageDesc" class="edit-input" size="small" :maxlength="32" />
                     </template>
                     <span  v-else class="ignore-detail" :title="scope.row.stageDesc">{{scope.row.stageDesc}}</span>
                 </template>
@@ -178,8 +178,9 @@ export default {
                 }
             })
         },
-        handleCurrentChange(){
-            
+        handleCurrentChange(val){
+            this.pageNum = val;
+            this.getList();
         }
     }
 }

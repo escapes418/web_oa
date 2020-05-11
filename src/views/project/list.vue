@@ -3,7 +3,7 @@
         <div class="filter-container">
             <div class="toolbar-item">
                 <span class="item-label">项目名称：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" placeholder="请输入项目名称" class="filter-item" v-model.trim="listQuery.projectName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" placeholder="请输入项目名称" class="filter-item" v-model.trim="listQuery.projectName" :maxlength="32">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -15,7 +15,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">企业编号：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" class="filter-item" placeholder="请输入企业编号"  v-model.trim="listQuery.holderCode">
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" class="filter-item" placeholder="请输入企业编号"  v-model.trim="listQuery.holderCode" :maxlength="32">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -27,7 +27,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">成员姓名：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName" :maxlength="32">
                 </el-input>
             </div>
             <div class="toolbar-item">

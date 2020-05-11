@@ -59,7 +59,7 @@
                         <div>{{detail.taskCode}}</div>
                         <div style="height:32px">{{detail.parentTaskCode}}</div>
                         <div>
-                            <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName"></el-input>
+                            <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName" :maxlength="32"></el-input>
                         </div>
                         <div>
                             <el-select clearable class="filter-item" v-model="postData.projectStageId" placeholder="请选择" style="width:250px;">
@@ -100,7 +100,7 @@
                                     v-model.trim="postData.taskDesc" 
                                     placeholder="请输入" 
                                     :row="3" 
-                                    :max="600"
+                                    :max="200"
                                     textStyle="width:250px"></sjbtextarea>
                         </div>
                         <div>
@@ -108,7 +108,7 @@
                                     v-model.trim="postData.remark" 
                                     placeholder="请输入" 
                                     :row="3" 
-                                    :max="600"
+                                    :max="200"
                                     textStyle="width:250px"></sjbtextarea>
                         </div>
                     </el-col>

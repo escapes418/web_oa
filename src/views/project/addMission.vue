@@ -11,7 +11,7 @@
                             <span class="right-con">{{$route.query.parentTaskCode || ""}}</span>
                         </RedStar>
                         <RedStar label="任务名称：" :required="true">
-                            <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName"></el-input>
+                            <el-input type="text" placeholder="请输入" style="width:250px;" v-model.trim="postData.taskName" :maxlength="32"></el-input>
                         </RedStar>
                         <RedStar label="任务负责人：" :required="true">
                             <el-select clearable class="filter-item" v-model="postData.principalId" placeholder="请选择" style="width:250px;">
@@ -32,7 +32,7 @@
                                 v-model.trim="postData.taskDesc" 
                                 placeholder="请输入" 
                                 :row="3" 
-                                :max="600"
+                                :max="200"
                                 textStyle="width:250px">
                             </sjbtextarea>
                         </RedStar>
@@ -64,7 +64,7 @@
                                     v-model.trim="postData.remark" 
                                     placeholder="请输入" 
                                     :row="3" 
-                                    :max="600"
+                                    :max="200"
                                     textStyle="width:250px"></sjbtextarea>
                             </span>
                         </RedStar>

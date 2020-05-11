@@ -61,7 +61,7 @@
                         <div class="move-item">
                             <span class="item-label">部门人员：</span>
                             <div class="filter-item">
-                                <el-input placeholder="输入关键字进行过滤" v-model="filterTree" style="width:300px;margin-bottom:10px"></el-input>
+                                <el-input placeholder="输入关键字进行过滤" v-model="filterTree" style="width:300px;margin-bottom:10px" :maxlength="32"></el-input>
                                 <el-tree node-key="id" :data="treeData" show-checkbox check-strictly :props="defaultProps" @check-change="handleClick"  :filter-node-method="memberNode" ref="tree"></el-tree>
                             </div>
                         </div>
