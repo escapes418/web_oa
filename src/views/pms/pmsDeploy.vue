@@ -2,6 +2,7 @@
   <div class="sjb-container calendar-list-container">
     <!-- v-waves -->
     <el-button class="topBtn" type="primary" icon="el-icon-search" @click="add">新增成员角色</el-button>
+    <div>{{ list }}</div>
     <el-table
       ref="dragTable"
       v-loading="listLoading"
@@ -210,14 +211,13 @@ export default {
         }
       });
     },
-    updateList() {
-      return new Promise((resolve, reject) => {
-        projectTasklistUpdate({
-          list: this.list
-        }).then(rtn => {
-          resolve(rtn.data);
-        });
-      });
+    updateList(row) {
+      return projectTasklistUpdate(row)
+        .then(rtn => {
+          const code = rtn.data.roleCode;
+          return code;
+        })
+        .then(id => row.new && this.updateRoleIndex(id, row.index));
     },
     createItem(row) {
       return projectTasklistCreate(row)
@@ -227,6 +227,7 @@ export default {
             ...row,
             roleCode: code
           });
+          this.list[row.index].new = false;
           return code;
         })
         .then(id => row.new && this.updateRoleIndex(id, row.index));
@@ -285,8 +286,11 @@ export default {
       row.isPrincipalName = isPrincipalName;
       row.originalisPrincipalName = isPrincipalName;
       row.updateTime = this.fitchTime();
-      // this.updateList();
-      this.createItem(row);
+      if (row.new) {
+        this.createItem(row);
+      } else {
+        this.updateList(row);
+      }
       this.$message({
         message: "The title has been edited",
         type: "success"

@@ -62,7 +62,7 @@ export function projectTasklistUpdate(params) {
 export function projectTasklistCreate(params) {
     return request({
         url: "/webPms/role",
-        method: "put",
+        method: "post",
         data: params
     });
 }
