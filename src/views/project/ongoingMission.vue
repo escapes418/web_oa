@@ -329,5 +329,7 @@ export default {
         margin-left: 30px
     }
 }
-
+.red {
+  color: red;
+}
 </style>
