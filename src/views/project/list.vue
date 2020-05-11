@@ -139,8 +139,11 @@
                     <span class="select-item">{{item.projectName}}</span>
                 </span>
             </div>
-            <div class="merge-item" v-for="(item,index) in dynaRole" :key="index">
-                <el-checkbox v-model="item.checked" :label="item.roleName"></el-checkbox>
+            <div class="merge-item">
+                <span class="select-item" v-for="(item,index) in dynaRole" :key="index">
+                    <el-checkbox v-model="item.checked" :label="item.roleName"></el-checkbox>
+                </span>
+                
             </div>
             <div class="move-select">
                 
@@ -395,14 +398,15 @@ export default {
             this.selectProject.forEach(item=>{
                 projectIds.push(item.id)
             })
-            console.log(this.dynaRole)
+            let moveDetail = [];
+            this.dynaRole.forEach(item=>{
+                if(item.checked){
+                    moveDetail.push({id:item.id,userId:item.selectId})
+                }
+            })
             moveProjects({
                 projectIds:projectIds,
-                impleLeaderId:this.impleLeaderId,
-                projectManagerId:this.projectManagerId,
-                businessAssistantId:this.businessAssistantId,
-                vipCustomerId:this.vipCustomerId,
-                accountLeaderId:this.accountLeaderId
+                moveDetail:moveDetail
             }).then(res=>{
                 if(res.code == 200){
                     this.moveClose();
