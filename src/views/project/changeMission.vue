@@ -289,7 +289,7 @@ export default {
     }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;
     

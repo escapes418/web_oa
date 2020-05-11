@@ -370,7 +370,7 @@ export default {
         roleChange(val){
             this.roleList.map(item=>{
                 if(item.id == val){
-                    this.canMulti = item.isPrincipal
+                    this.canMulti = item.isPrincipal == 0
                 }
             })
             this.memberData.forEach(data=>{
