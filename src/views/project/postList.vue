@@ -2,7 +2,7 @@
     <div class="postContain">
        <ul v-for="(item,index) in list" :key="index">
             <li v-html="item.operateInfo"></li>
-            <i v-if="item.operateType ==3" class="el-icon-plus" @click="jumpChange(item)"></i>
+            <i v-if="item.operateType ==3" class="el-icon-plus" @click="jumpChange(item)" title="查看变更记录"></i>
         </ul>
         <el-pagination background  @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
