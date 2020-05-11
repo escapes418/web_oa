@@ -382,13 +382,11 @@ export default {
           var typeName = typeArr[typeArr.length - 1];
           if (fileSuffix.indexOf(typeName) !== -1) {
             el.type = 1;
-            el.push({
-              url: el.serverUrl + el.attachmentUrl,
-              name: el.fileName,
-              originUrl: el.attachmentUrl,
-              previewUrl: el.serverUrl + el.attachmentUrl,
-              viewer: null
-            });
+            el.url = el.serverUrl + el.attachmentUrl;
+            el.name = el.fileName;
+            el.originUrl = el.attachmentUrl;
+            el.previewUrl = el.serverUrl + el.attachmentUrl;
+            el.viewer = null;
           } else {
             el.type = 2;
           }
