@@ -145,11 +145,11 @@ export default {
       },
       options: [
         {
-          value: "0",
+          value: 0,
           name: "否"
         },
         {
-          value: "1",
+          value: 1,
           name: "是"
         }
       ],
@@ -230,11 +230,19 @@ export default {
       return updateRoleIndex(id, index + 1);
     },
     cancelEdit(row) {
-      row.roleName = row.originalroleName;
-      row.isPrincipal = row.originalisPrincipal;
-      row.remark = row.originalremark;
-      row.isPrincipalName = row.originalisPrincipalName;
-      row.edit = false;
+      if (row.new) {
+        for (var i = 0; i < this.list.length; i++) {
+          if (this.list[i].index === row.index) {
+            this.list.splice(i, 1);
+          }
+        }
+      } else {
+        row.roleName = row.originalroleName;
+        row.isPrincipal = row.originalisPrincipal;
+        row.remark = row.originalremark;
+        row.isPrincipalName = row.originalisPrincipalName;
+        row.edit = false;
+      }
     },
     del(row) {
       console.log(row);
