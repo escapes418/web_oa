@@ -145,7 +145,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="基本信息" name="1">
+            <el-tab-pane label="项目信息管理" name="1">
                 <div class="segment statistics">
                     <div class="segment-header">
                         基本信息
