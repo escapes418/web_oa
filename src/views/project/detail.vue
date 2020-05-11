@@ -126,13 +126,13 @@
                                         v-model.trim="dynamicInfo">
                                     </sjbtextarea>
                                 </div>
-                                <div>
+                                <!-- <div>
                                      <el-upload class="upload-img" :action="fileURL" :headers='{ sessionid:token}' :on-remove="handleRemove" :before-upload = "beforeUpload" :on-success="handleSuccess" :file-list="expenseAttachment">
                                         附件（{{expenseAttachment.length}}）个
                                         <i class="iconfont icon-fujian avatar-uploader-icon"></i>
                                         <div slot="tip" class="el-upload__tip">{{uploadTips}}</div>
                                     </el-upload>
-                                </div>
+                                </div> -->
                                 <postList :projectId="$route.query.key" :dynamicType="activePost" ref="postList1"></postList>
                             </el-tab-pane>
                             <el-tab-pane label="任务动态" name="2">
@@ -688,7 +688,6 @@ export default {
                 id: this.$route.query.key
             }).then(res => {
                 this.detail = res.data;
-                this.detail.taskProgress = "80%"
                 this.processFlag = res.data.processFlag || ""
                 res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
                     this.goodsNames.push(item.carrierGoodName)

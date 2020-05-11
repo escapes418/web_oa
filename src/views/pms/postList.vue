@@ -100,8 +100,8 @@ export default {
             default: "1"
         },
         projectId:{
-            type: String,
-            default: ""
+            type: Number,
+            default: 0
         },
     },
     created() {

@@ -19,14 +19,14 @@
                 </el-input>
             </div>
             <div class="toolbar-item">
-                <span class="item-label">负责人类型：</span>
+                <span class="item-label">成员角色：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.leaderType" placeholder="请选择">
-                    <el-option v-for="item in leaderTypeList" :key="item.value" :label="item.name" :value="item.value">
+                    <el-option v-for="item in leaderTypeList" :key="item.id" :label="item.roleName" :value="item.id">
                     </el-option>
                 </el-select>
             </div>
             <div class="toolbar-item">
-                <span class="item-label">负责人：</span>
+                <span class="item-label">成员姓名：</span>
                 <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName">
                 </el-input>
             </div>
@@ -139,30 +139,25 @@
                     <span class="select-item">{{item.projectName}}</span>
                 </span>
             </div>
-            <div class="merge-item">
-                <!-- <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox> -->
-                <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
-                <el-checkbox v-model="projectChecked" label="项目管理负责人"></el-checkbox>
-                <!-- <el-checkbox v-model="businessChecked" label="商务助理"></el-checkbox>
-                <el-checkbox v-model="vipChecked" label="VIP客服"></el-checkbox>
-                <el-checkbox v-model="accountChecked" label="清结算"></el-checkbox> -->
+            <div class="merge-item" v-for="(item,index) in dynaRole" :key="index">
+                <el-checkbox v-model="item.checked" :label="item.roleName"></el-checkbox>
             </div>
             <div class="move-select">
                 
-                <div class="move-item">
-                    <span class="item-label">实施负责人：</span>
+                <div class="move-item" v-for="(item,index) in dynaRole" :key="index">
+                    <span class="item-label">{{item.roleName}}</span>
                     <el-select 
                         style="width: 300px" 
                         class="filter-item" 
-                        v-model="impleLeaderId"
-                        :disabled="!implyChecked"
+                        v-model="item.selectId"
+                        :disabled="!item.checked"
                         filterable
-                        placeholder="请选择实施负责人">
+                        placeholder="请选择">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">项目管理负责人：</span>
                     <el-select 
                         style="width: 300px" 
@@ -174,7 +169,7 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
-                </div>
+                </div> -->
                 <!-- <div class="move-item">
                     <span class="item-label">商务助理：</span>
                     <el-select 
@@ -226,7 +221,7 @@
 <script>
 import common from "@/utils/common";
 import Department from "@/components/Department";
-import { fetchList,getMember,moveProjects} from "@/api/project";
+import { fetchList,getMember,moveProjects,getRoleDrop} from "@/api/project";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -307,6 +302,7 @@ export default {
             memberList:[],
             selectProject:[],
             dialogMoveVisible:false,
+            dynaRole:[],
             // marketChecked:false,
             implyChecked:false,
             projectChecked:false,
@@ -339,7 +335,12 @@ export default {
         }
         this.proTypeList = selectDic(dicList, "project_type");
         this.projectState = selectDic(dicList, "project_state");
-        this.leaderTypeList = selectDic(dicList, "leader_type");
+        getRoleDrop("2").then(res=>{
+            if(res.code == 200){
+                this.leaderTypeList = res.data
+            }
+        })
+        
     },
     methods: {
         depConfirm(data){
@@ -363,6 +364,18 @@ export default {
                 })
                 return
             }
+            getRoleDrop("1").then(res=>{
+                if(res.code == 200){
+                    this.dynaRole = res.data.map(item=>{
+                        return{
+                            ...item,
+                            selectId:"",
+                            checked:false
+                        }
+                    });
+
+                }
+            })
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
                 if(res.code == 200){
@@ -374,103 +387,32 @@ export default {
             })
         },
         moveClose(){
-            this.dialogMoveVisible = false;
-            this.implyChecked=false;
-            this.projectChecked=false;
-            this.businessChecked=false;
-            this.vipChecked=false;
-            this.accountChecked=false;
-            this.accountLeaderId='';
-            this.businessAssistantId='';
-            this.projectManagerId='';
-            this.impleLeaderId='';
-            this.vipCustomerId=''
+            
         },
         confirmMove(){
-            if(this.implyChecked || this.projectChecked || this.businessChecked || this.vipChecked || this.accountChecked){
-                if(this.implyChecked){
-                    if(!this.impleLeaderId){
-                        this.$message({
-                            message:'请选择实施负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.impleLeaderId = ""
-                }
-                if(this.projectChecked){
-                    if(!this.projectManagerId){
-                        this.$message({
-                            message:'请选择项目管理负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.projectManagerId = ""
-                }
-                if(this.businessChecked){
-                    if(!this.businessAssistantId){
-                        this.$message({
-                            message:'请选择商务助理！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.businessAssistantId = ""
-                }
-                if(this.vipChecked){
-                    if(!this.vipCustomerId){
-                        this.$message({
-                            message:'请选择VIP客服！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.vipCustomerId = ""
-                }
 
-                if(this.accountChecked){
-                    if(!this.accountLeaderId){
-                        this.$message({
-                            message:'请选择清结算！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.accountLeaderId = ""
+            let projectIds = [];
+            this.selectProject.forEach(item=>{
+                projectIds.push(item.id)
+            })
+            console.log(this.dynaRole)
+            moveProjects({
+                projectIds:projectIds,
+                impleLeaderId:this.impleLeaderId,
+                projectManagerId:this.projectManagerId,
+                businessAssistantId:this.businessAssistantId,
+                vipCustomerId:this.vipCustomerId,
+                accountLeaderId:this.accountLeaderId
+            }).then(res=>{
+                if(res.code == 200){
+                    this.moveClose();
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.getList()
                 }
-                let projectIds = [];
-                this.selectProject.forEach(item=>{
-                    projectIds.push(item.id)
-                })
-                moveProjects({
-                    projectIds:projectIds,
-                    impleLeaderId:this.impleLeaderId,
-                    projectManagerId:this.projectManagerId,
-                    businessAssistantId:this.businessAssistantId,
-                    vipCustomerId:this.vipCustomerId,
-                    accountLeaderId:this.accountLeaderId
-                }).then(res=>{
-                    if(res.code == 200){
-                        this.moveClose();
-                        this.$message({
-                            message: res.message,
-                            type: "success"
-                        });
-                        this.getList()
-                    }
-                })
-            }else{
-                this.$message({
-                    message:'请为移动项目勾选相关负责人！',
-                    type:'warning'
-                })
-            }
+            })
         },
         moveCancel(){
             this.dialogMoveVisible = false;

@@ -80,7 +80,7 @@
                                 class="filter-item" 
                                 v-model="modifyRoleId"
                                 filterable
-                                placeholder="请选择实施负责人">
+                                placeholder="请选择成员角色">
                                 <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
                                 </el-option>
                             </el-select>
@@ -301,6 +301,15 @@ export default {
         },
         modifyRole(){
             if(this.selectMember.length>0){
+                this.selectMember.some(item=>{
+                    if(item.projectRoleType == 1){
+                        this.$message({
+                            type:"warning",
+                            message:"选择修改角色的成员包含系统角色，无法修改，请重新选择！"
+                        })
+                        return true
+                    }
+                })
                 this.dialogModify = true;
             }else{
                 this.$message({

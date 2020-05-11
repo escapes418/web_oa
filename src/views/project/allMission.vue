@@ -290,6 +290,7 @@ export default {
             this.getList()
         },
         showChange(row){
+
             this.$router.push({
                 path:'/inforManage/changeMission',
                 query: { projectId:this.$route.query.key, taskId: row.id }
@@ -298,7 +299,7 @@ export default {
         addMission(row){
              this.$router.push({
                 path:'/inforManage/addProgress',
-                query: { projectId:this.$route.query.key,parentTaskCode: row.taskCode }
+                query: { projectId:this.$route.query.key ,parentTaskCode: row.taskCode }
             })
         },
         showProgress(row){
