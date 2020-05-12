@@ -504,13 +504,13 @@
             </el-tab-pane>
             <el-tab-pane label="进程" name="3">
                 <el-tabs type="card" class="tabs" v-model="activeProcesss" @tab-click="processClick">
-                    <el-tab-pane label="阶段" name="0">
+                    <el-tab-pane label="阶段" name="1">
                         <stage ref="stageList"></stage>
                     </el-tab-pane>
-                    <el-tab-pane label="进行中任务" name="1">
+                    <el-tab-pane label="进行中任务" name="2">
                         <ongoingMission ref="ongoingMissionList"></ongoingMission>
                     </el-tab-pane>
-                    <el-tab-pane label="全部任务" name="2">
+                    <el-tab-pane label="全部任务" name="3">
                         <allMission ref="allMissionList"></allMission>
                     </el-tab-pane>
                 </el-tabs>
@@ -577,7 +577,7 @@ export default {
             uploadTips: config.tips,
             activePost:"1",
             activeTop:'0',
-            activeProcesss:"0",
+            activeProcesss:"1",
             detail:{},
             showNum: false,
             baseInfo:{},
