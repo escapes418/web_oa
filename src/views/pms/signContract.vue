@@ -58,7 +58,7 @@
         <el-dialog title="新建关联合同" :visible.sync="dialogFormVisible">
                 <span class="toolbar-item">
                     <span class="item-label">请输入合同编号/甲方/乙方/丙方：</span>
-                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入合同编号/甲方/乙方/丙方" v-model.trim="listQuery.keyWord">
+                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入合同编号/甲方/乙方/丙方" v-model.trim="listQuery.keyWord" :maxlength="32">
                     </el-input>
                 </span>
                 <span class="toolbar-item">

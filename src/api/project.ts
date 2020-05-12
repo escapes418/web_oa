@@ -295,7 +295,7 @@ export function saveChange(id,params){
 
 export function getChangeDetail(businessType,businessId){
     return request({
-        url:`webPms/task/change/record/${businessType}/${businessId}`,
+        url:`/webPms/task/change/record/${businessType}/${businessId}`,
         method:'get'
     })
 }
