@@ -211,7 +211,7 @@ export default {
           const code = rtn.data.roleCode;
           return code;
         })
-        .then(id => row.new && this.updateRoleIndex(id, row.index));
+        .then(id => row.new && this.updateRoleIndex(id, row.index, row));
     },
     createItem(row) {
       return projectTasklistCreate(row)
@@ -224,10 +224,21 @@ export default {
           this.list[row.index].new = false;
           return code;
         })
-        .then(id => row.new && this.updateRoleIndex(id, row.index));
+        .then(id => row.new && this.updateRoleIndex(id, row.index, row));
     },
-    updateRoleIndex(id, index) {
-      return updateRoleIndex(id, index + 1);
+    updateRoleIndex(id, index, row) {
+      return updateRoleIndex(id, index + 1).then(r => {
+        if (res.code == 200) {
+          this.$message({
+            message: res.message,
+            type: "success"
+          });
+          // this.$router.push({
+          //     path:'/task/todo'
+          // })
+          this.saveEdit(row);
+        }
+      });
     },
     cancelEdit(row) {
       if (row.new) {
@@ -271,10 +282,7 @@ export default {
           .catch(() => {});
       }
     },
-    confirmEdit(row) {
-      if (!row.roleName) {
-        return this.$message.error("请输入成员角色名称");
-      }
+    saveEdit(row) {
       row.edit = false;
       var isPrincipalName = "";
       this.options.forEach((el, idx) => {
@@ -288,6 +296,11 @@ export default {
       row.isPrincipalName = isPrincipalName;
       row.originalisPrincipalName = isPrincipalName;
       row.updateTime = this.fitchTime();
+    },
+    confirmEdit(row) {
+      if (!row.roleName) {
+        return this.$message.error("请输入成员角色名称");
+      }
       if (row.new) {
         this.createItem(row);
       } else {
@@ -309,7 +322,7 @@ export default {
         roleCode: "",
         roleName: "",
         roleTypeName: "人工",
-        isPrincipal: "0",
+        isPrincipal: 0,
         isPrincipalName: "否",
         remark: "",
         updateTime: this.fitchTime(),
