@@ -208,36 +208,24 @@ export default {
     updateList(row) {
       console.log("updateList");
       return projectTasklistUpdate(row).then(rtn => {
-        const code = rtn.data.roleCode;
-        //   return code;
         if (rtn.code == 200) {
           this.$message({
             message: rtn.message,
             type: "success"
           });
-          // this.$router.push({
-          //     path:'/task/todo'
-          // })
           this.saveEdit(row);
         }
       });
-      // .then(id => row.new && this.updateRoleIndex(id, row.index, row));
     },
     createItem(row) {
       console.log("createItem");
       projectTasklistCreate(row).then(rtn => {
-        //   return code;
-
         if (rtn.code == 200) {
           console.log(rtn);
           this.$message({
             message: rtn.message,
             type: "success"
           });
-          // this.$router.push({
-          //     path:'/task/todo'
-          // })
-          const code = rtn.data.roleCode;
           this.list.splice(row.index, 1, {
             ...row,
             roleCode: code
@@ -245,7 +233,6 @@ export default {
           this.updateRoleIndex(rtn.data.id, row.index, row);
         }
       });
-      // .then(id => row.new && this.updateRoleIndex(id, row.index, row));
     },
     updateRoleIndex(id, index, row) {
       return updateRoleIndex(id, index + 1).then(r => {
@@ -255,9 +242,6 @@ export default {
             type: "success"
           });
           this.list[row.index].new = false;
-          // this.$router.push({
-          //     path:'/task/todo'
-          // })
           this.saveEdit(row);
         }
       });
@@ -305,20 +289,6 @@ export default {
       }
     },
     saveEdit(row) {
-      console.log(row);
-      //   row.edit = false;
-      //   var isPrincipalName = "";
-      //   this.options.forEach((el, idx) => {
-      //     if (el.value == row.isPrincipal) {
-      //       isPrincipalName = el.name;
-      //     }
-      //   });
-      //   row.originalroleName = row.roleName;
-      //   row.originalisPrincipal = row.isPrincipal;
-      //   row.originalremark = row.remark;
-      //   row.isPrincipalName = isPrincipalName;
-      //   row.originalisPrincipalName = isPrincipalName;
-      //   row.updateTime = this.fitchTime();
       this.list.forEach((itm, idx) => {
         if (itm.index == row.index) {
           itm.edit = false;
@@ -346,10 +316,6 @@ export default {
       } else {
         this.updateList(row);
       }
-      //   this.$message({
-      //     message: "The title has been edited",
-      //     type: "success"
-      //   });
     },
     add() {
       var list = this.list.map(v => v.sequenceNumber);
