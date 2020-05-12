@@ -298,8 +298,18 @@ export default {
       this.schedule.isFinish = "";
       this.schedule.progressDesc = "";
     },
-    handleSubtasks(el) {},
-    handleChange(el) {}
+    handleSubtasks(row) {
+      this.$router.push({
+        path: "/inforManage/addProgress",
+        query: { projectId: row.projectId, parentTaskCode: row.taskCode }
+      });
+    },
+    handleChange(row) {
+      this.$router.push({
+        path: "/inforManage/changeMission",
+        query: { projectId: row.projectId, taskId: row.id }
+      });
+    }
   },
   created() {}
 };
