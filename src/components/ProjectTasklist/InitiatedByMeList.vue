@@ -81,7 +81,7 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="openSchedule(scope.row.id)">填写进度</el-button>
           <el-button type="primary" size="mini" @click="handleSubtasks(scope.row)">新建子任务</el-button>
-          <el-button type="primary" size="mini" @click="handleChange(scope.row)">变更</el-button>
+          <el-button type="danger" size="mini" @click="handleChange(scope.row)">变更</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -314,3 +314,8 @@ export default {
   created() {}
 };
 </script>
+<style>
+.red {
+  color: red;
+}
+</style>
