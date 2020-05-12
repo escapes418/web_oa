@@ -145,7 +145,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="基本信息" name="1">
+            <el-tab-pane label="项目信息管理" name="1">
                 <div class="segment statistics">
                     <div class="segment-header">
                         基本信息
@@ -853,6 +853,15 @@ export default {
         },
         processClick(value){
             this.activeProcesss = value.name;
+            if(this.activeProcesss ==1){
+                this.$refs.stageList.getList()
+            }
+            if(this.activeProcesss ==2){
+                this.$refs.ongoingMissionList.getList()
+            }
+            if(this.activeProcesss ==3){
+                this.$refs.allMissionList.getList()
+            }
         },
         // handleCurrentChange(val) {
         //     this.pageNo = val;

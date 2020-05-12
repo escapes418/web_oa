@@ -130,7 +130,7 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="批量移动项目" :visible.sync="dialogMoveVisible" width="35%" :before-close="moveClose">
+        <el-dialog title="批量移动项目" :visible.sync="dialogMoveVisible" width="35%">
             <div class="move-item">
                 <div>
                     已选择：
@@ -389,9 +389,6 @@ export default {
                 }
             })
         },
-        moveClose(){
-            
-        },
         confirmMove(){
 
             let projectIds = [];
@@ -409,27 +406,18 @@ export default {
                 moveDetail:moveDetail
             }).then(res=>{
                 if(res.code == 200){
-                    this.moveClose();
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
-                    this.getList()
+                    this.getList();
+                    this.dialogMoveVisible = false;
                 }
             })
         },
         moveCancel(){
             this.dialogMoveVisible = false;
-            this.implyChecked=false;
-            this.projectChecked=false;
-            this.businessChecked=false;
-            this.vipChecked=false;
-            this.accountChecked=false;
-            this.accountLeaderId='';
-            this.businessAssistantId='';
-            this.projectManagerId='';
-            this.impleLeaderId='';
-            this.vipCustomerId=''
+            this.dynaRole = []
         },
         getList() {
             this.listLoading = true;

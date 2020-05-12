@@ -104,7 +104,7 @@
                         </span>
                     </RedStar>
                     <!-- <Department type="form" :DId="filter.officeId" :Dvalue="depart" @on-confirm="depConfirm"></Department> -->
-                    <RedStar label="项目管理负责人：" :required="true">
+                    <!-- <RedStar label="项目管理负责人：" :required="true">
                         <span class="right-con">
                             <div class="item-value" @click="showDialog(3)">
                                 <i class="el-icon-search" style="color:#bfbfbf"></i>
@@ -120,7 +120,7 @@
                                 <span style="color:#606266">{{impleLeader}}</span>
                             </div>
                         </span>
-                    </RedStar>
+                    </RedStar> -->
                     <!-- <RedStar label="清结算：">
                         <span class="right-con">
                             <div class="item-value" @click="showDialog(5)">
@@ -833,13 +833,13 @@ export default {
                 });
                 return;
             }
-            if (!this.filter.projectManagerId) {
-                this.$message({
-                    message: "请选择项目管理负责人",
-                    type: "warning"
-                });
-                return;
-            }
+            // if (!this.filter.projectManagerId) {
+            //     this.$message({
+            //         message: "请选择项目管理负责人",
+            //         type: "warning"
+            //     });
+            //     return;
+            // }
             if (!this.generalRequire.invoiceMode) {
                 this.$message({
                     message: "请选择开票方式",
