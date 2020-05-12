@@ -683,32 +683,6 @@ export default {
             getProgress(this.$route.query.key).then(res=>{
                 this.progressInfor = res.data
             })
-            this.showNum = true;
-            fetchForm({
-                id: this.$route.query.key
-            }).then(res => {
-                this.detail = res.data;
-                this.processFlag = res.data.processFlag || ""
-                res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
-                    this.goodsNames.push(item.carrierGoodName)
-                })
-                res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
-                    this.companyList.push(item.companyName)
-                })
-                // res.data.projectLinkmanDetailResponse.forEach((item,index)=>{
-                //     item.index = index+1
-                // })
-                this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map((i,key)=>{
-                    return {
-                        ...i,
-                        index:key+1
-                    }
-                })
-            });
-            this.$$queryStub = this.$$listQuery;
-            // this.getIm()
-            // this.getConnect();
-            this.getNode();
 
         }
     },
@@ -785,11 +759,12 @@ export default {
             }
             if(this.activeTop ==1){
                 this.showNum = true;
+                this.goodsNames = [];
+                this.companyList = [];
                 fetchForm({
                     id: this.$route.query.key
                 }).then(res => {
                     this.detail = res.data;
-                    this.detail.taskProgress = "80%"
                     this.processFlag = res.data.processFlag || ""
                     res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
                         this.goodsNames.push(item.carrierGoodName)
@@ -813,7 +788,6 @@ export default {
                 this.$refs.memberList.getList()
             }
             if(this.activeTop ==3){
-                console.log(55555)
                 // this.$nextTick(_=>{
                     if(this.activeProcesss ==1){
                         this.$refs.stageList.getList()
