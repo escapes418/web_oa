@@ -269,10 +269,17 @@ export default {
             return $$postData.toJS();
         },
         showDetail(row){
-            this.$router.push({
-                path: "/inforManage/pmsSonDetail",
-                query: { key: row.id}
-            });
+            if (row.parentTaskCode == "") {
+                this.$router.push({
+                    path: "/inforManage/pmsDetail",
+                    query: { key: row.id }
+                });
+            } else {
+                this.$router.push({
+                    path: "/inforManage/pmsSonDetail",
+                    query: { key: row.id, taskCode: row.taskCode }
+                });
+            }
         },
         handleFilter() {
             this.pageNum = 1
