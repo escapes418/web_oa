@@ -813,7 +813,6 @@ export default {
                 this.$refs.memberList.getList()
             }
             if(this.activeTop ==3){
-                console.log(55555)
                 // this.$nextTick(_=>{
                     if(this.activeProcesss ==1){
                         this.$refs.stageList.getList()
