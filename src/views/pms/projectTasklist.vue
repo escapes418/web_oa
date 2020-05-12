@@ -48,14 +48,14 @@
         <el-button class="filter-item" type="warning" v-waves icon="el-icon-delete" @click="restListQuery(restCallback)"
           >重置</el-button
         >
-        <el-button
+        <!-- <el-button
           class="filter-item"
           style="margin-left: 10px;"
           @click="handleCreate"
           type="primary"
           icon="el-icon-edit"
           >新增任务</el-button
-        >
+        > -->
       </div>
       <div class="toolmore-control">
         <el-button icon="el-icon-arrow-up" v-if="toolexpand" class="toolmore-control-btn" @click="toolexpand = false"
