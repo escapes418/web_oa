@@ -282,11 +282,24 @@ export default {
       return $$postData.toJS();
     },
     del(row) {
-      contractRelationDel(row.id).then(response => {
-        this.pageNum = 1;
-        this.getList();
-        this.listLoading = false;
-      });
+      var _this = this;
+      if (this.list.length == 1) {
+        this.$message.error("该合同无其他关联项目，无法移除");
+        return;
+      }
+      this.$confirm(`确认移除关联`, "确认移除", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          contractRelationDel(row.id).then(response => {
+            _this.pageNum = 1;
+            _this.getList();
+            _this.listLoading = false;
+          });
+        })
+        .catch(() => {});
     },
     handleFilter() {
       this.pageNum = 1;
