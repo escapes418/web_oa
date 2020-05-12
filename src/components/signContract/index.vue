@@ -80,6 +80,7 @@
           class="filter-item"
           placeholder="请输入合同编号/甲方/乙方/丙方"
           v-model.trim="listQuery.keyWord"
+          :maxlength="32"
         >
         </el-input>
       </span>

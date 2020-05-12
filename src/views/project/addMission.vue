@@ -156,6 +156,13 @@ export default {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
                 this.attachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
+            }else{
+                this.$message({
+                    message:  res.data.resDesc,
+                    type: 'error',
+                    duration:10000
+                })
+                this.attachment = []
             }
         },
         // 附件移除
@@ -176,6 +183,13 @@ export default {
                 }
             })
             this.postData.parentTaskCode = this.$route.query.parentTaskCode
+            this.postData.pmsAttachment = []
+            this.attachment.forEach(item=>{
+                let obj = {}
+                obj.fileName = item.name
+                obj.attachmentUrl = item.originUrl
+                this.postData.pmsAttachment.push(obj)
+            })
             if(!this.postData.taskName){
                 this.$message({
                     message: "请填写任务名称",

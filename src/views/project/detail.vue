@@ -723,6 +723,13 @@ export default {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
                 this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
+            }else{
+                this.$message({
+                    message:  res.data.resDesc,
+                    type: 'error',
+                    duration:10000
+                })
+                this.expenseAttachment = []
             }
         },
         // 附件移除
