@@ -57,9 +57,10 @@
       </el-table-column>
       <el-table-column align="center" label="截止日期" width="140px">
         <template slot-scope="scope">
-          <span :class="scope.row.endTime < today ? ['ignore-detail', 'red'] : 'ignore-detail'">{{
-            scope.row.endTime | stamp2TextDateFull
-          }}</span>
+          <span
+            :class="scope.row.endTime < today && scope.row.taskStatus != 1 ? ['ignore-detail', 'red'] : 'ignore-detail'"
+            >{{ scope.row.endTime | stamp2TextDateFull }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column align="center" label="完成日期" width="140px">
@@ -79,7 +80,9 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="320px">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="openSchedule(scope.row.id)">填写进度</el-button>
+          <el-button v-if="scope.row.taskStatus != 1" type="primary" size="mini" @click="openSchedule(scope.row.id)"
+            >填写进度</el-button
+          >
           <el-button v-if="!scope.row.parentTaskCode" type="primary" size="mini" @click="handleSubtasks(scope.row)"
             >新建子任务</el-button
           >
