@@ -262,13 +262,13 @@ export default {
       finish: false,
       activePost: "1",
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 5,
       list: [],
       total: 0,
       urlArr: [],
       sonpageNum: 1,
       dynamicInfo: "",
-      sonPageSize: 10,
+      sonPageSize: 5,
       sonList: [],
       sonTotal: 0
     };
