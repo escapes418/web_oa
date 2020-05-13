@@ -272,21 +272,19 @@ export default {
         fileName: res.data.storfiles.fileName,
         attachmentUrl: res.data.storfiles.url
       });
-      if (res.code == 200) {
+      if (res.code == 200 && res.data.resCode == 1) {
         this.$message({
-          message: res.message,
+          message: res.data.resDesc,
           type: "success"
         });
-        // this.showStorage = false;
       } else {
         this.$message({
-          duration: 10000,
           showClose: true,
-          message: res.message || "网络异常",
+          message: res.data.resDesc || "网络异常",
           type: "error"
         });
+        this.pmsAttachment.pop();
       }
-      // this.pmsAttachment.pop()
     },
     confirmUpload() {
       // this.$refs.upload.submit()
