@@ -378,13 +378,13 @@ export default {
       this.selectContract = val;
     },
     addContract() {
-      if (this.selectContract.length < 1) {
-        this.$message({
-          message: "请选择要合同！",
-          type: "warning"
-        });
-        return;
-      }
+      //   if (this.selectContract.length < 1) {
+      //     this.$message({
+      //       message: "请选择要合同！",
+      //       type: "warning"
+      //     });
+      //     return;
+      //   }
       let ids = [];
       this.selectContract.forEach(item => {
         ids.push(item.id);
