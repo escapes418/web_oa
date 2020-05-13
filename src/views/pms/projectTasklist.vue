@@ -13,7 +13,7 @@
         >
         </el-input>
       </div>
-      <div class="toolbar-item">
+      <div class="toolbar-item" v-if="activeName != 0">
         <span class="item-label">状态：</span>
         <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.isFinish" placeholder="请选择">
           <el-option v-for="item in expStatuList" :key="item.value" :label="item.name" :value="item.value"> </el-option>
@@ -355,8 +355,9 @@ export default {
       }
     },
     handleClick(val) {
-      // this.$store.dispatch('changeCust', val.name);
-      console.log(this.activeName);
+      if (this.activeName == 0) {
+        this.listQuery.isFinish = "";
+      }
       this.getListData();
       this.listLoading = false;
     },
