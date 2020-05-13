@@ -318,6 +318,27 @@ export default {
             this.attachment.forEach(item=>{
                 this.postData.pmsAttachment.push({attachmentUrl: item.originUrl, fileName: item.name})
             })
+            if (!this.postData.isFinish) {
+                this.$message({
+                    message: "请选择是否完成！",
+                    type: "warning"
+                });
+                return
+            }
+            if (this.postData.isFinish == '0'&&!/^([0-9]{1,2})$/.test(this.postData.taskProgress)) {
+                this.$message({
+                message: "进度只允许输入数字！",
+                type: "warning"
+                });
+                return
+            }
+            if (!this.postData.progressDesc) {
+                this.$message({
+                    message: "请填写进度说明！",
+                    type: "warning"
+                });
+                return
+            }
             addProgress(this.taskId,this.postData).then(res=>{
                 if(res.code ==200){
                     this.$message({

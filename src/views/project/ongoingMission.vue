@@ -24,9 +24,9 @@
                 <el-button class="filter-item" style="margin-left: 10px;" @click="addMission" type="primary" icon="el-icon-edit">新增任务</el-button>
             </div>
             <div class="toolmore-control">
-                <!-- <div class="toolbar-item">
+                <div class="toolbar-item">
                     <el-button class="filter-item" type="primary" icon="el-icon-download" @click="exportFile">导出Excel</el-button>
-                </div> -->
+                </div>
                 <el-button icon="el-icon-arrow-up" v-if="toolexpand" class="toolmore-control-btn" @click="toolexpand = false">收起</el-button>
                 <el-button icon="el-icon-arrow-down" v-else class="toolmore-control-btn" @click="toolexpand = true">展开</el-button>
             </div>
@@ -278,6 +278,27 @@ export default {
             this.attachment.forEach(item=>{
                 this.postData.pmsAttachment.push({attachmentUrl: item.originUrl, fileName: item.name})
             })
+            if (!this.postData.isFinish) {
+                this.$message({
+                    message: "请选择是否完成！",
+                    type: "warning"
+                });
+                return
+            }
+            if (this.postData.isFinish == '0'&&!/^([0-9]{1,2})$/.test(this.postData.taskProgress)) {
+                this.$message({
+                message: "进度只允许输入数字！",
+                type: "warning"
+                });
+                return
+            }
+            if (!this.postData.progressDesc) {
+                this.$message({
+                    message: "请填写进度说明！",
+                    type: "warning"
+                });
+                return
+            }
             addProgress(this.taskId,this.postData).then(res=>{
                 if(res.code ==200){
                     this.$message({
@@ -315,6 +336,10 @@ export default {
                 this.attachment = []
             }
         },
+        exportFile(){
+            // this.taskId = row.id
+            this.dialogProgress = true;
+        }
     }
 }
 </script>

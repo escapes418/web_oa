@@ -338,7 +338,9 @@ export default {
         }
         this.proTypeList = selectDic(dicList, "project_type");
         this.projectState = selectDic(dicList, "project_state");
-        getRoleDrop("2").then(res=>{
+        getRoleDrop({
+            type:"2"
+        }).then(res=>{
             if(res.code == 200){
                 this.leaderTypeList = res.data
             }
@@ -367,7 +369,9 @@ export default {
                 })
                 return
             }
-            getRoleDrop("1").then(res=>{
+            getRoleDrop({
+                type:'1'
+            }).then(res=>{
                 if(res.code == 200){
                     this.dynaRole = res.data.map(item=>{
                         return{
