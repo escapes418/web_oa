@@ -284,10 +284,10 @@ export default {
     },
     del(row) {
       var _this = this;
-      if (this.list.length == 1) {
-        this.$message.error("该合同无其他关联项目，无法移除");
-        return;
-      }
+      //   if (this.list.length == 1) {
+      //     this.$message.error("该合同无其他关联项目，无法移除");
+      //     return;
+      //   }
       this.$confirm(`确认移除关联`, "确认移除", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -378,13 +378,13 @@ export default {
       this.selectContract = val;
     },
     addContract() {
-      //   if (this.selectContract.length < 1) {
-      //     this.$message({
-      //       message: "请选择要合同！",
-      //       type: "warning"
-      //     });
-      //     return;
-      //   }
+      if (this.selectContract.length < 1) {
+        this.$message({
+          message: "请选择要合同！",
+          type: "warning"
+        });
+        return;
+      }
       let ids = [];
       this.selectContract.forEach(item => {
         ids.push(item.id);
