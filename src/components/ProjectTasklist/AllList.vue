@@ -241,19 +241,21 @@ export default {
         });
         return (flag = false);
       }
-      if (this.schedule.taskProgress == "") {
-        this.$message({
-          message: "请填写进度！",
-          type: "warning"
-        });
-        return (flag = false);
-      }
-      if (!/^([0-9]{1,2})$/.test(this.schedule.taskProgress)) {
-        this.$message({
-          message: "进度只允许输入数字！",
-          type: "warning"
-        });
-        return (flag = false);
+      if (this.schedule.isFinish != 1) {
+        if (this.schedule.taskProgress == "") {
+          this.$message({
+            message: "请填写进度！",
+            type: "warning"
+          });
+          return (flag = false);
+        }
+        if (!/^([0-9]{1,2})$/.test(this.schedule.taskProgress)) {
+          this.$message({
+            message: "进度只允许输入数字！",
+            type: "warning"
+          });
+          return (flag = false);
+        }
       }
       if (this.schedule.progressDesc == "") {
         this.$message({
