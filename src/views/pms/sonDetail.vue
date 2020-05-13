@@ -98,7 +98,7 @@
                   <el-button type="text" v-if="scope.row.type == 2" @click="downloadBtn(scope.row)">下载</el-button>
                   <el-button type="text" v-if="scope.row.type == 1" @click="showImg(scope.$index, 1)"
                     >查看
-                    <img :src="scope.row.attachmentUrl" style="display:none" />
+                    <img :src="scope.row.url" style="display:none" />
                   </el-button>
                 </template>
               </el-table-column>
@@ -273,13 +273,13 @@ export default {
       finish: false,
       activePost: "1",
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 5,
       list: [],
       dynamicInfo: "",
       total: 0,
       urlArr: {},
       sonpageNum: 1,
-      sonPageSize: 10,
+      sonPageSize: 5,
       sonList: [],
       sonTotal: 0
     };

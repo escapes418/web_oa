@@ -98,7 +98,7 @@
                   <el-button type="text" v-if="scope.row.type == 2" @click="downloadBtn(scope.row)">下载</el-button>
                   <el-button type="text" v-if="scope.row.type == 1" @click="showImg(scope.$index, 1)"
                     >查看
-                    <img :src="scope.row.attachmentUrl" style="display:none" />
+                    <img :src="scope.row.url" style="display:none" />
                   </el-button>
                 </template>
               </el-table-column>
