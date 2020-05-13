@@ -44,12 +44,12 @@
         </div>
 
         <el-table :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-            <el-table-column align="center" label="任务编号" width="150px">
+            <el-table-column align="center" label="任务编号" width="150px" fixed>
                 <template slot-scope="scope">
                     <span>{{scope.row.taskCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="200px" align="center" label="任务名称">
+            <el-table-column width="200px" align="center" label="任务名称" fixed>
                 <template slot-scope="scope">
                     <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.taskName}}</span>
                 </template>
