@@ -745,7 +745,8 @@ export default {
         },
         tabClick(value){
             this.activeTop= value.name;
-            if(this.activeTop==0){
+            console.log(this.activeTop)
+            if(this.activeTop == 0){
                 getBaseInfo(this.$route.query.key).then(res=>{
                     this.baseInfo = res.data
                 })
@@ -764,7 +765,7 @@ export default {
                     }
                 // })
             }
-            if(this.activeTop ==1){
+            if(this.activeTop == 1){
                 this.showNum = true;
                 this.goodsNames = [];
                 this.companyList = [];
@@ -812,9 +813,38 @@ export default {
             }
         },
         jumpClick(value){
-            this.activeTop = value
+            if(value == 1){
+                this.activeTop = "1"
+                this.showNum = true;
+                this.goodsNames = [];
+                this.companyList = [];
+                fetchForm({
+                    id: this.$route.query.key
+                }).then(res => {
+                    this.detail = res.data;
+                    this.processFlag = res.data.processFlag || ""
+                    res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
+                        this.goodsNames.push(item.carrierGoodName)
+                    })
+                    res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
+                        this.companyList.push(item.companyName)
+                    })
+                    // res.data.projectLinkmanDetailResponse.forEach((item,index)=>{
+                    //     item.index = index+1
+                    // })
+                    this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map((i,key)=>{
+                        return {
+                            ...i,
+                            index:key+1
+                        }
+                    })
+                });
+                this.getNode();
+            }
             if(value == 3){
+                this.activeTop = "3"
                 this.activeProcesss = "1"
+                this.$refs.stageList.getList()
             }
         },
         postClick(value){
