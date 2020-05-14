@@ -363,7 +363,7 @@ export default {
         }
       });
     },
-    handleCurrentChange() {
+    handleCurrentChange(val) {
       this.pageNum = val;
       this.getListData();
     },
@@ -416,7 +416,7 @@ export default {
     beforeUpload(file) {
       return utils.handleImgError(file);
     },
-    handleSonCurrentChange() {
+    handleSonCurrentChange(val) {
       this.sonpageNum = val;
       this.getSonListData();
     },
