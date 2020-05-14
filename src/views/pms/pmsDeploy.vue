@@ -228,7 +228,7 @@ export default {
           });
           this.list.splice(row.index, 1, {
             ...row,
-            roleCode: code
+            roleCode: rtn.data.code
           });
           this.updateRoleIndex(rtn.data.id, row.index, row);
         }
@@ -289,6 +289,7 @@ export default {
       }
     },
     saveEdit(row) {
+      console.log("saveEdit");
       this.list.forEach((itm, idx) => {
         if (itm.index == row.index) {
           itm.edit = false;
