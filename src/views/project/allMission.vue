@@ -63,8 +63,8 @@
                     <span>{{scope.row.taskCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="200px" align="center" label="任务名称" fixed>
-                <template slot-scope="scope">
+            <el-table-column width="200px" align="center" label="任务名称" fixed :show-overflow-tooltip="true">
+                <template slot-scope="scope" >
                     <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.taskName}}</span>
                 </template>
             </el-table-column>
