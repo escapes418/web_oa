@@ -63,8 +63,8 @@
                     <span>{{scope.row.taskCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="200px" align="center" label="任务名称" fixed>
-                <template slot-scope="scope">
+            <el-table-column width="200px" align="center" label="任务名称" fixed :show-overflow-tooltip="true">
+                <template slot-scope="scope" >
                     <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.taskName}}</span>
                 </template>
             </el-table-column>
@@ -118,7 +118,7 @@
                     <span>{{scope.row.taskProgress}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="300px" align="center" label="操作" class-name="small-padding fixed-width">
+            <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
                 <template slot-scope="scope" v-if="scope.row.taskStatus == 0">
                     <el-button type="primary" size="mini" @click="showProgress(scope.row)">填写进度</el-button>
                     <el-button v-if="!scope.row.parentTaskCode" type="primary" size="mini" @click="addMission(scope.row)">新增子任务</el-button>
