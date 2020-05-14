@@ -228,7 +228,7 @@ export default {
           });
           this.list.splice(row.index, 1, {
             ...row,
-            roleCode: rtn.data.code
+            roleCode: rtn.data.roleCode
           });
           this.updateRoleIndex(rtn.data.id, row.index, row);
         }
@@ -289,9 +289,9 @@ export default {
       }
     },
     saveEdit(row) {
-      console.log("saveEdit");
+      console.log(row);
       this.list.forEach((itm, idx) => {
-        if (itm.index == row.index) {
+        if (itm.id == row.id) {
           itm.edit = false;
           var isPrincipalName = "";
           this.options.forEach((el, idx) => {
