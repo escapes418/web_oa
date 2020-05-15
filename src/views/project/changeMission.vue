@@ -276,7 +276,9 @@ export default {
                 res.data.memberIds.forEach(item => {
                     this.postData.memberIds.push(item.memberId)
                 });
-                this.startTime = common.timeParseObj(res.data.startTime);
+                if(res.data.startTime){
+                    this.startTime = common.timeParseObj(res.data.startTime);
+                }
                 this.endTime = common.timeParseObj(res.data.endTime);
                 this.postData.taskDesc = res.data.taskDesc;
                 this.postData.remark = res.data.remark;
