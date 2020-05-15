@@ -6,6 +6,7 @@
       v-loading="listLoading"
       :data="list"
       row-key="id"
+      max-height="660"
       border
       fit
       :row-class-name="getRowClass"
