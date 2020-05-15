@@ -412,6 +412,12 @@ export default {
                         return
                     }
                     moveDetail.push({id:item.id,userId:item.selectId})
+                }else{
+                    flag = false;
+                    this.$message({
+                        type:"warning",
+                        message:`请选择批量移动类型！`
+                    })
                 }
             })
             if(flag){
