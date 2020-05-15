@@ -400,24 +400,36 @@ export default {
                 projectIds.push(item.id)
             })
             let moveDetail = [];
+            let flag = true
             this.dynaRole.forEach(item=>{
                 if(item.checked){
+                    if(!item.selectId){
+                        flag = false;
+                        this.$message({
+                            type:"warning",
+                            message:`请选择${item.roleName}!`
+                        })
+                        return
+                    }
                     moveDetail.push({id:item.id,userId:item.selectId})
                 }
             })
-            moveProjects({
-                projectIds:projectIds,
-                moveDetail:moveDetail
-            }).then(res=>{
-                if(res.code == 200){
-                    this.$message({
-                        message: res.message,
-                        type: "success"
-                    });
-                    this.getList();
-                    this.dialogMoveVisible = false;
-                }
-            })
+            if(flag){
+                moveProjects({
+                    projectIds:projectIds,
+                    moveDetail:moveDetail
+                }).then(res=>{
+                    if(res.code == 200){
+                        this.$message({
+                            message: res.message,
+                            type: "success"
+                        });
+                        this.getList();
+                        this.dialogMoveVisible = false;
+                    }
+                })
+            }
+            
         },
         moveCancel(){
             this.dialogMoveVisible = false;
