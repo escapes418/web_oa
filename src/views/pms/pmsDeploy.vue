@@ -13,7 +13,11 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column align="center" label="" width="65" type="index"> </el-table-column>
+      <el-table-column align="center" label="" width="65">
+        <template slot-scope="{ row }">
+          <span>{{ row.sequenceNumber }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column width="180px" align="center" label="角色编号">
         <template slot-scope="{ row }">
