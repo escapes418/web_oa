@@ -212,7 +212,7 @@
                             </div>
                             <div class="clearfix  cominfo-item" v-if="detail.applyType == 2 || detail.applyType == 3">
                                 <span class="left-title font-gray">关联申请：</span>
-                                <span class="right-con">
+                                <span class="right-con" style="color:#409EFF;cursor: Pointer;"  @click="showDetail(detail)">
                                     {{ detail.relationThemeName }}
                                 </span>
                             </div>
@@ -673,7 +673,22 @@ export default {
         });
     },
     
-    methods: {
+    methods: { 
+        showDetail(){
+            if(this.detail.applyType == 2){
+                this.$router.push({
+                    path:'/me/recepDetail',
+                    query: { key: this.detail.recpFlowId , pathType:'list'}
+                })
+            }
+            if(this.detail.applyType == 3){
+                this.$router.push({
+                    path: "/me/travelingDetail",
+                    query: { key: this.detail.travelFlowId , pathType:'list'}
+                })
+            }
+            
+        },
         showExpenseAmt(){
             this.actualInput = true
         },
@@ -934,7 +949,6 @@ export default {
         }
     },
     mounted() {
-
         Viewer.setDefaults({
             navbar: false,
             toolbar: {

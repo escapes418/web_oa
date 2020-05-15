@@ -130,6 +130,43 @@
           </div>
         </div>
     </div>
+    <div class="segment statistics">
+        <div class="segment-header">
+            关联申请
+        </div>
+        <div class="segment-area">
+            <div class="el-table__body-wrapper">
+                <el-table :data="expenseFlowList" border>
+                    <el-table-column label="流程编号">
+                        <template slot-scope="scope">
+                            <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.procCode}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="申请时间">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.applyTime | stamp2TextDate}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="申请类型" prop="applyTypeName">
+                    </el-table-column>
+                    <el-table-column label="申请人" prop="applyPerName" width="120">
+                    </el-table-column>
+                    <el-table-column label="流程状态" prop="expenseStatusValue">
+                    </el-table-column>
+                    <el-table-column label="金额" prop="expenseTotal">
+                        <template slot-scope="scope">
+                            <span class="font-orange">{{ scope.row.expenseTotal | thousands(2) }}元</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                            <template slot-scope="scope">
+                            <el-button type="primary" size="mini" @click="showDetail(scope.row)">查看</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </div>
+    </div>
     <div class="segment statistics part-wrap" id="part-wrap" v-if="!ISPUTIN">
       <div class="segment-header">
             流转信息
@@ -227,6 +264,7 @@ export default {
             flowDetailList:[],
             budgetDetailList:[],
             flowLoglist:[],
+            expenseFlowList:[],
             detail:{},
             comment:'',
             taskId:0,
@@ -301,10 +339,12 @@ export default {
             if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
                 this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
             }
-            res.data.budgetDetailList = res.data.budgetDetailList || []
-            this.budgetDetailList = res.data.budgetDetailList
-            res.data.flowLoglist = res.data.flowLoglist || []
-            this.flowLoglist = res.data.flowLoglist
+            res.data.budgetDetailList = res.data.budgetDetailList || [];
+            this.budgetDetailList = res.data.budgetDetailList;
+            res.data.flowLoglist = res.data.flowLoglist || [];
+            this.flowLoglist = res.data.flowLoglist;
+            res.data.recpFlowresponse.expenseFlowList = res.data.recpFlowresponse.expenseFlowList || [];
+            this.expenseFlowList = res.data.recpFlowresponse.expenseFlowList;
         })
   },
   methods:{
@@ -319,6 +359,12 @@ export default {
         //         })
         //     })
         // },
+        showDetail(row){
+            this.$router.push({
+                path:'/me/reimDetail',
+                query: { key: row.flowId ,pathType:'list'}
+            })
+        },
         createPdf(){
                 var pdfstr = document.getElementById('pdf-wrap')
                 // 2. 复制给body，并执行window.print打印功能
@@ -362,6 +408,7 @@ export default {
             })
         },
         agreeBtn(){
+            
             // if(this.comment.length>100) {
             //     this.$message({
             //         message:'输入字符超出限额，请重新输入！',

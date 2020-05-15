@@ -181,8 +181,6 @@ export default {
         }
 
         this.expStatuList = selectDic(dicList,"expense_status")
-
-        console.log(this.expStatuList)
     },
     methods: {
         selectMarket() {

@@ -86,6 +86,14 @@
                                 <p>{{ detail.planRepayTime | stamp2TextDate }}</p>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="table-title">
+                                <p>借款事由</p>
+                            </td>
+                            <td colspan="3">
+                                <p>{{  detail.loanReason }}</p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table class="areaCont">
