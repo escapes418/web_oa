@@ -318,6 +318,9 @@ export default {
             this.attachment.forEach(item=>{
                 this.postData.pmsAttachment.push({attachmentUrl: item.originUrl, fileName: item.name})
             })
+            if(this.postData.isFinish == 1){
+                this.postData.taskProgress =  ""
+            }
             if (!this.postData.isFinish) {
                 this.$message({
                     message: "请选择是否完成！",
@@ -327,7 +330,7 @@ export default {
             }
             if (this.postData.isFinish == '0'&&!/^([0-9]{1,2})$/.test(this.postData.taskProgress)) {
                 this.$message({
-                message: "进度只允许输入数字！",
+                message: "进度只支持输入1-99的整数！",
                 type: "warning"
                 });
                 return

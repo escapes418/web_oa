@@ -401,7 +401,7 @@ export default {
             })
             let moveDetail = [];
             let flag = true
-            this.dynaRole.forEach(item=>{
+            this.dynaRole.some(item=>{
                 if(item.checked){
                     if(!item.selectId){
                         flag = false;
@@ -409,15 +409,17 @@ export default {
                             type:"warning",
                             message:`请选择${item.roleName}!`
                         })
-                        return
+                        return true
                     }
                     moveDetail.push({id:item.id,userId:item.selectId})
-                }else{
+                }
+                if(!item.checked){
                     flag = false;
                     this.$message({
                         type:"warning",
-                        message:`请选择批量移动类型！`
+                        message:`请勾选负责人!`
                     })
+                    return true
                 }
             })
             if(flag){

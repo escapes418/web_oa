@@ -287,7 +287,7 @@ export default {
             }
             if (this.postData.isFinish == '0'&&!/^([0-9]{1,2})$/.test(this.postData.taskProgress)) {
                 this.$message({
-                message: "进度只允许输入数字！",
+                message: "进度只支持输入1-99的整数！",
                 type: "warning"
                 });
                 return
