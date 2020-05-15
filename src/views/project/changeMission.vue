@@ -45,10 +45,10 @@
                         <div class="changeTitle">变更前</div>
                         <div style="height:35px">{{detail.taskCode}}</div>
                         <div style="height:35px">{{detail.parentTaskCode}}</div>
-                        <div style="height:35px">{{detail.taskName}}</div>
+                        <div class="ignore-detail" :title="detail.taskName" style="height:35px;line-height:35px">{{detail.taskName}}</div>
                         <div style="height:35px">{{detail.projectStageName}}</div>
                         <div style="height:35px">{{detail.principalName}}</div>
-                        <div style="height:35px">{{memberNames.join('，')}}</div>
+                        <div style="height:35px">{{detail.participantNames}}</div>
                         <div style="height:35px">{{detail.startTime | stamp2TextDate}}</div>
                         <div style="height:35px">{{detail.endTime | stamp2TextDate}}</div>
                         <div style="height:35px">{{detail.taskDesc}}</div>
@@ -272,12 +272,13 @@ export default {
                 this.postData.taskName = res.data.taskName;
                 this.postData.principalId = res.data.principalId;
                 this.postData.principalName = res.data.principalName;
-                res.data.memberIds.forEach(item => {
-                    this.memberNames.push(item.memberUserName)
-                    this.postData.memberIds.push(item.memberId)
 
+                res.data.memberIds.forEach(item => {
+                    this.postData.memberIds.push(item.memberId)
                 });
-                this.startTime = common.timeParseObj(res.data.startTime);
+                if(res.data.startTime){
+                    this.startTime = common.timeParseObj(res.data.startTime);
+                }
                 this.endTime = common.timeParseObj(res.data.endTime);
                 this.postData.taskDesc = res.data.taskDesc;
                 this.postData.remark = res.data.remark;
@@ -305,5 +306,13 @@ export default {
 }
 .red{
     color: red;
+}
+.ignore-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 </style>
