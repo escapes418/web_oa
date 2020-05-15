@@ -1,6 +1,6 @@
 <template>
   <div class="sjb-form-wrapper">
-        <el-tabs type="card" class="tabs" v-model="activeTop" @tab-click="tabClick">
+        <el-tabs type="card" class="tabs" v-model="topSelect" @tab-click="tabClick">
             <el-tab-pane label="综合信息" name="0">
                 <el-row>
                     <el-col :span="12">
@@ -503,7 +503,7 @@
                 <member ref="memberList" :projectId="$route.query.key"></member>
             </el-tab-pane>
             <el-tab-pane label="进程" name="3">
-                <el-tabs type="card" class="tabs" v-model="activeProcesss" @tab-click="processClick">
+                <el-tabs type="card" class="tabs" v-model="processSelect" @tab-click="processClick">
                     <el-tab-pane label="阶段" name="1">
                         <stage ref="stageList"></stage>
                     </el-tab-pane>
@@ -576,8 +576,8 @@ export default {
             
             uploadTips: config.tips,
             activePost:"1",
-            activeTop:'0',
-            activeProcesss:"1",
+            topSelect:'0',
+            processSelect:"1",
             detail:{},
             showNum: false,
             baseInfo:{},
@@ -673,9 +673,14 @@ export default {
     computed: {
         ...mapState({
             token: state => state.user.token,
+            activeTop: state => state.project.activeTop,
+            activeProcesss:state => state.project.activeProcesss,
+
         }),
     },
     created() {
+        this.topSelect = this.activeTop;
+        this.processSelect = this.activeProcesss;
         if (this.$route.query.key) {
             getBaseInfo(this.$route.query.key).then(res=>{
                 this.baseInfo = res.data
@@ -744,8 +749,7 @@ export default {
             return utils.handleImgError(file)
         },
         tabClick(value){
-            this.activeTop= value.name;
-            console.log(this.activeTop)
+            this.$store.dispatch('changeTop', value.name);
             if(this.activeTop == 0){
                 getBaseInfo(this.$route.query.key).then(res=>{
                     this.baseInfo = res.data
@@ -813,8 +817,9 @@ export default {
             }
         },
         jumpClick(value){
+            this.$store.dispatch('changeTop', value);
             if(value == 1){
-                this.activeTop = "1"
+                // this.activeTop = "1"
                 this.showNum = true;
                 this.goodsNames = [];
                 this.companyList = [];
@@ -842,7 +847,7 @@ export default {
                 this.getNode();
             }
             if(value == 3){
-                this.activeTop = "3"
+                // this.activeTop = "3"
                 this.activeProcesss = "1"
                 this.$refs.stageList.getList()
             }
@@ -863,7 +868,7 @@ export default {
             
         },
         processClick(value){
-            this.activeProcesss = value.name;
+            this.$store.dispatch('changeProcesss', value.name);
             if(this.activeProcesss ==1){
                 this.$refs.stageList.getList()
             }
