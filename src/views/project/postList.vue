@@ -16,80 +16,80 @@
                         <div class="changeTitle">
                             变更项
                         </div>
-                        <div style="height:32px">
+                        <div style="height:40px">
                             任务编号
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             上级任务编号
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             任务名称
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             所属阶段
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             任务责任人
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             参与人
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             开始日期
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             截止日期
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             任务详细说明
                         </div>
-                        <div  style="height:32px">
+                        <div  style="height:40px">
                             备注
                         </div>
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle">变更前</div>
-                        <div style="height:32px">{{preTaskInfo.taskCode}}</div>
-                        <div style="height:32px">{{preTaskInfo.parentTaskCode}}</div>
-                        <div style="height:32px">{{preTaskInfo.taskName}}</div>
-                        <div style="height:32px">{{preTaskInfo.projectStageName}}</div>
-                        <div style="height:32px">{{preTaskInfo.principalName}}</div>
-                        <div style="height:32px">{{preTaskInfo.participantNames}}</div>
-                        <div style="height:32px">{{preTaskInfo.startTime | stamp2TextDate}}</div>
-                        <div style="height:32px">{{preTaskInfo.endTime | stamp2TextDate}}</div>
-                        <div style="height:32px">{{preTaskInfo.taskDesc}}</div>
-                        <div style="height:32px">{{preTaskInfo.remark}}</div>
+                        <div style="height:40px">{{preTaskInfo.taskCode}}</div>
+                        <div style="height:40px">{{preTaskInfo.parentTaskCode}}</div>
+                        <div class="ignore-detail" :title="preTaskInfo.taskName" style="height:40px;line-height:40px">{{preTaskInfo.taskName}}</div>
+                        <div style="height:40px">{{preTaskInfo.projectStageName}}</div>
+                        <div style="height:40px">{{preTaskInfo.principalName}}</div>
+                        <div style="height:40px">{{preTaskInfo.participantNames}}</div>
+                        <div style="height:40px">{{preTaskInfo.startTime | stamp2TextDate}}</div>
+                        <div style="height:40px">{{preTaskInfo.endTime | stamp2TextDate}}</div>
+                        <div style="height:40px">{{preTaskInfo.taskDesc}}</div>
+                        <div style="height:40px">{{preTaskInfo.remark}}</div>
                     </el-col>
                     <el-col :span="8">
                         <div class="changeTitle red">变更后</div>
-                        <div style="height:32px" :class="preTaskInfo.taskCode != postTaskInfo.taskCode ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.taskCode != postTaskInfo.taskCode ? 'red' : ''">
                             {{ postTaskInfo.taskCode }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.parentTaskCode != postTaskInfo.parentTaskCode ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.parentTaskCode != postTaskInfo.parentTaskCode ? 'red' : ''">
                             {{ postTaskInfo.parentTaskCode }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.taskName != postTaskInfo.taskName ? 'red' : ''">
+                        <div class="ignore-detail" :title="preTaskInfo.taskName" style="height:40px;line-height:40px" :class="preTaskInfo.taskName != postTaskInfo.taskName ? 'red' : ''">
                             {{ postTaskInfo.taskName }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.projectStageName != postTaskInfo.projectStageName ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.projectStageName != postTaskInfo.projectStageName ? 'red' : ''">
                             {{ postTaskInfo.projectStageName }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.principalName != postTaskInfo.principalName ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.principalName != postTaskInfo.principalName ? 'red' : ''">
                             {{ postTaskInfo.principalName }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.participantNames != postTaskInfo.participantNames ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.participantNames != postTaskInfo.participantNames ? 'red' : ''">
                             {{ postTaskInfo.participantNames }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.startTime != postTaskInfo.startTime ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.startTime != postTaskInfo.startTime ? 'red' : ''">
                             {{ postTaskInfo.startTime | stamp2TextDate }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.endTime != postTaskInfo.endTime ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.endTime != postTaskInfo.endTime ? 'red' : ''">
                             {{ postTaskInfo.endTime | stamp2TextDate }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.taskDesc != postTaskInfo.taskDesc ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.taskDesc != postTaskInfo.taskDesc ? 'red' : ''">
                             {{ postTaskInfo.taskDesc }}
                         </div>
-                        <div style="height:32px" :class="preTaskInfo.remark != postTaskInfo.remark ? 'red' : ''">
+                        <div style="height:40px" :class="preTaskInfo.remark != postTaskInfo.remark ? 'red' : ''">
                             {{ postTaskInfo.remark }}
                         </div>
                     </el-col>
@@ -187,5 +187,13 @@ export default {
 }
 .red{
     color: red;
+}
+.ignore-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 </style>

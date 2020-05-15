@@ -45,7 +45,7 @@
                         <div class="changeTitle">变更前</div>
                         <div style="height:35px">{{detail.taskCode}}</div>
                         <div style="height:35px">{{detail.parentTaskCode}}</div>
-                        <div style="height:35px">{{detail.taskName}}</div>
+                        <div class="ignore-detail" :title="preTaskInfo.taskName" style="height:35px;line-height:35px">{{detail.taskName}}</div>
                         <div style="height:35px">{{detail.projectStageName}}</div>
                         <div style="height:35px">{{detail.principalName}}</div>
                         <div style="height:35px">{{memberNames.join('，')}}</div>
@@ -305,5 +305,13 @@ export default {
 }
 .red{
     color: red;
+}
+.ignore-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 </style>
