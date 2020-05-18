@@ -11,7 +11,7 @@
     "dev:prod": "node build/dev-server.js prod",
     "start": "npm run dev",
     "build": "node build/build.js prod",
-    "build:test": "node build/build.js test",
+    "build:prodOld": "node build/build.js prodOld",
     "build:report": "npm_config_report=true node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint"
