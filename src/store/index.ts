@@ -8,6 +8,7 @@ import resHandle from './modules/resHandle';
 import reim from './modules/reim';
 import contract from './modules/contract';
 import cust from './modules/cust';
+import project from './modules/project';
 import coop from './modules/coop';
 import log from './modules/log';
 import map from './modules/map';
@@ -30,7 +31,8 @@ const store = new Vuex.Store({
         log,
         map,
         staffWork,
-        overdue
+        overdue,
+        project
     },
     getters
 });
