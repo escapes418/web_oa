@@ -259,7 +259,7 @@
                                     </span>
                                 </div>
                                 <div class="clearfix  cominfo-item">
-                                    <span class="left-title font-gray">商务助理：</span>
+                                    <span class="left-title font-gray">VIP客服：</span>
                                     <span class="right-con">
                                         {{ detail.vipCustomerName }}
                                     </span>
