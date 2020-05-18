@@ -135,7 +135,8 @@
                         <div class="clearfix  cominfo-item">
                             <span class="left-title font-gray">合同名称：</span>
                             <span class="right-con">
-                                {{ detail.contractNew == "1" ? "" : detail.contractName.join('，') }}
+                                <!-- {{detail.contractName.length}} -->
+                                {{ detail.contractNew == "1" ? "" : detail.contractName&&detail.contractName.join('，') }}
                             </span>
                         </div>
                         <!-- <div class="clearfix  cominfo-item">
@@ -484,6 +485,7 @@ export default {
             this.projectApprovalFlowId
         ).then(res => {
             this.detail = res.data.projectApprovalFlowResp;
+
             this.flowLoglist = res.data.flowLoglist;
             this.contactList = res.data.projectApprovalFlowResp.projectApprovalLinkman&&res.data.projectApprovalFlowResp.projectApprovalLinkman.map((i,key)=>{
                 return {

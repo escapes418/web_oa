@@ -401,6 +401,7 @@ export default {
             })
             let moveDetail = [];
             let flag = true
+            var count = 0
             this.dynaRole.some(item=>{
                 if(item.checked){
                     if(!item.selectId){
@@ -414,12 +415,15 @@ export default {
                     moveDetail.push({id:item.id,userId:item.selectId})
                 }
                 if(!item.checked){
-                    flag = false;
-                    this.$message({
-                        type:"warning",
-                        message:`请勾选负责人!`
-                    })
-                    return true
+                    count += 1
+                    if(count == this.dynaRole.length){
+                        flag  = false
+                        this.$message({
+                            type:"warning",
+                            message:`请勾选负责人!`
+                        })
+                        return true
+                    }
                 }
             })
             if(flag){
