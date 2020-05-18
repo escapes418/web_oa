@@ -750,6 +750,8 @@ export default {
         },
         tabClick(value){
             this.$store.dispatch('changeTop', value.name);
+            this.topSelect = this.activeTop;
+            // this.processSelect = this.activeProcesss;
             if(this.activeTop == 0){
                 getBaseInfo(this.$route.query.key).then(res=>{
                     this.baseInfo = res.data
@@ -818,6 +820,7 @@ export default {
         },
         jumpClick(value){
             this.$store.dispatch('changeTop', value);
+            this.topSelect = this.activeTop;
             if(value == 1){
                 // this.activeTop = "1"
                 this.showNum = true;
@@ -848,7 +851,8 @@ export default {
             }
             if(value == 3){
                 // this.activeTop = "3"
-                this.activeProcesss = "1"
+                this.processSelect = "1";
+                this.$store.dispatch('changeProcesss', "1");
                 this.$refs.stageList.getList()
             }
         },
