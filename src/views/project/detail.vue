@@ -688,7 +688,31 @@ export default {
             getProgress(this.$route.query.key).then(res=>{
                 this.progressInfor = res.data
             })
-
+            this.showNum = true;
+            this.goodsNames = [];
+            this.companyList = [];
+            fetchForm({
+                id: this.$route.query.key
+            }).then(res => {
+                this.detail = res.data;
+                this.processFlag = res.data.processFlag || ""
+                res.data.carrierGoods&&res.data.carrierGoods.forEach(item=>{
+                    this.goodsNames.push(item.carrierGoodName)
+                })
+                res.data.mainCompany&&res.data.mainCompany.forEach(item=>{
+                    this.companyList.push(item.companyName)
+                })
+                // res.data.projectLinkmanDetailResponse.forEach((item,index)=>{
+                //     item.index = index+1
+                // })
+                this.contactList = res.data.projectLinkmanDetailResponse&&res.data.projectLinkmanDetailResponse.map((i,key)=>{
+                    return {
+                        ...i,
+                        index:key+1
+                    }
+                })
+            });
+            this.getNode();
         }
     },
     mounted() {
