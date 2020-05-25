@@ -1,7 +1,11 @@
 <template>
     <div class="sjb-container calendar-list-container">
         <div class="filter-container">
-            
+            <div class="toolbar-item">
+                <span class="item-label">流程编号：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程编号" v-model.trim="listQuery.procCode">
+                </el-input>
+            </div>
             <div class="toolbar-item">
                 <span class="item-label">时间类型：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.timeType" placeholder="请选择">
@@ -115,7 +119,7 @@
             </el-table-column>
             <el-table-column  label="报销时间" align="center">
                 <template slot-scope="scope">
-                    <span class="ignore-detail" :title="scope.row.createDate">{{scope.row.createDate}}</span>
+                    <span class="ignore-detail" :title="scope.row.applyTime">{{scope.row.applyTime}}</span>
                 </template>
             </el-table-column>
             <el-table-column  label="费用合计" align="center">
@@ -187,6 +191,7 @@ export default class reimDoc extends Vue{
     };
     
     listQuery: REIM_list = {
+        procCode:"",
         timeRange:[],
         officeId:'',
         officeName:'',
@@ -267,7 +272,8 @@ export default class reimDoc extends Vue{
         if(!this.listQuery.timeRange){
             this.listQuery.timeRange = []
         }
-        if(this.listQuery.timeRange.length==0
+        if(this.listQuery.procCode ==''
+            &&this.listQuery.timeRange.length==0
             &&this.listQuery.timeType == ''
             &&this.listQuery.officeId == ''
             &&this.listQuery.projectId ==''
@@ -386,12 +392,12 @@ export default class reimDoc extends Vue{
     width: 250px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>

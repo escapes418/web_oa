@@ -2,8 +2,8 @@
     <div class="sjb-container calendar-list-container">
         <div class="filter-container">
             <div class="toolbar-item">
-                <span class="item-label">项目名称/企业编号：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" placeholder="请输入项目名称/企业编号" class="filter-item" v-model.trim="listQuery.projectName">
+                <span class="item-label">项目名称：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" placeholder="请输入项目名称" class="filter-item" v-model.trim="listQuery.projectName" :maxlength="32">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -13,21 +13,21 @@
                     </el-option>
                 </el-select>
             </div>
-            <!-- <div class="toolbar-item">
-                <span class="item-label">项目负责人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入项目负责人"  v-model.trim="listQuery.projectLeaderName">
-                </el-input>
-            </div> -->
             <div class="toolbar-item">
-                <span class="item-label">负责人类型：</span>
+                <span class="item-label">企业编号：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 150px;" class="filter-item" placeholder="请输入企业编号"  v-model.trim="listQuery.holderCode" :maxlength="32">
+                </el-input>
+            </div>
+            <div class="toolbar-item">
+                <span class="item-label">成员角色：</span>
                 <el-select clearable style="width: 120px" class="filter-item" v-model="listQuery.leaderType" placeholder="请选择">
-                    <el-option v-for="item in leaderTypeList" :key="item.value" :label="item.name" :value="item.value">
+                    <el-option v-for="item in leaderTypeList" :key="item.id" :label="item.roleName" :value="item.id">
                     </el-option>
                 </el-select>
             </div>
             <div class="toolbar-item">
-                <span class="item-label">负责人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName">
+                <span class="item-label">成员姓名：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入负责人"  v-model.trim="listQuery.leaderName" :maxlength="32">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -61,6 +61,7 @@
                             <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围" :picker-options="pickerOptions">
                             </el-date-picker>
                         </div>
+                        <Department type="list" @on-confirm="depConfirm" :Dvalue="listQuery.officeName" :clearCheck ="clearCheck"></Department>
                     </div>
                 </div>
             </el-collapse-transition>
@@ -74,6 +75,11 @@
             <el-table-column
                 type="selection"
                 width="55">
+            </el-table-column>
+            <el-table-column align="center" label="项目编号"  width="220px">
+                <template slot-scope="scope">
+                    <span class="ignore-detail" :title="scope.row.projectCode">{{scope.row.projectCode}}</span>
+                </template>
             </el-table-column>
             <el-table-column align="center" label="项目名称"  width="220px">
                 <template slot-scope="scope">
@@ -100,14 +106,9 @@
                     <span>{{scope.row.projectStateName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="140px" label="上线日期" align="center">
+            <el-table-column width="140px" label="计划上线日期" align="center">
                 <template slot-scope="scope">
-                    <span>{{scope.row.onLineDate | stamp2TextDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column width="90px" label="项目负责人" align="center">
-                <template slot-scope="scope">
-                    <span>{{scope.row.projectLeaderName}}</span>
+                    <span>{{scope.row.onlinePlanTime | stamp2TextDate}}</span>
                 </template>
             </el-table-column>
             <el-table-column width="140px" label="更新时间" align="center">
@@ -129,60 +130,88 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="批量移动项目" :visible.sync="dialogMoveVisible" width="35%" :before-close="moveClose">
+        <el-dialog title="批量移动项目" :visible.sync="dialogMoveVisible" width="35%">
             <div class="move-item">
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectProject">
+                <span v-for="(item,index) in selectProject" :key="index">
                     <span class="select-item">{{item.projectName}}</span>
                 </span>
             </div>
             <div class="merge-item">
-                <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox>
-                <el-checkbox v-model="implyChecked" label="实施负责人"></el-checkbox>
-                <el-checkbox v-model="projectChecked" label="项目负责人"></el-checkbox>
+                <span class="select-item" v-for="(item,index) in dynaRole" :key="index">
+                    <el-checkbox v-model="item.checked" :label="item.roleName"></el-checkbox>
+                </span>
+                
             </div>
             <div class="move-select">
-                <div class="move-item">
-                    <span class="item-label">市场负责人：</span>
+                
+                <div class="move-item" v-for="(item,index) in dynaRole" :key="index">
+                    <span class="item-label">{{item.roleName}}</span>
                     <el-select 
                         style="width: 300px" 
                         class="filter-item" 
-                        v-model="marketLeaderId"
-                        :disabled="!marketChecked"
+                        v-model="item.selectId"
+                        :disabled="!item.checked"
                         filterable
-                        placeholder="请选择市场负责人">
+                        placeholder="请选择">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
-                <div class="move-item">
-                    <span class="item-label">实施负责人：</span>
+                <!-- <div class="move-item">
+                    <span class="item-label">项目管理负责人：</span>
                     <el-select 
                         style="width: 300px" 
                         class="filter-item" 
-                        v-model="impleLeaderId"
-                        :disabled="!implyChecked"
-                        filterable
-                        placeholder="请选择实施负责人">
-                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="move-item">
-                    <span class="item-label">项目负责人：</span>
-                    <el-select 
-                        style="width: 300px" 
-                        class="filter-item" 
-                        v-model="projectLeaderId"
+                        v-model="projectManagerId"
                         :disabled="!projectChecked"
                         filterable
-                        placeholder="请选择项目负责人">
+                        placeholder="请选择项目管理负责人">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div> -->
+                <!-- <div class="move-item">
+                    <span class="item-label">商务助理：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="businessAssistantId"
+                        :disabled="!businessChecked"
+                        filterable
+                        placeholder="请选择商务助理">
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
+                <div class="move-item">
+                    <span class="item-label">VIP客服：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="vipCustomerId"
+                        :disabled="!vipChecked"
+                        filterable
+                        placeholder="请选择VIP客服">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    <span class="item-label">清结算：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="accountLeaderId"
+                        :disabled="!accountChecked"
+                        filterable
+                        placeholder="请选择清结算">
+                        <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div> -->
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmMove">确认</el-button>
@@ -194,7 +223,8 @@
 
 <script>
 import common from "@/utils/common";
-import { fetchList,getMember,moveProjects} from "@/api/project";
+import Department from "@/components/Department";
+import { fetchList,getMember,moveProjects,getRoleDrop} from "@/api/project";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -204,6 +234,9 @@ import { mapState } from "vuex";
 export default {
     directives: {
         waves
+    },
+    components: {
+        Department
     },
     mixins: [listQueryMix],
     watch: {
@@ -248,14 +281,16 @@ export default {
             listLoading: true,
             pageNo: 1,
             pageSize: 20,
+            clearCheck:false,
             listQuery: {
                 timeRange:[],
                 officeId: "",
+                officeName: '',
                 projectName: "",//项目名称
                 projectType: "",
                 timeType: "2",//时间类型
                 projectState: "",//项目状态
-                // projectLeaderName: "",//市场负责人
+                holderCode: "",//市场负责人
                 applyTimeStart: "",
                 applyTimeEnd: "",
                 leaderType:'',
@@ -270,12 +305,18 @@ export default {
             memberList:[],
             selectProject:[],
             dialogMoveVisible:false,
-            marketChecked:false,
+            dynaRole:[],
+            // marketChecked:false,
             implyChecked:false,
             projectChecked:false,
-            marketLeaderId:'',
-            projectLeaderId:'',
-            impleLeaderId:''
+            businessChecked:false,
+            vipChecked:false,
+            accountChecked:false,
+            accountLeaderId:'',
+            businessAssistantId:'',
+            projectManagerId:'',
+            impleLeaderId:'',
+            vipCustomerId:''
         };
     },
     created() {
@@ -297,9 +338,26 @@ export default {
         }
         this.proTypeList = selectDic(dicList, "project_type");
         this.projectState = selectDic(dicList, "project_state");
-        this.leaderTypeList = selectDic(dicList, "leader_type");
+        getRoleDrop({
+            type:"2"
+        }).then(res=>{
+            if(res.code == 200){
+                this.leaderTypeList = res.data
+            }
+        })
+        
     },
     methods: {
+        depConfirm(data){
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
+            
+        },
         handleSelectionChange(val){
             this.selectProject = val;
         },
@@ -311,9 +369,23 @@ export default {
                 })
                 return
             }
+            getRoleDrop({
+                type:'1'
+            }).then(res=>{
+                if(res.code == 200){
+                    this.dynaRole = res.data.map(item=>{
+                        return{
+                            ...item,
+                            selectId:"",
+                            checked:false
+                        }
+                    });
+
+                }
+            })
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     //列表是非离职人员
                     this.memberList = res.data.filter((item)=>{
                         return item.userStatus == '1'
@@ -321,85 +393,59 @@ export default {
                 }
             })
         },
-        moveClose(){
-            this.dialogMoveVisible = false;
-            this.marketChecked=false;
-            this.projectChecked=false;
-            this.implyChecked=false;
-            this.marketLeaderId="";
-            this.projectLeaderId = "";
-            this.impleLeaderId= "";
-        },
         confirmMove(){
-            if(this.marketChecked || this.projectChecked || this.implyChecked){
-                if(this.marketChecked){
-                    if(!this.marketLeaderId){
-                        this.$message({
-                            message:'请选择市场负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.marketLeaderId = ""
-                }
-                if(this.implyChecked){
-                    if(!this.impleLeaderId){
-                        this.$message({
-                            message:'请选择实施负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.impleLeaderId = ""
-                }
-                if(this.projectChecked){
-                    if(!this.projectLeaderId){
-                        this.$message({
-                            message:'请选择项目负责人！',
-                            type:'warning'
-                        })
-                        return
-                    }
-                }else{
-                    this.projectLeaderId = ""
-                }
 
-                let projectIds = [];
-                this.selectProject.forEach(item=>{
-                    projectIds.push(item.id)
-                })
+            let projectIds = [];
+            this.selectProject.forEach(item=>{
+                projectIds.push(item.id)
+            })
+            let moveDetail = [];
+            let flag = true
+            var count = 0
+            this.dynaRole.some(item=>{
+                if(item.checked){
+                    if(!item.selectId){
+                        flag = false;
+                        this.$message({
+                            type:"warning",
+                            message:`请选择${item.roleName}!`
+                        })
+                        return true
+                    }
+                    moveDetail.push({id:item.id,userId:item.selectId})
+                }
+                if(!item.checked){
+                    count += 1
+                    if(count == this.dynaRole.length){
+                        flag  = false
+                        this.$message({
+                            type:"warning",
+                            message:`请勾选负责人!`
+                        })
+                        return true
+                    }
+                }
+            })
+            if(flag){
                 moveProjects({
                     projectIds:projectIds,
-                    marketLeaderId:this.marketLeaderId,
-                    projectLeaderId:this.projectLeaderId,
-                    impleLeaderId:this.impleLeaderId
+                    moveDetail:moveDetail
                 }).then(res=>{
-                    if(res.status == 0){
-                        this.moveClose();
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
                         });
-                        this.getList()
+                        this.getList();
+                        this.dialogMoveVisible = false;
                     }
                 })
-            }else{
-                this.$message({
-                    message:'请为移动项目勾选相关负责人！',
-                    type:'warning'
-                })
             }
+            
         },
         moveCancel(){
             this.dialogMoveVisible = false;
-            this.marketChecked=false;
-            this.projectChecked=false;
-            this.implyChecked=false;
-            this.marketLeaderId="";
-            this.projectLeaderId = "";
-            this.impleLeaderId = "";
+            this.dynaRole = []
         },
         getList() {
             this.listLoading = true;
@@ -423,7 +469,7 @@ export default {
             return $$postData.toJS();
         },
         restCallback(){
-
+            
         },
         handleFilter() {
             this.pageNo = 1;

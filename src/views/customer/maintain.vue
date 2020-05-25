@@ -8,63 +8,62 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">客户名称：</span>
-                            <span class="right-con">
-                                {{custName}}
-                            </span>
+                            <RedStar label="客户名称：" :required="false">
+                                <span class="right-con">
+                                    {{custName}}
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">客户级别
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="客户级别：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.custStage" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custStageList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">拜访类型
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.visitType" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="拜访类型：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.visitType" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in custVisitList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">备注：</span>
-                            <span class="right-con">
-                                <el-input placeholder="请输入"  type="textarea" :rows="3" style="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></el-input>
-                            </span>
+                            <RedStar label="备注：">
+                                <span class="right-con">
+                                    <sjbtextarea type="textarea" :rows="3" placeholder="请输入" textStyle="width:250px;" v-model.trim="filter.remarks" :maxlength="200"></sjbtextarea>
+                                </span>
+                            </RedStar>
                         </div>
                     </el-col>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix  cominfo-item">
-                            <span class="left-title font-gray">维护时间：</span>
-                            <span class="right-con">{{filter.custMaintenanceDate | stamp2TextDateFull}}</span>
+                            <RedStar label="维护时间：" :required="false">
+                                <span class="right-con">{{filter.custMaintenanceDate | stamp2TextDateFull}}</span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">联系人
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <el-select clearable class="filter-item" v-model.trim="filter.linkmanId" placeholder="请选择" style="width:250px;">
-                                    <el-option v-for="item in linkmanList" :label="item.linkmanName" :value="item.id" :key="item.id">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            <RedStar label="联系人：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item" v-model.trim="filter.linkmanId" placeholder="请选择" style="width:250px;">
+                                        <el-option v-for="item in linkmanList" :label="item.linkmanName" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
                         </div>
                         <div class="clearfix cominfo-item">
-                            <span class="left-title font-gray">维护内容
-                                <span class="red">*</span>：
-                            </span>
-                            <span class="right-con">
-                                <sjbtextarea placeholder="请输入" :rows="3" textStyle="width:250px;" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
-                            </span>
+                            <RedStar label="维护内容：" :required="true">
+                                <span class="right-con">
+                                    <sjbtextarea placeholder="请输入" :rows="3" textStyle="width:250px;" v-model.trim="filter.custMaintenanceContent" :max="1000"></sjbtextarea>
+                                </span>
+                            </RedStar>
                         </div>
                     </el-col>
                 </el-row>
@@ -92,6 +91,16 @@
                                 <span>{{scope.row.custMaintenanceMan}}</span>
                             </template>
                         </el-table-column>
+                        <el-table-column align="center" label="维护人部门" width="100px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.maintainerDeptName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="客户分类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.custTypeName}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column align="center" label="客户级别" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.custStageName}}</span>
@@ -100,6 +109,11 @@
                         <el-table-column align="center" label="拜访类型" width="150px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.visitTypeName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="问题归类" width="150px">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.issuesClassification}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" label="维护内容" width="200px">
@@ -141,35 +155,42 @@ import { getMaintain, saveMaintain ,getLinkman} from "@/api/customer";
 import { parseTime } from "@/utils";
 import { custMaintainVali } from './cust.util';
 import sjbtextarea from '@/components/sjbTextarea';
-
+import RedStar from '@/components/RedStar/RedStar.vue';
 export default {
     name: "complexTable",
     components:{
-        sjbtextarea
+        sjbtextarea,
+        RedStar
     },
     data() {
         return {
             dialogFormVisible: false,
             custVisitList: [],
             custStageList: [],
+            oldCustStage:"",
             linkmanList:[],
-            leaderName: undefined,
-            leaderPhone: null,
+            leaderName: "",
+            leaderPhone: "",
             dialogTitle: "",
             confirmDialog: false,
             custName:this.$route.query.custName,
+            custType:this.$route.query.custType,
             itemList:[],
+            custTypeList:[],
             filter: {
-                custMaintenanceType:undefined,
-                custMaintenanceProblem:undefined,
-                remarks:undefined,
-                custMaintenanceDate:undefined,
-                custPersonLiable:undefined,
-                custMaintenanceContent:undefined
+                custMaintenanceType:"",
+                custMaintenanceProblem:"",
+                remarks:"",
+                custMaintenanceDate:"",
+                custPersonLiable:"",
+                custMaintenanceContent:"",
+                custStage:"",
+                custType:this.$route.query.custType
             },
-            total:null,
+            total:0,
             listQuery: {
                 custId:this.$route.query.key,
+                custType:this.$route.query.custType,
                 pageNo: 1,
                 pageSize: 20
             }
@@ -183,12 +204,29 @@ export default {
         },
         getListData(){
             getMaintain(this.listQuery).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     res.data.list.forEach((item,index) =>{
                         item.index = index + 1;
                     });
                     this.itemList = res.data.list;
                     this.total = res.data.total;
+                    this.oldCustStage = this.itemList[0].custStage;
+                    if (this.oldCustStage == 'A' || this.oldCustStage == 'B' || this.oldCustStage == 'C') {
+                        this.custStageList = [
+                        {
+                            name: 'A重点客户',
+                            value: 'A',
+                        },
+                        {
+                            name: 'B上线客户',
+                            value: 'B',
+                        },
+                        {
+                            name: 'C签约客户',
+                            value: 'C',
+                        }
+                        ];
+                    }
                 }
             })
         },
@@ -206,15 +244,18 @@ export default {
             if(custMaintainVali(this)){
                 saveMaintain({
                     ...this.filter,
+                    // custType:this.custType,
                     custMaintenanceDate:common.timeParse(this.filter.custMaintenanceDate)
                 }).then(res => {
                     this.confirmDialog = false;
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.$message({
                             message: res.message,
                             type: "success"
                         });
-                        this.$router.go(0)
+                        setTimeout(_=>{
+                            this.$router.go(0)
+                        },500)
                     }
                 });
             }
@@ -237,9 +278,8 @@ export default {
         month = month<10?'0' + month: month
         day = day<10?'0'+ day: day
         this.filter.custMaintenanceDate = year + '-' + month + '-' + day +' '+ hour + ':' + minute + ':' + second
-        this.getListData()
         getLinkman({custId:this.$route.query.key}).then(res=>{
-            if(res.status == 0){
+            if(res.code == 200){
                 this.linkmanList = res.data
             }
         })
@@ -258,6 +298,8 @@ export default {
         }
         this.custVisitList = selectDic(dicList, "visit_type"); //拜访类型
         this.custStageList = selectDic(dicList, "cust_stage"); //客户级别
+        this.custTypeList = selectDic(dicList,"cust_type");//客户分类
+        this.getListData()
     }
 };
 </script>

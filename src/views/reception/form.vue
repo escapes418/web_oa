@@ -7,21 +7,21 @@
         <div class="segment-area">
             <el-row>
                 <el-col :span="12" class="segment-brline">
-                    <RedStar label="报销人员：">
+                    <RedStar label="申请人员：">
                         <span class="right-con">{{userInfo.name}}</span>
                     </RedStar>
-                    <RedStar label="报销人员：">
+                    <RedStar label="所属部门：">
                         <span class="right-con">{{userInfo.officeName}}</span>
                     </RedStar>
                     <Project @on-select="proSelect" :Pvalue="projectName" :required="true"></Project>
                     <RedStar label="预计接待人数：" :required="true">
                         <span class="right-con">
-                          <el-input v-model.number="filter.recpNum" type="number" style="width:280px"></el-input>
+                          <el-input v-model.number="filter.recpNum" type="number" style="width:250px"></el-input>
                         </span>
                     </RedStar>
                     <RedStar label="陪客人员：" :required="true">
                         <span class="right-con">
-                            <el-select clearable multiple class="filter-item ignore-detail" filterable v-model="filter.employees" placeholder="请选择" style="width:280px;" >
+                            <el-select clearable multiple class="filter-item ignore-detail" filterable v-model="filter.employees" placeholder="请选择" style="width:250px;" >
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.loginName" :key="item.loginName">
                                 </el-option>
                             </el-select>
@@ -39,7 +39,7 @@
                     </RedStar>
                     <RedStar label="接待主题：" :required="true">
                         <span class="right-con">
-                            <el-input v-model="filter.recpTheme" style="width:280px" :maxlength="50"></el-input>
+                            <el-input v-model="filter.recpTheme" style="width:250px" :maxlength="50"></el-input>
                         </span>
                     </RedStar>
                     <RedStar label="项目负责人：">
@@ -52,7 +52,7 @@
                             <el-date-picker
                                 v-model="filter.recpTime"
                                 type="datetime"
-                                style="width:280px"
+                                style="width:250px"
                                 placeholder="选择日期时间">
                             </el-date-picker>
                         </span>
@@ -61,7 +61,7 @@
                     <RedStar label="备注：">
                         <span class="right-con">
                             <sjbtextarea placeholder="请输入"
-                            textStyle="width:280px;"
+                            textStyle="width:250px;"
                             :rows="3"
                             :max="200"
                             v-model.trim="filter.remarks"></sjbtextarea>
@@ -111,9 +111,6 @@
                 <el-pagination background  @current-change="recepCurrentChange" :current-page="recepQuery.pageNo" :page-size="10" layout="total, prev, pager, next, jumper" :total="recepTotal">
                 </el-pagination>
             </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogRecepVisible = false">返回</el-button>
-            </div>
         </el-dialog>
     </div>
     <div class="segment statistics">
@@ -135,7 +132,7 @@
                   <td class="tableTitle">终点</td>
                   <td class="tableTitle">科目</td>
                   <td class="tableTitle">人数</td>
-                  <td class="tableTitle">天数</td>
+                  <!-- <td class="tableTitle">天数</td> -->
                   <td class="tableTitle">票据张数</td>
                   <td class="tableTitle">预算金额</td>
                   <td class="tableTitle">备注</td>
@@ -217,7 +214,7 @@ export default {
             expTypeList:[],
             expenseAttachment:[],
             taxList:[],
-            fileURL:process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL:process.env.BASE_API + '/webCommonInfo/fileUpload',
             listLoading:false,
             list:[],
             recep:[],
@@ -236,14 +233,14 @@ export default {
             recepQuery:{
                 pageNo:1,
                 pageSize:20
-            }
+            },
+            userInfo:{}
         }
     },
     created(){
         this.filter.applyTime = common.time.monthlast
         this.$store.dispatch('clearCollection');
-        //拿到基本信息
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        
         if(this.$route.query.key){
             this.filter.id = this.$route.query.key
             getDetail({
@@ -291,9 +288,9 @@ export default {
         }
 
       // store中没值时，从接口获取存入store
-        if (this.subsTree.length == 0) {
+        // if (this.subsTree.length == 0) {
             this.$store.dispatch('getSubs');
-        }
+        // }
       
   },
   computed:{
@@ -313,7 +310,10 @@ export default {
          return result
      }
   },
-  mounted(){
+  async mounted(){
+    await this.$store.dispatch('FetchDictsAndLocalstore');
+    //拿到基本信息
+    this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
     //获取字典
     let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
     function selectDic(arr,type){
@@ -446,7 +446,7 @@ export default {
                 ...this.filter,
                 recpTime:common.timeParse(this.filter.recpTime),
             }).then(res =>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.applyLoading = false
                     this.$message({
                         message: res.message,
@@ -460,7 +460,7 @@ export default {
                 ...this.filter,
                 recpTime:common.timeParse(this.filter.recpTime),
             }).then(res =>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.saveLoading = false
                     this.$message({
                         message: res.message,
@@ -514,7 +514,7 @@ export default {
   background: white;
   padding-left: 7px;
   line-height: 30px;
-  width: 280px
+  width: 250px
 }
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;
@@ -527,4 +527,10 @@ export default {
     -webkit-box-orient: vertical;
     word-break: break-all;
 }
+</style>
+<style scoped>
+/* .el-select .el-input. {
+    overflow: scroll !important;
+    padding-bottom: 1px!important;
+} */
 </style>

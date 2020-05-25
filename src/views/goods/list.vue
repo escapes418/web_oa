@@ -269,7 +269,7 @@ export default {
                 exportGood({
                     ...postData
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         var url = `./OA${res.data}`;
                         window.location.href = url;
                         this.$message({
@@ -282,7 +282,7 @@ export default {
         },
         downloadTemp(){
             importTemp({}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
@@ -296,7 +296,7 @@ export default {
             delConsum({
                 id:this.row.id
             }).then(res=>{
-                if(res.status == 0) {
+                if(res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -410,20 +410,19 @@ export default {
         },
         storeSuccess(res, file, fileList){
             this.attachment = fileList;
-            if(res.status == 1){
-                this.$message({
-                    message: res.message,
-                    type: 'error',
-                    duration:10000
-                })
-            }
-            if(res.status == 0){
+            if(res.code == 200){
                 this.$message({
                     message: res.message,
                     type: 'success'
                 })
                 this.dialogUpload = false;
                 this.getList()
+            }else{
+                this.$message({
+                    message: res.message,
+                    type: 'error',
+                    duration:10000
+                })
             }
             this.attachment = []
         },

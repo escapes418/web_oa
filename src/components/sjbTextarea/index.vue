@@ -8,6 +8,7 @@
         :rows="rows"
         :maxlength="max"
         :autosize="autosize"
+        @blur="textBlur"
         v-model="currentValue"></el-input>
     <span class="textStyle-counter" v-show="showCounter && max">
         <span>{{count}}</span>/{{max}}
@@ -62,6 +63,11 @@ export default {
             }
             return len > this.max ? this.max : len
         },
+    },
+    methods:{
+        textBlur(){
+            this.$emit('textBlur')
+        }
     }
 }
 

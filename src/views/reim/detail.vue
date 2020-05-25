@@ -4,98 +4,172 @@
         <div class="printCont">
             <!-- 基本信息 -->
             <div class="areaHead">
-                基本信息
+                费用报销单
             </div>
-            <div class="areaCont">
-                <el-row>
-                    <el-col :span="12">
-                        <div class="item">
-                            <div class="label">流程编号:</div>
-                            <div class="text">{{ detail.procCode }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">报销人员:</div>
-                            <div class="text">{{ detail.applyPerName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">所属部门:</div>
-                            <div class="text">{{ detail.officeName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">报销类型:</div>
-                            <div class="text">{{ detail.applyTypeName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">项目名称:</div>
-                            <div class="text">{{ detail.projectLabel }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">费用合计:</div>
-                            <div class="text">{{ detail.expenseTotal | thousands(2) }}</div>
-                        </div>
-                    </el-col>
-                    <el-col :span="12">
-                        <div class="item">
-                            <div class="label">报销日期:</div>
-                            <div class="text">{{ detail.applyTime }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">所属岗位:</div>
-                            <div class="text">{{ detail.postName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">发票公司:</div>
-                            <div class="text">{{ detail.taxCityName }}</div>
-                        </div>
-                        <div class="item">
-                            <div class="label">项目负责人:</div>
-                            <div class="text">{{ detail.projectPersonel }}</div>
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-            <div id="partEle">
-                 <!-- 报销明细 -->
-                <div class="areaHead">报销明细</div>
-                <div class="areaCont">
-                    <div class="details" v-for="(scope,index) in flowDetailList">
-                        <div class="top">
-                            <div class="time">{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</div>
-                            <div class="type">{{scope.firstSubName + scope.secondSubName?'/'+scope.secondSubName:""}}</div>
-                            <div class="budget">预算：{{ scope.expenseAmt | thousands(2) }}</div>
-                        </div>
-                        <div class="body">
-                            <div class="address">{{scope.startPointName | specialTrim}} - {{scope.endPointName | specialTrim}}</div>
-                            <div class="personDay">数量：{{scope.personNum}}人/{{scope.dayNum}}天/{{scope.billNum}}张</div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                备注：{{scope.remarks}}
+            <table class="areaCont">
+                <tbody>
+                    <tr>
+                        <td class="table-title">
+                            <p>流程编号</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{detail.procCode}}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>报销时间</p>
+                        </td>
+                        <td>
+                            <p>{{ detail.applyTime }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-title">
+                            <p>发票公司</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{detail.taxCityName}}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>报销人</p>
+                        </td>
+                        <td>
+                            <p>{{detail.applyPerName}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-title">
+                            <p>收款方</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{ detail.payeeName }}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>收款账号</p>
+                        </td>
+                        <td>
+                            <p>{{ detail.payeeCardNum }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-title">
+                            <p>开户行</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{ detail.payeeOpeningBank }}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>报销类型</p>
+                        </td>
+                        <td>
+                            <p>{{ detail.applyTypeName }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-title">
+                            <p>项目名称</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{ detail.projectLabel}}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>成本中心</p>
+                        </td>
+                        <td>
+                            <p>{{ detail.costCenterName }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-title">
+                            <p>关联申请</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{ detail.relationThemeName }}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>报销金额</p>
+                        </td>
+                        <td>
+                            <p>{{detail.expenseTotal | thousands(2)}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="partEle" class="areaCont">
+                <tbody>
+                    <tr>
+                        <td class="table-title bold">
+                            <p>日期</p>
+                        </td>
+                        <td class="table-left bold">
+                            <p>科目明细</p>
+                        </td>
+                        <td class="table-title bold">
+                            <p>起点-终点</p>
+                        </td>
+                        <td class="bold">
+                            <p>&nbsp;金额</p>
+                        </td>
+                    </tr>
+                    <tr v-for="(scope,index) in flowDetailList" :key="index">
+                        <td class="table-title">
+                            <p>{{scope.startDate | stamp2TextDate}} 至 {{scope.endDate | stamp2TextDate}}</p>
+                        </td>
+                        <td class="table-left">
+                            <p>{{scope.firstSubName}}{{scope.secondSubName ? "/"+scope.secondSubName :""}}</p>
+                        </td>
+                        <td class="table-title">
+                            <p>{{scope.startPointName | specialTrim}} - {{scope.endPointName | specialTrim}}</p>
+                        </td>
+                        <td>
+                            <p>{{ scope.expenseAmt | thousands(2) }}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="areaCont" v-if="subSummary.length>0">
+                <tbody>
+                    <tr>
+                        <td class="table-title bold">
+                            <p>科目汇总</p>
+                        </td>
+                        <td class="bold">
+                            <p>金额</p>
+                        </td>
+                    </tr>
+                    <tr v-for="(item,index) in subSummary" :key="index">
+                        <td class="table-title">
+                            {{item.subName}}
+                        </td>
+                        <td>
+                            <p>{{item.subTotal}}元</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="areaCont">
+                <tbody>
+                    <tr v-for="(item,index) in printFlowLogList" :key="index">
+                        <td class="table-title" :rowspan="printFlowLogList.length" v-if="index==0">
+                            审批流程
+                        </td>
+                        <td>
+                            <div class="baseInfo">
+                                <div class="assignName">{{item.assigneeName}}</div>
+                                <!-- 审批bug的补丁 -->
+                                <div class="flowName" v-if="index==0">{{item.activityName}}</div>
+                                <div class="flowName" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</div>
+                                <!-- 时间 -->
+                                <div class="endTime">{{item.endTime}}</div>
+                                <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-            <!-- 流程信息 -->
-            <div class="areaHead">流转信息</div>
-            <div class="areaCont">
-                <div class="flowItem" v-for="(item,index) in flowLoglist" :key="index">
-                    <div class="baseInfo">
-                        <div class="assignName bold">{{item.assigneeName}}</div>
-                        <!-- 审批bug的补丁 -->
-                        <div class="flowName" v-if="index==0">{{item.activityName}}</div>
-                        <div class="flowName" v-else>{{item.comment?"已审批":"待审批"}}</div>
-                        <!-- 时间 -->
-                        <div class="endTime">{{item.endTime}}</div>
-                        <div class="costTime" v-if="item.durationTime">历时：{{item.durationTime}}</div>
-                    </div>
-                    <div class="commit">
-                        <p v-if="item.comment">{{item.comment}}</p>
-                        <!-- <p v-if="item.comment">{{item.comment}}</p> -->
-                    </div>
-                </div>
-            </div>
+                            <div class="commit">
+                                <p v-if="item.comment">{{item.comment}}</p>
+                                <!-- <p v-if="item.comment">{{item.comment}}</p> -->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="sjb-form-wrapper">
@@ -118,9 +192,17 @@
                                 <span class="left-title font-gray">报销人员：</span>
                                 <span class="right-con">{{ detail.applyPerName }}</span>
                             </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">收款方：</span>
+                                <span class="right-con">{{ detail.payeeName }}</span>
+                            </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">开户行：</span>
+                                <span class="right-con">{{ detail.payeeOpeningBank }}</span>
+                            </div>
                             <div class="clearfix  cominfo-item">
-                                <span class="left-title font-gray">所属部门：</span>
-                                <span class="right-con">{{ detail.officeName }}</span>
+                                <span class="left-title font-gray">成本中心：</span>
+                                <span class="right-con">{{ detail.costCenterName }}</span>
                             </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">报销类型：</span>
@@ -130,7 +212,7 @@
                             </div>
                             <div class="clearfix  cominfo-item" v-if="detail.applyType == 2 || detail.applyType == 3">
                                 <span class="left-title font-gray">关联申请：</span>
-                                <span class="right-con">
+                                <span class="right-con" style="color:#409EFF;cursor: Pointer;"  @click="showDetail(detail)">
                                     {{ detail.relationThemeName }}
                                 </span>
                             </div>
@@ -168,6 +250,10 @@
                                 <span class="left-title font-gray">所属岗位：</span>
                                 <span class="right-con">{{ detail.postName }}</span>
                             </div>
+                            <div class="clearfix cominfo-item">
+                                <span class="left-title font-gray">收款账号：</span>
+                                <span class="right-con">{{ detail.payeeCardNum }}</span>
+                            </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">发票所属公司：</span>
                                 <span class="right-con">{{ detail.taxCityName }}</span>
@@ -202,6 +288,12 @@
                                     {{ detail.expenseTotal | thousands(2) }}
                                 </span>
                             </div>
+                            <div class="clearfix  cominfo-item" v-if="actualInput">
+                                <span class="left-title font-gray">实际报销金额：</span>
+                                <span class="right-con">
+                                    <el-input type="number" placeholder="请输入" style="width:250px;" v-model.number="actualAmt"></el-input>
+                                </span>
+                            </div>
                             <div class="clearfix  cominfo-item">
                                 <span class="left-title font-gray">备注：</span>
                                 <span class="right-con">
@@ -233,9 +325,23 @@
                             </el-table-column>
                             <el-table-column label="终点" prop="endPointName">
                             </el-table-column>
-                            <el-table-column label="一级科目" prop="firstSubName" width="120">
+                            <el-table-column label="一级科目">
+                                <template slot-scope="scope">
+                                    <span :class="scope.row.subjectExceed == 1 ? 'font-red':''">{{scope.row.firstSubName}}
+                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.subjectExceed == 0" placement="top">
+                                            <el-tag size="mini" v-if="scope.row.subjectExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
+                                </template>
                             </el-table-column>
-                            <el-table-column label="二级科目" prop="secondSubName">
+                            <el-table-column label="二级科目">
+                                <template slot-scope="scope">
+                                    <span :class="scope.row.subjectExceed == 1 ? 'font-red':''">{{scope.row.secondSubName}}
+                                         <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.subjectExceed == 0" placement="top">
+                                            <el-tag size="mini" v-if="scope.row.subjectExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
+                                </template>
                             </el-table-column>
                             <el-table-column label="人数" prop="personNum">
                             </el-table-column>
@@ -243,19 +349,29 @@
                             </el-table-column>
                             <el-table-column label="票据张数" prop="billNum">
                             </el-table-column>
-                            <el-table-column label="报销金额" prop="expenseAmt">
+                            <el-table-column label="报销金额">
                                 <template slot-scope="scope">
-                                    <span class="font-orange">{{ scope.row.expenseAmt | thousands(2) }}元</span>
+                                    <span>{{ scope.row.expenseAmt | thousands(2) }}元
+                                        <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="scope.row.expenseAmtExceed == 0" placement="top">
+                                            <el-tag size="mini" v-if="scope.row.expenseAmtExceed == 1"  type="danger">异常</el-tag>
+                                        </el-tooltip>
+                                    </span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="备注" prop="remarks">
                             </el-table-column>
                             <el-table-column label="查看附件" prop="subConfList">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="!scope.row.subConfList">查看图片</el-button>
+                                    <el-button type="primary" @click="showImgDia(scope.row.subConfList)" :disabled="scope.row.subConfList.length == 0">查看图片</el-button>
                                 </template>
                             </el-table-column>
-
+                            <!-- <el-table-column label="异常分析">
+                                <template slot-scope="scope">
+                                    <el-tooltip class="item" effect="dark" :content="scope.row.anomalyAnalysis" :disabled="!scope.row.anomalyAnalysis" placement="top-start">
+                                        <el-button type="text">{{!scope.row.anomalyAnalysis ? '无':'有'}}</el-button>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column> -->
                         </el-table>
                         <div class="sum-title">
                             合计：
@@ -270,6 +386,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="jumpBtn">
+                <el-button type="text" size="small" @click="jumpRentFuel">车辆油卡费用></el-button>
             </div>
             <div class="segment statistics part-wrap" v-if="!ISPUTIN">
                 <div class="segment-header">
@@ -287,7 +406,7 @@
                                         <span class="color-black bold">{{item.assigneeName}}</span>
                                         <!-- 审批bug的补丁 -->
                                         <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                                        <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                                        <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                                     </div>
                                     <div class="state-item">
                                         <span class="font-size14">{{item.endTime}}</span>
@@ -305,7 +424,7 @@
                     附件
                 </div>
                 <div class="segment-area">
-                    <div class="el-table__body-wrapper">
+                    <div class="el-table__body-wrapper" id="imgList" @click="showImg">
                         <div v-for="(val,index) in expenseAttachment" :key="index" style="width:40%;margin-bottom:15px">
                             <div v-if="val.url != ''" class="upload-list">
                                 <span class="img-font">{{val.name}}</span>
@@ -313,7 +432,7 @@
                                 <el-button v-else type="text" style="float:right" @click="showImg(index,1)">
                                     查看<img :src="val.url" style="display:none">
                                 </el-button>
-                                
+                                <!-- <img :src="val.url" style="display:none"> -->
                                 <!-- <el-button type="text" style="float:right" @click="downAttach(val)">下载</el-button> -->
                             </div>
                         </div>
@@ -336,8 +455,9 @@
         <div class="segment statistics">
             <div class="sjb-foot-button">
                 <template v-if="pathType === 'list'">
-                    <!-- <el-button v-if="ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
-                    <el-button v-if="ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="ISCANCEL&&!ISEDIT" size="medium" type="warning" @click="dialogCanVisible = true">撤销</el-button>
                     <el-button v-if="ISDEL" size="medium" type="danger" @click="dialogDelVisible = true">删除</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
@@ -345,10 +465,13 @@
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
-                    <!-- <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
-                    <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="showExpenseAmt">修改报销金额</el-button>
+                    <el-button v-if="ISBACK" size="medium" type="primary" @click="actualBtn">提交申请</el-button>
+                    <el-button v-if="ISME&&ISEDIT&&!ISBACK" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="info" @click="refuseBtn">驳回</el-button>
+                    <el-button v-if="ISCOST" size="medium" type="warning" @click="setBackBtn">退回</el-button>
+                    <!-- <el-button size="small" @click="jumpRentFuel">车辆油卡费用</el-button> -->
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPdf">打印</el-button>
                     <el-button v-if="ISPRINT" size="medium" type="primary" @click="createPartPdf">部分打印</el-button>
                     <el-button size="medium" @click="backBtn">返回</el-button>
@@ -373,6 +496,13 @@
             <el-button @click="dialogDelVisible = false">取消</el-button>
         </span>
     </el-dialog>
+    <!-- <el-dialog title="系统提示？" width="25%" :visible.sync="dialogActual">
+        
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="actualBtn">确认</el-button>
+            <el-button @click="dialogActual = false">取消</el-button>
+        </span>
+    </el-dialog> -->
     <el-dialog title="系统提示？" width="25%" :visible.sync="dialogCanVisible">
         <span>确认撤销该报销单吗？</span>
         <span slot="footer" class="dialog-footer">
@@ -403,7 +533,8 @@ import {
   expFlow,
   expCancel,
   expDel,
-  downFile
+  downFile,
+  setActual
 } from "@/api/reim";
 import { parseTime } from "@/utils";
 import { mapState } from "vuex";
@@ -425,20 +556,25 @@ export default {
     },
     data() {
         return {
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             flowDetailList: [],
             flowLoglist: [],
             amtList: [],
+            subSummary:[],
+            printFlowLogList:[],
             urlArr: [],
             expenseAttachment: [],
             detail: {},
             comment: "",
-            taskId: undefined,
+            taskId: 0,
             dialogCanVisible: false,
             dialogDelVisible: false,
             dialogImg: false,
-            pathType: undefined,
-            finish: false
+            pathType: "",
+            finish: false,
+            viewer:null,
+            actualAmt:"",
+            actualInput:false,
         };
     },
     computed: {
@@ -465,6 +601,14 @@ export default {
             let result = this.detail.modify == "modify" ? true : false;
             return result;
         },
+        ISCOST: function() {
+            let result = this.detail.modify == "costAccounting" ? true : false;
+            return result;       
+        },
+        ISBACK:function() {
+            let result = this.detail.costCenterBack == "back" ? true : false;
+            return result; 
+        },
         ISPUTIN: function() {
             let result = this.detail.expenseStatus == 4 ? true : false;
             return result;
@@ -482,50 +626,108 @@ export default {
         }
     },
     created() {
-            this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
-            if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
-            if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
+        if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
 
-            getDetail({
-                expenseFlowId: this.$route.query.key
-            }).then(res => {
-                this.detail = res.data.detail;
-                res.data.flowDetailList = res.data.flowDetailList || [];
-                this.flowDetailList = res.data.flowDetailList;
-                this.flowLoglist = res.data.flowLoglist;
-                this.amtList = res.data.amtList;
-                if (
-                    res.data.detail.expenseAttachmentWeb &&
-                    res.data.detail.expenseAttachmentWeb.length > 0
-                ) {
-                    res.data.detail.expenseAttachmentWeb.forEach(item => {
-                        let originUrl = item.url;
-                        item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                        this.expenseAttachment.push({
-                            url: item.url,
-                            name: item.fileName,
-                            originUrl: originUrl,
-                            previewUrl: item.url,
-                            viewer: null
-                        });
+        getDetail({
+            expenseFlowId: this.$route.query.key
+        }).then(res => {
+            this.detail = res.data.detail;
+            res.data.flowDetailList = res.data.flowDetailList || [];
+            this.flowDetailList = res.data.flowDetailList;
+            res.data.subSummary = res.data.subSummary || [];
+            this.subSummary = res.data.subSummary;
+            this.printFlowLogList = res.data.printFlowLogList
+            this.flowLoglist = res.data.flowLoglist;
+            this.amtList = res.data.amtList;
+            if (
+                res.data.detail.expenseAttachmentWeb &&
+                res.data.detail.expenseAttachmentWeb.length > 0
+            ) {
+                res.data.detail.expenseAttachmentWeb.forEach(item => {
+                    let originUrl = item.url;
+                    item.url = res.data.detail.expenseAttachmentPrefix + item.url;
+                    this.expenseAttachment.push({
+                        url: item.url,
+                        name: item.fileName,
+                        originUrl: originUrl,
+                        previewUrl: item.url,
+                        viewer: null
                     });
+                });
+            }
+            if (this.detail.applyType == 2) {
+                if (
+                    res.data.detail.employeesName &&
+                    res.data.detail.employeesName.length > 0
+                ) {
+                    this.detail.employeesName = res.data.detail.employeesName.join(" , ");
                 }
-                if (this.detail.applyType == 2) {
-                    if (
-                        res.data.detail.employeesName &&
-                        res.data.detail.employeesName.length > 0
-                    ) {
-                        this.detail.employeesName = res.data.detail.employeesName.join(" , ");
-                    }
-                    this.detail.customerSituation = res.data.detail.customerSituation
-                }
-                if (this.detail.applyType == 2 || this.detail.applyType == 3) {
-                    this.detail.procName = res.data.detail.procName;
-                }
-                
-            });
+                this.detail.customerSituation = res.data.detail.customerSituation
+            }
+            if (this.detail.applyType == 2 || this.detail.applyType == 3) {
+                this.detail.procName = res.data.detail.procName;
+            }
+            
+        });
     },
-    methods: {
+    
+    methods: { 
+        showDetail(){
+            if(this.detail.applyType == 2){
+                this.$router.push({
+                    path:'/me/recepDetail',
+                    query: { key: this.detail.recpFlowId , pathType:'list'}
+                })
+            }
+            if(this.detail.applyType == 3){
+                this.$router.push({
+                    path: "/me/travelingDetail",
+                    query: { key: this.detail.travelFlowId , pathType:'list'}
+                })
+            }
+            
+        },
+        showExpenseAmt(){
+            this.actualInput = true
+        },
+        jumpRentFuel(){
+            let routerJump = this.$router.resolve({
+                path:"/report/rentFuelDetail",
+                query: { employeeId:this.detail.applyPerId,year:common.timeParse(this.detail.applyTime)}
+            })
+            window.open(routerJump.href,"_blank")
+        },
+        actualBtn(){
+            if(this.actualAmt < 0 || !this.actualAmt){
+                this.$message({
+                    message:"请正确输入修改金额！",
+                    type:"warning"
+                })
+                return
+            }
+            if(this.actualAmt > this.detail.expenseTotal){
+                this.$message({
+                    message:"输入修改金额不能大于报销金额！",
+                    type:"warning"
+                })
+                return
+            }
+            setActual({
+                id:this.detail.id,
+                actualExpenseTotal: this.actualAmt
+            }).then(res => {
+                if(res.code == 200){
+                    this.actualInput = false;
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    })
+                    this.$router.go(-1);
+                }
+            })
+        },
         showImgDia(subConfList) {
             this.urlArr = [];
             if (subConfList) {
@@ -565,6 +767,16 @@ export default {
             return false;
         },
         showImg(index, type) {
+            // if(this.viewer){
+            //     this.viewer.show();
+            //     return
+            // }
+            // const ViewerDom = document.getElementById('imgList');
+            // console.log(ViewerDom)
+            // this.viewer = new Viewer(ViewerDom, {
+            //     // 相关配置项,详情见下面
+            // });
+            // this.viewer.show()
             if (type == 1) {
                 // 如果已初始化过 直接show出
                 if (this.expenseAttachment[index].viewer) {
@@ -594,7 +806,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     console.log("url", url);
                     window.location.href = url;
@@ -607,7 +819,7 @@ export default {
         //             expenseFlowId:this.$route.query.key,
         //             procInsId:this.detail.procInsId
         //         }).then(res =>{
-        //             if(res.status ==0){
+        //             if(res.code == 200){
         //                 this.$message({
         //                     message: res.message,
         //                     type: 'success'
@@ -633,20 +845,20 @@ export default {
             //     return;
             // }
             expFlow({
-                expenseFlowId: this.$route.query.key,
+                flowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "yes",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
-                this.$message({
-                    message: res.message,
-                    type: "success"
-                });
-                // this.$router.push({
-                //     path:'/me/reim'
-                // })
-                this.$router.go(-1);
+                if (res.code == 200) {
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    // this.$router.push({
+                    //     path:'/me/reim'
+                    // })
+                    this.$router.go(-1);
                 }
             });
         },
@@ -666,12 +878,35 @@ export default {
             //     return;
             // }
             expFlow({
-                expenseFlowId: this.$route.query.key,
+                flowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "no",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.$router.go(-1);
+                }
+            });
+        },
+        setBackBtn(){
+            if (this.comment == "") {
+                this.$message({
+                    message: "审批意见不能为空！",
+                    type: "warning"
+                });
+                return;
+            }
+            expFlow({
+                flowId: this.$route.query.key,
+                comment: this.comment,
+                flag: "back",
+                procInsId: this.detail.procInsId
+            }).then(res => {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -685,7 +920,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -696,10 +931,10 @@ export default {
             });
             },
         delBtn() {
-            expDel({
-                expenseFlowId: this.$route.query.key
-            }).then(res => {
-                if (res.status == 0) {
+            expDel(
+                this.$route.query.key
+            ).then(res => {
+                if (res.code == 200) {
                     this.dialogDelVisible = false;
                     this.$message({
                         message: res.message,
@@ -727,10 +962,13 @@ export default {
                     show: 4,
                     size: "large"
                 },
+                // prev:4,
+                // next:4,
                 rotateLeft: 4,
                 rotateRight: 4
             }
         });
+        
     }
 };
 </script>
@@ -746,14 +984,16 @@ export default {
     margin-left: 40px;
     font-size: 14px;
     width: 40%;
+    height: 32px;
     .sum-name {
-        line-height: 32px;
         color: #99a9bf;
     }
     .sum-value {
         float: right;
-        line-height: 32px;
     }
+}
+.font-red{
+    color: red
 }
 .img-font {
     font-size: 14px;
@@ -763,7 +1003,10 @@ export default {
     width: 400px;
     line-height: 32px;
 }
-
+.jumpBtn{
+    background: #FFFFFF;
+    margin: 25px 20px 15px;
+}
 @media screen {
     #printWrapper {
         display: none;

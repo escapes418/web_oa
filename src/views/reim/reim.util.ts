@@ -8,7 +8,14 @@ function toast(str) {
 }
 export function reimFormVali(self) {
     var flag = true;
-    if (!self.filter.applyType) {
+    if(!self.filter.receivablesAccountId){
+        toast('请选择收款账户！');
+        flag = false;
+    }
+    else if (!self.filter.costCenterId) {
+        toast('请选择成本中心！');
+        flag = false;
+    }else if (!self.filter.applyType) {
         toast('请选择报销类型！');
         flag = false;
     } else if (!self.filter.taxCity) {
@@ -76,8 +83,7 @@ export function reimFormVali(self) {
                 flag = false;
                 return;
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                item.expenseAmt < 0
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
                 toast('请正确填写报销金额！');
                 flag = false;

@@ -130,6 +130,43 @@
           </div>
         </div>
     </div>
+    <div class="segment statistics">
+        <div class="segment-header">
+            关联申请
+        </div>
+        <div class="segment-area">
+            <div class="el-table__body-wrapper">
+                <el-table :data="expenseFlowList" border>
+                    <el-table-column label="流程编号">
+                        <template slot-scope="scope">
+                            <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.procCode}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="申请时间">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.applyTime | stamp2TextDate}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="申请类型" prop="applyTypeName">
+                    </el-table-column>
+                    <el-table-column label="申请人" prop="applyPerName" width="120">
+                    </el-table-column>
+                    <el-table-column label="流程状态" prop="expenseStatusValue">
+                    </el-table-column>
+                    <el-table-column label="金额" prop="expenseTotal">
+                        <template slot-scope="scope">
+                            <span class="font-orange">{{ scope.row.expenseTotal | thousands(2) }}元</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                            <template slot-scope="scope">
+                            <el-button type="primary" size="mini" @click="showDetail(scope.row)">查看</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </div>
+    </div>
     <div class="segment statistics part-wrap" id="part-wrap" v-if="!ISPUTIN">
       <div class="segment-header">
             流转信息
@@ -146,7 +183,7 @@
                             <span class="color-black bold">{{item.assigneeName}}</span>
                             <!-- 审批bug的补丁 -->
                             <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                            <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                            <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                         </div>
                         <div class="state-item">
                             <span class="font-size14">{{item.endTime}}</span>
@@ -227,6 +264,7 @@ export default {
             flowDetailList:[],
             budgetDetailList:[],
             flowLoglist:[],
+            expenseFlowList:[],
             detail:{},
             comment:'',
             taskId:0,
@@ -238,7 +276,7 @@ export default {
     computed:{
         ...mapState({
             subsList: state => state.reim.subsList,
-            subslistKeyVal:state => state.reim.subsListKeyVal,
+            // subslistKeyVal:state => state.reim.subsListKeyVal,
             firstSub:state => state.reim.firstSub,
             token:state => state.user.token,
         }),
@@ -268,33 +306,32 @@ export default {
         }
     },
     created(){
-        console.log(this.getAllSubjects)
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if(this.$route.query.taskId) this.taskId = this.$route.query.taskId
         if(this.$route.query.pathType) this.pathType = this.$route.query.pathType
-        if(this.subsList.length ==0){
-            this.getAllSubjects().then(rtn => {
-                this.$store.dispatch('setSubs', rtn);
-                var resetArr = [];
-                var map = rtn.reduce((acc, val) => { // key->value
-                    acc[val.value] = val
-                    return acc
-                }, {});
-                rtn.forEach(val => {
-                    if (val.parent != '0') {
-                        var parent = map[val.parent]
-                        if (!parent.children) {
-                            parent.children = [val]
-                        } else {
-                            parent.children.push(val)
-                        }
-                    } else {
-                        resetArr.push(val)
-                    }
-                })
-                this.$store.dispatch('subslistKeyVal', map);
-            });
-        }
+        // if(this.subsList.length ==0){
+        //     this.getAllSubjects().then(rtn => {
+        //         this.$store.dispatch('setSubs', rtn);
+        //         var resetArr = [];
+        //         var map = rtn.reduce((acc, val) => { // key->value
+        //             acc[val.value] = val
+        //             return acc
+        //         }, {});
+        //         rtn.forEach(val => {
+        //             if (val.parent != '0') {
+        //                 var parent = map[val.parent]
+        //                 if (!parent.children) {
+        //                     parent.children = [val]
+        //                 } else {
+        //                     parent.children.push(val)
+        //                 }
+        //             } else {
+        //                 resetArr.push(val)
+        //             }
+        //         })
+        //         this.$store.dispatch('subslistKeyVal', map);
+            // });
+        // }
         getDetail({
             recpFlowId:this.$route.query.key
         }).then(res =>{
@@ -302,22 +339,30 @@ export default {
             if(res.data.recpFlowresponse.employeesName &&res.data.recpFlowresponse.employeesName.length>0){
                 this.detail.employeesName = res.data.recpFlowresponse.employeesName.join(' , ')
             }
-            res.data.budgetDetailList = res.data.budgetDetailList || []
-            this.budgetDetailList = res.data.budgetDetailList
-            res.data.flowLoglist = res.data.flowLoglist || []
-            this.flowLoglist = res.data.flowLoglist
+            res.data.budgetDetailList = res.data.budgetDetailList || [];
+            this.budgetDetailList = res.data.budgetDetailList;
+            res.data.flowLoglist = res.data.flowLoglist || [];
+            this.flowLoglist = res.data.flowLoglist;
+            res.data.recpFlowresponse.expenseFlowList = res.data.recpFlowresponse.expenseFlowList || [];
+            this.expenseFlowList = res.data.recpFlowresponse.expenseFlowList;
         })
   },
   methods:{
-        getAllSubjects() { // 报销所有所有科目
-            return new Promise((resolve, reject) => {
-                getSubjects({
-                    isFirst: '0',
-                    parSubCode: ''
-                }).then(res =>{
-                    // console.log(res)
-                    resolve(res.data.list);
-                })
+        // getAllSubjects() { // 报销所有所有科目
+        //     return new Promise((resolve, reject) => {
+        //         getSubjects({
+        //             isFirst: '0',
+        //             parSubCode: ''
+        //         }).then(res =>{
+        //             // console.log(res)
+        //             resolve(res.data);
+        //         })
+        //     })
+        // },
+        showDetail(row){
+            this.$router.push({
+                path:'/me/reimDetail',
+                query: { key: row.flowId ,pathType:'list'}
             })
         },
         createPdf(){
@@ -342,7 +387,7 @@ export default {
         //             expenseFlowId:this.$route.query.key,
         //             procInsId:this.detail.procInsId 
         //         }).then(res =>{
-        //             if(res.status ==0){
+        //             if(res.code == 200){
         //                 this.$message({
         //                     message: res.message,
         //                     type: 'success'
@@ -363,6 +408,7 @@ export default {
             })
         },
         agreeBtn(){
+            
             // if(this.comment.length>100) {
             //     this.$message({
             //         message:'输入字符超出限额，请重新输入！',
@@ -376,7 +422,7 @@ export default {
                 flag:'yes',
                 procInsId:this.detail.procInsId 
             }).then(res =>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -409,7 +455,7 @@ export default {
                 flag:'no',
                 procInsId:this.detail.procInsId 
             }).then(res =>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -427,7 +473,7 @@ export default {
                 procInsId:this.detail.procInsId,
                 taskId:this.taskId || 0
             }).then(res =>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -443,7 +489,7 @@ export default {
             recepDel({
                 recpFlowId:this.$route.query.key
             }).then(res =>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.dialogDelVisible = false
                     this.$message({
                         message: res.message,

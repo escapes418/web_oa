@@ -247,14 +247,14 @@ export default class FuntionList extends Vue {
             ...postData,
             exportContent:type 
         }).then((res:Ajax.AjaxResponse)=>{
-            if(res.status == 0){
+            // if(res.code == 200){
                 var url = `./OA${res.data}`;
                 window.location.href = url;
                 this.$message({
                     message:res.message,
                     type:'success'
                 })
-            }
+            // }
         })
         
     };
@@ -329,12 +329,12 @@ export default class FuntionList extends Vue {
     width: 250px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>

@@ -109,7 +109,6 @@ import { parseTime } from "@/utils";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix'
 export default {
-    name: "complexTable",
     directives: {
         waves
     },

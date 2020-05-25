@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/contractHis/contractHisList',
+        url: '/webContractHis/contractHisList',
         method: 'post',
         data: params
     })
@@ -10,15 +10,23 @@ export function fetchList(params) {
 
 export function getContractTemlist(params) {
     return request({
-        url: '/contractFlowNew/queryContractTempletList',
+        url: '/webContractFlowNew/queryContractTempletList',
         method: 'post',
         data: params
     })
 }
 
+
+export function getCust(params){
+    return request({
+        url: `webCustInfo/queryCustWithBusiness/${params}`,
+        method: 'get'
+    },false)
+}
+
 export function getProject(params){
     return request({
-        url:'/projectInfo/projectInfoList',
+        url:'/webProjectInfo/projectInfoList',
         method:'post',
         data:params
     })
@@ -26,7 +34,7 @@ export function getProject(params){
 
 export function getContractConfig(params) {
     return request({
-        url: '/contractFlowNew/queryContractConfig',
+        url: '/webContractFlowNew/queryContractConfig',
         method: 'post',
         data: params
     })
@@ -34,7 +42,7 @@ export function getContractConfig(params) {
 
 export function getMainContract(params) {
     return request({
-        url: '/contractFlowNew/queryMainContractList',
+        url: '/webContractFlowNew/queryMainContractList',
         method: 'post',
         data: params
     })
@@ -42,7 +50,7 @@ export function getMainContract(params) {
 
 export function fetchProDic(parmas) {
     return request({
-        url: '/commonInfo/queryDictInfo',
+        url: '/webCommonInfo/queryDictInfo',
         method: 'post',
         data:parmas
     })
@@ -50,7 +58,7 @@ export function fetchProDic(parmas) {
 
 export function conApply(params){
     return request({
-        url: '/contractHis/saveContractHis',
+        url: '/webContractHis/saveContractHis',
         method: 'post',
         data:params
     })
@@ -58,7 +66,7 @@ export function conApply(params){
 
 export function getDetail(params){
     return request({
-        url:'/contractHis/contractHisDetail',
+        url:'/webContractHis/contractHisDetail',
         method:'post',
         data:params
     })
@@ -66,7 +74,7 @@ export function getDetail(params){
 
 export function eidtList(params){
     return request({
-        url:'/contractHis/changeContractHis',
+        url:'/webContractHis/changeContractHis',
         method:'post',
         data:params
     })
@@ -74,7 +82,7 @@ export function eidtList(params){
 
 export function renewList(params){
     return request({
-        url:'/contractHis/contractHisRenewal',
+        url:'/webContractHis/contractHisRenewal',
         method:'post',
         data:params
     })
@@ -82,7 +90,7 @@ export function renewList(params){
 
 export function abandonList(params){
     return request({
-        url:'/contractHis/contractHisAbandon',
+        url:'/webContractHis/contractHisAbandon',
         method:'post',
         data:params
     })
@@ -91,7 +99,7 @@ export function abandonList(params){
 
 export function findAllProject(params){
     return request({
-        url:'/projectInfo/projectInfoList',
+        url:'/webProjectInfo/projectInfoList',
         method:'post',
         data:params
     })
@@ -99,7 +107,7 @@ export function findAllProject(params){
 
 export function changeRecord(params){
     return request({
-        url:'/contractHis/contractHisChangeLider',
+        url:'/webContractHis/contractHisChangeLider',
         method:'post',
         data:params
     })
@@ -107,7 +115,7 @@ export function changeRecord(params){
 
 export function downFile(params){
     return request({
-        url:'/commonInfo/downFiles',
+        url:'/webCommonInfo/downFiles',
         method:'post',
         data:params
     })
@@ -116,7 +124,7 @@ export function downFile(params){
 
 export function getMember(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
+      url:'/webCommonInfo/queryUserInfo',
       method:'post',
       data:params
     })
@@ -125,7 +133,7 @@ export function getMember(params){
 
 export function moveContracts(params){
     return request({
-      url:'/contractHis/contractHisBatchMove',
+      url:'/webContractHis/contractHisBatchMove',
       method:'post',
       data:params
     })
@@ -133,7 +141,7 @@ export function moveContracts(params){
 
 export function changeReceipt(params){
     return request({
-      url:'/contractHis/changeReceipt',
+      url:'/webContractHis/changeReceipt',
       method:'post',
       data:params
     })

@@ -12,6 +12,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const env_prod = require('../config/prod.env')
 const env_test = require('../config/test.env')
+const env_prod_old = require('../config/prodOld.env')
 const argv=process.argv[2];
 
 function resolve (dir) {
@@ -36,7 +37,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': argv=='prod'?env_prod:env_test
+      'process.env': argv=='prod' ? env_prod : argv=='test' ? env_test:env_prod_old
     }),
     new UglifyJsPlugin({
       uglifyOptions: {

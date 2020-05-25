@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/needFlow/queryNeedFlowList',
-        method: 'post',
+        url: '/webNeedFlow/queryNeedFlowList',
+        method:'post',
         data: params
     })
 }
@@ -11,7 +11,7 @@ export function fetchList(params) {
 
 export function addCoop(params){
     return request({
-        url:'/needFlow/addNeedFlow',
+        url:'/webNeedFlow/addNeedFlow',
         method:'post',
         data:params
     })
@@ -19,23 +19,23 @@ export function addCoop(params){
 
 export function getLabelList(params){
     return request({
-        url:'/needFlow/queryNeedLabel',
-        method:'post',
-        data:params
+        url:`/webNeedFlow/queryNeedLabel`,
+        method:'get',
+        // data:params
     })
 }
 
 export function getTypeList(params){
     return request({
-        url:'/needFlow/queryNeedType',
-        method:'post',
-        data:params
+        url:`/webNeedFlow/queryNeedType`,
+        method:'get',
+        // data:params
     })
 }
 
 export function addComment(params){
     return request({
-        url:'/needFlow/addComment',
+        url:'/webNeedFlow/addComment',
         method:'post',
         data:params
     })
@@ -43,7 +43,7 @@ export function addComment(params){
 
 export function addProgress(params){
     return request({
-        url:'/needFlow/promoteProgress',
+        url:'/webNeedFlow/promoteProgress',
         method:'post',
         data:params
     })
@@ -51,7 +51,7 @@ export function addProgress(params){
 
 export function editPart(params){
     return request({
-        url:'/needFlow/editParticipantList',
+        url:'/webNeedFlow/editParticipantList',
         method:'post',
         data:params
     })
@@ -59,15 +59,15 @@ export function editPart(params){
 
 export function getPart(params){
     return request({
-        url:'/needFlow/queryCurParticipantList',
-        method:'post',
-        data:params
+        url:`/webNeedFlow/queryCurParticipantList/${params}`,
+        method:'get',
+        // data:params
     })
 }
 
 export function selectcharge(params){
     return request({
-        url:'/needFlow/setNextPrincipal',
+        url:'/webNeedFlow/setNextPrincipal',
         method:'post',
         data:params
     })
@@ -75,7 +75,7 @@ export function selectcharge(params){
 
 export function progressRecord(params){
     return request({
-        url:'/needFlow/queryHisProgress',
+        url:'/webNeedFlow/queryHisProgress',
         method:'post',
         data:params
     })
@@ -83,7 +83,7 @@ export function progressRecord(params){
 
 export function getCommentList(params){
     return request({
-        url:'/needFlow/queryCommentList',
+        url:'/webNeedFlow/queryCommentList',
         method:'post',
         data:params
     })
@@ -91,7 +91,7 @@ export function getCommentList(params){
 
 export function chargeRecord(params){
     return request({
-        url:'/needFlow/queryHisPrincipal',
+        url:'/webNeedFlow/queryHisPrincipal',
         method:'post',
         data:params
     })
@@ -99,15 +99,15 @@ export function chargeRecord(params){
 
 export function getDetail(params){
     return request({
-        url:'/needFlow/queryDetail',
-        method:'post',
-        data:params
+        url:`/webNeedFlow/queryDetail/${params}`,
+        method:'get',
+        // data:params
     })
 }
 
 export function getPlan(params){
     return request({
-        url:'/needFlow/queryNeedProgress',
+        url:'/webNeedFlow/queryNeedProgress',
         method:'post',
         data:params
     })
@@ -116,7 +116,7 @@ export function getPlan(params){
 
 export function downFile(params){
     return request({
-        url:'/needFlow/exportProgressOrComment',
+        url:'/webNeedFlow/exportProgressOrComment',
         method:'post',
         data:params
     })
@@ -124,7 +124,7 @@ export function downFile(params){
 
 export function getMember(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
+      url:'/webCommonInfo/queryUserInfo',
       method:'post',
       data:params
     })
@@ -133,7 +133,7 @@ export function getMember(params){
 
 export function moveCoops(params){
     return request({
-      url:'/needFlow/needFlowBatchMove',
+      url:'/webNeedFlow/needFlowBatchMove',
       method:'post',
       data:params
     })

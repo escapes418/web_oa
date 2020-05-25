@@ -8,6 +8,10 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <div class="clearfix cominfo-item">
+                            <span class="left-title font-gray">工作日志编号：</span>
+                            <span class="right-con">{{ detail.dailyCode }}</span>
+                        </div>
+                        <div class="clearfix cominfo-item">
                             <span class="left-title font-gray">提交人：</span>
                             <span class="right-con">{{ detail.createBy }}</span>
                         </div>
@@ -235,14 +239,14 @@ export default class imDetail extends Vue{
             dailyId:this.$route.query.key,
             comment:this.critique
         }).then((res:Ajax.AjaxResponse)=>{
-            if(res.status == 0){
+            // if(res.code == 200){
                 this.$message({
                     message:res.message,
                     type:'success'
                 })
                 this.dialogCritique = false;
                 this.critiqueDetail()
-            }
+            // }
         })
     }
 }

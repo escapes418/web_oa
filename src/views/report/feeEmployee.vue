@@ -49,7 +49,7 @@
             show-icon
             type="info">
         </el-alert>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="620">
+        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" max-height="620">
         <el-table-column align="center" label="员工名称"  width="120px" fixed>
             <template slot-scope="scope">
                 <span class="ignore-detail">{{scope.row.employeeName}}</span>
@@ -167,7 +167,6 @@ export default {
     mixins: [listQueryMix],
     data() {
         return {
-            tableKey: 0,
             year:"",
             list: [],
             total: 0,
@@ -185,7 +184,7 @@ export default {
             pageNo: 1,
             pageSize: 20,
             listQuery: {
-                officeName:"市场中心",
+                officeName:"营销中心",
                 tempChoice:{},
                 officeId: "15725250",//默认市场中心
                 employeeName:"",
@@ -255,8 +254,13 @@ export default {
 
         },  
         depConfirm(data){ 
-            this.listQuery.officeId = data.id;
-            this.listQuery.officeName = data.name;
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
         }, 
         handleFilter() {
             if(!this.listQuery.year){
@@ -292,7 +296,7 @@ export default {
             downEmpFile({
                 year:this.listQuery.year
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({

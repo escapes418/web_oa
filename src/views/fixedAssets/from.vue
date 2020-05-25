@@ -422,7 +422,7 @@ export default class maForm extends Vue {
             saveOrUpdateAsset({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"

@@ -24,15 +24,40 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同类型：</span>
-                                    <span class="right-con">{{ detail.contractTypeTxt }}</span>
+                                    <span class="right-con">{{ contractTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务类型：</span>
+                                    <span class="right-con">{{ businessTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务模块：</span>
+                                    <span class="right-con">{{ businessModelName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">合同关键字：</span>
+                                    <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
+                                </li>
+                                <li class="base-li" v-if="pathType === 'todo'&&ISMODIFY">
+                                    <span class="left-title font-gray">修改合同关键字：</span>
+                                    <span class="right-con">
+                                        <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="keyWord" placeholder="请选择合同关键字" style="width:260px;">
+                                            <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                            </el-option>
+                                        </el-select>
+                                    </span>
                                 </li>
                                 <li class="base-li" v-if="associationMain">
                                     <span class="left-title font-gray">关联主合同编号：</span>
                                     <span class="right-con">{{ detail.associationMainCode }}</span>
                                 </li>
-                                <li class="base-li" v-if="!associationMain">
+                                <li class="base-li" v-if="businessType == 1&&!associationMain">
                                     <span class="left-title font-gray">关联项目：</span>
                                     <span class="right-con" style="max-width:400px">{{ projectName.join(',') }}</span>
+                                </li>
+                                <li class="base-li" v-if="businessType == 2">
+                                    <span class="left-title font-gray">关联客户：</span>
+                                    <span class="right-con" style="max-width:400px">{{ custNames.join(',') }}</span>
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同申请人：</span>
@@ -46,7 +71,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
@@ -70,12 +95,20 @@
                                     <span class="left-title font-gray">合同负责人：</span>
                                     <span class="right-con">{{ detail.contractLeaderName }}</span>
                                 </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">用章类型：</span>
+                                    <span class="right-con">{{ detail.chapterTypeName&&detail.chapterTypeName.join(' ，') }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">用章份数：</span>
+                                    <span class="right-con">{{ detail.chapterNum }}</span>
+                                </li>
                             </ul>
                         </base-temp>
                     </div>
                 </div>
             </div>
-            <div class="segment statistics">
+            <!-- <div class="segment statistics">
                 <div class="segment-header">
                     快递信息
                 </div>
@@ -99,7 +132,7 @@
                         </el-col>
                     </el-row>
                 </div>
-            </div>
+            </div> -->
             <div class="segment statistics part-wrap" v-if="detail.contractAttachmentList&&detail.contractAttachmentList.length > 0">
                 <div class="segment-header">
                     附件
@@ -161,7 +194,7 @@
                                         <span class="color-black bold">{{item.assigneeName}}</span>
                                         <!-- 审批bug的补丁 -->
                                         <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                                        <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                                        <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                                     </div>
                                     <div class="state-item">
                                         <span class="font-size14">{{item.endTime}}</span>
@@ -217,7 +250,7 @@
                     <el-button size="medium" @click="backBtn">返回</el-button>
                 </template>
                 <template v-if="pathType === 'todo'">
-                    <!-- <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="expBtn">提交</el-button> -->
+                    <el-button v-if="ISMODIFY" size="medium" type="primary" @click="updateBtn">提交</el-button>
                     <el-button v-if="ISME&&ISEDIT" size="medium" type="primary" @click="editBtn">编辑</el-button>
                     <el-button v-if="!ISEDIT&&ISME || !ISME" size="medium" type="primary" @click="agreeBtn">同意</el-button>
                     <el-button v-if="!ISEDIT&&ISME || (!ISME&&ISBACK)" size="medium" type="info" @click="refuseBtn">驳回</el-button>
@@ -262,7 +295,8 @@ import {
     contractFlow,
     findAllProject,
     expDel,
-    downFile
+    downFile,
+    updateKeyWord
 } from "@/api/contractCheck";
 import { parseTime } from "@/utils";
 import { mapState } from "vuex";
@@ -285,14 +319,21 @@ export default {
             tipsUpload3:'合同扫描件图片（必填）',
             dataAttachment:[],
             contractAttachment:[],
-            
+            keyWord:[],
+            keyWords:[],
+            keyWordName:[],
+            contractTypeName:"",
+            businessTypeName:"",
+            businessType:"",
+            businessModelName:"",
             scanConAttachment:[],
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             // uploadTips: config.tips,
             flowLoglist: [],
             expenseAttachment: [],
             detail: {},
             projectName:[],
+            custNames:[],
             comment: "",
             taskId: "",
             dialogCanVisible: false,
@@ -309,6 +350,10 @@ export default {
         ...mapState({
             token: state => state.user.token
         }),
+        ISMODIFY: function() {
+            let result = this.detail.showModify  == "1"&&this.keyWords.length>0 ? true : false;
+            return result;
+        },
         ISAPPLY:function(){
             let result =
                 this.userInfo.loginName == this.detail.applyPerCode ? true : false;
@@ -355,11 +400,11 @@ export default {
     created() {
         this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         if (this.$route.query.taskId) this.taskId = this.$route.query.taskId;
-        if (this.$route.query.pathType)
-            this.pathType = this.$route.query.pathType;
+        if (this.$route.query.pathType) this.pathType = this.$route.query.pathType;
 
         //先获取详情根据详情返回的模版ID再获取相关的配置数据，并将详情的数据回填到配置文件然后渲染详情页面
         this.detailPromise().then(async res=>{
+
             let respond = await getContractConfig({id:res.data.contractFlowDetailInfoNewResponse.configId});
             respond.data.contractConfigAttachmentList.forEach(item=>{
                 if(item.attachmentType == 2){
@@ -382,6 +427,18 @@ export default {
                     })
                 })
             })
+            this.contractTypeName = respond.data.contractTypeName;
+            this.businessTypeName = respond.data.businessTypeName;
+            this.businessType = respond.data.businessType;
+            this.businessModelName = respond.data.businessModelName;
+            respond.data.keyWords = respond.data.keyWords || [];
+            this.keyWords = respond.data.keyWords;
+            console.log(this.keyWords)
+            // this.keyWords.forEach(i=>{
+            //     if(res.data.contractFlowDetailInfoNewResponse.keyWord.indexOf(i.key)!=-1){
+            //         this.keyWordName.push(i.value)
+            //     }
+            // })
             this.associationMain = respond.data.associationMain == 1
             this.detail.contractPartyList = respond.data.contractPartyList;
         })
@@ -393,6 +450,9 @@ export default {
                 this.detail = res.data.contractFlowDetailInfoNewResponse;
                 this.detail.projectList&&this.detail.projectList.forEach(item=>{
                     this.projectName.push(item.projectName)
+                })
+                this.detail.custList&&this.detail.custList.forEach(item=>{
+                    this.custNames.push(item.custName)
                 })
                 this.flowLoglist = res.data.flowLoglist;
                 if (
@@ -438,6 +498,26 @@ export default {
                 resolve(res)
             })
         },
+        updateBtn(){
+            this.keyWords.forEach(i=>{
+                if(this.keyWord.indexOf(i.key)!=-1){
+                    this.keyWordName.push(i.value)
+                }
+            })
+            updateKeyWord({
+                id:this.$route.query.key,
+                keyWord:this.keyWord,
+                keyWordName:this.keyWordName
+            }).then(res=>{
+                if(res.code == 200){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    })
+                    this.$router.go(0);
+                }
+            })
+        },
         showImg(index,type) {
             if(type==1){
                 if (this.contractAttachment[index].viewer) {
@@ -481,7 +561,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                 }
@@ -490,13 +570,13 @@ export default {
         scanSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
-                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2})
+                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2,uid:file.uid})
             }
         },
         // 附件移除
        scanRemove(file, fileList) {
             this.scanAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.scanAttachment.splice(index, 1);
                 }
             })
@@ -553,15 +633,14 @@ export default {
                 procInsId: this.detail.procInsId,
                 contractAttachmentList:[...this.scanAttachment]
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
-                    // this.$router.push({
-                    //     path:'/me/reim'
-                    // })
-                    this.$router.go(-1);
+                    this.$router.push({
+                        path:'/task/todo'
+                    })
                 }
             });
         },
@@ -588,12 +667,14 @@ export default {
                 procInsId: this.detail.procInsId,
                 contractAttachmentList:[...this.scanAttachment]
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
-                    this.$router.go(-1);
+                    this.$router.push({
+                        path:'/task/todo'
+                    })
                 }
             });
         },
@@ -602,7 +683,7 @@ export default {
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -616,7 +697,7 @@ export default {
             expDel({
                 contractFlowId: this.$route.query.key
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.dialogDelVisible = false;
                     this.$message({
                         message: res.message,

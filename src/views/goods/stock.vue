@@ -336,7 +336,7 @@ export default {
                     detail:this.itemList,
                     putinTotal:this.putinTotal
                 }).then(res=>{
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

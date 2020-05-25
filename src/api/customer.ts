@@ -1,64 +1,87 @@
 import request from '@/utils/request'
 
 export function fetchList(params) {
-  return request({
-    url: '/custInfo/custInfoList',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/webCustInfo/custInfoList',
+        method: 'post',
+        data:params
+    })
 }
 
 export function custNum(params) {
-  return request({
-    url: '/custInfo/custInfoListNum',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/webCustInfo/custInfoListNum',
+        method: 'post',
+        data:params
+    })
 }
 
 export function getLinkman(params) {
-  return request({
-    url: '/custInfo/findCustLinkman',
-    method: 'post',
-    data:params
-  })
+    return request({
+        url: '/webCustInfo/findCustLinkman',
+        method: 'post',
+        data:params
+    })
 }
 
 export function custChange(params) {
+    return request({
+        url: '/webCustInfo/custChangePick',
+        method: 'post',
+        data:params
+    })
+}
+
+export function fetchForm(data){
   return request({
-    url: '/custInfo/custChangePick',
-    method: 'post',
-    data:params
+    url:'/webCustInfo/custInfoNewDetail/'+data,
+    method:'get',
   })
 }
 
-export function fetchForm(params){
-  return request({
-    url:'/custInfo/custInfoDetail',
-    method:'post',
-    data:params
-  })
-}
+// export function fetchForm(params){
+//   return request({
+//     url:'/custInfo/custInfoDetail',
+//     method:'post',
+//     data:{id:params}
+//   })
+// }
 
 export function deleCust(params){
   return request({
-    url:'/custInfo/deleteCustInfo',
+    url:'/webCustInfo/deleteCustInfo',
     method:'post',
+    data:params
+  })
+}
+
+export function modifyCust(params){
+  return request({
+    url:'/webCustInfo/saveCustInfo',
+    method:'put',
     data:params
   })
 }
 
 export function saveCust(params){
   return request({
-    url:'/custInfo/saveCustInfo',
+    url:'/webCustInfo/saveCustInfo',
     method:'post',
     data:params
   })
 }
 
+export function verifyCust(params){
+  return request({
+    url:'/webCustInfo/verify',
+    method:'get',
+    params:params
+  })
+}
+
 export function getPhone(params){
   return request({
-    url:'/commonInfo/queryUserInfoForId',
+    url:'/webCommonInfo/queryUserInfoForId',
     method:'post',
     data:params
   })
@@ -66,7 +89,7 @@ export function getPhone(params){
 
 export function getMaintain(parmas){
   return request({
-    url:'/custInfo/custMaintenanceList',
+    url:'/webCustInfo/custMaintenanceList',
     method:'post',
     data:parmas
   })
@@ -74,7 +97,7 @@ export function getMaintain(parmas){
 
 export function saveMaintain(params){
   return request({
-    url:'/custInfo/saveCustMaintenance',
+    url:'/webCustInfo/saveCustMaintenance',
     method:'post',
     data:params
   })
@@ -90,7 +113,7 @@ export function fetchComInfoList(params) {
 
 export function downLoadContract(params){
   return request({
-    url:'/custInfo/downLoadContractPdf',
+    url:'/webCustInfo/downLoadContractPdf',
     method:'post',
     data:params
   })
@@ -98,7 +121,7 @@ export function downLoadContract(params){
 
 export function getCustPool(params){
   return request({
-    url:'/custInfo/custPoolList',
+    url:'/webCustInfo/custPoolList',
     method:'post',
     data:params
   })
@@ -106,7 +129,7 @@ export function getCustPool(params){
 
 export function getMainCust(params){
   return request({
-    url:'/custInfo/queryCustInstant',
+    url:'/webCustInfo/queryCustInstant',
     method:'post',
     data:params
   })
@@ -114,7 +137,7 @@ export function getMainCust(params){
 
 export function mergeCust(params){
   return request({
-    url:'/custInfo/custMerge',
+    url:'/webCustInfo/custMerge',
     method:'post',
     data:params
   })
@@ -122,15 +145,22 @@ export function mergeCust(params){
 
 export function getMember(params){
   return request({
-    url:'/commonInfo/queryMemberInfo',
+    url:'/webCommonInfo/queryUserInfo',
     method:'post',
     data:params
   })
 }
+// export function getMember(params){
+//   return request({
+//     url:'/commonInfo/queryMemberInfo',
+//     method:'post',
+//     data:params
+//   })
+// }
 
 export function getMarket(params){
   return request({
-    url:'/commonInfo/queryMarketOffice',
+    url:'/webCommonInfo/queryMarketOffice',
     method:'post',
     data:params
   })
@@ -138,7 +168,7 @@ export function getMarket(params){
 
 export function moveBatchCust(params){
   return request({
-    url:'/custInfo/custBatchMove',
+    url:'/webCustInfo/custBatchMove',
     method:'post',
     data:params
   })
@@ -146,7 +176,15 @@ export function moveBatchCust(params){
 
 export function openBatchCust(params){
   return request({
-    url:'/custInfo/custBatchOpen',
+    url:'/webCustInfo/custBatchOpen',
+    method:'post',
+    data:params
+  })
+}
+
+export function unboundCust(params){
+  return request({
+    url:'/webCustInfo/custUnbind',
     method:'post',
     data:params
   })

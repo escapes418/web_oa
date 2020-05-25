@@ -18,7 +18,7 @@ export function travelFormVali(self) {
         toast('请选择项目名称！');
         flag = false;
     } 
-    else if (self.filter.travelExpenseTypeList.length <= 0){
+    else if (self.filter.travelExpenseTypeList.length < 1){
         toast('请选择报销分类！');
         flag = false;
     } 
@@ -68,8 +68,7 @@ export function travelFormVali(self) {
                 key = false;
                 
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                !(item.expenseAmt > 0)
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
                 toast('请正确填写出差金额！');
                 key = false;
@@ -85,43 +84,3 @@ export function travelFormVali(self) {
     return flag;
 }
 
-export function travelDetailVali(self) {
-    var flag = true;
-    if (self.budgetDetailList.length < 1) {
-        toast('请填写申请明细！');
-        flag = false;
-    }
-    self.budgetDetailList.forEach((item) => {
-        if (item.startDate == '') {
-            toast('请选择发生日期！');
-            flag = false;
-        } else if (item.startPointName == '') {
-            toast('请选择起点！');
-            flag = false;
-        } else if (item.endDate == '') {
-            toast('请选择结束日期！');
-            flag = false;
-        } else if (item.endPointName == '') {
-            toast('请选择终点！');
-            flag = false;
-        } else if (item.firstSubName == '') {
-            toast('请选择科目');
-            flag = false;
-        } else if (item.personNum == '') {
-            toast('请正确填写报销人数！');
-            flag = false;
-        } else if (item.dayNum == '') {
-            toast('请正确填写报销天数！');
-            flag = false;
-        } else if (item.expenseAmt == '') {
-            toast('请正确填写预算金额！');
-            flag = false;
-        } else if (new Date(item.startDate) > new Date(item.endDate)) {
-            toast('结束日期不能早于发生日期！');
-            flag = false;
-        } else {
-            flag = true;
-        }
-    });
-    return flag;
-}

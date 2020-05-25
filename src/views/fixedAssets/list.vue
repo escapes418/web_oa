@@ -323,7 +323,7 @@ export default {
         },
         DLmodel(){
             assetImportModel().then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
@@ -348,7 +348,7 @@ export default {
         },
         handleSuccess(res, file, fileList) {
             this.expenseAttachment.push({ name:file.name})
-            if(res.status == 0){
+            if(res.code == 200){
                 this.$message({
                     message:res.message,
                     type:'success'
@@ -453,7 +453,7 @@ export default {
             deleteAssetById({
                id:this.deleteRow.id
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.showDelete = false
                     this.$message({
                         message:res.message,
@@ -476,7 +476,7 @@ export default {
             assetExport({
                 ...postData
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({

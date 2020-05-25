@@ -15,13 +15,17 @@
                 <el-row>
                     <el-col :span="12" class="segment-brline">
                         <RedStar label="报销人员：">
-                            <span class="right-con">{{userInfo.name}}</span>
+                            <span class="right-con">{{userInfo.name || ""}}</span>
                         </RedStar>
-                        <RedStar label="所属部门：">
-                            <span class="right-con">{{ userInfo.officeName }}</span>
+                        <RedStar label="收款帐号：" :required="true">
+                            <el-select clearable class="filter-item " v-model="filter.receivablesAccountId" placeholder="请选择" style="width:250px;" @change="setAccount">
+                                <el-option v-for="item in bankList" :label="item.splitName" :value="item.id" :key="item.id">
+                                </el-option>
+                            </el-select>
                         </RedStar>
+                        <Department type="form" :DId="filter.costCenterId" :Dlabel="labelName" :canshow="canshow" :Dvalue="costCenterName" @on-confirm="depConfirm"></Department>
                         <RedStar label="报销类型：" :required="true">
-                            <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:280px;" @change="clearLink">
+                            <el-select clearable class="filter-item" v-model="filter.applyType" placeholder="请选择" style="width:250px;" @change="clearLink">
                                 <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
                             </el-select>
@@ -58,16 +62,16 @@
                             <span class="right-con">{{ filter.applyTime }}</span>
                         </RedStar>
                         <RedStar label="岗位名称：">
-                            <span class="right-con">{{ userInfo.postName }}</span>
+                            <span class="right-con">{{ userInfo.postName || "" }}</span>
                         </RedStar>
                         <RedStar label="发票所属公司：" :required="true">
-                            <el-select clearable class="filter-item " v-model="filter.taxCity" placeholder="请选择" style="width:280px;">
+                            <el-select clearable class="filter-item " v-model="filter.taxCity" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in taxList" :label="item.name" :value="item.value" :key="item.value">
                                 </el-option>
                             </el-select>
                         </RedStar>
                         <RedStar label="陪客人员：" v-if="filter.applyType == 2" :required="true">
-                            <el-select clearable multiple class="filter-item" filterable v-model="filter.employees" placeholder="请选择" style="width:280px;">
+                            <el-select clearable multiple class="filter-item" filterable v-model="filter.employees" placeholder="请选择" style="width:250px;">
                                 <el-option v-for="item in memberList" :label="item.name" :value="item.loginName" :key="item.loginName">
                                 </el-option>
                             </el-select>
@@ -79,7 +83,7 @@
                                     placeholder="请输入" 
                                     :row="3" 
                                     :max="600"
-                                    textStyle="width:280px"></sjbtextarea>
+                                    textStyle="width:250px"></sjbtextarea>
                             </span>
                         </RedStar>
                         <RedStar label="随行人员：" v-if="filter.applyType == 3">
@@ -91,7 +95,7 @@
                         <RedStar label="备注：">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
-                                textStyle="width:280px;"
+                                textStyle="width:250px;"
                                 :rows="3"
                                 :max="700"
                                 v-model.trim="filter.remarks"></sjbtextarea>
@@ -164,9 +168,6 @@
                     <el-pagination background @current-change="recepCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="recepTotal">
                     </el-pagination>
                 </div>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogRelatVisible = false">返回</el-button>
-                </div>
             </el-dialog>
         </div>
         <div class="segment statistics">
@@ -188,10 +189,10 @@
                                 <td class="tableTitle">终点</td>
                                 <td class="tableTitle">科目</td>
                                 <td class="tableTitle">人数</td>
-                                <td class="tableTitle">天数</td>
+                                <!-- <td class="tableTitle">天数</td> -->
                                 <td class="tableTitle">票据张数</td>
                                 <td class="tableTitle">报销金额</td>
-                                <td class="tableTitle">备注</td>
+                                <td class="tableTitle">备注（限300字）</td>
                                 <td class="tableTitle">上传图片</td>
                             </tr>
                         </thead>
@@ -227,6 +228,13 @@
                 <el-button size="small" @click="backStep">返回</el-button>
             </div>
         </div>
+
+        <el-dialog title="新增收款账户" :visible.sync="dialogAccount" width="26%" :center="true" :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false">
+            <span class="">亲爱的用户，请在个人中心-账户管理-新增添加收款账户，让报销更便利</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="jumpAccount">前往设置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -236,7 +244,8 @@ import Approval from '@/components/Approval'
 import Project from '@/components/Project'
 import RedStar from '@/components/RedStar/RedStar.vue'
 import sjbtextarea from '@/components/sjbTextarea'
-import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember } from '@/api/reim'
+import Department from "@/components/Department";
+import { fetchProList, expApply, expSave, getDetail, fetchThemeList, getMember ,getAccountList} from '@/api/reim'
 import { mapState, mapGetters } from "vuex";
 
 import { parseTime } from '@/utils'
@@ -251,7 +260,8 @@ export default {
         Approval,
         Project,
         RedStar,
-        sjbtextarea
+        sjbtextarea,
+        Department
     },
     mixins: [listQueryMix],
     data() {
@@ -265,12 +275,14 @@ export default {
             urlArr: [],
             itemList: [],
             fileList: [],
-            // dialogFormVisible: false,
+            canshow: true,
             dialogRelatVisible: false,
-            
+            costCenterName:"",
+            labelName:"成本中心",
             filter: {//筛选条件
                 applyTime: "", // 报销日期
                 applyType: "", // 报销类型
+                costCenterId:"",
                 taxCity: "", // 发票城市
                 id: "", // 报销ID，新建时为空
                 procInsId: "", // 报销ID，新建时为空
@@ -285,7 +297,12 @@ export default {
                 customerSituation:"",
                 travelExpenseTypeListName:[],
                 entourageListName:[],
-                relType:''
+                relType:'',
+
+                receivablesAccountId:"",
+                payeeCardNum:"",// 收款人银行卡号 ,
+                payeeName:"",// 收款人姓名 ,
+                payeeOpeningBank: "",//收款人开户行 ,
             },
             expenseAttachment: [], // 读取和提交时均做转换
             total: null,
@@ -294,7 +311,7 @@ export default {
             relatThemProName:"",
             expTypeList: [],
             taxList: [],
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             listLoading: false,
             list: [],
             recep: [],
@@ -312,16 +329,54 @@ export default {
                 endApplyTime: "",
             },
             uploadTips: config.tips,
+            userInfo:{},
 
-            num1:""
+            bankList:[],
+            dialogAccount:false,
         }
     },
-    created() {
+    async created() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        if(this.userInfo.useable=="1"){
+            this.costCenterName = this.userInfo.officeName;
+            this.filter.costCenterId =  this.userInfo.officeId;
+        }
+        //获取字典
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                };
+            }
+            return temp;
+        }
+        this.expTypeList = selectDic(dicList, "oa_expense_type");
+        this.taxList = selectDic(dicList, "tax_city");
         //时间转换
         this.filter.applyTime = common.time.monthlast;
         // 清空store集合
         this.$store.dispatch('clearCollection');
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        // 账户信息
+        getAccountList().then(res => {
+            if(res.code == 200&&res.data){
+                this.bankList = res.data;
+                res.data.forEach(i=>{
+                    if(i.defaultAccount == "1"){
+                        this.filter.receivablesAccountId = i.id;
+                        this.filter.payeeCardNum = i.accountNumber// 收款人银行卡号 ,
+                        this.filter.payeeName = i.accountName// 收款人姓名 ,
+                        this.filter.payeeOpeningBank = i.belongBank//收款人开户行 ,
+                    }
+                    // return i.accountType == '1'
+                })  
+            }
+            if(this.bankList.length<1){
+                this.dialogAccount = true
+            }
+        })
         // 编辑时
         if (this.$route.query.key) {
             getDetail({
@@ -330,8 +385,16 @@ export default {
                 this.filter.applyType = res.data.detail.applyType;
                 this.filter.taxCity = res.data.detail.taxCity;
                 this.filter.applyTime = res.data.detail.applyTime; // 仅做展示，后台不需要
-                this.filter.remarks = res.data.detail.remarks
-                this.filter.customerSituation = res.data.detail.customerSituation
+                this.canshow = Date.parse(this.filter.applyTime) < Date.parse("2019-07-09") ? false : true;
+                this.filter.remarks = res.data.detail.remarks;
+                this.filter.customerSituation = res.data.detail.customerSituation;
+                this.filter.costCenterId = res.data.detail.costCenterId;
+                this.costCenterName = res.data.detail.costCenterName;
+
+                this.filter.receivablesAccountId = res.data.detail.receivablesAccountId;
+                this.filter.payeeCardNum = res.data.detail.payeeCardNum// 收款人银行卡号 ,
+                this.filter.payeeName = res.data.detail.payeeName// 收款人姓名 ,
+                this.filter.payeeOpeningBank = res.data.detail.payeeOpeningBank//收款人开户行 ,
 
                 this.filter.id = res.data.detail.id;
                 this.filter.projectId = res.data.detail.projectId;
@@ -357,7 +420,7 @@ export default {
                     if(!item.expenseAmt){
                         item.expenseAmt = ""
                     }
-                    if(!item.billNum){
+                    if(!item.billNum&&item.billNum != 0){
                         item.billNum = ""
                     }
                 })
@@ -381,16 +444,16 @@ export default {
                     res.data.detail.expenseAttachmentWeb.forEach(item => {
                         let originUrl = item.url;
                         item.url = res.data.detail.expenseAttachmentPrefix + item.url;
-                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl });
+                        this.expenseAttachment.push({ url: item.url, name: item.fileName, originUrl: originUrl ,uid:new Date().getTime()});
                     })
                 }
                 
             })
         }
         // store中没值时，从接口获取存入store
-        if (this.subsTree.length == 0) {
+        // if (this.subsTree.length == 0) {
             this.$store.dispatch('getSubs');
-        }
+        // }
     },
     computed: {
         ...mapState({
@@ -420,27 +483,37 @@ export default {
             return result;
         }
     },
-    mounted() {
-        //获取字典
-        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
-        function selectDic(arr, type) {
-            let temp = [];
-            for (var i = 0; i < arr.length; i++) {
-                if (arr[i].type == type) {
-                    temp.push(arr[i]);
-                };
-            }
-            return temp;
-        }
-        this.expTypeList = selectDic(dicList, "oa_expense_type");
-        this.taxList = selectDic(dicList, "tax_city");
-
+    async mounted() {
+        
         getMember({}).then(res => {
             this.memberList = res.data;
         })
 
+        
     },
     methods: {
+        setAccount(){
+            this.bankList.map(item=>{
+                if(this.filter.receivablesAccountId == item.id){
+                    this.filter.payeeCardNum = item.accountNumber// 收款人银行卡号 ,
+                    this.filter.payeeName = item.accountName// 收款人姓名 ,
+                    this.filter.payeeOpeningBank = item.belongBank//收款人开户行 ,
+                }
+            })
+        },
+        jumpAccount(){
+            this.$router.push({path:"/me/addAccount"})
+        },
+        depConfirm(data) {
+            if(data){
+                this.costCenterName = data.name;
+                this.filter.costCenterId = data.id;
+            }else{
+                this.costCenterName = "";
+                this.filter.costCenterId = "";
+            }
+            
+        },
         clearLink(){
             this.filter.projectPersonel ='';
             this.filter.projectId = '';
@@ -584,13 +657,13 @@ export default {
         handleSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url
-                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url})
+                this.expenseAttachment.push({ originUrl:res.data.storfiles.url ,name:file.name,url:url,uid:file.uid})
             }
         },
         // 附件移除
         handleRemove(file, fileList) {
             this.expenseAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.expenseAttachment.splice(index, 1)
                 }
             })
@@ -625,18 +698,18 @@ export default {
             this.filter.expenseDetail = this.getItemsInStore();
             if (type == 'apply' && reimFormVali(this)) {
                 expApply(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
                         })
-                        this.$router.push({path:'/task/todo' })
+                        this.$router.go(-1)
                     }
                 })
             }
             if(type == 'save') {
                 expSave(this.filter).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
@@ -650,6 +723,7 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .el-input--small .el-input__inner {
     height: 40px!important;
 }
@@ -689,7 +763,7 @@ export default {
   background: white;
   padding-left: 7px;
   line-height: 30px;
-  width: 280px
+  width: 250px
 }
 .segment .el-table__body-wrapper {
     padding: 40px 20px 35px;

@@ -1,4 +1,4 @@
-import { getSubjects, getSubjectsNew } from '@/api/reception';
+import { getSubjects, getSubjectsNew } from '@/api/reim';
 
 function detailInitData() {
     function createUid() {
@@ -134,9 +134,9 @@ const reim = {
                 isFirst: '0',
                 parSubCode: ''
             });
-            commit('Fill_SUBSPAR', response.data.list || []);
+            commit('Fill_SUBSPAR', response.data || []);
             let responseNew: any = await getSubjectsNew({});
-            commit('Fill_SUBSTREE', responseNew.data.list || []);
+            commit('Fill_SUBSTREE', responseNew.data || []);
         },
         // 集合中添加新项
         addDetail({ commit }) {

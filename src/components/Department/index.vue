@@ -2,7 +2,7 @@
     <div class="department" :class="type=='form'?'formHeight':''">
         <!-- 列表样式 -->
         <div class="toolbar-item list" v-if="type == 'list'">
-            <span class="item-label">归属部门：</span>
+            <span class="item-label">{{Dlabel}}</span>
             <div class="item-value" @click="showTree">
                 <i class="el-icon-search" style="color:#bfbfbf"></i>
                 <span style="color:#606266">{{officeName}}</span>
@@ -54,6 +54,14 @@ export default {
             type: String,
             default: "归属部门："
         },
+        canshow:{
+            type:Boolean,
+            default:true
+        },
+        clearCheck:{
+            type:Boolean,
+            default:false
+        }
     },
     data() {
         return {
@@ -72,7 +80,9 @@ export default {
             chargeName:"",
         };
     },
-    computed: {},
+    computed: {
+
+    },
     watch: {
         filterText(val) {
             this.$refs.tree.filter(val);
@@ -80,18 +90,29 @@ export default {
         Dvalue(val){
             this.officeName = val
             if(this.DId) this.officeId[0] = this.DId;
-        }
+        },
     },
-    created() {
+    async created() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
         var newArr = [];
+        if(this.type == "form"){
+            departList = departList.filter(item=>{
+                return item.status == 1
+            })
+        }
         common.transToTree(departList, newArr);
         this.treeData = newArr;
         this.officeName = this.Dvalue;
     },
     methods: {
         showTree(){
-            this.showDialog = true;
+            if(this.canshow){
+                this.showDialog = true;
+            }
+            this.$nextTick(_=>{
+                this.$refs.tree.setChecked(this.chargeData[0],false);
+            })  
         },
         clickCharge(data,select,childSelect){
             let index = this.chargeData.indexOf(data)
@@ -101,8 +122,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.tree.setChecked(this.chargeData[0],false);
-                this.chargeData = []
-                this.chargeData.push(data)
+                if(this.type =='form'&&data.status == '0'){
+                    this.$message({
+                        message: "该部门节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.tree.setChecked(data,false);
+                    return
+                }else{
+                    this.chargeData = [];
+                    this.chargeData.push(data)
+                }
             }else if(this.chargeData.length ===0&&select){
                 if(this.type =='form'&&data.status == '0'){
                     this.$message({
@@ -124,16 +154,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         confirmChoice() {
+            this.showDialog = false;
             if(this.chargeData.length){
                 const [{id,name}] = this.chargeData;
                 this.officeName = name;
-                this.showDialog = false;
                 this.$emit("on-confirm", {id,name});
             }else{
-                this.$message({
-                    message: "请选择一个子节点作为归属部门！",
-                    type: 'warning'
-                })
+                this.$emit("on-confirm");
             }
         }
     }

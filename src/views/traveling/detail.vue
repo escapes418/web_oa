@@ -113,6 +113,43 @@
                 </div>
             </div>
         </div>
+        <div class="segment statistics">
+            <div class="segment-header">
+                关联申请
+            </div>
+            <div class="segment-area">
+                <div class="el-table__body-wrapper">
+                    <el-table :data="expenseFlowList" border>
+                        <el-table-column label="流程编号">
+                            <template slot-scope="scope">
+                                <span style="color:#409EFF;cursor: Pointer;"  @click="showDetail(scope.row)">{{scope.row.procCode}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="申请时间">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.applyTime | stamp2TextDate}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="申请类型" prop="applyTypeName">
+                        </el-table-column>
+                        <el-table-column label="申请人" prop="applyPerName" width="120">
+                        </el-table-column>
+                        <el-table-column label="流程状态" prop="expenseStatusValue">
+                        </el-table-column>
+                        <el-table-column label="金额" prop="expenseTotal">
+                            <template slot-scope="scope">
+                                <span class="font-orange">{{ scope.row.expenseTotal | thousands(2) }}元</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                             <template slot-scope="scope">
+                                <el-button type="primary" size="mini" @click="showDetail(scope.row)">查看</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
+        </div>
         <div class="segment statistics" v-if="!ISPUTIN">
             <div class="segment-header">
                 流转信息
@@ -129,7 +166,7 @@
                                     <span class="color-black bold">{{item.assigneeName}}</span>
                                     <!-- 审批bug的补丁 -->
                                     <span class="log-header" v-if="index==0">{{item.activityName}}</span>
-                                    <span class="log-header" v-else>{{item.comment?"已审批":"待审批"}}</span>
+                                    <span class="log-header" v-else>{{item.startTime&&item.endTime?"已审批":item.startTime&&!item.endTime?"待审批":!item.startTime&&!item.endTime?"已删除":""}}</span>
                                 </div>
                                 <div class="state-item">
                                     <span class="font-size14">{{item.endTime}}</span>
@@ -206,7 +243,6 @@ import { travelDetailVali } from './travel.util';
 import sjbtextarea from '@/components/sjbTextarea';
 
 export default {
-    name: "complexTable",
     components: {
         sjbtextarea
     },
@@ -215,6 +251,7 @@ export default {
             flowDetailList: [],
             budgetDetailList: [],
             flowLoglist: [],
+            expenseFlowList:[],
             detail: {},
             comment: "",
             taskId: 0,
@@ -229,7 +266,7 @@ export default {
             return result
         },
         ISDEL:function(){
-            let result = this.detail.recpStatus == 2 || this.detail.recpStatus == 3 || this.detail.recpStatus == 4 ? true : false
+            let result = this.detail.travelStatus == 2 || this.detail.travelStatus == 3 || this.detail.travelStatus == 4 ? true : false
             return result
         },
         ISEDIT:function(){
@@ -237,15 +274,15 @@ export default {
             return result
         },
         ISPUTIN:function(){
-            let result = this.detail.recpStatus == 4 ? true :false
+            let result = this.detail.travelStatus == 4 ? true :false
             return result
         },
         ISCANCEL:function(){
-            let result = this.detail.recpStatus == 2 ? true:false
+            let result = this.detail.travelStatus == 2 ? true:false
             return result
         },
         ISPRINT:function(){
-            let result = this.detail.recpStatus == 1  ? true:false
+            let result = this.detail.travelStatus == 1  ? true:false
             return result
         }
     },
@@ -261,28 +298,20 @@ export default {
             this.budgetDetailList = res.data.budgetDetailList;
             res.data.flowLoglist = res.data.flowLoglist || [];
             this.flowLoglist = res.data.flowLoglist;
+            res.data.travelFlowresponse.expenseFlowList = res.data.travelFlowresponse.expenseFlowList || [];
+            this.expenseFlowList = res.data.travelFlowresponse.expenseFlowList;
         });
     },
     methods: {
+        showDetail(row){
+            this.$router.push({
+                path:'/me/reimDetail',
+                query: { key: row.flowId ,pathType:'list'}
+            })
+        },
         backBtn() {
             this.$router.go(-1)
         },
-        // expBtn() {
-        //     if(travelDetailVali(this)){
-        //         travelFlowStartWorkFlow({
-        //             expenseFlowId: this.$route.query.key,
-        //             procInsId: this.detail.procInsId
-        //         }).then(res => {
-        //             if (res.status == 0) {
-        //                 this.$message({
-        //                     message: res.message,
-        //                     type: "success"
-        //                 });
-        //                 this.$router.push({ path: "/me/travelingList" });
-        //             }
-        //         });
-        //     }
-        // },
         editBtn() {
             this.$router.push({
                 path: "/me/travelingForm",
@@ -290,20 +319,13 @@ export default {
             });
         },
         agreeBtn() {
-            // if(this.comment.length>100) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
             travelFlowCompleteTask({
                 travelFlowId: this.$route.query.key,
                 comment: this.comment,
                 flag: "yes",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -320,13 +342,6 @@ export default {
                 });
                 return
             }
-            // if(this.comment.length>300) {
-            //     this.$message({
-            //         message:'输入字符超出限额，请重新输入！',
-            //         type:'warning'
-            //     })
-            //     return 
-            // }
             
             travelFlowCompleteTask({
                 travelFlowId : this.$route.query.key,
@@ -334,7 +349,7 @@ export default {
                 flag: "no",
                 procInsId: this.detail.procInsId
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -344,12 +359,11 @@ export default {
             });
         },
         cancelBtn() {
-            // console.log(this.taskId);
             travelFlowRepealTask({
                 procInsId: this.detail.procInsId,
                 taskId: this.taskId || 0
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"
@@ -374,7 +388,7 @@ export default {
             travelFlowRepealApply({
                 travelFlowId: this.$route.query.key
             }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: "success"

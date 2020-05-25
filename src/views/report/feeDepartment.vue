@@ -235,7 +235,7 @@ export default {
                 firstCode:this.listQuery.firstCode,
                 year:this.listQuery.year
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                 var url = `./OA${res.data}`;
                 window.location.href = url;
                 this.$message({
@@ -263,12 +263,12 @@ export default {
     width: 250px
 }
 
-.ignore-detail {
-    overflow : hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-}
+// .ignore-detail {
+//     overflow : hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 1;
+//     -webkit-box-orient: vertical;
+//     word-break: break-all;
+// }
 </style>

@@ -13,6 +13,61 @@ export default [
         redirect: '/inforManage/implement',
         children: [
             {
+                path: 'primaryCust',
+                id: 'inforManage-primaryCust',
+                show: false,
+                name: 'PrimaryCust',
+                component: () => import('@/views/primaryCust/list.vue'),
+                meta: {
+                    title: '主客户管理',
+                    icon: 'iconfont icon-keycustomer'
+                }
+            },
+            {
+                path: 'maintainPrimary',
+                id: 'inforManage-maintainPrimary',
+                show: false,
+                name: 'MaintainPrimary',
+                component: () => import('@/views/primaryCust/maintain.vue'),
+                meta: {
+                    title: '维护管理',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'modifyPrimary',
+                id: 'inforManage-modifyPrimary',
+                show: false,
+                name: 'ModifyPrimary',
+                component: () => import('@/views/primaryCust/modifyContact.vue'),
+                meta: {
+                    title: '编辑联系人',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'primaryDetail',
+                id: 'inforManage-primaryDetail',
+                show: false,
+                name: 'PrimaryDetail',
+                component: () => import('@/views/primaryCust/detail.vue'),
+                meta: {
+                    title: '主客户详情',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
+                path: 'contactRecord',
+                id: 'inforManage-contactRecord',
+                show: false,
+                name: 'ContactRecord',
+                component: () => import('@/views/primaryCust/contactList.vue'),
+                meta: {
+                    title: '联系人记录',
+                    icon: 'iconfont icon-kehuguanli'
+                }
+            },
+            {
                 path: 'customerList',
                 id: 'inforManage-customerList',
                 show: false,
@@ -112,6 +167,43 @@ export default [
                 component: () => import('@/views/project/form.vue'),
                 meta: {
                     title: '新建项目',
+                    icon: '',
+                    reGet:true
+                },
+                hidden: true
+            },
+            {
+                path: 'addProgress',
+                id: 'inforManage-addProgress',
+                show: false,
+                name: 'AddProgress',
+                component: () => import('@/views/project/addMission.vue'),
+                meta: {
+                    title: '新增任务',
+                    icon: ''
+                },
+                hidden: true
+            },
+            {
+                path: 'changeMission',
+                id: 'inforManage-changeMission',
+                show: false,
+                name: 'ChangeMission',
+                component: () => import('@/views/project/changeMission.vue'),
+                meta: {
+                    title: '变更任务',
+                    icon: ''
+                },
+                hidden: true
+            }, 
+            {
+                path: 'changeDetail',
+                id: 'inforManage-changeDetail',
+                show: false,
+                name: 'ChangeDetail',
+                component: () => import('@/views/project/changeDetail.vue'),
+                meta: {
+                    title: '变更任务',
                     icon: ''
                 },
                 hidden: true
@@ -136,6 +228,18 @@ export default [
                 component: () => import('@/views/project/maintain.vue'),
                 meta: {
                     title: '维护管理',
+                    icon: ''
+                },
+                hidden: true
+            },
+            {
+                path: 'establishDetail',
+                id: 'inforManage-establishDetail',
+                show: false,
+                name: 'EstablishDetail',
+                component: () => import('@/views/establishPlan/detail.vue'),
+                meta: {
+                    title: '立项详情',
                     icon: ''
                 },
                 hidden: true
@@ -240,6 +344,52 @@ export default [
                 component: () => import('@/views/contractFill/form.vue'),
                 meta: {
                     title: '新建合同归档',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
+            },
+            {
+                path: 'pmsDeploy',
+                id: 'pmsDeploy',
+                show: false,
+                name: 'pmsDeploy',
+                component: () => import('@/views/pms/pmsDeploy.vue'),
+                meta: {
+                    title: 'PMS配置',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
+            {
+                path: 'projectTasklist',
+                id: 'projectTasklist',
+                show: false,
+                name: 'projectTasklist',
+                component: () => import('@/views/pms/projectTasklist.vue'),
+                meta: {
+                    title: '项目任务管理',
+                    icon: 'iconfont icon-changyongshili'
+                },
+            },
+            {
+                path: 'pmsDetail',
+                id: 'inforManage-pmsDetail',
+                show: false,
+                name: 'pmsDetail',
+                component: () => import('@/views/pms/detail.vue'),
+                meta: {
+                    title: '项目任务管理详情',
+                    icon: 'iconfont icon-changyongshili'
+                },
+                hidden: true
+            },
+            {
+                path: 'pmsSonDetail',
+                id: 'inforManage-pmsSonDetail',
+                show: false,
+                name: 'pmsSonDetail',
+                component: () => import('@/views/pms/sonDetail.vue'),
+                meta: {
+                    title: '项目任务管理详情',
                     icon: 'iconfont icon-changyongshili'
                 },
                 hidden: true

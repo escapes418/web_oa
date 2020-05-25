@@ -3,18 +3,23 @@
         <div class="filter-container">
             <div class="toolbar-item">
                 <span class="item-label">流程/合同编号：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="请输入流程/合同编号" v-model.trim="listQuery.queryText">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入流程/合同编号" v-model.trim="listQuery.queryText">
                 </el-input>
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同方名称：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="请输入甲方/乙方/丙方名称" v-model.trim="listQuery.contractPartyName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入甲方/乙方/丙方名称" v-model.trim="listQuery.contractPartyName">
                 </el-input>
             </div>
             
             <div class="toolbar-item">
                 <span class="item-label">合同签约人：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="请输入合同签约人" v-model.trim="listQuery.signLeaderName">
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入合同签约人" v-model.trim="listQuery.signLeaderName">
+                </el-input>
+            </div>
+            <div class="toolbar-item">
+                <span class="item-label">合同关键字：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
                 </el-input>
             </div>
             <div class="toolbar-item">
@@ -30,11 +35,19 @@
             <el-collapse-transition>
                 <div v-show="toolexpand">
                     <div class="toolbar-row">
-                        <!-- <div class="toolbar-item">
-                            <span class="item-label">用印时间：</span>
+                        <Department type="list" Dlabel="申请部门：" @on-confirm="depConfirm" :Dvalue="officeName"></Department>
+                        <div class="toolbar-item">
+                            <span class="item-label">合同日期类型：</span>
+                            <el-select clearable filterable style="width: 170px" class="filter-item" v-model="listQuery.contractTimeType" placeholder="请选择合同日期类型">
+                                <el-option v-for="item in dateTypeList" :key="item.value" :label="item.name" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="toolbar-item">
+                            <span class="item-label">日期：</span>
                             <el-date-picker v-model="listQuery.timeRange" type="daterange" class="filter-item" style="width:287px" placeholder="选择日期范围"  :picker-options="pickerOptions">
                             </el-date-picker>
-                        </div> -->
+                        </div>
                         <div class="toolbar-item">
                             <span class="item-label">合同名称：</span>
                             <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.configId" placeholder="请选择合同名称">
@@ -58,7 +71,7 @@
                 <el-button v-if="ids.indexOf('me-contractCheckList-batchDeleteBtn')!==-1" class="filter-item" type="primary" @click="moveContract">批量删除合同</el-button>
             </div>
         </div>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column
                 type="selection"
                 width="55px">
@@ -93,17 +106,37 @@
                     <span class="ignore-detail" :title="scope.row.thirdMemberName">{{scope.row.thirdMemberName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="100px" align="center" label="合同签约人">
+            <el-table-column width="90px" align="center" label="合同签约人">
                 <template slot-scope="scope">
                     <span>{{scope.row.signLeaderName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="合同状态">
+            <el-table-column width="100px" align="center" label="合同关键字">
+                <template slot-scope="scope">
+                    <span>{{scope.row.keyWordName&&scope.row.keyWordName.join('，')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" align="center" label="申请部门">
+                <template slot-scope="scope">
+                    <span>{{scope.row.officeName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" align="center" label="合同开始日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" align="center" label="合同结束日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.contractEndTime | stamp2TextDate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="90px" align="center" label="合同状态">
                 <template slot-scope="scope">
                     <span>{{scope.row.contractFlowStatusTxt}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="120px" align="center" label="操作" class-name="small-padding fixed-width">
+            <el-table-column width="90px" align="center" label="操作" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" @click="showDetail(scope.row)">详情</el-button>
                 </template>
@@ -126,6 +159,7 @@
 
 <script>
 import common from '@/utils/common';
+import Department from "@/components/Department";
 import { fetchList ,getContractTemlist,delContracts} from '@/api/contractCheck';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
@@ -137,6 +171,9 @@ import { mapState, mapGetters } from "vuex";
 export default {
     directives: {
         waves
+    },
+    components: {
+        Department
     },
     mixins: [listQueryMix],
     data() {
@@ -151,8 +188,12 @@ export default {
             total: null,
             pageNo: 1,
             pageSize: 20,
-            listLoading: true,
+            officeName:"",
             listQuery: {
+                officeId:"",
+                keyWords:"",
+                timeRange: [],
+                contractTimeType:"",
                 signLeaderName:"",// 合同签约人姓名(模糊匹配) ,
                 procCode:"",// 流程编号 ,
                 contractFlowStatus:"",// 流程状态:1审批结束2审批中3单据被驳回4单据保存 ,
@@ -169,6 +210,8 @@ export default {
             memberList:[],
             dialogMoveVisible:false,
             dialogDelVisible:false,
+
+            dateTypeList:[],
         }
     },
     computed: {
@@ -179,7 +222,6 @@ export default {
     created() {
         this.$$queryStub = this.$$listQuery;
         this.getList();
-        this.listLoading = false;
         getContractTemlist({}).then(res => {
             this.comInfor = res.data;
         })
@@ -196,11 +238,20 @@ export default {
             return temp
         }
 
-        this.expStatuList = selectDic(dicList,"expense_status")
+        this.expStatuList = selectDic(dicList,"expense_status");
+        this.dateTypeList = selectDic(dicList,"contract_time_type")
     },
     methods: {
+        depConfirm(data){
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.officeName = "";
+            }
+        },
         getList() {
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             fetchList({
                 ...postData,
@@ -209,26 +260,28 @@ export default {
             }).then(response => {
                 this.list = response.data.list;
                 this.total = response.data.total;
-                this.listLoading = false;
             })
         },
         restCallback() {
+            this.officeName = ""
                 // 用来补充默认rest不足的问题
         },
         // 处理接口不一致情况
         reduceParams($$imData) {
             if (!$$imData || $$imData.size == 0) return {};
-            const $$postData = $$imData;
+            const $$postData = $$imData
+                .set('startTime', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeStart)
+                .set('endTime', common.rangeObjToTimestamp($$imData.get('timeRange').toJS()).applyTimeEnd)
+                .delete('timeRange');
             return $$postData.toJS();
         },
         handleFilter() {
             this.pageNo = 1;
-            // if(!this.listQuery.timeRange){
-            //     this.listQuery.timeRange = [];
-            // }
+            if(!this.listQuery.timeRange){
+                this.listQuery.timeRange = [];
+            }
             this.$$queryStub = fromJS(this.listQuery);
             this.getList();
-            this.listLoading = false;
         },
         handleSizeChange(val) {
             this.pageSize = val;
@@ -237,7 +290,6 @@ export default {
         handleCurrentChange(val) {
             this.pageNo = val;
             this.getList();
-            this.listLoading = false;
         },
         showDetail(row){
         // if(row.expenseStatus == 2){
@@ -284,7 +336,7 @@ export default {
             delContracts({
                 idList:idList
             }).then(res=>{
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
     return request({
-        url: '/projectInfo/projectInfoList',
+        url: '/webProjectInfo/projectInfoList',
         method: 'post',
         data:params
     })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchForm(params){
     return request({
-        url:'/projectInfo/projectInfoDetail',
+        url:'/webProjectInfo/projectInfoDetail',
         method:'post',
         data:params
     })
@@ -18,7 +18,7 @@ export function fetchForm(params){
 
 export function saveCust(params){
   return request({
-    url:'/custInfo/saveCustInfo',
+    url:'/webCustInfo/saveCustInfo',
     method:'post',
     data:params
   })
@@ -26,7 +26,7 @@ export function saveCust(params){
 
 export function custList(params){
     return request({
-        url: '/custInfo/custInfos',
+        url: '/webCustInfo/custInfos',
         method: 'post',
         data:params
     },false)
@@ -34,7 +34,7 @@ export function custList(params){
 
 export function savePro(params){
     return request({
-        url:'/projectInfo/saveProjectInfo',
+        url:'/webProjectInfo/saveProjectInfo',
         method:'post',
         data:params
     })
@@ -42,7 +42,7 @@ export function savePro(params){
 
 export function getMaintain(params){
     return request({
-        url:'/projectInfo/projectMaintenanceList',
+        url:'/webProjectInfo/projectMaintenanceList',
         method:'post',
         data:params
     })
@@ -50,7 +50,7 @@ export function getMaintain(params){
 
 export function saveMaintain(params){
     return request({
-        url:'/projectInfo/saveProjectMaintenance',
+        url:'/webProjectInfo/saveProjectMaintenance',
         method:'post',
         data:params
     })
@@ -58,7 +58,7 @@ export function saveMaintain(params){
 
 export function getCompanyList(params){
     return request({
-        url:'/company/queryListByNameAndState',
+        url:'/webCommonInfo/queryListByNameAndState',
         method:'post',
         data:params
     })
@@ -66,7 +66,7 @@ export function getCompanyList(params){
 
 export function getContractList(params){
     return request({
-        url:'/projectInfo/queryProjectContractHis',
+        url:'/webProjectInfo/queryProjectContractHis',
         method:'post',
         data:params
     })
@@ -74,7 +74,7 @@ export function getContractList(params){
 
 export function getNodeList(params){
     return request({
-        url:'/projectInfo/pagedQueryNodeList',
+        url:'/webProjectInfo/pagedQueryNodeList',
         method:'post',
         data:params
     })
@@ -82,7 +82,7 @@ export function getNodeList(params){
 
 export function getImList(params){
     return request({
-        url:'/projectInfo/projectImplyStatusList',
+        url:'/webProjectInfo/projectImplyStatusList',
         method:'post',
         data:params
     })
@@ -90,7 +90,7 @@ export function getImList(params){
 
 export function downFile(params){
     return request({
-        url:'/projectInfo/exportProjectImplyStatus',
+        url:'/webProjectInfo/exportProjectImplyStatus',
         method:'post',
         data:params
     })
@@ -99,7 +99,7 @@ export function downFile(params){
 
 export function getMember(params){
     return request({
-      url:'/commonInfo/queryUserInfo',
+      url:'/webCommonInfo/queryUserInfo',
       method:'post',
       data:params
     })
@@ -108,8 +108,195 @@ export function getMember(params){
 
 export function moveProjects(params){
     return request({
-      url:'/projectInfo/projectBatchMove',
+      url:'/webProjectInfo/projectBatchMove',
       method:'post',
       data:params
+    })
+}
+
+
+export function getRoleDrop(params){
+    return request({
+        url:`/webPms/role/dropdownList`,
+        method:'get',
+        params:params
+    })
+}
+
+export function getMemberList(params){
+    return request({
+        url:`/webPms/member/${params}`,
+        method:'get',
+    })
+}
+
+export function addMember(params){
+    return request({
+        url:'/webPms/member',
+        method:'post',
+        data:params
+    })
+}
+
+export function modifyMember(params){
+    return request({
+        url:'/webPms/member',
+        method:'put',
+        data:params
+    })
+}
+
+export function delMember(params){
+    return request({
+        url:`/webPms/member/${params}`,
+        method:'delete'
+    })
+}
+
+export function getStage(params){
+    return request({
+        url:`/webPms/stage?pageNum=${params.pageNum}&pageSize=${params.pageSize}&projectId=${params.projectId}`,
+        method:'get',
+    })
+}
+
+export function saveStage(id,params){
+    return request({
+        url:`/webPms/stage/${id}`,
+        method:'put',
+        data:params
+    })
+}
+
+export function pushStage(params){
+    return request({
+        url:`/webPms/stage`,
+        method:'post',
+        data:params
+    })
+}
+
+export function delStage(params){
+    return request({
+        url:`/webPms/stage/${params}`,
+        method:'delete',
+        // data:params
+    })
+}
+
+export function checkDel(params){
+    return request({
+        url:`/webPms/stage/delcheck/${params}`,
+        method:'get',
+        // data:params
+    })
+}
+
+
+export function getRunPage(params){
+    return request({
+        url:`/webPms/task/running/getPage`,
+        method:'post',
+        data:params
+    })
+}
+
+export function getAllPage(params){
+    return request({
+        url:`/webPms/task/getPage`,
+        method:'post',
+        data:params
+    })
+}
+
+export function addProgress(taskId,params){
+    return request({
+        url:`/webPms/task/progress/update/${taskId}`,
+        method:'put',
+        data:params
+    })
+}
+
+export function getMissionMember(params){
+    return request({
+        url:`/webPms/task/member/downlist/${params}`,
+        method:'get',
+        // data:params
+    })
+}
+
+export function getMissionStage(params){
+    return request({
+        url:`/webPms/stage/getList/${params}`,
+        method:'get'
+    })
+}
+
+export function saveMission(params){
+    return request({
+        url:`/webPms/task/save`,
+        method:'post',
+        data:params
+    })
+}
+
+
+export function getBaseInfo(params){
+    return request({
+        url:`/webPms/generalMsg/baseInfo/${params}`,
+        method:'get'
+    })
+}
+
+export function getProgress(params){
+    return request({
+        url:`/webPms/generalMsg/progress/${params}`,
+        method:'get'
+    })
+}
+
+export function getDynamic(params){
+    return request({
+        url:`/webPms/generalMsg/dynamicInfo`,
+        method:'post',
+        data:params
+    })
+}
+
+export function getdetailDynamic(params){
+    return request({
+        url:`/webPms/task/dynamic/info`,
+        method:'post',
+        data:params
+    })
+}
+export function addDynamic(params){
+    return request({
+        url:`/webPms/generalMsg/project/dynamic/add`,
+        method:'post',
+        data:params
+    })
+}
+
+
+export function getChange(params){
+    return request({
+        url:`/webPms/task/change/info/${params}`,
+        method:'get'
+    })
+}
+
+export function saveChange(id,params){
+    return request({
+        url:`/webPms/task/change/update/${id}`,
+        method:'put',
+        data:params
+    })
+}
+
+export function getChangeDetail(businessType,businessId){
+    return request({
+        url:`/webPms/task/change/record/${businessType}/${businessId}`,
+        method:'get'
     })
 }

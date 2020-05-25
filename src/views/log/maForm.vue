@@ -185,7 +185,7 @@
 
 <script lang="ts">
 import common from "@/utils/common";
-import { saveMaLog,getCustList,getMember} from "@/api/log";
+import { saveMaLog,getCustList,getMember,getSend} from "@/api/log";
 import { parseTime } from "@/utils/index";
 import { logFormVali } from "./log.util";
 import RedStar from "@/components/RedStar/RedStar.vue";
@@ -260,17 +260,27 @@ export default class maForm extends Vue {
         }
 
         getMember({}).then((res:Ajax.AjaxResponse)=> {
-            this.memberList = res.data
-            if(localStorage.getItem("web_ma_sendToList")){
-                this.postData.sendToList = JSON.parse(localStorage.getItem("web_ma_sendToList"));
-            }
-            if(localStorage.getItem("web_ma_copyToList")){
-                this.postData.copyToList = JSON.parse(localStorage.getItem("web_ma_copyToList"));
-            }
+            this.memberList = res.data.filter((item)=>{
+                return item.userStatus == '1'
+            })
+            // if(localStorage.getItem("web_ma_sendToList")){
+            //     this.postData.sendToList = JSON.parse(localStorage.getItem("web_ma_sendToList"));
+            // }
+            // if(localStorage.getItem("web_ma_copyToList")){
+            //     this.postData.copyToList = JSON.parse(localStorage.getItem("web_ma_copyToList"));
+            // }
         })
-        // getCustList({}).then((res:Ajax.AjaxResponse)=>{
-        //     this.custList = res.data
-        // });
+        getSend({
+            dailyTemplate:"1"
+        }).then((res:Ajax.AjaxResponse)=>{
+            res.data.sendTo&&res.data.sendTo.forEach(item=>{
+                this.postData.sendToList.push(item.sendToId)
+            })
+
+            res.data.copyTo&&res.data.copyTo.forEach(item=>{
+                this.postData.copyToList.push(item.copyToId)
+            })
+        })
     }
 
 
@@ -315,9 +325,9 @@ export default class maForm extends Vue {
             getCustList({
                 custName:val,
             }).then((res:Ajax.AjaxResponse)=>{
-                if(res.status == 0){
+                // if(res.code == 200){
                     this.custList = res.data
-                }
+                // }
             })
         }
     };
@@ -345,15 +355,15 @@ export default class maForm extends Vue {
             saveMaLog({
                 ...this.postData
             }).then((res: Ajax.AjaxResponse) => {
-                if (res.status == 0) {
-                    localStorage.setItem(
-                        'web_ma_sendToList',
-                        JSON.stringify(this.postData.sendToList)
-                    );
-                    localStorage.setItem(
-                        'web_ma_copyToList',
-                        JSON.stringify(this.postData.copyToList)
-                    );
+                if (res.code == 200) {
+                    // localStorage.setItem(
+                    //     'web_ma_sendToList',
+                    //     JSON.stringify(this.postData.sendToList)
+                    // );
+                    // localStorage.setItem(
+                    //     'web_ma_copyToList',
+                    //     JSON.stringify(this.postData.copyToList)
+                    // );
                     this.$message({
                         message: res.message,
                         type: "success"

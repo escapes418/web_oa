@@ -25,7 +25,7 @@
                         </RedStar>
                         <RedStar label="报销分类：" :required="true">
                             <span class="right-con">
-                                <el-select class="filter-item" multiple filterable v-model="filter.travelExpenseTypeList" placeholder="请选择" style="width:280px;">
+                                <el-select class="filter-item" multiple filterable v-model="filter.travelExpenseTypeList" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in expTypeList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -33,7 +33,7 @@
                         </RedStar>
                         <RedStar label="随行人员：" :required="false">
                             <span class="right-con">
-                                <el-select class="filter-item" multiple filterable v-model="filter.entourageList" placeholder="请选择" style="width:280px;" >
+                                <el-select class="filter-item" multiple filterable v-model="filter.entourageList" placeholder="请选择" style="width:250px;" >
                                     <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                     </el-option>
                                 </el-select>
@@ -47,7 +47,7 @@
                         </RedStar>
                         <RedStar label="关联类型：" :required="true">
                             <span class="right-con">
-                                <el-select class="filter-item" @change="changeRelType" v-model="relType" placeholder="请选择" style="width:280px;">
+                                <el-select class="filter-item" @change="changeRelType" v-model="relType" placeholder="请选择" style="width:250px;">
                                     <el-option v-for="item in relTypeList" :label="item.name" :value="item.value" :key="item.value">
                                     </el-option>
                                 </el-select>
@@ -67,7 +67,7 @@
                         <RedStar label="备注：">
                             <span class="right-con">
                                 <sjbtextarea placeholder="请输入"
-                                textStyle="width:280px;"
+                                textStyle="width:250px;"
                                 :rows="3"
                                 :max="200"
                                 v-model.trim="filter.remarks"></sjbtextarea>
@@ -117,9 +117,9 @@
                     </el-pagination>
                 </div>
                 
-                <div slot="footer" class="dialog-footer">
+                <!-- <div slot="footer" class="dialog-footer">
                     <el-button @click="showThemeForm = false">返回</el-button>
-                </div>
+                </div> -->
             </el-dialog>
         </div>
         <div class="segment statistics">
@@ -140,7 +140,7 @@
                                 <td class="tableTitle">终点</td>
                                 <td class="tableTitle">科目</td>
                                 <td class="tableTitle">人数</td>
-                                <td class="tableTitle">天数</td>
+                                <!-- <td class="tableTitle">天数</td> -->
                                 <td class="tableTitle">票据张数</td>
                                 <td class="tableTitle">预算金额</td>
                                 <td class="tableTitle">备注</td>
@@ -175,7 +175,6 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import Project from '@/components/Project';
 import sjbtextarea from '@/components/sjbTextarea';
 import {
-    fetchProList, //项目管理-查询列表
     travelApply, //Web端出差申请-发起申请
     saveTravelFlowInfo, // Web端出差申请-单据保存草稿.
     retravelFlowDetail,//Web出差申请-查询审批流程详情
@@ -240,7 +239,7 @@ export default {
             },
             expTypeList: [],
             expenseAttachment: [],
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             listLoading: false,
             list: [],
             recep: [],
@@ -274,8 +273,7 @@ export default {
     created() {
         this.filter.applyTime = common.time.monthlast
         this.$store.dispatch('clearCollection');
-        //拿到基本信息
-        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
+        
 
         if (this.$route.query.key) {
             this.filter.id = this.$route.query.key;
@@ -325,7 +323,8 @@ export default {
             });
         }
 
-        if (this.subsTree.length == 0) this.$store.dispatch('getSubs');
+        // if (this.subsTree.length == 0) 
+        this.$store.dispatch('getSubs');
         
     },
     computed: {
@@ -344,8 +343,11 @@ export default {
             return result;
         }
     },
-    mounted() {
+    async mounted() {
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         //获取字典
+        //拿到基本信息
+        this.userInfo = JSON.parse(localStorage.getItem("web_oa_userInfor"));
         var _this = this;
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr, type) {
@@ -360,29 +362,10 @@ export default {
         this.expTypeList = selectDic(dicList, "travel_expense_type");
         this.getTheme()
         getMember({}).then(res => {
-            if(res.status == 0){
-                this.memberList = res.data;
-                // // //列表是非离职人员
-                // this.memberPartList = res.data.filter((item)=>{
-                //     return item.userStatus == '1'
-                // })
-            }
+            this.memberList = res.data;
         })
     },
     methods: {
-        // handleProFilter(){
-        //     this.listQuery.pageNo = 1
-        //     this.getList()
-        // },
-        // chioceProTime: function(val) {
-        //     if (val && val.length > 0) {
-        //         this.listQuery.applyTimeStart =val[0];
-        //         this.listQuery.applyTimeEnd = val[1];
-        //     } else {
-        //         this.listQuery.applyTimeStart = 0;
-        //         this.listQuery.applyTimeEnd = 0;
-        //     }
-        // },
         transDetailData(dataArr) {
             function createUid() {
                 return parseInt(Math.random() * 100000) + "" + new Date().getTime();
@@ -414,38 +397,10 @@ export default {
         del() {
             this.$store.dispatch('delDetailCollectionChecked');
         },
-        // showForm() {
-        //     this.dialogFormVisible = true;
-        //     this.listLoading = false;
-        //     this.getList();
-        // },
         proSelect(data){
             this.filter.projectId = data.id;
             this.projectLeaderName = data.projectLeaderName;
         },
-        // selectRow(row) {
-        //     this.projectName = row.projectName;
-        //     this.projectLeaderName = row.projectLeaderName;
-        //     this.filter.projectId = row.id;
-        //     this.dialogFormVisible = false;
-        // },
-        // getList() {
-        //     this.listLoading = true;
-        //     var {applyTimeStart,applyTimeEnd } = common.rangeObjToTimestamp(this.timeRange)
-        //     fetchProList({
-        //         ...this.listQuery,
-        //         applyTimeStart,
-        //         applyTimeEnd,
-        //         }).then(res => {
-        //         this.list = res.data.list;
-        //         this.total = res.data.total;
-        //         this.listLoading = false;
-        //     });
-        // },
-        // handleCurrentChange(val) {
-        //     this.listQuery.pageNo = val;
-        //     this.getList();
-        // },
         getItemsInStore() {
             let demandBudgetList = this.detailCollection.map(i => {
                 return {
@@ -468,7 +423,7 @@ export default {
                 travelApply({
                     ...this.filter
                 }).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -481,7 +436,7 @@ export default {
                 saveTravelFlowInfo({
                     ...this.filter
                 }).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: "success"
@@ -538,7 +493,7 @@ export default {
     background: white;
     padding-left: 7px;
     line-height: 30px;
-    width: 280px;
+    width: 250px;
 }
 .left-red{
     color: red;

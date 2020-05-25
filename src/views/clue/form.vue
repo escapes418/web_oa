@@ -210,7 +210,7 @@ export default {
             if(this.filter.custCompanySize == '') this.filter.custCompanySize = undefined
             if(clueFormVali(this)){
                 saveClue(this.filter).then(res=>{
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

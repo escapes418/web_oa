@@ -10,6 +10,7 @@ function toast(str) {
 }
 export function contractFormVali(self) {
     var flag = true;
+    console.log(self.postData)
     if (!self.postData.contractNameId) {
         toast('请选择合同名称！');
         flag = false;
@@ -18,8 +19,16 @@ export function contractFormVali(self) {
         toast('请关联主合同！');
         flag = false;
     }
-    else if(!self.associationMain&&self.postData.projectIds.length<1){
+    else if(self.keyWords.length>0&&self.postData.keyWord.length<1){
+        toast('请选择合同关键字！');
+        flag = false;
+    }
+    else if(self.postData.businessType==1&&!self.associationMain&&self.postData.projectIds.length<1){
         toast('请关联项目！');
+        flag = false;
+    }
+    else if(self.postData.businessType==2&&self.postData.custIds.length<1){
+        toast('请选择关联客户！');
         flag = false;
     }
     else if(!itemVali()){
@@ -45,14 +54,14 @@ export function contractFormVali(self) {
         toast('请选择合同负责人！');
         flag = false;
     }
-    else if (!self.postData.expressCompany) {
-        toast('请填写快递公司！');
-        flag = false;
-    }
-    else if (!self.postData.expressBill) {
-        toast('请填写快递单号！');
-        flag = false;
-    }
+    // else if (!self.postData.expressCompany) {
+    //     toast('请填写快递公司！');
+    //     flag = false;
+    // }
+    // else if (!self.postData.expressBill) {
+    //     toast('请填写快递单号！');
+    //     flag = false;
+    // }
     else if(self.contractMustCount&&(self.contractAttachment.length<self.contractMustCount)){
         toast('请至少上传'+self.contractMustCount+'张预签合同图片！');
         flag = false

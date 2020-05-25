@@ -46,7 +46,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
@@ -334,7 +334,7 @@ export default {
             scanConAttachment:[],
             renewAttachment:[],
             abandonAttachment:[],
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             uploadTips: config.tips,
             expenseAttachment: [],
             detail: {},
@@ -614,7 +614,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                 }

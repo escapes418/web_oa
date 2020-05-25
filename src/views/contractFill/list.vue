@@ -6,11 +6,11 @@
                 <el-input @keyup.enter.native="handleFilter" style="width: 220px;" class="filter-item" placeholder="请输入合同编号/甲方/乙方/丙方" v-model.trim="listQuery.faint">
                 </el-input>
             </div>
-            <!-- <div class="toolbar-item">
-                <span class="item-label">合同方名称：</span>
-                <el-input @keyup.enter.native="handleFilter" style="width: 140px;" class="filter-item" placeholder="请输入甲/乙方名称" v-model.trim="listQuery.companyName">
+            <div class="toolbar-item">
+                <span class="item-label">合同关键字：</span>
+                <el-input @keyup.enter.native="handleFilter" style="width: 120px;" class="filter-item" placeholder="请输入关键字" v-model.trim="listQuery.keyWords">
                 </el-input>
-            </div> -->
+            </div>
             <div class="toolbar-item">
                 <span class="item-label">合同名称：</span>
                 <el-select clearable filterable style="width: 220px" class="filter-item" v-model="listQuery.contractId" placeholder="请选择合同名称">
@@ -20,7 +20,7 @@
             </div>
             <div class="toolbar-item">
                 <span class="item-label">合同负责人：</span>
-                <el-select clearable filterable class="filter-item" filterable v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
+                <el-select clearable filterable class="filter-item" v-model="listQuery.contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
                     <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
@@ -115,6 +115,11 @@
                     <span class="ignore-detail" :title="scope.row.thirdMemberName">{{scope.row.thirdMemberName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column width="100px" align="center" label="合同关键字">
+                <template slot-scope="scope">
+                    <span>{{scope.row.keyWordName&&scope.row.keyWordName.join('，')}}</span>
+                </template>
+            </el-table-column>
             <el-table-column width="100px" align="center" label="合同开始日期">
                 <template slot-scope="scope">
                     <span>{{scope.row.contractStartTime | stamp2TextDate}}</span>
@@ -171,14 +176,14 @@
                 </RedStar>
                 <RedStar :required ="true">
                     <el-form-item label="变更合同负责人：">
-                        <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
+                        <el-select clearable filterable class="filter-item ignore-detail" v-model="contractLeaderId" placeholder="请选择合同负责人" style="width:220px;">
                             <el-option v-for="item in memberPartList" :label="item.name" :value="item.id" :key="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                 </RedStar>
                 <RedStar :required ="true">
-                    <el-form-item label="关联项目：">
+                    <el-form-item label="关联项目：" v-if="businessType == '1'">
                         <el-select 
                             class="filter-item" 
                             filterable
@@ -190,6 +195,22 @@
                             style="width:220px;" 
                             :remote-method="searchProject">
                             <el-option v-for="item in projectList" :label="item.projectName" :value="item.id" :key="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="关联客户：" v-if="businessType =='2'">
+                        <el-select 
+                            class="filter-item" 
+                            filterable
+                            remote 
+                            reserve-keyword 
+                            multiple
+                            v-model="custIds" 
+                            placeholder="请输入客户名称" 
+                            style="width:220px;" 
+                            :remote-method="searchCustmer">
+                            <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -258,7 +279,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectContract">
+                <span v-for="(item,index) in selectContract" :key="index">
                     <span class="select-item">{{item.contractName}}</span>
                 </span>
             </div>
@@ -293,7 +314,7 @@ import common from '@/utils/common';
 import BaseTemp from '@/components/BaseTemp';
 
 import RedStar from '@/components/RedStar/RedStar.vue';
-import { fetchList ,getContractTemlist,findAllProject,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember} from '@/api/contractFill';
+import { fetchList ,getContractTemlist,getProject,eidtList,renewList,abandonList,getDetail,moveContracts,getMember,getCust} from '@/api/contractFill';
 import waves from '@/directive/waves' // 水波纹指令
 import { toJS, fromJS, Map, List } from 'immutable';
 import { parseTime } from '@/utils';
@@ -339,7 +360,8 @@ export default {
                 contractType:"",//  合同类型,
                 faint:"", //模糊搜索字段,
                 dateType:"",
-                sqlFlag:"1"
+                sqlFlag:"1",
+                keyWords:""
             },
             dateTypeList:[],
             conStatuList:[],
@@ -356,7 +378,7 @@ export default {
 
             //续签
             dialogRenew:false,
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             uploadTips: config.tips,
             contractEndTime:'',
             rowContractEndTime:'',
@@ -375,11 +397,19 @@ export default {
             contractLeaderId:'',
             memberList:[],
             memberPartList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+
+            custIds:[],
+            custList:[],
+            businessType:""
         }
     },
     created() {
         this.$$queryStub = this.$$listQuery;
+        if(this.$route.query.companyName){
+            this.listQuery.faint = this.$route.query.companyName;
+            this.$$queryStub = fromJS(this.listQuery);
+        }
         this.getList()
         this.listLoading = false
         getContractTemlist({}).then(res => {
@@ -403,7 +433,7 @@ export default {
         this.dateTypeList = selectDic(dicList,"date_type")
 
         getMember({}).then(res => {
-            if(res.status == 0){
+            if(res.code == 200){
                 this.memberList = res.data;
                 //列表是非离职人员
                 this.memberPartList = res.data.filter((item)=>{
@@ -413,9 +443,9 @@ export default {
         })
 
         // this.allProject = await this.getAllProject();
-        findAllProject({}).then(res=>{
-            this.allProject = res.data.list
-        })
+        // findAllProject({}).then(res=>{
+        //     this.allProject = res.data.list
+        // })
     },
     methods: {
         // getAllProject(){
@@ -461,7 +491,7 @@ export default {
                     contractHisIds:contractIds,
                     contractLeaderId:this.contractLeaderId,
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.moveClose();
                         this.$message({
                             message: res.message,
@@ -497,6 +527,16 @@ export default {
                 })
             }
         },
+        searchCustmer(val){
+            if(val !==''){
+                getCust(
+                    //还有项目名称
+                    val,
+                ).then(res=>{
+                    this.customerList = res.data;
+                })
+            }
+        },
         editFill(){
             if (!this.contractLeaderId) {
                 this.$message({
@@ -505,9 +545,16 @@ export default {
                 });
                 return;
             }
-            if (this.projectIds.length<1) {
+            if (this.businessType ==1 &&this.projectIds.length<1) {
                 this.$message({
                     message: "请关联项目！",
+                    type: "warning"
+                });
+                return;
+            }
+            if (this.businessType ==2 &&this.custIds.length<1) {
+                this.$message({
+                    message: "请关联客户！",
                     type: "warning"
                 });
                 return;
@@ -515,9 +562,14 @@ export default {
             eidtList({
                 contractHisId:this.editId,
                 contractLeaderId:this.contractLeaderId,
-                projectIds:this.projectIds
+                projectIds:this.projectIds,
+                custIds:this.custIds
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    })
                     window.location.reload();
                     // this.dialogEdit = false
                 }
@@ -551,7 +603,7 @@ export default {
                 contractEndTime:timestamp,
                 contractAttachmentRequest:this.renewAttachment,
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -572,7 +624,7 @@ export default {
                 contractHisId:this.abandonId,
                 contractAttachmentRequest:this.abandonAttachment,
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     // this.abandonAttachment = []
                     // this.dialogAbandon = false
                     this.$message({
@@ -634,43 +686,32 @@ export default {
             this.listLoading = false;
         },
         showEdit(row){
-            if(this.allProject.length){
-                this.dialogEdit = true;
-                this.editId = row.id;
-                this.projectList = [];
-                getDetail({
-                    id:this.editId
-                }).then(res=>{
-                    this.contractLeaderName = res.data.contractHisDetailResponse.contractLeaderName;
-                    this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
-                    this.allProject.forEach(item=>{
-                        for(let key in this.projectIds){
-                            if(item.id == this.projectIds[key]){
-                                this.projectList.push(item)
-                            }
-                        }
-                    })
+            this.dialogEdit = true;
+            this.editId = row.id;
+            this.projectList = [];
+            getDetail({
+                id:this.editId
+            }).then(res=>{
+                this.contractLeaderName = res.data.contractHisDetailResponse.contractLeaderName;
+                this.projectIds = res.data.contractHisDetailResponse.projectIds || [];
+                res.data.contractHisDetailResponse.projectList =  res.data.contractHisDetailResponse.projectList || [];
+                this.projectList = res.data.contractHisDetailResponse.projectList.map(item=>{
+                    return {
+                        id:item.projectId,
+                        ...item
+                    }
                 })
-            }else{
-                this.$message({
-                    message: '请求还没加载完，请稍后重试！',
-                    type: 'warning'
-                })
-            }
+                this.custIds = res.data.contractHisDetailResponse.custIds || [];
+                this.custList = res.data.contractHisDetailResponse.custList || [];
+                this.businessType = res.data.contractHisDetailResponse.businessType;
+            })
             
         },
         showDetail(row){
-        // if(row.expenseStatus == 2){
-        //     this.$router.push({
-        //       path:'/me/reimDetail',
-        //       query: { key: row.id , taskId:row.taskId}
-        //   })
-        // }else{
             this.$router.push({
                 path:'/inforManage/contractFillDetail',
                 query: { key: row.id }
             })
-        // }
         },
         showRenew(row){
             this.dialogRenew = true;

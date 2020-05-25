@@ -106,6 +106,7 @@ div:focus {
         background: #F5F6F5;
         margin-bottom: 10px;
         font-size: 14px;
+        min-width: 1500px;
         min-height: 42px;
         .toolbar-item {
             display: inline-block;
@@ -322,4 +323,13 @@ code {
 // reset loading styles
 .loadingStyles {
     background-color: rgba(255, 255, 255, 0)
+}
+
+// .el-select .el-input{
+//     overflow: scroll !important;
+//     padding-bottom: 1px!important;
+// }
+
+.viewer-container.viewer-backdrop.viewer-fixed.viewer-fade.viewer-transition.viewer-in{
+    z-index: 9999!important;
 }

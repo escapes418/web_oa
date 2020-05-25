@@ -162,8 +162,13 @@ export default {
     },
     methods: {
         depConfirm(data){
-        this.listQuery.officeId = data.id;
-        this.listQuery.officeName = data.name;
+            if(data){
+                this.listQuery.officeId = data.id;
+                this.listQuery.officeName = data.name;
+            }else{
+                this.listQuery.officeId = "";
+                this.listQuery.officeName = "";
+            }
         },
         // clearInput() {
         //     this.dialogFormVisible = false
@@ -267,9 +272,30 @@ export default {
                     query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
                 })
             }
-            // if(row.billType == 10){
-
-            // }
+            if (row.billType == 11) {
+                this.$router.push({
+                    path: '/inforManage/establishDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
+            if (row.billType == 16) {
+                this.$router.push({
+                    path: '/me/loanDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
+            if(row.billType == 17){
+                this.$router.push({
+                    path:'/me/repayDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
+            if(row.billType == 18){
+                this.$router.push({
+                    path:'/me/paymentDetail',
+                    query: { key: row.businessId, taskId: row.taskId, pathType: 'todo' }
+                })
+            }
         },
         handleCreate() {
             this.$router.push({ path: '/center/reimburseDetail' })

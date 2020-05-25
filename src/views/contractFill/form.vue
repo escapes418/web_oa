@@ -17,6 +17,31 @@
                                 </span>
                             </RedStar>
                         </li>
+                        <li class="base-li">
+                            <RedStar label="合同类型：">
+                                <span class="right-con">{{contractTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务类型：">
+                                <span class="right-con">{{businessTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务模块：">
+                                <span class="right-con">{{businessModelName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="keyWords.length>0">
+                            <RedStar label="合同关键字：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
+                                        <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
                         <li class="base-li" v-if="associationMain">
                             <RedStar label="关联主合同编号：" :required="true">
                                 <span class="item-value" @click="showForm">
@@ -25,7 +50,7 @@
                                 </span>
                             </RedStar>
                         </li>
-                        <li class="base-li" v-if="!associationMain">
+                        <li class="base-li" v-if="postData.businessType == 1&&!associationMain">
                             <RedStar label="关联项目：" :required="true">
                                 <span class="right-con">
                                     <el-select 
@@ -39,6 +64,26 @@
                                         style="width:260px;" 
                                         :remote-method="searchProject">
                                         <el-option v-for="item in projectList" :label="item.projectName" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="postData.businessType == 2">
+                            <RedStar label="关联客户：" :required="true">
+                                <span class="right-con">
+                                    <el-select 
+                                        class="filter-item" 
+                                        filterable
+                                        multiple
+                                        remote 
+                                        debounce	
+                                        reserve-keyword 
+                                        v-model="postData.custIds" 
+                                        placeholder="请输入客户名称" 
+                                        style="width:260px;" 
+                                        :remote-method="searchCustmer">
+                                        <el-option v-for="item in customerList" :label="item.custName" :value="item.custId" :key="item.custId">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -127,7 +172,7 @@
             </div>
             <div class="segment-area">
                 <template  v-for="(item,index) in initData">
-                    <base-temp :title="item.partyName">
+                    <base-temp :title="item.partyName" :key="index">
                         <dynamic-form ref="base-form" :data="item.contractPartyType"></dynamic-form>
                     </base-temp>
                 </template>
@@ -160,8 +205,8 @@
                         <li class="base-li">
                             <RedStar label="合同签约人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
-                                        <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
+                                    <el-select clearable filterable class="filter-item ignore-detail" v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
+                                        <el-option v-for="item in memberFullList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -170,13 +215,30 @@
                         <li class="base-li">
                             <RedStar label="合同负责人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
+                                    <el-select clearable filterable class="filter-item ignore-detail" v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
                                         <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
                             </RedStar>
                         </li>
+                        <!-- <li class="base-li">
+                            <RedStar label="用章类型：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable filterable multiple class="filter-item ignore-detail" v-model="postData.chapterType" placeholder="请选择用章类型" style="width:260px;">
+                                        <el-option v-for="item in chapterList" :label="item.name" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="用章份数：" :required="true">
+                                <span class="right-con">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入用章份数" v-model.number="postData.chapterNum"></el-input>
+                                </span>
+                            </RedStar>
+                        </li> -->
                     </ul>
                 </base-temp>
             </div>
@@ -233,7 +295,7 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
 import sjbtextarea from '@/components/sjbTextarea'
 
-import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply} from '@/api/contractFill';
+import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,getCust} from '@/api/contractFill';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -258,13 +320,24 @@ export default {
             //     }
             // },
 
-            
+            memberFullList:[],
             memberList:[],
 
             associationMain:false,
+            contractTypeName:"",
+            businessTypeName:"",
+            
+            businessModelName:"",
+            keyWords:[],
+            chapterList:[],
             projectList:[],
+            customerList:[],
             conInfor: [],
             postData: {//提交数据
+                chapterNum:"",
+                keyWord:[],
+                keyWordName:[],
+                // chapterType:[],
                 associationMainCode:'',
                 associationMainName:'',
                 associationMainId:'',
@@ -288,7 +361,9 @@ export default {
                 procCode : '',//流程编号 ,
                 procInsId : '',//流程实例ID ,
                 projectIds : [],//关联项目ID ,
+                custIds:[],
                 remarks :'',// 备注 ,
+                businessType:'',
                 // secondAddress: '',//乙方住所 ,
                 // secondCreditCode : '',// 乙方统一社会信用代码 ,
                 // secondLegalRepresentative : '',// 乙方法定代表人 ,
@@ -316,7 +391,7 @@ export default {
                 faint:"",
             },
 
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             uploadTips: config.tips,
             tipsUpload1:'预签合同图片（该处上传已签约合同照片）',
             tipsUpload2:'附件资料图片（该处上传营业执照和法人身份证正反面，需原件照片或复印件盖章）',
@@ -407,8 +482,23 @@ export default {
         })
 
         getMember({}).then(res => {
-            this.memberList = res.data
+            this.memberFullList = res.data;
+            this.memberList = res.data.filter((item)=>{
+                return item.userStatus == '1'
+            });
         })
+
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                };
+            }
+            return temp;
+        }
+        this.chapterType = selectDic(dicList, "chapter_type")
     },
     methods: {
         showDetail(row){
@@ -430,11 +520,27 @@ export default {
                 })
             }
         },
+        searchCustmer(val){
+            if(val !==''){
+                getCust(
+                    //还有项目名称
+                    val
+                ).then(res=>{
+                    this.customerList = res.data;
+                })
+            }
+        },
         getConfig(id){
             getContractConfig({
                 id:id
             }).then(res=>{
                 this.associationMain = res.data.associationMain == 1
+                this.contractTypeName = res.data.contractTypeName;
+                this.businessTypeName = res.data.businessTypeName;
+                this.postData.businessType = res.data.businessType;
+                this.businessModelName = res.data.businessModelName;
+                res.data.keyWords = res.data.keyWords || [];
+                this.keyWords = res.data.keyWords;
                 res.data.contractConfigAttachmentList.forEach(item=>{
                     // if(item.attachmentType == 1){
                     //     this.contractMustCount = item.mustCount;
@@ -489,6 +595,12 @@ export default {
                 })
                 this.getConfig(this.postData.contractNameId);
             }
+            this.postData.associationMainName = "";
+            this.postData.associationMainCode = "";
+            this.postData.associationMainId = "";
+            this.postData.projectIds = [];
+            this.postData.keyWord = [];
+            this.postData.keyWordName = [];
         },
         clearContract(){
             this.$store.dispatch('cleanInit');
@@ -500,6 +612,10 @@ export default {
             this.dataMaxCount = 0;
             this.scanMustCount = 0;
             this.scanMaxCount = 0;
+            this.contractTypeName = "";
+            this.businessTypeName = "";
+            this.postData.businessType = "";
+            this.businessModelName = "";
         },
         getList() {
             this.listLoading = true;
@@ -522,39 +638,39 @@ export default {
         contractSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url = res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1});
+                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1,uid:file.uid});
             }
         },
         dataSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3});
+                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3,uid:file.uid});
             }
         },
         scanSuccess(res,file,fileList){
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2});
+                this.scanAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:2,uid:file.uid});
             }
         },
         // 附件移除
         contractRemove(file, fileList) {
             this.contractAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.contractAttachment.splice(index, 1);
                 }
             })
         },
         dataRemove(file, fileList) {
             this.dataAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.dataAttachment.splice(index, 1);
                 }
             })
         },
         scanRemove(file,fileList){
             this.scanAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.scanAttachment.splice(index, 1);
                 }
             })
@@ -617,12 +733,18 @@ export default {
                 })
             })
 
+            this.keyWords.forEach(i=>{
+                if(this.postData.keyWord.indexOf(i.key)!=-1){
+                    this.postData.keyWordName.push(i.value)
+                }
+            })
+
             this.postData.contractAttachmentRequest = [...this.dataAttachment,...this.contractAttachment,...this.scanAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
             if (contractFormVali(this)) {
                 conApply({...this.postData,...tempObj}).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

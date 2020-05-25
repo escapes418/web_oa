@@ -24,9 +24,9 @@
         <td>
             <el-input style="width:120px" v-model.number="itemData.personNum" type="number"></el-input>
         </td>
-        <td>
+        <!-- <td>
             <el-input v-model.number="itemData.dayNum" type="number"></el-input>
-        </td>
+        </td> -->
         <td>
             <el-input style="width:120px" v-model.number="itemData.billNum" :disabled="canInputBillNum" type="number"></el-input>
         </td>
@@ -34,7 +34,7 @@
             <el-input auto-complete="off" style="width:120px" v-model.number="itemData.expenseAmt" type="number"></el-input>
         </td>
         <td>
-            <el-input auto-complete="off" :maxlength="200" v-model="itemData.remarks"></el-input>
+            <el-input auto-complete="off" :maxlength="300" v-model.trim="itemData.remarks"></el-input>
         </td>
         <td>
             <el-button icon='el-icon-upload' size="mini" @click="dialogVisible=true" type="primary" :disabled="canUpload">上传图片
@@ -75,7 +75,7 @@ export default {
         return {
             // selectedSubject: [], //  新的科目选中值[01,0101] 办公用品采购/办公用品
             dialogVisible: false,
-            uploadApi: process.env.BASE_API + '/commonInfo/fileUpload',
+            uploadApi: process.env.BASE_API + '/webCommonInfo/fileUpload',
             current:0,
         }
     },
@@ -87,7 +87,6 @@ export default {
         }),
         // 是否禁用上传图片
         canUpload() {
-            console.log(this.itemData.subConfList)
             if (!this.itemData.subConfList) this.itemData.subConfList = []
             if (this.itemData.subConfList.length == 0 || this.isType != 'reim') {
                 return true;

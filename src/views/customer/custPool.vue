@@ -20,12 +20,12 @@
                     <span style="color:#606266">{{marketLeader}}</span>
                 </div>
             </div>
-            <div class="toolbar-item">
+            <!-- <div class="toolbar-item">
                 <span class="item-label">所属区域：</span>
                 <el-cascader style="width: 140px" 
-                    class="filter-item" :options="marketList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
+                    class="filter-item" :options="marketFullList" :props="defaultProps" v-model="listQuery.custOfficeId" change-on-select placeholder="请选择所属区域">
                 </el-cascader>
-            </div>
+            </div> -->
             <div class="toolbar-item">
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                 <el-button class="filter-item" type="warning" v-waves icon="el-icon-refresh" @click="restListQuery(restCallback)">重置</el-button>
@@ -60,9 +60,10 @@
                 <el-button v-if="ids.indexOf('inforManage-custPool-moveBtn')!==-1" class="filter-item" type="primary" v-waves @click="moveCust">批量移动客户</el-button>
                 <el-button v-if="ids.indexOf('inforManage-custPool-mergeBtn')!==-1" class="filter-item" type="primary" v-waves @click="dialogMergeVisible = true">合并客户</el-button>
                 <el-button v-if="ids.indexOf('inforManage-custPool-freeBtn')!==-1" class="filter-item" type="primary" v-waves @click="freeSea">移至公海/区域公海</el-button>
+                <el-button v-if="ids.indexOf('inforManage-custPool-unbindBtn')!==-1" class="filter-item" type="primary" v-waves @click="freeMerge">解除合并客户</el-button>
             </div>
         </div>
-        <el-table ref="multipleTable" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :key='tableKey' :data="list" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column
                 type="selection"
                 width="55">
@@ -87,7 +88,12 @@
                     <span class="ignore-detail">{{scope.row.creditCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="客户级别" width="120px">
+            <el-table-column align="center" label="法定代表人" width="120px">
+                <template slot-scope="scope">
+                    <span>{{scope.row.legalRepresentative}}</span>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column align="center" label="客户级别" width="120px">
                 <template slot-scope="scope">
                     <span>{{scope.row.custStageName}}</span>
                 </template>
@@ -116,8 +122,8 @@
                 <template slot-scope="scope">
                     <span>{{scope.row.custListPlaceName}}</span>
                 </template>
-            </el-table-column>
-            <el-table-column align="center" label="更新时间" width="140px">
+            </el-table-column> -->
+            <el-table-column align="center" label="更新时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{scope.row.time | stamp2TextDateFull}}</span>
                 </template>
@@ -183,17 +189,30 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectCust">
+                <span v-for="(item,index) in selectCust" :key="index">
                     <span class="select-item">{{item.custName}}</span>
                 </span>
             </div>
             <div class="merge-item">
                 <el-checkbox v-model="marketChecked" label="市场负责人"></el-checkbox>
-                <el-checkbox v-model="areaChecked" label="所属区域"></el-checkbox>
+                <!-- <el-checkbox v-model="areaChecked" label="所属区域"></el-checkbox> -->
                 <el-checkbox v-model="custChecked" label="客户级别"></el-checkbox>
             </div>
             <div class="move-select">
                 <div class="move-item">
+                    <span class="item-label">客户类型：</span>
+                    <el-select 
+                        style="width: 300px" 
+                        class="filter-item" 
+                        v-model="custType"
+                        filterable
+                        placeholder="请选择客户类型">
+                        <el-option v-for="item in custTypeList" :key="item.value" :label="item.name" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="move-item">
+                    
                     <span class="item-label">市场负责人：</span>
                     <el-select 
                         style="width: 300px" 
@@ -205,13 +224,14 @@
                         <el-option v-for="item in memberList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
+
                 </div>
-                <div class="move-item">
+                <!-- <div class="move-item">
                     <span class="item-label">所属区域：</span>
                     <el-cascader style="width: 300px" 
                         class="filter-item" :options="marketList" filterable :props="defaultProps" v-model="marketId" :disabled="!areaChecked" placeholder="请选择所属区域">
                     </el-cascader>
-                </div>
+                </div> -->
                 <div class="move-item">
                     <span class="item-label">客户级别：</span>
                     <el-select 
@@ -231,8 +251,20 @@
             </span>
         </el-dialog>
 
-        <el-dialog title="提示" :close-on-click-modal="false" :visible.sync="dialogFreeVisible" width="25%">
-            <div class="merge-item">确定将所选客户移至公海/区域公海？
+        <el-dialog title="移至公海/区域公海" :close-on-click-modal="false" :visible.sync="dialogFreeVisible" width="25%">
+            <div class="merge-item">
+                <div class="move-item">
+                    <span class="item-label">客户分类：</span>
+                    <el-select 
+                        style="width: 250px" 
+                        class="filter-item" 
+                        v-model="freeSeaType"
+                        filterable
+                        placeholder="请选择客户分类">
+                        <el-option v-for="item in custTypeList" :key="item.value" :label="item.name" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmFree">确认</el-button>
@@ -249,12 +281,20 @@
                 <el-button type="primary" @click="selectMarket">确认</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="系统提示？" width="25%" :visible.sync="dialogUnbind">
+            <span>确认解除合并该客户吗？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="unbindBtn">确认</el-button>
+                <el-button @click="dialogUnbind = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import common from "@/utils/common";
-import { getCustPool, fetchComInfoList,getMainCust,mergeCust,getMember,getMarket,moveBatchCust,openBatchCust} from "@/api/customer";
+import { getCustPool, fetchComInfoList,getMainCust,mergeCust,getMember,getMarket,moveBatchCust,openBatchCust,unboundCust} from "@/api/customer";
 import waves from "@/directive/waves"; // 水波纹指令
 import { parseTime } from "@/utils";
 import { getRegion } from "@/api/getRegion";
@@ -284,8 +324,6 @@ export default {
             tableKey: 0,
             list: [],
             total: null,
-            loading: false,
-            listLoading: false,
             pageNo: 1,
             pageSize: 20,
 
@@ -301,14 +339,13 @@ export default {
 
 
             listQuery: {
+                isMain:"0",
                 custOfficeId:[],
                 timeRange: [],
                 custListPlace:"",
                 custName: "",
                 marketLeaderId: "",
                 leaderName: "",
-                beginTime: "",
-                endTime: "",
             },
             custTradesList: [],
             custPlaceList:[],
@@ -334,6 +371,10 @@ export default {
             marketLeaderId:"",
             custStage:"",
             memberList:[],
+            marketFullList:[],
+            custTypeList:[],
+            custType:"",
+            freeSeaType:"",
             marketList:[],
             marketId:[],
             defaultProps: {
@@ -341,6 +382,8 @@ export default {
                 label: "name",
                 value:"id"
             },
+
+            dialogUnbind:false
         };
     },
     watch:{
@@ -353,7 +396,6 @@ export default {
     },
     activated() {
         this.getListData();
-        this.listLoading = false;
     },
     mounted() {
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
@@ -369,31 +411,66 @@ export default {
         this.custTradesList = selectDic(dicList, "cust_trades");
         this.custPlaceList = selectDic(dicList, "cust_list_place");
         this.custStageList = selectDic(dicList, "cust_stage");
-
+        this.custTypeList = selectDic(dicList, "cust_type")
         // //人员树
-        // let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
-        // var newArr = [];
-        // common.transToTree(memberList, newArr);
-        // common.mapAndAddChildren(newArr);
-        // this.treeData = newArr;
+        let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
+        var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    // tem = tem.filter(i=>{
+                    //     return i.status=="1"
+                    // })
+                    item.userInfo = tem;
+                }
+            })
 
-        getMarket({queryType:"1"}).then(res=>{
-            if(res.status == 0){
-                var newArr = [];
-                common.transToTree(res.data, newArr);
-                // common.mapAndAddChildren(newArr);
-                this.marketList = newArr
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
             }
-        })
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
+        common.transToTree(memberList, newArr);
+        common.mapAndAddChildren(newArr);
+        this.treeData = newArr;
 
-        getMarket({queryType:"2"}).then(res=>{
-            if(res.status == 0){
-                var newArr = [];
-                common.transToTree(res.data, newArr);
-                common.mapAndAddChildren(newArr);
-                this.treeData = newArr
-            }
+        //部门树
+        let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
+        var newArr = [];
+        departList = departList.filter(item=>{
+            return item.status == 1
         })
+        common.transToTree(departList, newArr);
+        this.marketFullList = newArr
+
+        // getMarket({queryType:"1"}).then(res=>{
+        //     if(res.code == 200){
+        //         var newArr = [];
+        //         common.transToTree(res.data, newArr);
+        //         // common.mapAndAddChildren(newArr);
+        //         this.marketFullList = newArr
+        //     }
+        // })
+
+        // getMarket({queryType:"2"}).then(res=>{
+        //     if(res.code == 200){
+        //         var newArr = [];
+        //         common.transToTree(res.data, newArr);
+        //         common.mapAndAddChildren(newArr);
+        //         this.treeData = newArr
+        //     }
+        // })
     },
     methods: {
 
@@ -405,8 +482,17 @@ export default {
                 //     type: 'warning'
                 // })
                 this.$refs.marketTree.setChecked(this.marketData[0],false);
-                this.marketData = [];
-                this.marketData.push(data)
+                if(data.type =='2'){
+                    this.marketData = [];
+                    this.marketData.push(data)
+                }else{
+                    this.$message({
+                        message: "该节点不可选！",
+                        type: 'warning'
+                    })
+                    this.$refs.marketTree.setChecked(data,false);
+                    return
+                }
             }else if(this.marketData.length ===0&&select){
                 // if(data.type =='2'&&data.status == '1'){
                 if(data.type =='2'){
@@ -429,16 +515,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         selectMarket() {
-           if(this.marketData.length){
+            this.dialogMarketVisible = false;
+            if(this.marketData.length){
                 this.marketLeader = this.marketData[0].name;
                 this.listQuery.marketLeaderId = this.marketData[0].id;
-                this.dialogMarketVisible = false;
             }else{
-                this.$message({
-                    message: "请选择市场负责人",
-                    type: "warning"
-                });
-                return;
+                this.marketLeader = "";
+                this.listQuery.marketLeaderId = "";
             }
         },
 
@@ -472,7 +555,6 @@ export default {
                 }
             })
             let temp = [];
-            console.log(this.childFullCust)
             this.childFullCust.forEach(item=>{
                 this.merge.childCustIds.forEach(id=>{
                     if(item.custId == id){
@@ -495,23 +577,31 @@ export default {
             this.dialogMoveVisible = true;
             //获取当前登陆人的部门和区域
             getMember({}).then(res=>{
-                if(res.status ==0){
+                if(res.code == 200){
                     this.memberList = res.data.filter(item=>{
                         return item.userStatus == 1
                     })
                 }
             })
-            getMarket({queryType:"1"}).then(res=>{
-                if(res.status == 0){
-                    var newArr = [];
-                    res.data = res.data.filter(item=>{
-                        return item.status == 1
-                    })
-                    common.transToTree(res.data, newArr);
-                    // common.mapAndAddChildren(newArr);
-                    this.marketList = newArr
-                }
+
+            let departList = JSON.parse(localStorage.getItem("web_oa_depart"));
+            var newArr = [];
+            departList = departList.filter(item=>{
+                return item.status == 1
             })
+            common.transToTree(departList, newArr);
+            this.marketList = newArr;
+            // getMarket({queryType:"1"}).then(res=>{
+            //     if(res.code == 200){
+            //         var newArr = [];
+            //         res.data = res.data.filter(item=>{
+            //             return item.status == 1
+            //         })
+            //         common.transToTree(res.data, newArr);
+            //         // common.mapAndAddChildren(newArr);
+            //         this.marketList = newArr
+            //     }
+            // })
         },
         freeSea(){
             let flag = true;
@@ -521,7 +611,7 @@ export default {
                     message:'请选择要移动的客户！',
                     type:"warning"
                 })
-                flag = false 
+                flag = false
             }
             if(!custVali()){
                 flag = false
@@ -556,20 +646,55 @@ export default {
             this.selectCust.forEach(item=>{
                 ids.push(item.id)
             })
+            if(!this.freeSeaType){
+                this.$message({
+                    message:'请选择客户分类！',
+                    type:'warning'
+                })
+                return
+            }
             openBatchCust({
                 ids:ids,
-                isChange:'1'
+                isChange:'1',
+                custType:this.freeSeaType
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
                     this.dialogFreeVisible = false
+                }
+                this.getListData();
+            })
+        },
+        freeMerge(){
+            if(this.selectCust.length<1){
+                this.$message({
+                    message:'请选择要解除合并的客户！',
+                    type:"warning"
+                })
+            }else{
+                this.dialogUnbind = true
             }
-            setTimeout(_=>{
-                window.location.reload();
-            },500)
+        },
+
+        unbindBtn(){
+            let ids = [];
+            this.selectCust.forEach(item=>{
+                ids.push(item.id)
+            })
+            unboundCust({
+                custIds:ids
+            }).then(res=>{
+                if(res.code == 200){
+                    this.$message({
+                        message: res.message,
+                        type: "success"
+                    });
+                    this.dialogUnbind = false
+                }
+                this.getListData();
             })
         },
         searchMain(val){
@@ -578,7 +703,7 @@ export default {
                     custType:'1',
                     custName:val
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.mainCust = res.data
                     }
                 })
@@ -590,7 +715,7 @@ export default {
                     custType:'2',
                     custName:val
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.childCust = res.data;
                         if(res.data&&res.data.length>0){
                             this.childFullCust.push(...res.data)
@@ -603,23 +728,32 @@ export default {
             mergeCust({
                 ...this.merge
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     this.dialogMergeVisible = false;
+                    this.dialogVisible = false;
                     this.$message({
                         message: res.message,
                         type: "success"
                     });
                 }
-                setTimeout(_=>{
-                    // this.$router.go(-1)
-                    window.location.reload();
-                    // console.log('redere')
-                },500)
+                this.getListData();
+                // setTimeout(_=>{
+                //     // this.$router.go(-1)
+                //     window.location.reload();
+                //     // console.log('redere')
+                // },500)
                 
             })
         },
         confirmMove(){
-            if(this.marketChecked || this.areaChecked || this.custChecked){
+            if(!this.custType){
+                this.$message({
+                    message:'请选择客户分类！',
+                    type:'warning'
+                })
+                return
+            }
+            if(this.marketChecked || this.custChecked){
                 if(this.marketChecked){
                     if(!this.marketLeaderId){
                         this.$message({
@@ -633,18 +767,6 @@ export default {
                 }else{
                     this.marketLeaderId = ""
                 }
-                if(this.areaChecked){
-                    if(this.marketId.length<1){
-                        this.$message({
-                            message:'请选择所属区域！',
-                            type:'warning'
-                        })
-                        return;
-                    }
-                    this.marketId[this.marketId.length-1] = this.marketId[this.marketId.length-1]
-                }else(
-                    this.marketId[this.marketId.length-1] = ""
-                )
                 if(this.custChecked){
                     if(!this.custStage){
                         this.$message({
@@ -665,21 +787,33 @@ export default {
                 moveBatchCust({
                     custIds:custIds,
                     custStage:this.custStage,
-                    custOfficeId:this.marketId[this.marketId.length-1],
+                    custType:this.custType,
                     marketLeaderId:this.marketLeaderId
                 }).then(res=>{
-                    if(res.status == 0){
-                        this.dialogMoveVisible = false;
-                        this.$message({
-                            message: res.message,
-                            type: "success"
-                        });
+                    if(res.code == 200){
+                        if(res.data.status == 0){
+                            this.dialogMoveVisible = false;
+                            this.$message({
+                                message: res.data.message,
+                                type: "success"
+                            });
+                        }
+                        if(res.data.status == 2){
+                            this.dialogMoveVisible = false;
+                            this.$message({
+                                message: res.data.message,
+                                type: "warning"
+                            });
+                        }
+                        
                     }
-                    setTimeout(_=>{
-                        // this.$router.go(-1)
-                        window.location.reload();
-                        // console.log('redere')
-                    },500)
+                    this.getListData();
+                    this.moveClose()
+                    // setTimeout(_=>{
+                    //     // this.$router.go(-1)
+                    //     window.location.reload();
+                    //     // console.log('redere')
+                    // },1000)
                 })
             }else{
                 this.$message({
@@ -691,11 +825,11 @@ export default {
         moveClose(){
             this.dialogMoveVisible = false;
             this.marketChecked=false;
-            this.areaChecked=false;
+            // this.areaChecked=false;
             this.custChecked=false;
             this.marketLeaderId="";
             this.custStage="";
-            this.marketId = [];
+            this.custType = "";
             // this.$refs.multipleTable.clearSelection();
         },
         moveCancel(){
@@ -705,7 +839,7 @@ export default {
             this.custChecked=false;
             this.marketLeaderId="";
             this.custStage="";
-            this.marketId = [];
+            this.custType = "";
             // this.$refs.multipleTable.clearSelection();
         },
         mergeCancel(){
@@ -735,10 +869,14 @@ export default {
         restCallback() {
             // 用来补充默认rest不足的问题
             this.marketLeader = '';
+            if(this.marketData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.marketTree.setChecked(this.marketData[0],false);
+                })
+            }
         },
         getListData() {
             var _this = this;
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             getCustPool({
                 ...postData,
@@ -747,7 +885,6 @@ export default {
             }).then(response => {
                 this.list = response.data.list;
                 this.total = response.data.total;
-                this.listLoading = false;
             });
         },
         reduceParams($$imData) {
@@ -765,17 +902,15 @@ export default {
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getListData();
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val;
             this.getListData();
-            this.listLoading = false;
         },
         handleDetail(row) {
             this.$router.push({
                 path: "/inforManage/customerDetail",
-                query: { key: row.id ,type:"pool"}
+                query: { key: row.id ,type:"pool", custType:"0"}
             });
         },
     }

@@ -64,18 +64,17 @@ export function recepFormVali(self) {
                 flag = false;
                 return;
             } else if (typeof item.dayNum != 'number' || item.dayNum<0) {
-                toast('请正确填写报销天数！');
+                toast('请正确填写接待天数！');
                 flag = false;
                 return;
             } else if (typeof item.personNum != 'number' || item.personNum<0) {
-                toast('请正确填写报销人数！');
+                toast('请正确填写接待人数！');
                 flag = false;
                 return;
             } else if (
-                typeof item.expenseAmt != 'number' ||
-                !(item.expenseAmt > 0)
+                !/^([0-9]{1,7})(\.[0-9]{1,2})?$/.test(item.expenseAmt)
             ) {
-                toast('请正确填写报销金额！');
+                toast('请正确填写预算金额！');
                 flag = false;
                 return;
             } else if (item.startDate > item.endDate) {

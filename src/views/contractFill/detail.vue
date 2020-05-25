@@ -24,8 +24,29 @@
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同类型：</span>
-                                    <span class="right-con">{{ detail.contractTypeName }}</span>
+                                    <span class="right-con">{{ contractTypeName }}</span>
                                 </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务类型：</span>
+                                    <span class="right-con">{{ businessTypeName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">业务模块：</span>
+                                    <span class="right-con">{{ businessModelName }}</span>
+                                </li>
+                                <li class="base-li">
+                                    <span class="left-title font-gray">合同关键字：</span>
+                                    <span class="right-con">{{  detail.keyWordName&&detail.keyWordName.join('，') }}</span>
+                                </li>
+                                <!-- <li class="base-li" v-if="ISMODIFY">
+                                    <span class="left-title font-gray">修改合同关键字：</span>
+                                    <span class="right-con">
+                                        <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="keyWord" placeholder="请选择合同关键字" style="width:260px;">
+                                            <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                            </el-option>
+                                        </el-select>
+                                    </span>
+                                </li> -->
                                 <li class="base-li">
                                     <span class="left-title font-gray">合同归档时间：</span>
                                     <span class="right-con">{{ detail.createTime | stamp2TextDateFull }}</span>
@@ -34,9 +55,13 @@
                                     <span class="left-title font-gray">关联主合同编号：</span>
                                     <span class="right-con">{{ detail.associationMainCode }}</span>
                                 </li>
-                                <li class="base-li" v-if="!associationMain">
+                                <li class="base-li" v-if="businessType==1&&!associationMain">
                                     <span class="left-title font-gray">关联项目：</span>
                                     <span class="right-con">{{ projectName.join('，') }}</span>
+                                </li>
+                                <li class="base-li" v-if="businessType==2">
+                                    <span class="left-title font-gray">关联客户：</span>
+                                    <span class="right-con">{{ custNames.join('，') }}</span>
                                 </li>
                                 <li class="base-li">
                                     <span class="left-title font-gray">备注：</span>
@@ -46,7 +71,7 @@
                         </base-temp>
                         <base-temp v-for="(itemData,index) in detail.contractPartyList" :title="itemData.partyName" :key="index">
                             <ul class="base-ul">
-                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType">
+                                <li class="base-li" v-for="(item,index) in itemData.contractPartyType" :key="index">
                                     <span class="left-title font-gray">{{item.columnLabel+'：'}}</span>
                                     <span class="right-con">{{item.value}}</span>
                                 </li>
@@ -176,7 +201,7 @@
                 <div class="segment-area">
                     <div class="el-table__body-wrapper">
                         <el-collapse>
-                            <ul v-for="(item,index) in detail.suppResp">
+                            <ul v-for="(item,index) in detail.suppResp" :key="index">
                                 <li :key="index">
                                     <el-collapse-item :name="item.suppId">
                                         <template slot="title">
@@ -264,7 +289,7 @@
                 </el-collapse-transition>
             </div> -->
 
-            <el-table :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :data="chargeList" border fit highlight-current-row style="width: 100%">
                 <el-table-column align="center" label="开始负责时间">
                     <template slot-scope="scope">
                         <span style="color:#409EFF;cursor: Pointer;">{{scope.row.createTime | stamp2TextDateFull}}</span>
@@ -294,9 +319,6 @@
             <div class="pagination-container">
                 <el-pagination background @current-change="handleCurrentChange" :current-page="pageNo" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
                 </el-pagination>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCharge = false">取消</el-button>
             </div>
         </el-dialog>
         <div class="segment statistics">
@@ -350,7 +372,7 @@ export default {
             scanConAttachment:[],
             renewAttachment:[],
             abandonAttachment:[],
-            fileURL: process.env.BASE_API + "/commonInfo/fileUpload",
+            fileURL: process.env.BASE_API + "/webCommonInfo/fileUpload",
             uploadTips: config.tips,
             detail: {},
             projectName:[],
@@ -362,13 +384,17 @@ export default {
             total:0,
             pageNo:1,
             pageSize:10,
-            listLoading:false,
             listQuery:{
                 contractId:''
             },
 
 
-            configId:''
+            configId:'',
+            contractTypeName:'',
+            businessTypeName:"",
+            businessType:"",
+            businessModelName:"",
+            custNames:[]
         };
     },
     created() {
@@ -391,6 +417,12 @@ export default {
                         })
                     })
                 })
+                this.contractTypeName = respond.data.contractTypeName;
+                this.businessTypeName = respond.data.businessTypeName;
+                this.businessType = respond.data.businessType;
+                this.businessModelName = respond.data.businessModelName;
+                respond.data.keyWords = respond.data.keyWords || [];
+                this.keyWords = respond.data.keyWords;
                 this.associationMain = respond.data.associationMain == 1
                 this.detail.contractPartyList = respond.data.contractPartyList;
                 // this.detail
@@ -503,6 +535,9 @@ export default {
                     this.detail = res.data.contractHisDetailResponse;
                     this.detail.projectList&&this.detail.projectList.forEach(item=>{
                         this.projectName.push(item.projectName)
+                    })
+                    this.detail.custList&&this.detail.custList.forEach(item=>{
+                        this.custNames.push(item.custName)
                     })
                     if (
                         res.data.contractHisDetailResponse.contractAttachmentResponse &&
@@ -632,7 +667,7 @@ export default {
         },
         downAttach(val) {
             downFile({ url: val.originUrl, fileName: val.name }).then(res => {
-                if (res.status == 0) {
+                if (res.code == 200) {
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                 }
@@ -646,19 +681,12 @@ export default {
 
             this.getChangeList()
         },
-        handleProFilter(){
-            this.pageNo = 1;
-            this.$$queryStub = fromJS(this.listQuery);
-            this.getConnect();
-            this.listLoading = false;
-        },
         handleCurrentChange(val) {
             this.pageNo = val;
-            this.getConnect();
+            this.getChangeList();
             this.listLoading = false;
         },
         getChangeList(){
-            this.listLoading = true;
             var postData = this.$$queryStub.toJS();
             changeRecord({
                 ...postData,
@@ -667,7 +695,6 @@ export default {
             }).then(res=>{
                 this.chargeList = res.data.list;
                 this.total = res.data.total;
-                this.listLoading = false;
             })
         },
         restCallback(){
@@ -679,7 +706,7 @@ export default {
                 contractId:this.$route.query.key,
                 receiptStatus:receiptStatus
             }).then(res=>{
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'

@@ -71,7 +71,7 @@
                 <el-tab-pane label="全部" name="3"></el-tab-pane>
             </el-tabs>
         </template>
-        <el-table :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column
                 type="selection"
                 width="55">
@@ -124,7 +124,7 @@
 
         <el-dialog title="选择人员/部门" :visible.sync="dialogDepartVisible" width="25%" :center="true" @close="dialogDepartVisible = false">
             <el-input placeholder="输入关键字进行过滤" v-model="filterDepart" style="margin-bottom:10px"></el-input>
-            <el-tree show-checkbox check-strictly node-key="id" :data="treeData" :props="defaultProps" @check-change="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
+            <el-tree show-checkbox check-strictly node-key="id" :data="treeFullData" :props="defaultProps" @check-change="handleDepartClick" :filter-node-method="departNode" ref="departTree"></el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogDepartVisible = false">取消</el-button>
                 <el-button type="primary" @click="selectDepart">确认</el-button>
@@ -155,7 +155,7 @@
                 <div>
                     已选择参与人：
                 </div>
-                <span v-for="(item,index) in partList">
+                <span v-for="(item,index) in partList" :key="index">
                     <span class="select-item">{{item.name}}</span>
                     <span class="blank"> </span>
                 </span>
@@ -180,7 +180,7 @@
                 <div>
                     已选择：
                 </div>
-                <span v-for="item in selectCoop">
+                <span v-for="(item,index) in selectCoop" :key="index">
                     <span class="select-item">{{item.title}}</span>
                 </span>
             </div>
@@ -232,6 +232,7 @@ import utils from '@/utils/utils';
 import { mapState, mapGetters } from "vuex";
 
 export default {
+    name: "coopList",
     directives: {
         waves
     },
@@ -274,7 +275,6 @@ export default {
             total: null,
             pageNo: 1,
             pageSize: 20,
-            listLoading: true,
             activeName:"1",
             memberType:[],
             listQuery: {
@@ -303,6 +303,7 @@ export default {
             dialogCharge:false,
             filterCharge:'',
             treeData:[],
+            treeFullData:[],
             defaultProps: {
                 children: "children",
                 label: "name"
@@ -321,17 +322,26 @@ export default {
             coopChecked:false,
             coopLeaderId:'',
             memberList:[],
-            dialogMoveVisible:false
+            dialogMoveVisible:false,
+            scrollTop:0
         }
     },
     created() {
         this.$$queryStub = this.$$listQuery;
         this.activeName = this.coopListPlace;
-        this.getList()
-        this.listLoading = false
-        
+
+        let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
+        var newArr = [];
+        common.transToTree(memberList, newArr);
+        common.mapAndAddChildren(newArr);
+        this.treeFullData = newArr;
     },
-    mounted(){
+    activated() {
+        this.getList()
+        document.documentElement.scrollTop = this.scrollTop 
+    },
+    async mounted(){
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
         function selectDic(arr,type){
             let temp = [];
@@ -346,11 +356,37 @@ export default {
 
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    tem = tem.filter(i=>{
+                        return i.status=="1"
+                    })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
         
-        getLabelList({}).then(res=>{
+        getLabelList().then(res=>{
             this.labelList = res.data
         })
         
@@ -358,6 +394,14 @@ export default {
             this.typeList = res.data
         })
     },
+    beforeRouteLeave (to, from, next) {
+            let self = this;
+            this.$nextTick(_=> {
+                self.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            })
+            //保存滚动条元素div的scrollTop值
+			next()
+	},
     methods: {
         handleSelectionChange(val){
             this.selectCoop = val;
@@ -372,7 +416,7 @@ export default {
             }
             this.dialogMoveVisible = true;
             getMember({}).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     //列表是非离职人员
                     this.memberList = res.data.filter((item)=>{
                         return item.userStatus == '1'
@@ -389,7 +433,7 @@ export default {
             if(this.coopChecked){
                 if(!this.coopLeaderId){
                     this.$message({
-                        message:'请选择合同负责人！',
+                        message:'请选择协作负责人！',
                         type:'warning'
                     })
                     return
@@ -403,7 +447,7 @@ export default {
                     needFlowIds:coopIds,
                     principal:this.coopLeaderId,
                 }).then(res=>{
-                    if(res.status == 0){
+                    if(res.code == 200){
                         this.moveClose();
                         this.$message({
                             message: res.message,
@@ -415,7 +459,7 @@ export default {
             }else{
                 this.coopLeaderId = ""
                 this.$message({
-                    message:'请为移动合同勾选相关负责人！',
+                    message:'请为协作勾选相关负责人！',
                     type:'warning'
                 })
             }
@@ -432,7 +476,7 @@ export default {
                 tab:this.coopListPlace,
                 exportContent:type 
             }).then(res=>{
-                if(res.status == 0){
+                if(res.code == 200){
                     var url = `./OA${res.data}`;
                     window.location.href = url;
                     this.$message({
@@ -475,16 +519,13 @@ export default {
             return data.name.indexOf(value) !== -1;
         },
         selectDepart() {
+            this.dialogDepartVisible = false;
             if(this.departTreeData.length){
                 this.departName = this.departTreeData[0].name;
-                this.listQuery.deptOrUserId  = this.departTreeData[0].id;
-                this.dialogDepartVisible = false;
+                this.listQuery.deptOrUserId  = this.departTreeData[0].id; 
             }else{
-                this.$message({
-                    message: "请选择人员/部门",
-                    type: "warning"
-                });
-                return;
+                this.departName = "";
+                this.listQuery.deptOrUserId  = ""; 
             }
         },
         handleCreate(){
@@ -495,10 +536,8 @@ export default {
         handleClick(val){
             this.$store.dispatch('changeCoop', val.name);
             this.getList();
-            this.listLoading = false;
         },
         getList() {
-            this.listLoading = true;
             var postData = this.reduceParams(this.$$queryStub);
             fetchList({
                 ...postData,
@@ -508,12 +547,16 @@ export default {
             }).then(response => {
                 this.list = response.data.list
                 this.total = response.data.total
-                this.listLoading = false
             })
         },
         restCallback() {
             this.departName = '';
             // 用来补充默认rest不足的问题
+            if(this.departTreeData[0]){
+                this.$nextTick(_=>{
+                    this.$refs.departTree.setChecked(this.departTreeData[0],false);
+                })
+            } 
         },
         // 处理接口不一致情况
         reduceParams($$imData) {
@@ -538,12 +581,10 @@ export default {
             }
             this.$$queryStub = fromJS(this.listQuery);
             this.getList()
-            this.listLoading = false;
         },
         handleCurrentChange(val) {
             this.pageNo = val
             this.getList()
-            this.listLoading = false;
         },
         showPlan(row){
             this.$router.push({
@@ -573,7 +614,7 @@ export default {
                 needFlowId:this.needFlowId,
                 content:this.comment
             }).then(res=>{
-                if (res.status == 0) {
+                if (res.code == 200) {
                     this.$message({
                         message: res.message,
                         type: 'success'
@@ -581,7 +622,6 @@ export default {
                     this.comment = '';
                     this.dialogComment = false;
                     this.getList();
-                    this.listLoading = false;
                 }
             })
         },
@@ -590,10 +630,8 @@ export default {
             this.partList = [];
             this.defaultList = [];
             this.dialogPart = true;
-            let res = await getPart({
-                needFlowId:this.needFlowId
-            })
-            if(res.status == 0){
+            let res = await getPart(this.needFlowId)
+            if(res.code == 200){
                 // let arr = res.data.filter((element, index, self)=>{
                 //     return self.findIndex(item=>item.userId == element.userId) == index
                 // })
@@ -627,7 +665,7 @@ export default {
                     needFlowId:this.needFlowId,
                     userId:id
                 })
-                if(res.status==0){
+                if(res.code == 200){
                     this.chargeData = []
                     this.$refs.chargeTree.setCheckedKeys([]);
                     this.dialogCharge = false
@@ -636,7 +674,6 @@ export default {
                         type: 'success'
                     })
                     this.getList();
-                    this.listLoading = false;
                 }
             }else{
                 this.$message({
@@ -716,7 +753,7 @@ export default {
                     needFlowId:this.needFlowId,
                     userIdList:[...tempId]
                 })
-                if(res.status==0){
+                if(res.code == 200){
                     this.partList = [];
                     this.$refs.partTree.setCheckedKeys([])
                     this.dialogPart = false;
@@ -725,7 +762,6 @@ export default {
                         type: 'success'
                     })
                     this.getList();
-                    this.listLoading = false;
                 }
             }else{
                 this.$message({

@@ -94,7 +94,7 @@
                 <div>
                     已选择参与人：
                 </div>
-                <span v-for="(item,index) in partList">
+                <span v-for="(item,index) in partList" :key="index">
                     <span class="select-item">{{item.name}}</span>
                     <span class="blank"> </span>
                 </span>
@@ -184,18 +184,44 @@ export default {
     computed: {
        
     },
-    mounted() {
+    async mounted() {
         
-        getLabelList({}).then(res=>{
+        getLabelList().then(res=>{
             this.labelList = res.data
         })
         
         getTypeList({}).then(res=>{
             this.typeList = res.data
         })
-        
+        await this.$store.dispatch('FetchDictsAndLocalstore');
         let memberList = JSON.parse(localStorage.getItem("web_oa_member"));
         var newArr = [];
+        let len = memberList.length;
+        function filterResign (memberList) {
+            let ids = [];
+            memberList.forEach(item=>{
+                ids.push(item.pId)
+                if(item.userInfo.length){
+                    let tem = item.userInfo;
+                    tem = tem.filter(i=>{
+                        return i.status=="1"
+                    })
+                    item.userInfo = tem;
+                }
+            })
+
+            ids = Array.from(new Set(ids))
+            for(var i = memberList.length - 1; i >= 0; i--){
+                if(ids.indexOf(memberList[i].id)=="-1"&&memberList[i].type=="1"&&memberList[i].userInfo.length=="0"){
+                    memberList.splice(i,1)
+                }
+            }
+        }
+        filterResign(memberList);
+        while(len != memberList.length){
+            len = memberList.length
+            filterResign(memberList);
+        }
         common.transToTree(memberList, newArr);
         common.mapAndAddChildren(newArr);
         this.treeData = newArr;
@@ -314,7 +340,7 @@ export default {
                 addCoop({
                     ...this.postData
                 }).then(res=>{
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'

@@ -17,6 +17,31 @@
                                 </span>
                             </RedStar>
                         </li>
+                        <li class="base-li">
+                            <RedStar label="合同类型：">
+                                <span class="right-con">{{contractTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务类型：">
+                                <span class="right-con">{{businessTypeName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="业务模块：">
+                                <span class="right-con">{{businessModelName}}</span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="keyWords.length>0">
+                            <RedStar label="合同关键字：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable class="filter-item ignore-detail" filterable multiple v-model="postData.keyWord" placeholder="请选择合同名称" style="width:260px;">
+                                        <el-option v-for="item in keyWords" :label="item.value" :value="item.key" :key="item.key">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
                         <li class="base-li" v-if="associationMain">
                             <RedStar label="关联主合同编号：" :required="true">
                                 <span class="item-value" @click="showForm">
@@ -25,7 +50,7 @@
                                 </span>
                             </RedStar>
                         </li>
-                        <li class="base-li" v-if="!associationMain">
+                        <li class="base-li" v-if="postData.businessType == 1&&!associationMain">
                             <RedStar label="关联项目：" :required="true">
                                 <span class="right-con">
                                     <el-select 
@@ -33,12 +58,33 @@
                                         filterable
                                         multiple
                                         remote 
+                                        debounce	
                                         reserve-keyword 
                                         v-model="postData.projectIds" 
                                         placeholder="请输入项目名称" 
                                         style="width:260px;" 
                                         :remote-method="searchProject">
                                         <el-option v-for="item in projectList" :label="item.projectName" :value="item.id" :key="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li" v-if="postData.businessType == 2">
+                            <RedStar label="关联客户：" :required="true">
+                                <span class="right-con">
+                                    <el-select 
+                                        class="filter-item" 
+                                        filterable
+                                        remote 
+                                        debounce	
+                                        multiple
+                                        reserve-keyword 
+                                        v-model="postData.custIds" 
+                                        placeholder="请输入客户名称" 
+                                        style="width:260px;" 
+                                        :remote-method="searchCustmer">
+                                        <el-option v-for="item in custList" :label="item.custName" :value="item.custId" :key="item.custId">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -127,7 +173,7 @@
             </div>
             <div class="segment-area">
                 <template  v-for="(item,index) in initData">
-                    <base-temp :title="item.partyName">
+                    <base-temp :title="item.partyName" :key="index">
                         <dynamic-form ref="base-form" :data="item.contractPartyType"></dynamic-form>
                     </base-temp>
                 </template>
@@ -160,8 +206,8 @@
                         <li class="base-li">
                             <RedStar label="合同签约人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
-                                        <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
+                                    <el-select clearable filterable class="filter-item ignore-detail" v-model="postData.signLeaderId" placeholder="请选择合同签约人" style="width:260px;">
+                                        <el-option v-for="item in memberFullList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
                                 </span>
@@ -170,10 +216,27 @@
                         <li class="base-li">
                             <RedStar label="合同负责人：" :required="true">
                                 <span class="right-con">
-                                    <el-select clearable filterable class="filter-item ignore-detail" filterable v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
+                                    <el-select clearable class="filter-item ignore-detail" filterable v-model="postData.contractLeaderId" placeholder="请选择合同负责人" style="width:260px;">
                                         <el-option v-for="item in memberList" :label="item.name" :value="item.id" :key="item.id">
                                         </el-option>
                                     </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="用章类型：" :required="true">
+                                <span class="right-con">
+                                    <el-select clearable filterable multiple class="filter-item ignore-detail" v-model="postData.chapterType" placeholder="请选择用章类型" style="width:260px;">
+                                        <el-option v-for="item in chapterList" :label="item.name" :value="item.value" :key="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </span>
+                            </RedStar>
+                        </li>
+                        <li class="base-li">
+                            <RedStar label="用章份数：" :required="true">
+                                <span class="right-con">
+                                    <el-input style="width: 260px;" class="filter-item" placeholder="请输入用章份数" v-model.number="postData.chapterNum"></el-input>
                                 </span>
                             </RedStar>
                         </li>
@@ -181,7 +244,7 @@
                 </base-temp>
             </div>
         </div>
-        <div class="segment statistics">
+        <!-- <div class="segment statistics">
             <div class="segment-header">
                 快递信息
             </div>
@@ -203,7 +266,7 @@
                     </el-col>
                 </el-row>
             </div>
-        </div>
+        </div> -->
         <div class="segment statistics" v-if="contractMustCount || dataMustCount">
             <div class="segment-header">
                 附件
@@ -247,7 +310,7 @@ import RedStar from '@/components/RedStar/RedStar.vue';
 import dynamicForm from "@/components/DynamicForm/dynamic-form";
 import sjbtextarea from '@/components/sjbTextarea'
 
-import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,findAllProject} from '@/api/contractCheck';
+import { getContractTemlist,getContractConfig,getProject,getMainContract,getDetail,getMember,conApply,getCust} from '@/api/contractCheck';
 import { mapState, mapGetters } from "vuex";
 import { toJS, fromJS, Map, List } from 'immutable';
 import listQueryMix from '../../mixins/listQuery.mix';
@@ -272,14 +335,25 @@ export default {
             //     }
             // },
 
-            
+            memberFullList:[],
             memberList:[],
 
             associationMain:false,
+            contractTypeName:"",
+            businessTypeName:"",
+           
+            businessModelName:"",
+            keyWords:[],
+            keyWordName:[],
+            chapterList:[],
             projectList:[],
+            custList:[],
             conInfor: [],
-            dynaData:{},
             postData: {//提交数据
+                chapterNum:"",
+                keyWord:[],
+                keyWordName:[],
+                chapterType:[],
                 associationMainCode:'',
                 associationMainName:'',
                 associationMainId:'',
@@ -291,8 +365,8 @@ export default {
                 contractNameId : '',//合同名称模版ID ,
                 signLeaderId :'', //合同签约人ID ,
                 contractStartTime : '',//合同开始日期 ,
-                expressBill: '',//快递单号 ,
-                expressCompany : '',//快递公司 ,
+                // expressBill: '',//快递单号 ,
+                // expressCompany : '',//快递公司 ,
                 // firstAddress : '',//甲方住所 ,
                 // firstCreditCode : '',//甲方统一社会信用代码 ,
                 // firstLegalRepresentative :'',// 甲方法定代表人 ,
@@ -303,6 +377,8 @@ export default {
                 procInsId : '',//流程实例ID ,
                 projectIds : [],//关联项目ID ,
                 remarks :'',// 备注 ,
+                custIds:[],//合同关联客户
+                businessType:'',
                 // secondAddress: '',//乙方住所 ,
                 // secondCreditCode : '',// 乙方统一社会信用代码 ,
                 // secondLegalRepresentative : '',// 乙方法定代表人 ,
@@ -330,7 +406,7 @@ export default {
                 contractPartyName:""
             },
 
-            fileURL: process.env.BASE_API + '/commonInfo/fileUpload',
+            fileURL: process.env.BASE_API + '/webCommonInfo/fileUpload',
             uploadTips: config.tips,
             tipsUpload1:'预签合同图片（该处上传已签约合同照片）',
             tipsUpload2:'附件资料图片（该处上传营业执照和法人身份证正反面，需原件照片或复印件盖章）',
@@ -362,6 +438,12 @@ export default {
                             this.dataMaxCount = item.maxCount;
                         }
                     })
+                    this.contractTypeName = respond.data.contractTypeName;
+                    this.businessTypeName = respond.data.businessTypeName;
+                    this.postData.businessType = respond.data.businessType;
+                    this.businessModelName = respond.data.businessModelName;
+                    respond.data.keyWords = respond.data.keyWords || [];
+                    this.keyWords = respond.data.keyWords;
                     respond.data.contractPartyList.forEach(item=>{
                         item.contractPartyType.forEach(i=>{
                             res.data.contractFlowDetailInfoNewResponse.contractPartyList.forEach(item=>{
@@ -382,6 +464,7 @@ export default {
                             })
                         })
                     })
+
                     this.associationMain = respond.data.associationMain == 1;
                     this.$store.dispatch('setData',respond.data.contractPartyList);
                 })
@@ -400,32 +483,49 @@ export default {
         })
 
         getMember({}).then(res => {
-            this.memberList = res.data
+            this.memberFullList = res.data;
+            this.memberList = res.data.filter((item)=>{
+                return item.userStatus == '1'
+            })
         })
 
-        // findAllProject({}).then(res=>{
-        //     res.data.list.forEach(item=>{
-        //         for(let key in this.postData.projectIds){
-        //             if(item.id == this.postData.projectIds[key]){
-        //                 this.projectList.push(item)
-        //             }
-        //         }
-        //     })
-        // })
+        let dicList = JSON.parse(localStorage.getItem("web_oa_dicList"));
+        function selectDic(arr, type) {
+            let temp = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].type == type) {
+                    temp.push(arr[i]);
+                };
+            }
+            return temp;
+        }
+        this.chapterList = selectDic(dicList, "chapter_type")
     },
     methods: {
         detailPromise(){
+            function createUid() {
+                return Number(
+                    parseInt((Math.random() * 100000)) +
+                    '' +
+                    new Date().getTime()
+                );
+            }
             return new Promise((resolve,reject)=>{
                 getDetail({
                     contractFlowId: this.$route.query.key
                 }).then(res=>{
                     res.data.contractFlowDetailInfoNewResponse.contractCode = res.data.contractFlowDetailInfoNewResponse.configCode
                     this.postData = res.data.contractFlowDetailInfoNewResponse;
-                    res.data.contractFlowDetailInfoNewResponse.projectList.forEach(item=>{
-                        let temObj = {}
-                        temObj.id= item.projectId
-                        temObj.projectName = item.projectName
-                        this.projectList.push(temObj)
+                    this.contractTypeName = res.data.contractTypeName;
+                    res.data.keyWords = res.data.keyWords || [];
+                    this.keyWords = res.data.keyWords;
+                    this.custList = res.data.contractFlowDetailInfoNewResponse.custList;
+                    res.data.contractFlowDetailInfoNewResponse.projectList = res.data.contractFlowDetailInfoNewResponse.projectList || []
+                    this.projectList =  res.data.contractFlowDetailInfoNewResponse.projectList.map(item=>{
+                        return {
+                            id:item.projectId,
+                            ...item
+                        }
                     })
                     this.postData.contractNameId = res.data.contractFlowDetailInfoNewResponse.configId;
                     this.contractStartTime = common.timeParseObj(res.data.contractFlowDetailInfoNewResponse.contractStartTime);
@@ -439,6 +539,7 @@ export default {
                             item.url = item.urlPrefix + item.url;
                             if(item.fileType == 1){
                                 this.contractAttachment.push({
+                                    uid:createUid(),
                                     url: item.url,
                                     name: item.name,
                                     contractAttachmentUrl: originUrl,
@@ -447,6 +548,7 @@ export default {
                             }
                             if(item.fileType == 3){
                                 this.dataAttachment.push({
+                                    uid:createUid(),
                                     url: item.url,
                                     name: item.name,
                                     contractAttachmentUrl: originUrl,
@@ -479,11 +581,27 @@ export default {
                 })
             }
         },
+        searchCustmer(val){
+            if(val !==''){
+                getCust(
+                    //还有项目名称
+                    val
+                ).then(res=>{
+                    this.custList = res.data;
+                })
+            }
+        },
         getConfig(id){
             getContractConfig({
                 id:id
             }).then(res=>{
-                this.associationMain = res.data.associationMain == 1
+                this.associationMain = res.data.associationMain == 1;
+                this.contractTypeName = res.data.contractTypeName;
+                this.businessTypeName = res.data.businessTypeName;
+                this.postData.businessType = res.data.businessType;
+                this.businessModelName = res.data.businessModelName;
+                res.data.keyWords = res.data.keyWords || [];
+                this.keyWords = res.data.keyWords;
                 res.data.contractConfigAttachmentList.forEach(item=>{
                     if(item.attachmentType == 1){
                         this.contractMustCount = item.mustCount;
@@ -535,6 +653,12 @@ export default {
                 })
                 this.getConfig(this.postData.contractNameId);
             }
+            this.postData.associationMainName = "";
+            this.postData.associationMainCode = "";
+            this.postData.associationMainId = "";
+            this.postData.projectIds = [];
+            this.postData.keyWord = [];
+            this.postData.keyWordName = [];
         },
         clearContract(){
             this.$store.dispatch('cleanInit');
@@ -544,6 +668,10 @@ export default {
             this.dataMustCount = 0;
             this.dataMaxCount = 0;
             this.postData.contractNameId = "";
+            this.contractTypeName = "";
+            this.businessTypeName = "";
+            this.postData.businessType = "";
+            this.businessModelName = "";
         },
         getList() {
             this.listLoading = true;
@@ -566,26 +694,26 @@ export default {
         contractSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url = res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1});
+                this.contractAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:1,uid:file.uid});
             }
         },
         dataSuccess(res, file, fileList) {
             if(res.data.resCode == 1){
                 let url =res.data.storfiles.serverUrl + res.data.storfiles.url;
-                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3});
+                this.dataAttachment.push({ contractAttachmentUrl:res.data.storfiles.url ,name:file.name,url:url,fileType:3,uid:file.uid});
             }
         },
         // 附件移除
         contractRemove(file, fileList) {
             this.contractAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.contractAttachment.splice(index, 1);
                 }
             })
         },
         dataRemove(file, fileList) {
             this.dataAttachment.map((item, index) => {
-                if (item.name == file.name) {
+                if (item.uid == file.uid) {
                     this.dataAttachment.splice(index, 1);
                 }
             })
@@ -637,13 +765,17 @@ export default {
                     }
                 })
             })
+            this.keyWords.forEach(i=>{
+                if(this.postData.keyWord.indexOf(i.key)!=-1){
+                    this.postData.keyWordName.push(i.value)
+                }
+            })
             this.postData.contractAttachmentList = [...this.dataAttachment,...this.contractAttachment];
             this.postData.contractStartTime = common.timeParse(this.contractStartTime);
             this.postData.contractEndTime = common.timeParse(this.contractEndTime);
-            console.log(this.initData)
             if (contractFormVali(this)) {
                 conApply({...this.postData,...temObj}).then(res => {
-                    if (res.status == 0) {
+                    if (res.code == 200) {
                         this.$message({
                             message: res.message,
                             type: 'success'
